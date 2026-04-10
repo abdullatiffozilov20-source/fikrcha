@@ -1,0 +1,1014 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FIKRCHA | Productivity System</title>
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    "Segoe UI",
+                    "Inter",
+                    system-ui,
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "Roboto",
+                    Arial,
+                    sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                justify-content: center;
+                padding: 20px;
+                min-height: 100vh;
+            }
+
+            .app {
+                background: white;
+                width: 100%;
+                max-width: 1200px;
+                border-radius: 24px;
+                padding: 24px;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            }
+
+            /* Header styling */
+            .app-header {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                margin-bottom: 20px;
+                padding-bottom: 16px;
+                border-bottom: 2px solid #e9ecef;
+            }
+
+            h2 {
+                margin: 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-size: 1.8rem;
+                letter-spacing: -0.5px;
+            }
+
+            .subtitle {
+                color: #6c757d;
+                font-size: 0.85rem;
+            }
+
+            /* Navigation buttons */
+            .nav-buttons {
+                display: flex;
+                gap: 12px;
+                margin-bottom: 24px;
+                flex-wrap: wrap;
+            }
+
+            .nav-btn {
+                padding: 10px 24px;
+                font-size: 1rem;
+                font-weight: 600;
+                border: none;
+                border-radius: 40px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                background: #f1f3f5;
+                color: #495057;
+            }
+
+            .nav-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .nav-btn.active {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            }
+
+            /* General buttons */
+            button {
+                padding: 8px 16px;
+                margin: 4px;
+                cursor: pointer;
+                border: none;
+                border-radius: 40px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                background: #f1f3f5;
+                color: #495057;
+            }
+
+            button:hover {
+                transform: translateY(-1px);
+                background: #e9ecef;
+            }
+
+            button:active {
+                transform: translateY(0);
+            }
+
+            /* Primary action buttons */
+            .btn-primary {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #5a67d8 0%, #6b46a0 100%);
+                box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+            }
+
+            /* Week navigation */
+            .week-nav {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 16px;
+                flex-wrap: wrap;
+            }
+
+            .week-nav button {
+                background: #e9ecef;
+                font-weight: bold;
+            }
+
+            .week-nav button:hover {
+                background: #dee2e6;
+            }
+
+            /* Form inputs */
+            input,
+            textarea,
+            select {
+                padding: 10px 14px;
+                margin: 5px;
+                border: 1px solid #dee2e6;
+                border-radius: 40px;
+                font-family: inherit;
+                font-size: 14px;
+                transition: all 0.2s;
+            }
+
+            input:focus,
+            textarea:focus,
+            select:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            textarea {
+                border-radius: 20px;
+                resize: vertical;
+                height: 60px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 16px;
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+
+            th,
+            td {
+                border: 1px solid #e9ecef;
+                padding: 12px 8px;
+                text-align: center;
+            }
+
+            th {
+                background: #f8f9fa;
+                font-weight: 600;
+                color: #495057;
+            }
+
+            td {
+                background: white;
+            }
+
+            .lesson {
+                border: 1px solid #e9ecef;
+                border-radius: 20px;
+                padding: 20px;
+                margin-top: 16px;
+                background: #fefefe;
+                transition: all 0.2s;
+            }
+
+            .lesson:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+
+            .lesson h4 {
+                margin-top: 0;
+                margin-bottom: 12px;
+                color: #2c3e50;
+                font-size: 1.2rem;
+            }
+
+            .entry {
+                border: 1px solid #e9ecef;
+                padding: 16px;
+                margin-top: 12px;
+                border-radius: 16px;
+                background: #fef9f0;
+                transition: all 0.2s;
+            }
+
+            .entry:hover {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            }
+
+            /* Daily percentage row styling */
+            .daily-row {
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                font-weight: bold;
+            }
+
+            .daily-row td {
+                background: transparent;
+                font-weight: 600;
+                color: #2c3e50;
+            }
+
+            /* Category badges */
+            .category-badge {
+                display: inline-block;
+                padding: 2px 8px;
+                border-radius: 20px;
+                font-size: 10px;
+                font-weight: 500;
+                margin-left: 4px;
+            }
+
+            /* Responsive - Tablet */
+            @media (max-width: 768px) {
+                body {
+                    padding: 10px;
+                }
+
+                .app {
+                    padding: 16px;
+                    border-radius: 20px;
+                }
+
+                th,
+                td {
+                    padding: 6px 4px;
+                    font-size: 12px;
+                }
+
+                button {
+                    padding: 6px 12px;
+                    font-size: 13px;
+                }
+
+                .nav-btn {
+                    padding: 8px 18px;
+                    font-size: 14px;
+                }
+
+                h2 {
+                    font-size: 1.4rem;
+                }
+            }
+
+            /* Responsive - Mobile */
+            @media (max-width: 480px) {
+                body {
+                    padding: 0;
+                    align-items: flex-start;
+                }
+
+                .app {
+                    border-radius: 0;
+                    padding: 14px 12px;
+                    min-height: 100vh;
+                    box-shadow: none;
+                }
+
+                .app-header {
+                    margin-bottom: 12px;
+                    padding-bottom: 10px;
+                }
+
+                h2 {
+                    font-size: 1.3rem;
+                }
+
+                .subtitle {
+                    font-size: 0.75rem;
+                }
+
+                .nav-buttons {
+                    gap: 8px;
+                    margin-bottom: 16px;
+                }
+
+                .nav-btn {
+                    flex: 1;
+                    padding: 10px 8px;
+                    font-size: 13px;
+                    text-align: center;
+                }
+
+                h3 {
+                    font-size: 1.1rem;
+                    margin-bottom: 10px;
+                }
+
+                input,
+                textarea,
+                select {
+                    font-size: 16px;
+                    margin: 3px 0;
+                }
+
+                button {
+                    padding: 8px 14px;
+                    font-size: 13px;
+                    margin: 3px;
+                }
+
+                .btn-primary {
+                    padding: 10px 18px;
+                }
+
+                th,
+                td {
+                    padding: 5px 3px;
+                    font-size: 11px;
+                }
+
+                .lesson {
+                    padding: 14px 12px;
+                }
+
+                .week-nav {
+                    gap: 8px;
+                }
+
+                .entry {
+                    padding: 12px;
+                }
+            }
+
+            /* Edit modal styles */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            }
+
+            .edit-modal {
+                background: white;
+                border-radius: 24px;
+                padding: 24px;
+                width: 90%;
+                max-width: 400px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            }
+
+            .edit-modal h3 {
+                margin-top: 0;
+                margin-bottom: 20px;
+                color: #2c3e50;
+            }
+
+            .edit-modal input {
+                width: 100%;
+                margin: 8px 0;
+            }
+
+            .edit-modal-buttons {
+                display: flex;
+                gap: 12px;
+                justify-content: flex-end;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app">
+            <div class="app-header">
+                <h2>✨ FIKRCHA</h2>
+                <span class="subtitle">think · grow · achieve</span>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showPage('habitPage')">
+                    📅 Habits
+                </button>
+                <button class="nav-btn" onclick="showPage('studyPage')">
+                    📚 Study
+                </button>
+                <button class="nav-btn" onclick="showPage('diaryPage')">
+                    🧠 Diary
+                </button>
+            </div>
+
+            <!-- HABITS -->
+            <div id="habitPage">
+                <h3>✨ Daily Habits Tracker</h3>
+
+                <div class="week-nav">
+                    <button onclick="changeWeek(-7)">◀ Previous Week</button>
+                    <button onclick="changeWeek(7)">Next Week ▶</button>
+                </div>
+
+                <div
+                    style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                        align-items: flex-end;
+                        margin-bottom: 20px;
+                    "
+                >
+                    <div style="flex: 1; min-width: 150px">
+                        <input
+                            id="taskInput"
+                            placeholder="Habit name"
+                            style="width: 100%"
+                        />
+                    </div>
+                    <div style="width: 110px">
+                        <input type="time" id="taskTime" style="width: 100%" />
+                    </div>
+                    <div style="width: 110px">
+                        <select id="categoryInput" style="width: 100%"></select>
+                    </div>
+                    <div>
+                        <button class="btn-primary" onclick="addTask()">
+                            ➕ Add Habit
+                        </button>
+                    </div>
+                </div>
+
+                <h4
+                    id="weekTitle"
+                    style="margin: 16px 0 8px 0; color: #495057"
+                ></h4>
+
+                <div style="overflow-x: auto">
+                    <table>
+                        <thead>
+                            <tr id="weekHeader"></tr>
+                        </thead>
+                        <tbody id="taskBody"></tbody>
+                    </table>
+                </div>
+                <p style="font-size: 12px; color: #6c757d; margin-top: 12px">
+                    ✅ Check daily boxes | 📊 Weekly % = completion rate | 📅
+                    Daily % = overall completion for that day
+                </p>
+            </div>
+
+            <!-- STUDY -->
+            <div id="studyPage" style="display: none">
+                <h3>📖 Study Journal</h3>
+
+                <div
+                    style="
+                        display: flex;
+                        gap: 10px;
+                        margin-bottom: 20px;
+                        flex-wrap: wrap;
+                    "
+                >
+                    <input
+                        id="lessonInput"
+                        placeholder="New lesson/module"
+                        style="flex: 1; min-width: 200px"
+                    />
+                    <button class="btn-primary" onclick="addLesson()">
+                        ➕ Add Lesson
+                    </button>
+                </div>
+
+                <div id="lessonContainer"></div>
+            </div>
+
+            <!-- DIARY -->
+            <div id="diaryPage" style="display: none">
+                <h3>🧠 Life Diary</h3>
+
+                <div
+                    style="
+                        display: flex;
+                        gap: 12px;
+                        flex-wrap: wrap;
+                        margin-bottom: 16px;
+                    "
+                >
+                    <input type="date" id="diaryDate" style="width: 160px" />
+                    <textarea
+                        id="diaryInput"
+                        placeholder="Write your day, feelings, memories..."
+                        style="flex: 1; min-width: 200px"
+                    ></textarea>
+                    <div style="display: flex; flex-direction: column; gap: 8px; justify-content: center;">
+                        <label style="cursor: pointer; background: #f1f3f5; border-radius: 12px; padding: 8px 14px; font-size: 14px; text-align: center;">
+                            🖼️ Add Photo
+                            <input type="file" id="diaryImage" accept="image/*" style="display:none;" onchange="previewDiaryImage(this)">
+                        </label>
+                        <div id="diaryImagePreview" style="display:none;">
+                            <img id="diaryPreviewImg" style="max-width: 120px; max-height: 80px; border-radius: 8px; object-fit: cover;">
+                            <button onclick="clearDiaryImage()" style="background:#ffe0e0; font-size: 11px; padding: 2px 6px; margin-left: 4px;">✕</button>
+                        </div>
+                        <button class="btn-primary" onclick="addDiary()">
+                            💾 Save Entry
+                        </button>
+                    </div>
+                </div>
+
+                <h4 id="diaryTitle" style="margin: 16px 0 8px"></h4>
+                <div id="diaryContainer"></div>
+            </div>
+        </div>
+
+        <script>
+            // NAVIGATION
+            function showPage(id) {
+                document.getElementById("habitPage").style.display = "none";
+                document.getElementById("studyPage").style.display = "none";
+                document.getElementById("diaryPage").style.display = "none";
+                document.getElementById(id).style.display = "block";
+
+                document
+                    .querySelectorAll(".nav-btn")
+                    .forEach((btn) => btn.classList.remove("active"));
+                if (id === "habitPage")
+                    document.querySelector('.nav-btn[onclick*="habitPage"]').classList.add("active");
+                else if (id === "studyPage")
+                    document.querySelector('.nav-btn[onclick*="studyPage"]').classList.add("active");
+                else if (id === "diaryPage")
+                    document.querySelector('.nav-btn[onclick*="diaryPage"]').classList.add("active");
+            }
+
+            // DATA (loaded from server)
+            let tasks = [];
+            let lessons = [];
+            let diaries = {}; // { date: [{id, text, time, image}] }
+
+            // API helpers
+            async function api(method, url, body) {
+                const opts = { method, headers: { "Content-Type": "application/json" } };
+                if (body) opts.body = JSON.stringify(body);
+                const res = await fetch(url, opts);
+                return res.json();
+            }
+
+            // LOAD ALL DATA
+            async function loadAll() {
+                const [habitsData, studiesData, diariesData] = await Promise.all([
+                    api("GET", "/api/habits"),
+                    api("GET", "/api/studies"),
+                    api("GET", "/api/diaries"),
+                ]);
+
+                tasks = (habitsData || []).map((h) => ({
+                    id: h.id,
+                    text: h.name,
+                    time: h.time || "",
+                    category: h.category || "",
+                    history: h.history || {},
+                }));
+
+                lessons = studiesData || [];
+
+                diaries = {};
+                (diariesData || []).forEach((d) => {
+                    if (!diaries[d.date]) diaries[d.date] = [];
+                    diaries[d.date].push({ id: d.id, text: d.entry, time: d.time, image: d.image || null });
+                });
+
+                render();
+                renderDiary();
+
+                // Link Telegram account if opened via Telegram WebApp
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe?.user?.id) {
+                    const tgId = window.Telegram.WebApp.initDataUnsafe.user.id;
+                    api("POST", "/api/link-telegram", { telegramId: tgId }).catch(() => {});
+                }
+            }
+
+            // CATEGORIES
+            let categories = [
+                { name: "Study", color: "#d0ebff" },
+                { name: "Health", color: "#d3f9d8" },
+                { name: "Exercise", color: "#fff3bf" },
+                { name: "Work", color: "#ffd8a8" },
+                { name: "Mind", color: "#eebefa" },
+                { name: "Social", color: "#ffc9c9" },
+                { name: "Growth", color: "#c3fae8" },
+            ];
+
+            const categoryInput = document.getElementById("categoryInput");
+            categories.forEach((c) => {
+                categoryInput.innerHTML += `<option>${c.name}</option>`;
+            });
+
+            // DATE FUNCTIONS
+            function getMonday(d) {
+                let day = d.getDay();
+                let diff = day === 0 ? -6 : 1 - day;
+                return new Date(d.setDate(d.getDate() + diff));
+            }
+
+            let currentMonday = getMonday(new Date());
+
+            function changeWeek(days) {
+                currentMonday.setDate(currentMonday.getDate() + days);
+                render();
+            }
+
+            function getWeek() {
+                let arr = [];
+                for (let i = 0; i < 7; i++) {
+                    let d = new Date(currentMonday);
+                    d.setDate(d.getDate() + i);
+                    arr.push({
+                        date: d.toISOString().split("T")[0],
+                        label: d.toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                        }),
+                    });
+                }
+                return arr;
+            }
+
+            // HABITS
+            async function addTask() {
+                let input = document.getElementById("taskInput");
+                let time = document.getElementById("taskTime");
+                if (!input.value.trim()) return;
+                await api("POST", "/api/habits", {
+                    name: input.value,
+                    time: time.value,
+                    category: categoryInput.value,
+                });
+                input.value = "";
+                time.value = "";
+                await loadAll();
+            }
+
+            async function deleteTask(i) {
+                if (confirm("Delete habit?")) {
+                    await api("DELETE", `/api/habits/${tasks[i].id}`);
+                    await loadAll();
+                }
+            }
+
+            async function toggle(i, date) {
+                tasks[i].history[date] = !tasks[i].history[date];
+                await api("PUT", `/api/habits/${tasks[i].id}`, { history: tasks[i].history });
+                render();
+            }
+
+            function editTask(i) {
+                let modal = document.createElement("div");
+                modal.className = "modal-overlay";
+                modal.innerHTML = `
+        <div class="edit-modal">
+            <h3>✏️ Edit Habit</h3>
+            <label>Habit name:</label>
+            <input type="text" id="editHabitName" value="${escapeHtml(tasks[i].text)}" placeholder="Habit name">
+            <label style="display:block; margin-top:12px;">Time:</label>
+            <input type="time" id="editHabitTime" value="${tasks[i].time || ""}">
+            <div class="edit-modal-buttons">
+                <button onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveEditHabit(${i})">Save</button>
+            </div>
+        </div>
+    `;
+                document.body.appendChild(modal);
+                window.currentModal = modal;
+            }
+
+            function closeModal() {
+                if (window.currentModal) {
+                    window.currentModal.remove();
+                    window.currentModal = null;
+                }
+            }
+
+            async function saveEditHabit(i) {
+                let newName = document.getElementById("editHabitName").value.trim();
+                let newTime = document.getElementById("editHabitTime").value;
+                if (newName) tasks[i].text = newName;
+                tasks[i].time = newTime;
+                await api("PUT", `/api/habits/${tasks[i].id}`, { name: tasks[i].text, time: newTime });
+                closeModal();
+                render();
+            }
+
+            function getPercent(task, week) {
+                let done = 0;
+                week.forEach((d) => {
+                    if (task.history[d.date]) done++;
+                });
+                return Math.round((done / 7) * 100);
+            }
+
+            // Get daily completion percentage
+            function getDailyPercent(week, dayIndex, tasks) {
+                let date = week[dayIndex].date;
+                let total = tasks.length;
+                if (total === 0) return 0;
+                let done = 0;
+                tasks.forEach((task) => {
+                    if (task.history[date]) done++;
+                });
+                return Math.round((done / total) * 100);
+            }
+
+            function render() {
+                const week = getWeek();
+                const weekTitle = document.getElementById("weekTitle");
+                const weekHeader = document.getElementById("weekHeader");
+                const taskBody = document.getElementById("taskBody");
+
+                weekTitle.innerText = "📅 Week of " + week[0].label;
+
+                // Header with days
+                weekHeader.innerHTML = "<th>Habit</th>";
+                week.forEach(
+                    (d) => (weekHeader.innerHTML += `<th>${d.label}</th>`),
+                );
+                weekHeader.innerHTML += "<th>Weekly %</th><th>⚙️</th>";
+
+                taskBody.innerHTML = "";
+
+                tasks.forEach((t, i) => {
+                    let color =
+                        categories.find((c) => c.name === t.category)?.color ||
+                        "#fff";
+
+                    let row = `<tr style="background:${color}">
+        <td><strong>${escapeHtml(t.text)}</strong><br><small>⏰ ${t.time || "anytime"}</small><br><span style="font-size:10px; background:rgba(0,0,0,0.05); padding:2px 8px; border-radius:20px;">${t.category}</span>  </td>`;
+
+                    week.forEach((d) => {
+                        let checked = t.history[d.date] ? "checked" : "";
+                        row += `<td><input type="checkbox" ${checked} onclick="toggle(${i},'${d.date}')" style="transform: scale(1.1); cursor:pointer;"></td>`;
+                    });
+
+                    row += `<td style="font-weight:bold; color:#667eea;">${getPercent(t, week)}%</td>`;
+                    row += `
+        <td>
+        <button onclick="editTask(${i})" style="background:#e9ecef;">✏️ Edit</button>
+        <button onclick="deleteTask(${i})" style="background:#ffe0e0;">🗑️</button>
+        </td>
+        `;
+
+                    taskBody.innerHTML += row;
+                });
+
+                // ADD DAILY PERCENTAGE ROW
+                if (tasks.length > 0) {
+                    let dailyRow = `<tr class="daily-row"><td style="font-weight:bold;">📊 Daily %</td>`;
+                    for (let i = 0; i < week.length; i++) {
+                        let dailyPercent = getDailyPercent(week, i, tasks);
+                        let color =
+                            dailyPercent >= 70
+                                ? "#28a745"
+                                : dailyPercent >= 40
+                                  ? "#fd7e14"
+                                  : "#dc3545";
+                        dailyRow += `<td style="font-weight:bold; color:${color};">${dailyPercent}%</td>`;
+                    }
+                    dailyRow += `<td colspan="2">Completion rate per day</td></tr>`;
+                    taskBody.innerHTML += dailyRow;
+                }
+
+                renderLessons();
+            }
+
+            // STUDY
+            async function addLesson() {
+                let input = document.getElementById("lessonInput");
+                if (!input.value.trim()) return;
+                await api("POST", "/api/studies", { title: input.value });
+                input.value = "";
+                await loadAll();
+            }
+
+            async function deleteLesson(i) {
+                if (confirm("Delete lesson?")) {
+                    await api("DELETE", `/api/studies/${lessons[i].id}`);
+                    await loadAll();
+                }
+            }
+
+            let activityImageData = {};
+
+            function previewActivityImage(i, input) {
+                if (!input.files || !input.files[0]) return;
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    activityImageData[i] = e.target.result;
+                    let nameEl = document.getElementById(`activity-img-name-${i}`);
+                    if (nameEl) nameEl.textContent = "✅ Photo ready";
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+
+            async function addLessonTask(i) {
+                let input = document.getElementById(`activity-${i}`);
+                if (!input.value.trim()) return;
+                lessons[i].tasks.push({
+                    text: input.value,
+                    history: {},
+                    comment: "",
+                    image: activityImageData[i] || null,
+                });
+                input.value = "";
+                activityImageData[i] = null;
+                await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
+                renderLessons();
+            }
+
+            async function deleteLessonTask(i, j) {
+                lessons[i].tasks.splice(j, 1);
+                await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
+                renderLessons();
+            }
+
+            async function toggleLessonTask(i, j) {
+                let today = new Date().toISOString().split("T")[0];
+                lessons[i].tasks[j].history[today] = !lessons[i].tasks[j].history[today];
+                await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
+                renderLessons();
+            }
+
+            async function saveComment(i, j, value) {
+                lessons[i].tasks[j].comment = value;
+                await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
+            }
+
+            function renderLessons() {
+                const lessonContainer =
+                    document.getElementById("lessonContainer");
+                lessonContainer.innerHTML = "";
+
+                lessons.forEach((l, i) => {
+                    let html = `
+        <div class="lesson">
+        <h4>📘 ${escapeHtml(l.title)}</h4>
+        <button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ Delete Module</button>
+
+        <div style="margin: 12px 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+            <input id="activity-${i}" placeholder="New activity" style="flex: 1; min-width: 150px;">
+            <label style="cursor: pointer; background: #f1f3f5; border-radius: 10px; padding: 6px 10px; font-size: 13px;">
+                🖼️
+                <input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i}, this)">
+            </label>
+            <span id="activity-img-name-${i}" style="font-size: 12px; color: #888;"></span>
+            <button onclick="addLessonTask(${i})" style="background:#667eea; color:white;">➕ Add</button>
+        </div>
+        <ul style="list-style: none; padding-left: 0;">`;
+
+                    l.tasks.forEach((t, j) => {
+                        let today = new Date().toISOString().split("T")[0];
+                        let checked = t.history[today] ? "checked" : "";
+
+                        html += `
+            <li style="background: #f8f9fa; margin: 8px 0; padding: 12px; border-radius: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform: scale(1.1);">
+                <strong style="flex: 1;">${escapeHtml(t.text)}</strong>
+                <button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button>
+            </div>
+            ${t.image ? `<img src="${t.image}" style="max-width: 100%; max-height: 250px; border-radius: 10px; margin: 8px 0; display: block; object-fit: cover;">` : ""}
+            <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width: 100%; margin-top: 8px;">${escapeHtml(t.comment)}</textarea>
+            </li>`;
+                    });
+
+                    html += `</ul></div>`;
+                    lessonContainer.innerHTML += html;
+                });
+            }
+
+            // DIARY IMAGE HELPERS
+            let diaryImageData = null;
+
+            function previewDiaryImage(input) {
+                if (!input.files || !input.files[0]) return;
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    diaryImageData = e.target.result;
+                    document.getElementById("diaryPreviewImg").src = diaryImageData;
+                    document.getElementById("diaryImagePreview").style.display = "flex";
+                    document.getElementById("diaryImagePreview").style.alignItems = "center";
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+
+            function clearDiaryImage() {
+                diaryImageData = null;
+                document.getElementById("diaryImage").value = "";
+                document.getElementById("diaryImagePreview").style.display = "none";
+            }
+
+            // DIARY
+            async function addDiary() {
+                let date = document.getElementById("diaryDate").value;
+                let text = document.getElementById("diaryInput").value;
+                if (!date || !text.trim()) return;
+                await api("POST", "/api/diaries", { date, entry: text, image: diaryImageData || null });
+                if (!diaries[date]) diaries[date] = [];
+                diaries[date].push({ text, time: new Date().toLocaleTimeString(), image: diaryImageData || null });
+                document.getElementById("diaryInput").value = "";
+                clearDiaryImage();
+                await loadAll();
+            }
+
+            async function deleteDiary(date, i) {
+                const entry = diaries[date][i];
+                if (entry && entry.id) {
+                    await api("DELETE", `/api/diaries/${entry.id}`);
+                }
+                diaries[date].splice(i, 1);
+                renderDiary();
+            }
+
+            async function editDiary(date, i) {
+                let newText = prompt("Edit entry:", diaries[date][i].text);
+                if (newText) {
+                    const entry = diaries[date][i];
+                    diaries[date][i].text = newText;
+                    if (entry && entry.id) {
+                        await api("PUT", `/api/diaries/${entry.id}`, { entry: newText });
+                    }
+                    renderDiary();
+                }
+            }
+
+            function renderDiary() {
+                let date = document.getElementById("diaryDate").value;
+                let container = document.getElementById("diaryContainer");
+                let title = document.getElementById("diaryTitle");
+
+                if (!date) {
+                    container.innerHTML = "Select a date";
+                    return;
+                }
+
+                title.innerText = "📔 Entries for " + date;
+                container.innerHTML = "";
+
+                let entries = diaries[date] || [];
+                entries.forEach((d, i) => {
+                    let imgHtml = d.image ? `<img src="${d.image}" style="max-width: 100%; max-height: 300px; border-radius: 12px; margin: 8px 0; display: block; object-fit: cover;">` : "";
+                    container.innerHTML += `
+        <div class="entry">
+            <small style="color: #b45309;">🕐 ${d.time}</small>
+            <p style="margin: 8px 0;">${escapeHtml(d.text)}</p>
+            ${imgHtml}
+            <button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">✏️ Edit</button>
+            <button onclick="deleteDiary('${date}',${i})" style="background:#ffe0e0;">🗑️ Delete</button>
+        </div>`;
+                });
+            }
+
+            // Escape HTML to prevent XSS
+            function escapeHtml(str) {
+                if (!str) return "";
+                return str.replace(/[&<>]/g, function (m) {
+                    if (m === "&") return "&amp;";
+                    if (m === "<") return "&lt;";
+                    if (m === ">") return "&gt;";
+                    return m;
+                });
+            }
+
+            // INIT
+            document.getElementById("diaryDate").value = new Date().toISOString().split("T")[0];
+            document.getElementById("diaryDate").addEventListener("change", renderDiary);
+
+            window.closeModal = closeModal;
+            window.saveEditHabit = saveEditHabit;
+
+            loadAll();
+        </script>
+    </body>
+</html>
