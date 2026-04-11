@@ -26,10 +26,7 @@ passport.deserializeUser((id, done) => {
   done(null, users[id]);
 });
 
-const DOMAIN = process.env.REPLIT_DOMAINS
-  ? `https://${process.env.REPLIT_DOMAINS.split(",")[0]}`
-  : "http://localhost:5000";
-
+const DOMAIN = process.env.DOMAIN || "https://fikrcha.onrender.com";
 passport.use(
   new GoogleStrategy(
     {
