@@ -505,7 +505,10 @@ setInterval(() => {
   }
 }, 60000);
 
-bot.launch();
+bot.launch({
+  allowedUpdates: [],
+  dropPendingUpdates: true,
+});
 console.log("🤖 Bot is running!");
 
 app.listen(process.env.PORT || 5000, '0.0.0.0', () => console.log("🌐 Web app running on port 5000"));
