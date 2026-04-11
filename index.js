@@ -64,6 +64,16 @@ app.post('/auth/telegram', (req, res) => {
   if (!user || !user.id) return res.json({ success: false });
   
   const telegramId = String(user.id);
+  
+  // If already logged in with Google, link telegram to that account
+  if (req.user) {
+    telegramUsers[telegramId] = req.user.id;
+    users[req.user.id].telegramId = telegramId;
+    saveData();
+    req.session.telegramUserId = req.user.id;
+    return res.json({ success: true });
+  }
+
   let userId = telegramUsers[telegramId];
   
   if (!userId) {
@@ -80,6 +90,7 @@ app.post('/auth/telegram', (req, res) => {
     studies[userId] = [];
     diaries[userId] = [];
     telegramUsers[telegramId] = userId;
+    saveData();
   }
   
   req.session.telegramUserId = userId;
