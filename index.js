@@ -33,7 +33,6 @@ let studies = _data.studies;
 let diaries = _data.diaries;
 let telegramUsers = _data.telegramUsers;
 
-// KEY FIX: get user from Google session OR Telegram session
 function getUser(req) {
   if (req.user) return req.user;
   if (req.session && req.session.telegramUserId) {
@@ -49,14 +48,13 @@ app.use(
     secret: "fikrcha-secret",
     resave: false,
     saveUninitialized: false,
-    store: new FileStore({ path: '/tmp/sessions', ttl: 86400 * 30, retries: 0 }),,
+    store: new FileStore({ path: '/tmp/sessions', ttl: 86400 * 30, retries: 0 }),
     cookie: { maxAge: 86400000 * 30 }
-  }),
+  })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Middleware: attach user to req for every request
 app.use((req, res, next) => {
   if (!req.user && req.session && req.session.telegramUserId) {
     req.user = users[req.session.telegramUserId] || null;
@@ -71,14 +69,12 @@ passport.deserializeUser((id, done) => {
 
 const DOMAIN = process.env.DOMAIN || "https://fikrcha.onrender.com";
 
-// TELEGRAM AUTH
 app.post('/auth/telegram', (req, res) => {
   const { user } = req.body;
   if (!user || !user.id) return res.json({ success: false });
 
   const telegramId = String(user.id);
 
-  // If Google user is logged in, link their telegram
   if (req.user && req.user.id) {
     telegramUsers[telegramId] = req.user.id;
     users[req.user.id].telegramId = telegramId;
@@ -87,11 +83,9 @@ app.post('/auth/telegram', (req, res) => {
     return res.json({ success: true });
   }
 
-  // Check if telegram already linked to a Google account
   let userId = telegramUsers[telegramId];
 
   if (!userId) {
-    // Create new telegram-only user
     userId = `tg_${telegramId}`;
     users[userId] = {
       id: userId,
@@ -150,7 +144,6 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
-    // Link pending telegram ID if exists
     if (req.session.pendingTelegramId) {
       const tgId = req.session.pendingTelegramId;
       telegramUsers[tgId] = req.user.id;
@@ -166,13 +159,7 @@ app.get(
 app.get("/api/user", (req, res) => {
   const user = getUser(req);
   if (!user) return res.json({ error: "Not logged in" });
-  res.json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    avatar: user.avatar,
-    isAdmin: user.isAdmin,
-  });
+  res.json({ id: user.id, name: user.name, email: user.email, avatar: user.avatar, isAdmin: user.isAdmin });
 });
 
 app.post("/api/link-telegram", (req, res) => {
@@ -185,6 +172,15 @@ app.post("/api/link-telegram", (req, res) => {
     saveData();
   }
   res.json({ success: true });
+});
+
+app.get("/api/force-link/:tgid/:userid", (req, res) => {
+  const tgId = req.params.tgid;
+  const userId = req.params.userid;
+  telegramUsers[tgId] = userId;
+  if (users[userId]) users[userId].telegramId = tgId;
+  saveData();
+  res.json({ success: true, linked: { tgId, userId } });
 });
 
 // HABITS
@@ -278,13 +274,7 @@ app.post("/api/diaries", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
   const { date, entry, image } = req.body;
-  const newDiary = {
-    id: Date.now(),
-    date,
-    entry,
-    image: image || null,
-    time: new Date().toLocaleTimeString(),
-  };
+  const newDiary = { id: Date.now(), date, entry, image: image || null, time: new Date().toLocaleTimeString() };
   if (!diaries[user.id]) diaries[user.id] = [];
   diaries[user.id].push(newDiary);
   saveData();
@@ -309,23 +299,12 @@ app.delete("/api/diaries/:id", (req, res) => {
   res.json({ success: true });
 });
 
-app.get("/api/force-link/:tgid/:userid", (req, res) => {
-  const tgId = req.params.tgid;
-  const userId = req.params.userid;
-  telegramUsers[tgId] = userId;
-  if (users[userId]) users[userId].telegramId = tgId;
-  saveData();
-  res.json({ success: true, telegramUsers });
-});
+app.get("/api/admin/users", (req, res) => {
   const user = getUser(req);
   if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
   const allUsers = Object.values(users).map((u) => ({
-    id: u.id,
-    name: u.name,
-    email: u.email,
-    habits: habits[u.id] || [],
-    studies: studies[u.id] || [],
-    diaries: diaries[u.id] || [],
+    id: u.id, name: u.name, email: u.email,
+    habits: habits[u.id] || [], studies: studies[u.id] || [], diaries: diaries[u.id] || [],
   }));
   res.json(allUsers);
 });
@@ -346,16 +325,26 @@ function getTodayStr() {
   return new Date().toISOString().split("T")[0];
 }
 
+function getRealUserId(userId) {
+  if (userId && userId.startsWith('tg_')) {
+    const tgId = userId.replace('tg_', '');
+    const linked = telegramUsers[tgId];
+    if (linked && !linked.startsWith('tg_')) return linked;
+  }
+  return userId;
+}
+
 function buildHabitKeyboard(userId) {
+  const realId = getRealUserId(userId);
   const today = getTodayStr();
-  const userHabits = habits[userId] || [];
+  const userHabits = habits[realId] || [];
   const keyboard = userHabits.map((h) => [
     {
       text: `${h.history[today] ? "✅" : "⬜"} ${h.name}${h.time ? " (" + h.time + ")" : ""}`,
-      callback_data: `tog_${userId}_${h.id}`,
+      callback_data: `tog_${realId}_${h.id}`,
     },
   ]);
-  keyboard.push([{ text: "📊 Today's Progress", callback_data: `prog_${userId}` }]);
+  keyboard.push([{ text: "📊 Today's Progress", callback_data: `prog_${realId}` }]);
   keyboard.push([{ text: "🚀 Open App", web_app: { url: webAppUrl } }]);
   return keyboard;
 }
@@ -365,9 +354,7 @@ bot.start((ctx) => {
     "✨ Welcome to FIKRCHA!\n\nOpen the app to set up your habits, then use these commands:\n\n📅 /habits — See & check today's habits\n📔 /diary <text> — Save a diary entry\n📊 /progress — See your weekly stats",
     {
       reply_markup: {
-        inline_keyboard: [
-          [{ text: "🚀 Open FIKRCHA App", web_app: { url: webAppUrl } }],
-        ],
+        inline_keyboard: [[{ text: "🚀 Open FIKRCHA App", web_app: { url: webAppUrl } }]],
       },
     },
   );
@@ -375,31 +362,23 @@ bot.start((ctx) => {
 
 bot.command("habits", (ctx) => {
   const telegramId = String(ctx.from.id);
-  const userId = telegramUsers[telegramId];
-
+  let userId = telegramUsers[telegramId];
   if (!userId) {
-    return ctx.reply(
-      "👋 First, open the app to link your account. After signing in, come back and try again!",
-      {
-        reply_markup: {
-          inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]],
-        },
-      },
-    );
+    return ctx.reply("👋 First, open the app to link your account. After signing in, come back and try again!", {
+      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
+    });
   }
 
+  userId = getRealUserId(userId);
   const userHabits = habits[userId] || [];
   if (userHabits.length === 0) {
     return ctx.reply("You have no habits yet. Open the app to add some!", {
-      reply_markup: {
-        inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]],
-      },
+      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
     });
   }
 
   const today = getTodayStr();
   const done = userHabits.filter((h) => h.history[today]).length;
-
   ctx.reply(
     `📅 Your habits for today (${today})\n✅ ${done}/${userHabits.length} completed\n\nTap a habit to check/uncheck it:`,
     { reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } },
@@ -420,6 +399,7 @@ bot.on("callback_query", async (ctx) => {
     if (!habit) return ctx.answerCbQuery("Habit not found");
 
     habit.history[today] = !habit.history[today];
+    saveData();
     const status = habit.history[today] ? "✅ Checked" : "⬜ Unchecked";
     const done = userHabits.filter((h) => h.history[today]).length;
 
@@ -430,25 +410,15 @@ bot.on("callback_query", async (ctx) => {
     await ctx.answerCbQuery(`${status}: ${habit.name}`);
   }
 
- if (data.startsWith("prog_")) {
+  if (data.startsWith("prog_")) {
     const userId = data.slice(5);
-    // Check if this telegram user has a linked Google account
-    const tgKey = Object.keys(telegramUsers).find(k => telegramUsers[k] === userId);
-    if (tgKey && telegramUsers[tgKey] !== userId) userId = telegramUsers[tgKey];
-    // Also check reverse - if userId is a tg_ id, find the real linked account
-    const linkedId = Object.values(telegramUsers).find(id => id === userId);
-    if (!linkedId) {
-      // Try finding by telegram ID directly
-      const directLink = telegramUsers[userId.replace('tg_', '')];
-      if (directLink) userId = directLink;
-    }
     const userHabits = habits[userId] || [];
     const today = getTodayStr();
     const done = userHabits.filter((h) => h.history[today]).length;
     const total = userHabits.length;
     const pct = total > 0 ? Math.round((done / total) * 100) : 0;
     const emoji = pct >= 80 ? "🔥" : pct >= 50 ? "💪" : "⚡";
-    
+
     let weekStats = "";
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
@@ -468,45 +438,31 @@ bot.on("callback_query", async (ctx) => {
 
 bot.command("diary", async (ctx) => {
   const telegramId = String(ctx.from.id);
-  const userId = telegramUsers[telegramId];
-
+  const userId = getRealUserId(telegramUsers[telegramId]);
   if (!userId) {
     return ctx.reply("👋 Open the app first to link your account!", {
-      reply_markup: {
-        inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]],
-      },
+      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
     });
   }
 
   const text = ctx.message.text.replace(/^\/diary\s*/, "").trim();
   if (!text) {
-    return ctx.reply(
-      "📔 Write your diary entry after the command.\n\nExample:\n/diary Today was a great day!",
-    );
+    return ctx.reply("📔 Write your diary entry after the command.\n\nExample:\n/diary Today was a great day!");
   }
 
   const today = getTodayStr();
   if (!diaries[userId]) diaries[userId] = [];
-  diaries[userId].push({
-    id: Date.now(),
-    date: today,
-    entry: text,
-    image: null,
-    time: new Date().toLocaleTimeString(),
-  });
+  diaries[userId].push({ id: Date.now(), date: today, entry: text, image: null, time: new Date().toLocaleTimeString() });
   saveData();
   await ctx.reply(`📔 Diary entry saved for ${today}! ✨`);
 });
 
-const done = userHabits.filter((h) => h.history[dateStr]).length;
+bot.command("progress", async (ctx) => {
   const telegramId = String(ctx.from.id);
-  const userId = telegramUsers[telegramId];
-
+  const userId = getRealUserId(telegramUsers[telegramId]);
   if (!userId) {
     return ctx.reply("👋 Open the app first to link your account!", {
-      reply_markup: {
-        inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]],
-      },
+      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
     });
   }
 
@@ -529,26 +485,22 @@ const done = userHabits.filter((h) => h.history[dateStr]).length;
 
   const today = getTodayStr();
   const todayDone = userHabits.filter((h) => h.history[today]).length;
-
-  await ctx.reply(
-    `📊 Your Weekly Progress\n\n${weekStats}\n💪 Today: ${todayDone}/${userHabits.length} completed`,
-  );
+  await ctx.reply(`📊 Your Weekly Progress\n\n${weekStats}\n💪 Today: ${todayDone}/${userHabits.length} completed`);
 });
 
 setInterval(() => {
   const now = new Date();
   if (now.getHours() === 8 && now.getMinutes() === 0) {
     Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
-      const userHabits = habits[userId] || [];
+      const realId = getRealUserId(userId);
+      const userHabits = habits[realId] || [];
       if (userHabits.length === 0) return;
-      const name = users[userId]?.name?.split(" ")[0] || "there";
-      bot.telegram
-        .sendMessage(
-          telegramId,
-          `🌅 Good morning, ${name}! Time to check your habits for today:`,
-          { reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } },
-        )
-        .catch(() => {});
+      const name = users[realId]?.name?.split(" ")[0] || "there";
+      bot.telegram.sendMessage(
+        telegramId,
+        `🌅 Good morning, ${name}! Time to check your habits for today:`,
+        { reply_markup: { inline_keyboard: buildHabitKeyboard(realId) } },
+      ).catch(() => {});
     });
   }
 }, 60000);
