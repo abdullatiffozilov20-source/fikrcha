@@ -141,11 +141,13 @@ app.get("/api/user", (req, res) => {
 
 // Link Telegram account to Google account
 app.post("/api/link-telegram", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });;
+  const user = req.user || (req.session.telegramUserId && users[req.session.telegramUserId]);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
   const { telegramId } = req.body;
   if (telegramId) {
-    telegramUsers[String(telegramId)] = req.user.id;
-    users[req.user.id].telegramId = String(telegramId);
+    telegramUsers[String(telegramId)] = user.id;
+    users[user.id].telegramId = String(telegramId);
+    saveData();
   }
   res.json({ success: true });
 });
