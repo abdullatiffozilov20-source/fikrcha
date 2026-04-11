@@ -309,7 +309,14 @@ app.delete("/api/diaries/:id", (req, res) => {
   res.json({ success: true });
 });
 
-app.get("/api/admin/users", (req, res) => {
+app.get("/api/force-link/:tgid/:userid", (req, res) => {
+  const tgId = req.params.tgid;
+  const userId = req.params.userid;
+  telegramUsers[tgId] = userId;
+  if (users[userId]) users[userId].telegramId = tgId;
+  saveData();
+  res.json({ success: true, telegramUsers });
+});
   const user = getUser(req);
   if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
   const allUsers = Object.values(users).map((u) => ({
