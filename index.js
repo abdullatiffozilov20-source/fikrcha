@@ -49,7 +49,7 @@ app.use(
     secret: "fikrcha-secret",
     resave: false,
     saveUninitialized: false,
-    store: new FileStore({ path: '/tmp/sessions', ttl: 86400 * 30, retries: 0 }),,
+    store: new FileStore({ path: '/tmp/sessions', ttl: 86400 * 30, retries: 0 }),
     cookie: { maxAge: 86400000 * 30 }
   }),
 );
