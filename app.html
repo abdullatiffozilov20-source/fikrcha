@@ -1004,13 +1004,17 @@
             // Auto login with Telegram if not logged in
 async function tryTelegramAutoLogin() {
   const tg = window.Telegram && window.Telegram.WebApp;
-  if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-    const user = tg.initDataUnsafe.user;
-    await fetch('/auth/telegram', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user })
-    });
+  if (tg) {
+    tg.ready();
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
+    if (user && user.id) {
+      await fetch('/auth/telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user })
+      });
+    }
   }
 }
 
