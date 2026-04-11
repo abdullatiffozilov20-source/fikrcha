@@ -114,7 +114,7 @@ app.get("/api/user", (req, res) => {
 
 // Link Telegram account to Google account
 app.post("/api/link-telegram", (req, res) => {
-  req.user = getUser(req); if (!req.user) return res.status(401).json({ error: "Not logged in" });;
+  if (!req.user) return res.status(401).json({ error: "Not logged in" });;
   const { telegramId } = req.body;
   if (telegramId) {
     telegramUsers[String(telegramId)] = req.user.id;
@@ -130,7 +130,7 @@ app.get("/api/habits", (req, res) => {
 });
 
 app.post("/api/habits", (req, res) => {
-  req.user = getUser(req); if (!req.user) return res.status(401).json({ error: "Not logged in" });;
+  if (!req.user) return res.status(401).json({ error: "Not logged in" });;
   const { name, time, category } = req.body;
   const newHabit = { id: Date.now(), name, time: time || "", category: category || "", history: {} };
   if (!habits[req.user.id]) habits[req.user.id] = [];
