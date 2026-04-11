@@ -404,8 +404,8 @@ bot.on("callback_query", async (ctx) => {
 
   if (data.startsWith("tog_")) {
     const parts = data.split("_");
-    const userId = parts[1];
-    const habitId = parseInt(parts[2]);
+    const habitId = parseInt(parts[parts.length - 1]);
+    const userId = parts.slice(1, parts.length - 1).join("_");
     const today = getTodayStr();
 
     const userHabits = habits[userId] || [];
@@ -423,8 +423,18 @@ bot.on("callback_query", async (ctx) => {
     await ctx.answerCbQuery(`${status}: ${habit.name}`);
   }
 
-  if (data.startsWith("prog_")) {
-    const userId = data.split("_")[1];
+ if (data.startsWith("prog_")) {
+    const userId = data.slice(5);
+    // Check if this telegram user has a linked Google account
+    const tgKey = Object.keys(telegramUsers).find(k => telegramUsers[k] === userId);
+    if (tgKey && telegramUsers[tgKey] !== userId) userId = telegramUsers[tgKey];
+    // Also check reverse - if userId is a tg_ id, find the real linked account
+    const linkedId = Object.values(telegramUsers).find(id => id === userId);
+    if (!linkedId) {
+      // Try finding by telegram ID directly
+      const directLink = telegramUsers[userId.replace('tg_', '')];
+      if (directLink) userId = directLink;
+    }
     const userHabits = habits[userId] || [];
     const today = getTodayStr();
     const done = userHabits.filter((h) => h.history[today]).length;
