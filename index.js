@@ -205,6 +205,7 @@ app.post("/api/studies", (req, res) => {
   studies[req.user.id].unshift(newStudy);
   saveData();
   res.json({ success: true });
+});
 
 app.put("/api/studies/:id", (req, res) => {
   if (!req.user) return res.status(401).json({ error: "Not logged in" });
@@ -246,9 +247,7 @@ app.post("/api/diaries", (req, res) => {
     time: new Date().toLocaleTimeString(),
   };
   if (!diaries[req.user.id]) diaries[req.user.id] = [];
-  diaries[req.user.id] = (diaries[req.user.id] || []).filter(
-    (d) => d.id != req.params.id,
-  );
+  diaries[req.user.id].push(newDiary);
   saveData();
   res.json({ success: true });
 });
