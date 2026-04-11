@@ -130,7 +130,7 @@ app.get("/api/habits", (req, res) => {
 });
 
 app.post("/api/habits", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
+  req.user = getUser(req); if (!req.user) return res.status(401).json({ error: "Not logged in" });;
   const { name, time, category } = req.body;
   const newHabit = { id: Date.now(), name, time: time || "", category: category || "", history: {} };
   if (!habits[req.user.id]) habits[req.user.id] = [];
