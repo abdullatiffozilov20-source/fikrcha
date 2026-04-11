@@ -466,7 +466,7 @@ bot.command("diary", async (ctx) => {
   await ctx.reply(`📔 Diary entry saved for ${today}! ✨`);
 });
 
-bot.command("progress", async (ctx) => {
+const done = userHabits.filter((h) => h.history[dateStr]).length;
   const telegramId = String(ctx.from.id);
   const userId = telegramUsers[telegramId];
 
