@@ -13,6 +13,11 @@ let studies = {};
 let diaries = {};
 let telegramUsers = {}; // telegramId -> userId
 
+// Helper to get user from session (Google or Telegram)
+function getUser(req) {
+  return req.user || (req.session.telegramUserId && users[req.session.telegramUserId]);
+}
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static("."));
 app.use(
@@ -109,7 +114,7 @@ app.get("/api/user", (req, res) => {
 
 // Link Telegram account to Google account
 app.post("/api/link-telegram", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
+  req.user = getUser(req); if (!req.user) return res.status(401).json({ error: "Not logged in" });;
   const { telegramId } = req.body;
   if (telegramId) {
     telegramUsers[String(telegramId)] = req.user.id;
