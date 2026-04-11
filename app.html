@@ -1014,6 +1014,12 @@ async function tryTelegramAutoLogin() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user })
       });
+      // Also link telegram to google account if logged in
+      await fetch('/api/link-telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ telegramId: user.id })
+      });
     }
   }
 }
