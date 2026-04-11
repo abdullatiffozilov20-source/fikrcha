@@ -96,7 +96,19 @@
         note.style.display = "block";
         googleBtn.addEventListener("click", function(e) {
           e.preventDefault();
-          window.Telegram.WebApp.openLink(window.location.origin + "/auth/google");
+          const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
+          if (tgUser) {
+            // Save telegram ID before going to Google
+            fetch('/auth/telegram', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ user: tgUser })
+            }).then(() => {
+              window.Telegram.WebApp.openLink(window.location.origin + "/auth/google");
+            });
+          } else {
+            window.Telegram.WebApp.openLink(window.location.origin + "/auth/google");
+          }
         });
       }
 
