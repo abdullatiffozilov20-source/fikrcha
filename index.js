@@ -430,7 +430,22 @@ bot.on("callback_query", async (ctx) => {
     const done = userHabits.filter((h) => h.history[today]).length;
     const total = userHabits.length;
     const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-    await ctx.answerCbQuery(`Today: ${done}/${total} (${pct}%) — Keep going! 💪`, { show_alert: true });
+    const emoji = pct >= 80 ? "🔥" : pct >= 50 ? "💪" : "⚡";
+    
+    let weekStats = "";
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split("T")[0];
+      const dayDone = userHabits.filter((h) => h.history[dateStr]).length;
+      const dayPct = total > 0 ? Math.round((dayDone / total) * 100) : 0;
+      const bar = dayPct >= 80 ? "🟢" : dayPct >= 50 ? "🟡" : "🔴";
+      const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
+      weekStats += `${bar} ${label}: ${dayDone}/${total} (${dayPct}%)\n`;
+    }
+
+    await ctx.answerCbQuery(`${emoji} Today: ${done}/${total} (${pct}%) — Keep going!`, { show_alert: true });
+    await ctx.reply(`📊 Progress for today & this week:\n\n${weekStats}`);
   }
 });
 
