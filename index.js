@@ -27,6 +27,33 @@ passport.deserializeUser((id, done) => {
 });
 
 const DOMAIN = process.env.DOMAIN || "https://fikrcha.onrender.com";
+// TELEGRAM AUTH
+app.post('/auth/telegram', (req, res) => {
+  const { user } = req.body;
+  if (!user || !user.id) return res.json({ success: false });
+  
+  const telegramId = String(user.id);
+  let userId = telegramUsers[telegramId];
+  
+  if (!userId) {
+    userId = `tg_${telegramId}`;
+    users[userId] = {
+      id: userId,
+      name: user.first_name + (user.last_name ? ' ' + user.last_name : ''),
+      email: '',
+      avatar: user.photo_url || '',
+      isAdmin: false,
+      telegramId,
+    };
+    habits[userId] = [];
+    studies[userId] = [];
+    diaries[userId] = [];
+    telegramUsers[telegramId] = userId;
+  }
+  
+  req.session.telegramUserId = userId;
+  res.json({ success: true });
+});
 passport.use(
   new GoogleStrategy(
     {
@@ -68,7 +95,9 @@ app.get(
 );
 
 app.get("/api/user", (req, res) => {
-  if (!req.user) return res.json({ error: "Not logged in" });
+  const user = req.user || (req.session.telegramUserId && users[req.session.telegramUserId]);
+  if (!user) return res.json({ error: "Not logged in" });
+  req.user = user;
   res.json({
     id: req.user.id,
     name: req.user.name,
