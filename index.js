@@ -5,10 +5,9 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { Telegraf } = require("telegraf");
 const path = require("path");
+const fs = require('fs');
 
 const app = express();
-
-const fs = require('fs');
 const DATA_FILE = './data.json';
 
 function loadData() {
@@ -33,9 +32,14 @@ let habits = _data.habits;
 let studies = _data.studies;
 let diaries = _data.diaries;
 let telegramUsers = _data.telegramUsers;
-// Helper to get user from session (Google or Telegram)
+
+// KEY FIX: get user from Google session OR Telegram session
 function getUser(req) {
-  return req.user || (req.session.telegramUserId && users[req.session.telegramUserId]);
+  if (req.user) return req.user;
+  if (req.session && req.session.telegramUserId) {
+    return users[req.session.telegramUserId] || null;
+  }
+  return null;
 }
 
 app.use(express.json({ limit: "10mb" }));
@@ -52,31 +56,42 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Middleware: attach user to req for every request
+app.use((req, res, next) => {
+  if (!req.user && req.session && req.session.telegramUserId) {
+    req.user = users[req.session.telegramUserId] || null;
+  }
+  next();
+});
+
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser((id, done) => {
-  done(null, users[id]);
+  done(null, users[id] || null);
 });
 
 const DOMAIN = process.env.DOMAIN || "https://fikrcha.onrender.com";
+
 // TELEGRAM AUTH
 app.post('/auth/telegram', (req, res) => {
   const { user } = req.body;
   if (!user || !user.id) return res.json({ success: false });
-  
+
   const telegramId = String(user.id);
-  
-  // If already logged in with Google, link telegram to that account
-  if (req.user) {
+
+  // If Google user is logged in, link their telegram
+  if (req.user && req.user.id) {
     telegramUsers[telegramId] = req.user.id;
     users[req.user.id].telegramId = telegramId;
-    saveData();
     req.session.telegramUserId = req.user.id;
+    saveData();
     return res.json({ success: true });
   }
 
+  // Check if telegram already linked to a Google account
   let userId = telegramUsers[telegramId];
-  
+
   if (!userId) {
+    // Create new telegram-only user
     userId = `tg_${telegramId}`;
     users[userId] = {
       id: userId,
@@ -92,10 +107,11 @@ app.post('/auth/telegram', (req, res) => {
     telegramUsers[telegramId] = userId;
     saveData();
   }
-  
+
   req.session.telegramUserId = userId;
   res.json({ success: true });
 });
+
 passport.use(
   new GoogleStrategy(
     {
@@ -125,34 +141,42 @@ passport.use(
   ),
 );
 
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] }),
-);
+app.get("/auth/google", (req, res, next) => {
+  if (req.query.tgid) req.session.pendingTelegramId = String(req.query.tgid);
+  passport.authenticate("google", { scope: ["profile", "email"] })(req, res, next);
+});
+
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
+    // Link pending telegram ID if exists
+    if (req.session.pendingTelegramId) {
+      const tgId = req.session.pendingTelegramId;
+      telegramUsers[tgId] = req.user.id;
+      users[req.user.id].telegramId = tgId;
+      req.session.telegramUserId = req.user.id;
+      delete req.session.pendingTelegramId;
+      saveData();
+    }
     res.redirect("/app.html");
   },
 );
 
 app.get("/api/user", (req, res) => {
-  const user = req.user || (req.session.telegramUserId && users[req.session.telegramUserId]);
+  const user = getUser(req);
   if (!user) return res.json({ error: "Not logged in" });
-  req.user = user;
   res.json({
-    id: req.user.id,
-    name: req.user.name,
-    email: req.user.email,
-    avatar: req.user.avatar,
-    isAdmin: req.user.isAdmin,
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    isAdmin: user.isAdmin,
   });
 });
 
-// Link Telegram account to Google account
 app.post("/api/link-telegram", (req, res) => {
-  const user = req.user || (req.session.telegramUserId && users[req.session.telegramUserId]);
+  const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
   const { telegramId } = req.body;
   if (telegramId) {
@@ -165,24 +189,27 @@ app.post("/api/link-telegram", (req, res) => {
 
 // HABITS
 app.get("/api/habits", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
-  res.json(habits[req.user.id] || []);
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
+  res.json(habits[user.id] || []);
 });
 
 app.post("/api/habits", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });;
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
   const { name, time, category } = req.body;
   const newHabit = { id: Date.now(), name, time: time || "", category: category || "", history: {} };
-  if (!habits[req.user.id]) habits[req.user.id] = [];
-  habits[req.user.id].push(newHabit);
+  if (!habits[user.id]) habits[user.id] = [];
+  habits[user.id].push(newHabit);
   saveData();
   res.json({ success: true });
 });
 
 app.put("/api/habits/:id", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
   const { name, time, category, history } = req.body;
-  const habit = (habits[req.user.id] || []).find((h) => h.id == req.params.id);
+  const habit = (habits[user.id] || []).find((h) => h.id == req.params.id);
   if (habit) {
     if (name !== undefined) habit.name = name;
     if (time !== undefined) habit.time = time;
@@ -194,36 +221,36 @@ app.put("/api/habits/:id", (req, res) => {
 });
 
 app.delete("/api/habits/:id", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
-  habits[req.user.id] = (habits[req.user.id] || []).filter(
-    (h) => h.id != req.params.id,
-  );
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
+  habits[user.id] = (habits[user.id] || []).filter((h) => h.id != req.params.id);
   saveData();
   res.json({ success: true });
 });
 
 // STUDIES
-
-// STUDIES
 app.get("/api/studies", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
-  res.json(studies[req.user.id] || []);
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
+  res.json(studies[user.id] || []);
 });
 
 app.post("/api/studies", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
   const { title } = req.body;
   const newStudy = { id: Date.now(), title, tasks: [] };
-  if (!studies[req.user.id]) studies[req.user.id] = [];
-  studies[req.user.id].unshift(newStudy);
+  if (!studies[user.id]) studies[user.id] = [];
+  studies[user.id].unshift(newStudy);
   saveData();
   res.json({ success: true });
 });
 
 app.put("/api/studies/:id", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
   const { title, tasks } = req.body;
-  const study = (studies[req.user.id] || []).find((s) => s.id == req.params.id);
+  const study = (studies[user.id] || []).find((s) => s.id == req.params.id);
   if (study) {
     if (title !== undefined) study.title = title;
     if (tasks !== undefined) study.tasks = tasks;
@@ -233,24 +260,23 @@ app.put("/api/studies/:id", (req, res) => {
 });
 
 app.delete("/api/studies/:id", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
-  studies[req.user.id] = (studies[req.user.id] || []).filter(
-    (s) => s.id != req.params.id,
-  );
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
+  studies[user.id] = (studies[user.id] || []).filter((s) => s.id != req.params.id);
   saveData();
   res.json({ success: true });
 });
 
 // DIARIES
-
-// DIARIES
 app.get("/api/diaries", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
-  res.json(diaries[req.user.id] || []);
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
+  res.json(diaries[user.id] || []);
 });
 
 app.post("/api/diaries", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
   const { date, entry, image } = req.body;
   const newDiary = {
     id: Date.now(),
@@ -259,32 +285,33 @@ app.post("/api/diaries", (req, res) => {
     image: image || null,
     time: new Date().toLocaleTimeString(),
   };
-  if (!diaries[req.user.id]) diaries[req.user.id] = [];
-  diaries[req.user.id].push(newDiary);
+  if (!diaries[user.id]) diaries[user.id] = [];
+  diaries[user.id].push(newDiary);
   saveData();
   res.json({ success: true });
 });
 
 app.put("/api/diaries/:id", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
   const { entry } = req.body;
-  const diary = (diaries[req.user.id] || []).find((d) => d.id == req.params.id);
+  const diary = (diaries[user.id] || []).find((d) => d.id == req.params.id);
   if (diary && entry !== undefined) diary.entry = entry;
   saveData();
   res.json({ success: true });
 });
 
 app.delete("/api/diaries/:id", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
-  diaries[req.user.id] = (diaries[req.user.id] || []).filter(
-    (d) => d.id != req.params.id,
-  );
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
+  diaries[user.id] = (diaries[user.id] || []).filter((d) => d.id != req.params.id);
+  saveData();
   res.json({ success: true });
 });
 
 app.get("/api/admin/users", (req, res) => {
-  if (!req.user || !req.user.isAdmin)
-    return res.status(403).json({ error: "Unauthorized" });
+  const user = getUser(req);
+  if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
   const allUsers = Object.values(users).map((u) => ({
     id: u.id,
     name: u.name,
@@ -296,14 +323,11 @@ app.get("/api/admin/users", (req, res) => {
   res.json(allUsers);
 });
 
-app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "index.html")),
-);
-app.get("/app.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "app.html"));
-});
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
+app.get("/app.html", (req, res) => res.sendFile(path.join(__dirname, "app.html")));
 app.get("/admin.html", (req, res) => {
-  if (!req.user || !req.user.isAdmin) return res.redirect("/");
+  const user = getUser(req);
+  if (!user || !user.isAdmin) return res.redirect("/");
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
@@ -390,7 +414,6 @@ bot.on("callback_query", async (ctx) => {
 
     habit.history[today] = !habit.history[today];
     const status = habit.history[today] ? "✅ Checked" : "⬜ Unchecked";
-
     const done = userHabits.filter((h) => h.history[today]).length;
 
     await ctx.editMessageText(
@@ -439,7 +462,7 @@ bot.command("diary", async (ctx) => {
     image: null,
     time: new Date().toLocaleTimeString(),
   });
-
+  saveData();
   await ctx.reply(`📔 Diary entry saved for ${today}! ✨`);
 });
 
@@ -480,7 +503,6 @@ bot.command("progress", async (ctx) => {
   );
 });
 
-// Morning reminder — checks every minute, sends at 8:00am server time
 setInterval(() => {
   const now = new Date();
   if (now.getHours() === 8 && now.getMinutes() === 0) {
