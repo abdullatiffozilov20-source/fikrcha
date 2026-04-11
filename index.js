@@ -287,7 +287,6 @@ app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "index.html")),
 );
 app.get("/app.html", (req, res) => {
-  if (!req.user) return res.redirect("/");
   res.sendFile(path.join(__dirname, "app.html"));
 });
 app.get("/admin.html", (req, res) => {
