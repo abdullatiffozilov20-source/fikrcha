@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const FileStore = require('session-file-store')(session);
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { Telegraf } = require("telegraf");
@@ -21,7 +22,13 @@ function getUser(req) {
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
 app.use(
-  session({ secret: "fikrcha-secret", resave: false, saveUninitialized: true }),
+  session({
+    secret: "fikrcha-secret",
+    resave: false,
+    saveUninitialized: false,
+    store: new FileStore({ path: './sessions', ttl: 86400 * 30 }),
+    cookie: { maxAge: 86400000 * 30 }
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
