@@ -8,12 +8,31 @@ const path = require("path");
 
 const app = express();
 
-let users = {};
-let habits = {};
-let studies = {};
-let diaries = {};
-let telegramUsers = {}; // telegramId -> userId
+const fs = require('fs');
+const DATA_FILE = './data.json';
 
+function loadData() {
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+      return data;
+    }
+  } catch(e) {}
+  return { users: {}, habits: {}, studies: {}, diaries: {}, telegramUsers: {} };
+}
+
+function saveData() {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify({ users, habits, studies, diaries, telegramUsers }));
+  } catch(e) {}
+}
+
+const _data = loadData();
+let users = _data.users;
+let habits = _data.habits;
+let studies = _data.studies;
+let diaries = _data.diaries;
+let telegramUsers = _data.telegramUsers;
 // Helper to get user from session (Google or Telegram)
 function getUser(req) {
   return req.user || (req.session.telegramUserId && users[req.session.telegramUserId]);
@@ -88,6 +107,7 @@ passport.use(
         habits[profile.id] = [];
         studies[profile.id] = [];
         diaries[profile.id] = [];
+        saveData();
       }
       done(null, user);
     },
@@ -142,6 +162,7 @@ app.post("/api/habits", (req, res) => {
   const newHabit = { id: Date.now(), name, time: time || "", category: category || "", history: {} };
   if (!habits[req.user.id]) habits[req.user.id] = [];
   habits[req.user.id].push(newHabit);
+  saveData();
   res.json({ success: true });
 });
 
@@ -155,6 +176,7 @@ app.put("/api/habits/:id", (req, res) => {
     if (category !== undefined) habit.category = category;
     if (history !== undefined) habit.history = history;
   }
+  saveData();
   res.json({ success: true });
 });
 
@@ -163,8 +185,11 @@ app.delete("/api/habits/:id", (req, res) => {
   habits[req.user.id] = (habits[req.user.id] || []).filter(
     (h) => h.id != req.params.id,
   );
+  saveData();
   res.json({ success: true });
 });
+
+// STUDIES
 
 // STUDIES
 app.get("/api/studies", (req, res) => {
@@ -178,8 +203,8 @@ app.post("/api/studies", (req, res) => {
   const newStudy = { id: Date.now(), title, tasks: [] };
   if (!studies[req.user.id]) studies[req.user.id] = [];
   studies[req.user.id].unshift(newStudy);
+  saveData();
   res.json({ success: true });
-});
 
 app.put("/api/studies/:id", (req, res) => {
   if (!req.user) return res.status(401).json({ error: "Not logged in" });
@@ -189,6 +214,7 @@ app.put("/api/studies/:id", (req, res) => {
     if (title !== undefined) study.title = title;
     if (tasks !== undefined) study.tasks = tasks;
   }
+  saveData();
   res.json({ success: true });
 });
 
@@ -197,8 +223,11 @@ app.delete("/api/studies/:id", (req, res) => {
   studies[req.user.id] = (studies[req.user.id] || []).filter(
     (s) => s.id != req.params.id,
   );
+  saveData();
   res.json({ success: true });
 });
+
+// DIARIES
 
 // DIARIES
 app.get("/api/diaries", (req, res) => {
@@ -217,7 +246,10 @@ app.post("/api/diaries", (req, res) => {
     time: new Date().toLocaleTimeString(),
   };
   if (!diaries[req.user.id]) diaries[req.user.id] = [];
-  diaries[req.user.id].push(newDiary);
+  diaries[req.user.id] = (diaries[req.user.id] || []).filter(
+    (d) => d.id != req.params.id,
+  );
+  saveData();
   res.json({ success: true });
 });
 
@@ -226,6 +258,7 @@ app.put("/api/diaries/:id", (req, res) => {
   const { entry } = req.body;
   const diary = (diaries[req.user.id] || []).find((d) => d.id == req.params.id);
   if (diary && entry !== undefined) diary.entry = entry;
+  saveData();
   res.json({ success: true });
 });
 
