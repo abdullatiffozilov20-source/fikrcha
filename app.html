@@ -1001,14 +1001,26 @@
                 });
             }
 
-            // INIT
-            document.getElementById("diaryDate").value = new Date().toISOString().split("T")[0];
+            // Auto login with Telegram if not logged in
+async function tryTelegramAutoLogin() {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+    const user = tg.initDataUnsafe.user;
+    await fetch('/auth/telegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user })
+    });
+  }
+}
+
+// INIT
             document.getElementById("diaryDate").addEventListener("change", renderDiary);
 
             window.closeModal = closeModal;
             window.saveEditHabit = saveEditHabit;
 
-            loadAll();
+            tryTelegramAutoLogin().then(() => loadAll());
         </script>
     </body>
 </html>
