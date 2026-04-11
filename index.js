@@ -19,7 +19,7 @@ function getUser(req) {
 }
 
 app.use(express.json({ limit: "10mb" }));
-app.use(express.static("."));
+app.use(express.static(__dirname));
 app.use(
   session({ secret: "fikrcha-secret", resave: false, saveUninitialized: true }),
 );
