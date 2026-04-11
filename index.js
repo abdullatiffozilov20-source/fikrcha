@@ -14,7 +14,7 @@ let diaries = {};
 let telegramUsers = {}; // telegramId -> userId
 
 app.use(express.json({ limit: "10mb" }));
-app.use(express.static("public"));
+app.use(express.static("."));
 app.use(
   session({ secret: "fikrcha-secret", resave: false, saveUninitialized: true }),
 );
@@ -211,15 +211,15 @@ app.get("/api/admin/users", (req, res) => {
 });
 
 app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "public/index.html")),
+  res.sendFile(path.join(__dirname, "index.html")),
 );
 app.get("/app.html", (req, res) => {
   if (!req.user) return res.redirect("/");
-  res.sendFile(path.join(__dirname, "public/app.html"));
+  res.sendFile(path.join(__dirname, "app.html"));
 });
 app.get("/admin.html", (req, res) => {
   if (!req.user || !req.user.isAdmin) return res.redirect("/");
-  res.sendFile(path.join(__dirname, "public/admin.html"));
+  res.sendFile(path.join(__dirname, "admin.html"));
 });
 
 // TELEGRAM BOT
