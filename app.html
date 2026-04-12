@@ -1,948 +1,574 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>FIKRCHA | Productivity System</title>
-
-        <style>
-            * { box-sizing: border-box; }
-
-            body {
-                font-family: "Segoe UI", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Roboto", Arial, sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                display: flex;
-                justify-content: center;
-                padding: 20px;
-                min-height: 100vh;
-            }
-
-            .app {
-                background: white;
-                width: 100%;
-                max-width: 1200px;
-                border-radius: 24px;
-                padding: 24px;
-                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            }
-
-            .app-header {
-                display: flex;
-                align-items: baseline;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                margin-bottom: 20px;
-                padding-bottom: 16px;
-                border-bottom: 2px solid #e9ecef;
-            }
-
-            h2 {
-                margin: 0;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                font-size: 1.8rem;
-                letter-spacing: -0.5px;
-            }
-
-            .subtitle { color: #6c757d; font-size: 0.85rem; }
-
-            .nav-buttons { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-
-            .nav-btn {
-                padding: 10px 24px;
-                font-size: 1rem;
-                font-weight: 600;
-                border: none;
-                border-radius: 40px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                background: #f1f3f5;
-                color: #495057;
-            }
-
-            .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-            .nav-btn.active {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            }
-
-            button {
-                padding: 8px 16px;
-                margin: 4px;
-                cursor: pointer;
-                border: none;
-                border-radius: 40px;
-                font-weight: 500;
-                transition: all 0.2s ease;
-                background: #f1f3f5;
-                color: #495057;
-            }
-
-            button:hover { transform: translateY(-1px); background: #e9ecef; }
-            button:active { transform: translateY(0); }
-
-            .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-            .btn-primary:hover { background: linear-gradient(135deg, #5a67d8 0%, #6b46a0 100%); box-shadow: 0 4px 10px rgba(102,126,234,0.3); }
-
-            .week-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-            .week-nav button { background: #e9ecef; font-weight: bold; }
-            .week-nav button:hover { background: #dee2e6; }
-
-            input, textarea, select {
-                padding: 10px 14px;
-                margin: 5px;
-                border: 1px solid #dee2e6;
-                border-radius: 40px;
-                font-family: inherit;
-                font-size: 14px;
-                transition: all 0.2s;
-            }
-
-            input:focus, textarea:focus, select:focus {
-                outline: none;
-                border-color: #667eea;
-                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            }
-
-            textarea { border-radius: 20px; resize: vertical; height: 60px; }
-
-            table { width: 100%; border-collapse: collapse; margin-top: 16px; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-            th, td { border: 1px solid #e9ecef; padding: 12px 8px; text-align: center; }
-            th { background: #f8f9fa; font-weight: 600; color: #495057; }
-            td { background: white; }
-
-            /* Collapsible lesson CSS */
-            details.lesson summary::-webkit-details-marker { display: none; }
-            details.lesson[open] summary { border-radius: 20px 20px 0 0; border-bottom: none; }
-            .lesson-toggle { display: inline-block; transition: transform 0.2s ease; }
-            details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
-
-            .lesson { border: 1px solid #e9ecef; border-radius: 20px; padding: 20px; margin-top: 16px; background: #fefefe; transition: all 0.2s; }
-            .lesson:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-            .lesson h4 { margin-top: 0; margin-bottom: 12px; color: #2c3e50; font-size: 1.2rem; }
-
-            .entry { border: 1px solid #e9ecef; padding: 16px; margin-top: 12px; border-radius: 16px; background: #fef9f0; transition: all 0.2s; }
-            .entry:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-
-            .daily-row { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-weight: bold; }
-            .daily-row td { background: transparent; font-weight: 600; color: #2c3e50; }
-
-            /* 🎤 Voice note styles */
-            .voice-btn {
-                background: #f1f3f5;
-                border-radius: 12px;
-                padding: 8px 14px;
-                font-size: 14px;
-                cursor: pointer;
-                border: none;
-                transition: all 0.2s;
-                margin: 0;
-            }
-
-            .voice-btn.recording {
-                background: #ffe0e0;
-                color: #c0392b;
-                animation: pulse 1s infinite;
-            }
-
-            @keyframes pulse {
-                0%   { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4); }
-                70%  { box-shadow: 0 0 0 8px rgba(192, 57, 43, 0); }
-                100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
-            }
-
-            .voice-preview {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                padding: 8px 12px;
-                background: #f0f4ff;
-                border-radius: 12px;
-                margin-top: 4px;
-            }
-
-            .voice-preview audio { flex: 1; height: 36px; }
-
-            @media (max-width: 768px) {
-                body { padding: 10px; }
-                .app { padding: 16px; border-radius: 20px; }
-                th, td { padding: 6px 4px; font-size: 12px; }
-                button { padding: 6px 12px; font-size: 13px; }
-                .nav-btn { padding: 8px 18px; font-size: 14px; }
-                h2 { font-size: 1.4rem; }
-            }
-
-            @media (max-width: 480px) {
-                body { padding: 0; align-items: flex-start; }
-                .app { border-radius: 0; padding: 14px 12px; min-height: 100vh; box-shadow: none; }
-                .app-header { margin-bottom: 12px; padding-bottom: 10px; }
-                h2 { font-size: 1.3rem; }
-                .subtitle { font-size: 0.75rem; }
-                .nav-buttons { gap: 8px; margin-bottom: 16px; }
-                .nav-btn { flex: 1; padding: 10px 8px; font-size: 13px; text-align: center; }
-                h3 { font-size: 1.1rem; margin-bottom: 10px; }
-                input, textarea, select { font-size: 16px; margin: 3px 0; }
-                button { padding: 8px 14px; font-size: 13px; margin: 3px; }
-                .btn-primary { padding: 10px 18px; }
-                th, td { padding: 5px 3px; font-size: 11px; }
-                .lesson { padding: 14px 12px; }
-                .week-nav { gap: 8px; }
-                .entry { padding: 12px; }
-            }
-
-            .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-            .edit-modal { background: white; border-radius: 24px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-            .edit-modal h3 { margin-top: 0; margin-bottom: 20px; color: #2c3e50; }
-            .edit-modal input { width: 100%; margin: 8px 0; }
-            .edit-modal-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
-        </style>
-    </head>
-    <body>
-        <div class="app">
-            <div class="app-header">
-                <h2>✨ FIKRCHA</h2>
-                <span class="subtitle" id="appSubtitle">think · grow · achieve</span>
-                <div style="display:flex; gap:4px; margin-left:12px;">
-                    <button onclick="setLanguage('uz')" id="lang-uz" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">UZ</button>
-                    <button onclick="setLanguage('en')" id="lang-en" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">EN</button>
-                    <button onclick="setLanguage('ru')" id="lang-ru" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">RU</button>
-                </div>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="nav-btn active" onclick="showPage('habitPage')" id="nav-habits">📅 Habits</button>
-                <button class="nav-btn" onclick="showPage('studyPage')" id="nav-study">📚 Study</button>
-                <button class="nav-btn" onclick="showPage('diaryPage')" id="nav-diary">🧠 Diary</button>
-            </div>
-
-            <!-- HABITS -->
-            <div id="habitPage">
-                <h3 id="habitsTitle">✨ Daily Habits Tracker</h3>
-                <div class="week-nav">
-                    <button onclick="changeWeek(-7)" id="btn-prev-week">◀ Previous Week</button>
-                    <button onclick="changeWeek(7)" id="btn-next-week">Next Week ▶</button>
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; margin-bottom: 20px;">
-                    <div style="flex: 1; min-width: 150px;">
-                        <input id="taskInput" placeholder="Habit name" style="width: 100%" />
-                    </div>
-                    <div style="width: 110px;">
-                        <input type="time" id="taskTime" style="width: 100%" />
-                    </div>
-                    <div style="width: 110px;">
-                        <select id="categoryInput" style="width: 100%"></select>
-                    </div>
-                    <div>
-                        <button class="btn-primary" onclick="addTask()" data-i18n-btn="addHabit">➕ Add Habit</button>
-                    </div>
-                </div>
-                <h4 id="weekTitle" style="margin: 16px 0 8px 0; color: #495057;"></h4>
-                <div style="overflow-x: auto">
-                    <table>
-                        <thead><tr id="weekHeader"></tr></thead>
-                        <tbody id="taskBody"></tbody>
-                    </table>
-                </div>
-                <p id="habit-footer-note" style="font-size: 12px; color: #6c757d; margin-top: 12px">
-                    ✅ Check daily boxes | 📊 Weekly % = completion rate | 📅 Daily % = overall completion for that day
-                </p>
-            </div>
-
-            <!-- STUDY -->
-            <div id="studyPage" style="display: none">
-                <h3 id="studyTitle">📖 Study Journal</h3>
-                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                    <input id="lessonInput" placeholder="New lesson/module" style="flex: 1; min-width: 200px" />
-                    <button class="btn-primary" onclick="addLesson()" data-i18n-btn="addLesson">➕ Add Lesson</button>
-                </div>
-                <div id="lessonContainer"></div>
-            </div>
-
-            <!-- DIARY -->
-            <div id="diaryPage" style="display: none">
-                <h3 id="diaryTitleHeader">🧠 Life Diary</h3>
-                <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
-                    <input type="date" id="diaryDate" style="width: 160px" />
-                    <textarea id="diaryInput" placeholder="Write your day, feelings, memories..." style="flex: 1; min-width: 200px"></textarea>
-                    <div style="display: flex; flex-direction: column; gap: 8px; justify-content: center;">
-
-                        <!-- Photo -->
-                        <label style="cursor: pointer; background: #f1f3f5; border-radius: 12px; padding: 8px 14px; font-size: 14px; text-align: center;">
-                            🖼️ Add Photo
-                            <input type="file" id="diaryImage" accept="image/*" style="display:none;" onchange="previewDiaryImage(this)">
-                        </label>
-                        <div id="diaryImagePreview" style="display:none; align-items:center;">
-                            <img id="diaryPreviewImg" style="max-width: 120px; max-height: 80px; border-radius: 8px; object-fit: cover;">
-                            <button onclick="clearDiaryImage()" style="background:#ffe0e0; font-size: 11px; padding: 2px 6px; margin-left: 4px;">✕</button>
-                        </div>
-
-                        <!-- 🎤 Voice Note -->
-                        <button id="voiceBtn" class="voice-btn" onclick="toggleRecording()">🎤 Record Voice</button>
-                        <div id="voiceTimer" style="display:none; font-size:12px; color:#c0392b; text-align:center; font-weight:bold;"></div>
-                        <div id="voicePreview" class="voice-preview" style="display:none;">
-                            <audio id="voiceAudio" controls></audio>
-                            <button onclick="clearVoice()" style="background:#ffe0e0; font-size: 11px; padding: 2px 6px; margin:0;">✕</button>
-                        </div>
-
-                       <button class="btn-primary" onclick="addDiary()" data-i18n-btn="saveEntry">💾 Save Entry</button>
-                    </div>
-                </div>
-                <h4 id="diaryTitle" style="margin: 16px 0 8px"></h4>
-                <div id="diaryContainer"></div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FIKRCHA | Productivity System</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Segoe UI", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Roboto", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .app {
+            background: white;
+            width: 100%;
+            max-width: 1200px;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .app-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        h2 {
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+        }
+        .subtitle { color: #6c757d; font-size: 0.85rem; }
+        .nav-buttons { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+        .nav-btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f1f3f5;
+            color: #495057;
+        }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        button {
+            padding: 8px 16px;
+            margin: 4px;
+            cursor: pointer;
+            border: none;
+            border-radius: 40px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            background: #f1f3f5;
+            color: #495057;
+        }
+        button:hover { transform: translateY(-1px); background: #e9ecef; }
+        button:active { transform: translateY(0); }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover { background: linear-gradient(135deg, #5a67d8 0%, #6b46a0 100%); box-shadow: 0 4px 10px rgba(102,126,234,0.3); }
+        .week-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .week-nav button { background: #e9ecef; font-weight: bold; }
+        .week-nav button:hover { background: #dee2e6; }
+        input, textarea, select {
+            padding: 10px 14px;
+            margin: 5px;
+            border: 1px solid #dee2e6;
+            border-radius: 40px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        textarea { border-radius: 20px; resize: vertical; height: 60px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #e9ecef; padding: 12px 8px; text-align: center; }
+        th { background: #f8f9fa; font-weight: 600; color: #495057; }
+        td { background: white; }
+        /* Collapsible lesson CSS */
+        details.lesson summary::-webkit-details-marker { display: none; }
+        details.lesson[open] summary { border-radius: 20px 20px 0 0; border-bottom: none; }
+        .lesson-toggle { display: inline-block; transition: transform 0.2s ease; }
+        details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
+        .lesson { border: 1px solid #e9ecef; border-radius: 20px; padding: 20px; margin-top: 16px; background: #fefefe; transition: all 0.2s; }
+        .lesson:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .lesson h4 { margin-top: 0; margin-bottom: 12px; color: #2c3e50; font-size: 1.2rem; }
+        .entry { border: 1px solid #e9ecef; padding: 16px; margin-top: 12px; border-radius: 16px; background: #fef9f0; transition: all 0.2s; }
+        .entry:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .daily-row { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-weight: bold; }
+        .daily-row td { background: transparent; font-weight: 600; color: #2c3e50; }
+        /* 🎤 Voice note styles */
+        .voice-btn {
+            background: #f1f3f5;
+            border-radius: 12px;
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            margin: 0;
+        }
+        .voice-btn.recording {
+            background: #ffe0e0;
+            color: #c0392b;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4); }
+            70%  { box-shadow: 0 0 0 8px rgba(192, 57, 43, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
+        }
+        .voice-preview {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f0f4ff;
+            border-radius: 12px;
+            margin-top: 4px;
+        }
+        .voice-preview audio { flex: 1; height: 36px; }
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .app { padding: 16px; border-radius: 20px; }
+            th, td { padding: 6px 4px; font-size: 12px; }
+            button { padding: 6px 12px; font-size: 13px; }
+            .nav-btn { padding: 8px 18px; font-size: 14px; }
+            h2 { font-size: 1.4rem; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 0; align-items: flex-start; }
+            .app { border-radius: 0; padding: 14px 12px; min-height: 100vh; box-shadow: none; }
+            .app-header { margin-bottom: 12px; padding-bottom: 10px; }
+            h2 { font-size: 1.3rem; }
+            .subtitle { font-size: 0.75rem; }
+            .nav-buttons { gap: 8px; margin-bottom: 16px; }
+            .nav-btn { flex: 1; padding: 10px 8px; font-size: 13px; text-align: center; }
+            h3 { font-size: 1.1rem; margin-bottom: 10px; }
+            input, textarea, select { font-size: 16px; margin: 3px 0; }
+            button { padding: 8px 14px; font-size: 13px; margin: 3px; }
+            .btn-primary { padding: 10px 18px; }
+            th, td { padding: 5px 3px; font-size: 11px; }
+            .lesson { padding: 14px 12px; }
+            .week-nav { gap: 8px; }
+            .entry { padding: 12px; }
+        }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .edit-modal { background: white; border-radius: 24px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .edit-modal h3 { margin-top: 0; margin-bottom: 20px; color: #2c3e50; }
+        .edit-modal input { width: 100%; margin: 8px 0; }
+        .edit-modal-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="app-header">
+            <h2>✨ FIKRCHA</h2>
+            <span class="subtitle" id="appSubtitle">think · grow · achieve</span>
+            <div style="display:flex; gap:4px; margin-left:12px;">
+                <button onclick="setLanguage('uz')" id="lang-uz" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">UZ</button>
+                <button onclick="setLanguage('en')" id="lang-en" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">EN</button>
+                <button onclick="setLanguage('ru')" id="lang-ru" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">RU</button>
             </div>
         </div>
 
-        <script>
-            // 🌍 TRANSLATIONS
-            const i18n = {
-                en: {
-                    subtitle: "think · grow · achieve",
-                    habitsTab: "📅 Habits",
-                    studyTab: "📚 Study",
-                    diaryTab: "🧠 Diary",
-                    habitsTitle: "✨ Daily Habits Tracker",
-                    prevWeek: "◀ Previous Week",
-                    nextWeek: "Next Week ▶",
-                    habitPlaceholder: "Habit name",
-                    addHabit: "➕ Add Habit",
-                    studyTitle: "📖 Study Journal",
-                    lessonPlaceholder: "New lesson/module",
-                    addLesson: "➕ Add Lesson",
-                    diaryTitle: "🧠 Life Diary",
-                    diaryPlaceholder: "Write your day, feelings, memories...",
-                    recordVoice: "🎤 Record Voice",
-                    stopRecording: "⏹ Stop Recording",
-                    saveEntry: "💾 Save Entry",
-                    selectDate: "Select a date",
-                    entriesFor: "📔 Entries for ",
-                    deleteHabit: "Delete habit?",
-                    deleteLesson: "Delete lesson?",
-                    editHabitTitle: "✏️ Edit Habit",
-                    habitNameLabel: "Habit name:",
-                    timeLabel: "Time:",
-                    cancel: "Cancel",
-                    save: "Save",
-                    anytime: "anytime",
-                    dailyPercentRow: "📊 Daily %",
-                    completionNote: "✅ Check daily boxes | 📊 Weekly % = completion rate | 📅 Daily % = overall completion for that day"
-                },
-                uz: {
-                    subtitle: "o'yla · o's · erish",
-                    habitsTab: "📅 Odatlar",
-                    studyTab: "📚 O'qish",
-                    diaryTab: "🧠 Kundalik",
-                    habitsTitle: "✨ Kunlik Odatlar Kuzatuvchisi",
-                    prevWeek: "◀ Oldingi Hafta",
-                    nextWeek: "Keyingi Hafta ▶",
-                    habitPlaceholder: "Odat nomi",
-                    addHabit: "➕ Odat Qo'shish",
-                    studyTitle: "📖 O'qish Jurnali",
-                    lessonPlaceholder: "Yangi dars/modul",
-                    addLesson: "➕ Dars Qo'shish",
-                    diaryTitle: "🧠 Hayot Kundaligi",
-                    diaryPlaceholder: "Kuningiz, his-tuyg'ularingiz, xotiralaringizni yozing...",
-                    recordVoice: "🎤 Ovoz Yozish",
-                    stopRecording: "⏹ Yozishni To'xtatish",
-                    saveEntry: "💾 Saqlash",
-                    selectDate: "Sana tanlang",
-                    entriesFor: "📔 Kirishlar: ",
-                    deleteHabit: "Odatni o'chirilsinmi?",
-                    deleteLesson: "Darsni o'chirilsinmi?",
-                    editHabitTitle: "✏️ Odatni Tahrirlash",
-                    habitNameLabel: "Odat nomi:",
-                    timeLabel: "Vaqt:",
-                    cancel: "Bekor qilish",
-                    save: "Saqlash",
-                    anytime: "istalgan vaqt",
-                    dailyPercentRow: "📊 Kunlik %",
-                    completionNote: "✅ Kunlik belgilarni qo'ying | 📊 Haftalik % = bajarilish darajasi | 📅 Kunlik % = shu kun uchun umumiy bajarilish"
-                },
-                ru: {
-                    subtitle: "думай · расти · достигай",
-                    habitsTab: "📅 Привычки",
-                    studyTab: "📚 Учеба",
-                    diaryTab: "🧠 Дневник",
-                    habitsTitle: "✨ Ежедневный Трекер Привычек",
-                    prevWeek: "◀ Пред. неделя",
-                    nextWeek: "След. неделя ▶",
-                    habitPlaceholder: "Название привычки",
-                    addHabit: "➕ Добавить",
-                    studyTitle: "📖 Учебный Журнал",
-                    lessonPlaceholder: "Новый урок/модуль",
-                    addLesson: "➕ Добавить урок",
-                    diaryTitle: "🧠 Жизненный Дневник",
-                    diaryPlaceholder: "Пишите о своём дне, чувствах, воспоминаниях...",
-                    recordVoice: "🎤 Записать голос",
-                    stopRecording: "⏹ Остановить запись",
-                    saveEntry: "💾 Сохранить",
-                    selectDate: "Выберите дату",
-                    entriesFor: "📔 Записи за ",
-                    deleteHabit: "Удалить привычку?",
-                    deleteLesson: "Удалить урок?",
-                    editHabitTitle: "✏️ Редактировать привычку",
-                    habitNameLabel: "Название:",
-                    timeLabel: "Время:",
-                    cancel: "Отмена",
-                    save: "Сохранить",
-                    anytime: "в любое время",
-                    dailyPercentRow: "📊 День %",
-                    completionNote: "✅ Отмечайте ежедневно | 📊 Недельный % = процент выполнения | 📅 Дневной % = общее выполнение за день"
-                }
-            };
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showPage('habitPage')" id="nav-habits">📅 Habits</button>
+            <button class="nav-btn" onclick="showPage('studyPage')" id="nav-study">📚 Study</button>
+            <button class="nav-btn" onclick="showPage('diaryPage')" id="nav-diary">🧠 Diary</button>
+        </div>
 
-            let currentLang = localStorage.getItem('fikrcha_lang') || 
-                              (navigator.language.startsWith('uz') ? 'uz' : 
-                               navigator.language.startsWith('ru') ? 'ru' : 'en');
+        <!-- HABITS -->
+        <div id="habitPage">
+            <h3 id="habitsTitle">✨ Daily Habits Tracker</h3>
+            <div class="week-nav">
+                <button onclick="changeWeek(-7)" id="btn-prev-week">◀ Previous Week</button>
+                <button onclick="changeWeek(7)" id="btn-next-week">Next Week ▶</button>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; margin-bottom: 20px;">
+                <div style="flex: 1; min-width: 150px;">
+                    <input id="taskInput" placeholder="Habit name" style="width: 100%" />
+                </div>
+                <div style="width: 110px;">
+                    <input type="time" id="taskTime" style="width: 100%" />
+                </div>
+                <div style="width: 110px;">
+                    <select id="categoryInput" style="width: 100%"></select>
+                </div>
+                <div>
+                    <button class="btn-primary" onclick="addTask()" id="btn-add-habit">➕ Add Habit</button>
+                </div>
+            </div>
+            <h4 id="weekTitle" style="margin: 16px 0 8px 0; color: #495057;"></h4>
+            <div style="overflow-x: auto">
+                <table>
+                    <thead><tr id="weekHeader"></tr></thead>
+                    <tbody id="taskBody"></tbody>
+                </table>
+            </div>
+            <p id="habit-footer-note" style="font-size: 12px; color: #6c757d; margin-top: 12px">
+                ✅ Check daily boxes | 📊 Weekly % = completion rate | 📅 Daily % = overall completion for that day
+            </p>
+        </div>
 
-            function t(key) {
-                return i18n[currentLang]?.[key] || i18n.en[key] || key;
+        <!-- STUDY -->
+        <div id="studyPage" style="display: none">
+            <h3 id="studyTitle">📖 Study Journal</h3>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <input id="lessonInput" placeholder="New lesson/module" style="flex: 1; min-width: 200px" />
+                <button class="btn-primary" onclick="addLesson()" id="btn-add-lesson">➕ Add Lesson</button>
+            </div>
+            <div id="lessonContainer"></div>
+        </div>
+
+        <!-- DIARY -->
+        <div id="diaryPage" style="display: none">
+            <h3 id="diaryTitleHeader">🧠 Life Diary</h3>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+                <input type="date" id="diaryDate" style="width: 160px" />
+                <textarea id="diaryInput" placeholder="Write your day, feelings, memories..." style="flex: 1; min-width: 200px"></textarea>
+                <div style="display: flex; flex-direction: column; gap: 8px; justify-content: center;">
+                    <!-- Photo -->
+                    <label style="cursor: pointer; background: #f1f3f5; border-radius: 12px; padding: 8px 14px; font-size: 14px; text-align: center;">
+                        🖼️ Add Photo
+                        <input type="file" id="diaryImage" accept="image/*" style="display:none;" onchange="previewDiaryImage(this)">
+                    </label>
+                    <div id="diaryImagePreview" style="display:none; align-items:center;">
+                        <img id="diaryPreviewImg" style="max-width: 120px; max-height: 80px; border-radius: 8px; object-fit: cover;">
+                        <button onclick="clearDiaryImage()" style="background:#ffe0e0; font-size: 11px; padding: 2px 6px; margin-left: 4px;">✕</button>
+                    </div>
+                    <!-- 🎤 Voice Note -->
+                    <button id="voiceBtn" class="voice-btn" onclick="toggleRecording()">🎤 Record Voice</button>
+                    <div id="voiceTimer" style="display:none; font-size:12px; color:#c0392b; text-align:center; font-weight:bold;"></div>
+                    <div id="voicePreview" class="voice-preview" style="display:none;">
+                        <audio id="voiceAudio" controls></audio>
+                        <button onclick="clearVoice()" style="background:#ffe0e0; font-size: 11px; padding: 2px 6px; margin:0;">✕</button>
+                    </div>
+                    <button class="btn-primary" onclick="addDiary()" id="btn-save-diary">💾 Save Entry</button>
+                </div>
+            </div>
+            <h4 id="diaryTitle" style="margin: 16px 0 8px"></h4>
+            <div id="diaryContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // 🌍 TRANSLATIONS
+        const i18n = {
+            en: {
+                subtitle: "think · grow · achieve",
+                habitsTab: "📅 Habits", studyTab: "📚 Study", diaryTab: "🧠 Diary",
+                habitsTitle: "✨ Daily Habits Tracker", prevWeek: "◀ Previous Week", nextWeek: "Next Week ▶",
+                habitPlaceholder: "Habit name", addHabit: "➕ Add Habit",
+                studyTitle: "📖 Study Journal", lessonPlaceholder: "New lesson/module", addLesson: "➕ Add Lesson",
+                diaryTitle: "🧠 Life Diary", diaryPlaceholder: "Write your day, feelings, memories...",
+                recordVoice: "🎤 Record Voice", stopRecording: "⏹ Stop Recording", saveEntry: "💾 Save Entry",
+                selectDate: "Select a date", entriesFor: "📔 Entries for ",
+                deleteHabit: "Delete habit?", deleteLesson: "Delete lesson?",
+                editHabitTitle: "✏️ Edit Habit", habitNameLabel: "Habit name:", timeLabel: "Time:",
+                cancel: "Cancel", save: "Save", anytime: "anytime",
+                dailyPercentRow: "📊 Daily %", completionNote: "✅ Check daily boxes | 📊 Weekly % = completion rate | 📅 Daily % = overall completion for that day",
+                weekTitlePrefix: "📅 Week of ", edit: "✏️ Edit", delete: "🗑️"
+            },
+            uz: {
+                subtitle: "o'yla · o's · erish",
+                habitsTab: "📅 Odatlar", studyTab: "📚 O'qish", diaryTab: "🧠 Kundalik",
+                habitsTitle: "✨ Kunlik Odatlar Kuzatuvchisi", prevWeek: "◀ Oldingi Hafta", nextWeek: "Keyingi Hafta ▶",
+                habitPlaceholder: "Odat nomi", addHabit: "➕ Odat Qo'shish",
+                studyTitle: "📖 O'qish Jurnali", lessonPlaceholder: "Yangi dars/modul", addLesson: "➕ Dars Qo'shish",
+                diaryTitle: "🧠 Hayot Kundaligi", diaryPlaceholder: "Kuningiz, his-tuyg'ularingiz, xotiralaringizni yozing...",
+                recordVoice: "🎤 Ovoz Yozish", stopRecording: "⏹ Yozishni To'xtatish", saveEntry: "💾 Saqlash",
+                selectDate: "Sana tanlang", entriesFor: "📔 Kirishlar: ",
+                deleteHabit: "Odatni o'chirilsinmi?", deleteLesson: "Darsni o'chirilsinmi?",
+                editHabitTitle: "✏️ Odatni Tahrirlash", habitNameLabel: "Odat nomi:", timeLabel: "Vaqt:",
+                cancel: "Bekor qilish", save: "Saqlash", anytime: "istalgan vaqt",
+                dailyPercentRow: "📊 Kunlik %", completionNote: "✅ Kunlik belgilarni qo'ying | 📊 Haftalik % = bajarilish darajasi | 📅 Kunlik % = shu kun uchun umumiy bajarilish",
+                weekTitlePrefix: "📅 Hafta: ", edit: "✏️ Tahrirlash", delete: "🗑️"
+            },
+            ru: {
+                subtitle: "думай · расти · достигай",
+                habitsTab: "📅 Привычки", studyTab: "📚 Учеба", diaryTab: "🧠 Дневник",
+                habitsTitle: "✨ Ежедневный Трекер Привычек", prevWeek: "◀ Пред. неделя", nextWeek: "След. неделя ▶",
+                habitPlaceholder: "Название привычки", addHabit: "➕ Добавить",
+                studyTitle: "📖 Учебный Журнал", lessonPlaceholder: "Новый урок/модуль", addLesson: "➕ Добавить урок",
+                diaryTitle: "🧠 Жизненный Дневник", diaryPlaceholder: "Пишите о своём дне, чувствах, воспоминаниях...",
+                recordVoice: "🎤 Записать голос", stopRecording: "⏹ Остановить запись", saveEntry: "💾 Сохранить",
+                selectDate: "Выберите дату", entriesFor: "📔 Записи за ",
+                deleteHabit: "Удалить привычку?", deleteLesson: "Удалить урок?",
+                editHabitTitle: "✏️ Редактировать привычку", habitNameLabel: "Название:", timeLabel: "Время:",
+                cancel: "Отмена", save: "Сохранить", anytime: "в любое время",
+                dailyPercentRow: "📊 День %", completionNote: "✅ Отмечайте ежедневно | 📊 Недельный % = процент выполнения | 📅 Дневной % = общее выполнение за день",
+                weekTitlePrefix: "📅 Неделя: ", edit: "✏️ Изменить", delete: "🗑️"
             }
+        };
 
-            function setLanguage(lang) {
-                currentLang = lang;
-                localStorage.setItem('fikrcha_lang', lang);
-                applyLanguage();
-            }
+        let currentLang = localStorage.getItem('fikrcha_lang') || 
+                          (navigator.language.startsWith('uz') ? 'uz' : 
+                           navigator.language.startsWith('ru') ? 'ru' : 'en');
 
-            function applyLanguage() {
-    // Update static text elements
-    const el = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
-    el('appSubtitle', 'subtitle');
-    el('habitsTitle', 'habitsTitle');
-    el('studyTitle', 'studyTitle');
-    el('diaryTitleHeader', 'diaryTitle');
-    
-    // Update placeholders
-    const ph = (id, key) => { const e = document.getElementById(id); if (e) e.placeholder = t(key); };
-    ph('taskInput', 'habitPlaceholder');
-    ph('lessonInput', 'lessonPlaceholder');
-    ph('diaryInput', 'diaryPlaceholder');
-    
-    // Update navigation buttons (by onclick attribute)
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        const onclick = btn.getAttribute('onclick');
-        if (onclick?.includes('habitPage')) btn.textContent = t('habitsTab');
-        else if (onclick?.includes('studyPage')) btn.textContent = t('studyTab');
-        else if (onclick?.includes('diaryPage')) btn.textContent = t('diaryTab');
-    });
-    
-    // Update week nav buttons
-    document.querySelectorAll('.week-nav button').forEach((btn, idx) => {
-        if (idx === 0) btn.textContent = t('prevWeek');
-        if (idx === 1) btn.textContent = t('nextWeek');
-    });
-    
-    // ✅ FIX: Update action buttons using data-i18n-btn attribute (safe for onclick)
-    document.querySelectorAll('[data-i18n-btn]').forEach(btn => {
-        const key = btn.getAttribute('data-i18n-btn');
-        if (key) btn.textContent = t(key);
-    });
-    
-    // Update voice button
-    const vb = document.getElementById('voiceBtn');
-    if (vb && !vb.classList.contains('recording')) vb.textContent = t('recordVoice');
-    
-    // Update footer note
-    const fn = document.getElementById('habit-footer-note');
-    if (fn) fn.textContent = t('completionNote');
-    
-    // Update language button styles
-    ['uz','en','ru'].forEach(lg => {
-        const btn = document.getElementById('lang-' + lg);
-        if (btn) {
-            btn.style.background = (lg === currentLang) ? '#667eea' : '#f1f3f5';
-            btn.style.color = (lg === currentLang) ? 'white' : '#495057';
+        function t(key) { return i18n[currentLang]?.[key] || i18n.en[key] || key; }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('fikrcha_lang', lang);
+            applyLanguage();
         }
-    });
-    
-    // Re-render dynamic content
-    if (document.getElementById('habitPage').style.display !== 'none') render();
-    const dd = document.getElementById('diaryDate').value;
-    if (document.getElementById('diaryPage').style.display !== 'none' && dd) renderDiary();
-}
-            // NAVIGATION
-            function showPage(id) {
-                ["habitPage","studyPage","diaryPage"].forEach(p => document.getElementById(p).style.display = "none");
-                document.getElementById(id).style.display = "block";
-                document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
-                const map = { habitPage: "habitPage", studyPage: "studyPage", diaryPage: "diaryPage" };
-                document.querySelector(`.nav-btn[onclick*="${map[id]}"]`).classList.add("active");
-                applyLanguage(); // Re-apply language when switching pages
-            }
 
-            let tasks = [];
-            let lessons = [];
-            let diaries = {};
-
-            async function api(method, url, body) {
-                const opts = { method, headers: { "Content-Type": "application/json" } };
-                if (body) opts.body = JSON.stringify(body);
-                const res = await fetch(url, opts);
-                return res.json();
-            }
-
-            async function loadAll() {
-                const [habitsData, studiesData, diariesData] = await Promise.all([
-                    api("GET", "/api/habits"),
-                    api("GET", "/api/studies"),
-                    api("GET", "/api/diaries"),
-                ]);
-
-                tasks = (habitsData || []).map(h => ({
-                    id: h.id, text: h.name, time: h.time || "", category: h.category || "", history: h.history || {},
-                }));
-
-                lessons = studiesData || [];
-
-                diaries = {};
-                (diariesData || []).forEach(d => {
-                    if (!diaries[d.date]) diaries[d.date] = [];
-                    diaries[d.date].push({ id: d.id, text: d.entry, time: d.time, image: d.image || null, voice: d.voice || null });
-                });
-
-                render();
-                renderDiary();
-                applyLanguage(); // Apply language after data loads
-
-                if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
-                    api("POST", "/api/link-telegram", { telegramId: window.Telegram.WebApp.initDataUnsafe.user.id }).catch(() => {});
+        function applyLanguage() {
+            // Safe text update helper
+            const setText = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
+            const setPlaceholder = (id, key) => { const e = document.getElementById(id); if (e) e.placeholder = t(key); };
+            
+            // Update static elements
+            setText('appSubtitle', 'subtitle');
+            setText('habitsTitle', 'habitsTitle');
+            setText('studyTitle', 'studyTitle');
+            setText('diaryTitleHeader', 'diaryTitle');
+            
+            // Update placeholders
+            setPlaceholder('taskInput', 'habitPlaceholder');
+            setPlaceholder('lessonInput', 'lessonPlaceholder');
+            setPlaceholder('diaryInput', 'diaryPlaceholder');
+            
+            // Update navigation buttons by ID
+            setText('nav-habits', 'habitsTab');
+            setText('nav-study', 'studyTab');
+            setText('nav-diary', 'diaryTab');
+            
+            // Update week nav buttons
+            setText('btn-prev-week', 'prevWeek');
+            setText('btn-next-week', 'nextWeek');
+            
+            // Update action buttons by ID (SAFE - won't break onclick)
+            setText('btn-add-habit', 'addHabit');
+            setText('btn-add-lesson', 'addLesson');
+            setText('btn-save-diary', 'saveEntry');
+            
+            // Update voice button
+            const vb = document.getElementById('voiceBtn');
+            if (vb && !vb.classList.contains('recording')) vb.textContent = t('recordVoice');
+            
+            // Update footer note
+            setText('habit-footer-note', 'completionNote');
+            
+            // Update language button styles
+            ['uz','en','ru'].forEach(lg => {
+                const btn = document.getElementById('lang-' + lg);
+                if (btn) {
+                    btn.style.background = (lg === currentLang) ? '#667eea' : '#f1f3f5';
+                    btn.style.color = (lg === currentLang) ? 'white' : '#495057';
                 }
+            });
+            
+            // Re-render dynamic content
+            if (document.getElementById('habitPage').style.display !== 'none') render();
+            const dd = document.getElementById('diaryDate').value;
+            if (document.getElementById('diaryPage').style.display !== 'none' && dd) renderDiary();
+        }
+
+        // NAVIGATION
+        function showPage(id) {
+            ["habitPage","studyPage","diaryPage"].forEach(p => document.getElementById(p).style.display = "none");
+            document.getElementById(id).style.display = "block";
+            document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+            const map = { habitPage: "habitPage", studyPage: "studyPage", diaryPage: "diaryPage" };
+            document.querySelector(`.nav-btn[onclick*="${map[id]}"]`).classList.add("active");
+            applyLanguage();
+        }
+
+        let tasks = [], lessons = [], diaries = {};
+
+        async function api(method, url, body) {
+            const opts = { method, headers: { "Content-Type": "application/json" } };
+            if (body) opts.body = JSON.stringify(body);
+            const res = await fetch(url, opts);
+            return res.json();
+        }
+
+        async function loadAll() {
+            const [habitsData, studiesData, diariesData] = await Promise.all([
+                api("GET", "/api/habits"), api("GET", "/api/studies"), api("GET", "/api/diaries")
+            ]);
+            tasks = (habitsData || []).map(h => ({ id: h.id, text: h.name, time: h.time || "", category: h.category || "", history: h.history || {} }));
+            lessons = studiesData || [];
+            diaries = {};
+            (diariesData || []).forEach(d => {
+                if (!diaries[d.date]) diaries[d.date] = [];
+                diaries[d.date].push({ id: d.id, text: d.entry, time: d.time, image: d.image || null, voice: d.voice || null });
+            });
+            render(); renderDiary(); applyLanguage();
+            if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
+                api("POST", "/api/link-telegram", { telegramId: window.Telegram.WebApp.initDataUnsafe.user.id }).catch(() => {});
             }
+        }
 
-            // CATEGORIES
-            const categories = [
-                { name: "Study", color: "#d0ebff" },
-                { name: "Health", color: "#d3f9d8" },
-                { name: "Exercise", color: "#fff3bf" },
-                { name: "Work", color: "#ffd8a8" },
-                { name: "Mind", color: "#eebefa" },
-                { name: "Social", color: "#ffc9c9" },
-                { name: "Growth", color: "#c3fae8" },
-            ];
+        // CATEGORIES
+        const categories = [
+            { name: "Study", color: "#d0ebff" }, { name: "Health", color: "#d3f9d8" },
+            { name: "Exercise", color: "#fff3bf" }, { name: "Work", color: "#ffd8a8" },
+            { name: "Mind", color: "#eebefa" }, { name: "Social", color: "#ffc9c9" },
+            { name: "Growth", color: "#c3fae8" }
+        ];
+        const categoryInput = document.getElementById("categoryInput");
+        categories.forEach(c => { categoryInput.innerHTML += `<option>${c.name}</option>`; });
 
-            const categoryInput = document.getElementById("categoryInput");
-            categories.forEach(c => { categoryInput.innerHTML += `<option>${c.name}</option>`; });
-
-            function getMonday(d) {
-                let day = d.getDay();
-                let diff = day === 0 ? -6 : 1 - day;
-                return new Date(d.setDate(d.getDate() + diff));
+        function getMonday(d) {
+            let day = d.getDay(), diff = day === 0 ? -6 : 1 - day;
+            return new Date(d.setDate(d.getDate() + diff));
+        }
+        let currentMonday = getMonday(new Date());
+        function changeWeek(days) { currentMonday.setDate(currentMonday.getDate() + days); render(); }
+        function getWeek() {
+            let arr = [];
+            for (let i = 0; i < 7; i++) {
+                let d = new Date(currentMonday); d.setDate(d.getDate() + i);
+                arr.push({ date: d.toISOString().split("T")[0], label: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) });
             }
+            return arr;
+        }
 
-            let currentMonday = getMonday(new Date());
-            function changeWeek(days) { currentMonday.setDate(currentMonday.getDate() + days); render(); }
-
-            function getWeek() {
-                let arr = [];
-                for (let i = 0; i < 7; i++) {
-                    let d = new Date(currentMonday);
-                    d.setDate(d.getDate() + i);
-                    arr.push({ date: d.toISOString().split("T")[0], label: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) });
-                }
-                return arr;
+        // HABITS
+        async function addTask() {
+            let input = document.getElementById("taskInput"), time = document.getElementById("taskTime");
+            if (!input.value.trim()) return;
+            await api("POST", "/api/habits", { name: input.value, time: time.value, category: categoryInput.value });
+            input.value = ""; time.value = ""; await loadAll();
+        }
+        async function deleteTask(i) { if (confirm(t('deleteHabit'))) { await api("DELETE", `/api/habits/${tasks[i].id}`); await loadAll(); } }
+        async function toggle(i, date) { tasks[i].history[date] = !tasks[i].history[date]; await api("PUT", `/api/habits/${tasks[i].id}`, { history: tasks[i].history }); render(); }
+        function editTask(i) {
+            let modal = document.createElement("div"); modal.className = "modal-overlay";
+            modal.innerHTML = `<div class="edit-modal"><h3>${t('editHabitTitle')}</h3><label>${t('habitNameLabel')}</label><input type="text" id="editHabitName" value="${escapeHtml(tasks[i].text)}" placeholder="${t('habitPlaceholder')}"><label style="display:block; margin-top:12px;">${t('timeLabel')}</label><input type="time" id="editHabitTime" value="${tasks[i].time || ""}"><div class="edit-modal-buttons"><button onclick="closeModal()">${t('cancel')}</button><button class="btn-primary" onclick="saveEditHabit(${i})">${t('save')}</button></div></div>`;
+            document.body.appendChild(modal); window.currentModal = modal;
+        }
+        function closeModal() { if (window.currentModal) { window.currentModal.remove(); window.currentModal = null; } }
+        async function saveEditHabit(i) {
+            let newName = document.getElementById("editHabitName").value.trim(), newTime = document.getElementById("editHabitTime").value;
+            if (newName) tasks[i].text = newName; tasks[i].time = newTime;
+            await api("PUT", `/api/habits/${tasks[i].id}`, { name: tasks[i].text, time: newTime }); closeModal(); render();
+        }
+        function getPercent(task, week) { let done = 0; week.forEach(d => { if (task.history[d.date]) done++; }); return Math.round((done / 7) * 100); }
+        function getDailyPercent(week, dayIndex, tasks) {
+            let date = week[dayIndex].date, total = tasks.length; if (total === 0) return 0; let done = 0;
+            tasks.forEach(task => { if (task.history[date]) done++; }); return Math.round((done / total) * 100);
+        }
+        function render() {
+            const week = getWeek(); document.getElementById("weekTitle").innerText = t('weekTitlePrefix') + week[0].label;
+            let header = "<th>Habit</th>"; week.forEach(d => header += `<th>${d.label}</th>`); header += "<th>Weekly %</th><th>⚙️</th>";
+            document.getElementById("weekHeader").innerHTML = header; let body = "";
+            tasks.forEach((t, i) => {
+                let color = categories.find(c => c.name === t.category)?.color || "#fff";
+                let row = `<tr style="background:${color}"><td><strong>${escapeHtml(t.text)}</strong><br><small>⏰ ${t.time || t('anytime')}</small><br><span style="font-size:10px; background:rgba(0,0,0,0.05); padding:2px 8px; border-radius:20px;">${t.category}</span></td>`;
+                week.forEach(d => { let checked = t.history[d.date] ? "checked" : ""; row += `<td><input type="checkbox" ${checked} onclick="toggle(${i},'${d.date}')" style="transform:scale(1.1); cursor:pointer;"></td>`; });
+                row += `<td style="font-weight:bold; color:#667eea;">${getPercent(t, week)}%</td><td><button onclick="editTask(${i})" style="background:#e9ecef;">✏️ ${t('edit')}</button><button onclick="deleteTask(${i})" style="background:#ffe0e0;">${t('delete')}</button></td>`; body += row + "</tr>";
+            });
+            if (tasks.length > 0) {
+                let dailyRow = `<tr class="daily-row"><td style="font-weight:bold;">${t('dailyPercentRow')}</td>`;
+                for (let i = 0; i < week.length; i++) { let pct = getDailyPercent(week, i, tasks), color = pct >= 70 ? "#28a745" : pct >= 40 ? "#fd7e14" : "#dc3545"; dailyRow += `<td style="font-weight:bold; color:${color};">${pct}%</td>`; }
+                dailyRow += `<td colspan="2">${t('completionNote')}</td></tr>`; body += dailyRow;
             }
+            document.getElementById("taskBody").innerHTML = body; renderLessons();
+        }
 
-            // HABITS
-            async function addTask() {
-                let input = document.getElementById("taskInput");
-                let time = document.getElementById("taskTime");
-                if (!input.value.trim()) return;
-                await api("POST", "/api/habits", { name: input.value, time: time.value, category: categoryInput.value });
-                input.value = ""; time.value = "";
-                await loadAll();
-            }
+        // STUDY
+        async function addLesson() {
+            let input = document.getElementById("lessonInput"); if (!input.value.trim()) return;
+            await api("POST", "/api/studies", { title: input.value }); input.value = ""; await loadAll();
+            setTimeout(() => { const allLessons = document.querySelectorAll('details.lesson'); if (allLessons.length > 0) { const last = allLessons[allLessons.length - 1]; last.open = true; const arrow = last.querySelector('.lesson-toggle'); if (arrow) arrow.style.transform = 'rotate(90deg)'; }}, 100);
+        }
+        async function deleteLesson(i) { if (confirm(t('deleteLesson'))) { await api("DELETE", `/api/studies/${lessons[i].id}`); await loadAll(); } }
+        let activityImageData = {};
+        function previewActivityImage(i, input) {
+            if (!input.files || !input.files[0]) return; let reader = new FileReader();
+            reader.onload = e => { activityImageData[i] = e.target.result; let el = document.getElementById(`activity-img-name-${i}`); if (el) el.textContent = "✅ Photo ready"; };
+            reader.readAsDataURL(input.files[0]);
+        }
+        async function addLessonTask(i) {
+            let input = document.getElementById(`activity-${i}`); if (!input.value.trim()) return;
+            lessons[i].tasks.push({ text: input.value, history: {}, comment: "", image: activityImageData[i] || null }); input.value = ""; activityImageData[i] = null;
+            await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); renderLessons();
+        }
+        async function deleteLessonTask(i, j) { lessons[i].tasks.splice(j, 1); await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); renderLessons(); }
+        async function toggleLessonTask(i, j) { let today = new Date().toISOString().split("T")[0]; lessons[i].tasks[j].history[today] = !lessons[i].tasks[j].history[today]; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); renderLessons(); }
+        async function saveComment(i, j, value) { lessons[i].tasks[j].comment = value; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); }
+        function renderLessons() {
+            let html = ""; lessons.forEach((l, i) => {
+                html += `<details class="lesson" style="padding:0; border:none; background:transparent; box-shadow:none;"><summary style="list-style:none; cursor:pointer; background:#fefefe; border:1px solid #e9ecef; border-radius:20px; padding:20px; display:flex; justify-content:space-between; align-items:center; transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><h4 style="margin:0; color:#2c3e50; font-size:1.2rem;">📘 ${escapeHtml(l.title)}</h4><span style="font-size:1.5rem; color:#667eea; transition:transform 0.2s;" class="lesson-toggle">▶</span></summary><div style="padding:0 20px 20px 20px; background:#fefefe; border:1px solid #e9ecef; border-top:none; border-radius:0 0 20px 20px;"><div style="margin:12px 0; display:flex; flex-wrap:wrap; gap:6px; align-items:center;"><input id="activity-${i}" placeholder="New activity" style="flex:1; min-width:150px;"><label style="cursor:pointer; background:#f1f3f5; border-radius:10px; padding:6px 10px; font-size:13px;">🖼️ <input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i}, this)"></label><span id="activity-img-name-${i}" style="font-size:12px; color:#888;"></span><button onclick="addLessonTask(${i})" style="background:#667eea; color:white;">➕ Add</button></div><ul style="list-style:none; padding-left:0;">`;
+                l.tasks.forEach((t, j) => { let today = new Date().toISOString().split("T")[0], checked = t.history[today] ? "checked" : ""; html += `<li style="background:#f8f9fa; margin:8px 0; padding:12px; border-radius:12px;"><div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;"><input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);"><strong style="flex:1;">${escapeHtml(t.text)}</strong><button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button></div>${t.image ? `<img src="${t.image}" style="max-width:100%; max-height:250px; border-radius:10px; margin:8px 0; display:block; object-fit:cover;">` : ""}<textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%; margin-top:8px;">${escapeHtml(t.comment)}</textarea></li>`; });
+                html += `</ul><div style="margin-top:12px; text-align:right;"><button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ ${t('delete')} Module</button></div></div></details>`;
+            }); document.getElementById("lessonContainer").innerHTML = html;
+            document.querySelectorAll('details.lesson').forEach(details => { details.addEventListener('toggle', function() { const arrow = this.querySelector('.lesson-toggle'); if (arrow) arrow.style.transform = this.open ? 'rotate(90deg)' : 'rotate(0deg)'; }); });
+        }
 
-            async function deleteTask(i) {
-                if (confirm(t('deleteHabit'))) { await api("DELETE", `/api/habits/${tasks[i].id}`); await loadAll(); }
-            }
+        // DIARY IMAGE
+        let diaryImageData = null;
+        function previewDiaryImage(input) {
+            if (!input.files || !input.files[0]) return; let reader = new FileReader();
+            reader.onload = e => { diaryImageData = e.target.result; document.getElementById("diaryPreviewImg").src = diaryImageData; document.getElementById("diaryImagePreview").style.display = "flex"; };
+            reader.readAsDataURL(input.files[0]);
+        }
+        function clearDiaryImage() { diaryImageData = null; document.getElementById("diaryImage").value = ""; document.getElementById("diaryImagePreview").style.display = "none"; }
 
-            async function toggle(i, date) {
-                tasks[i].history[date] = !tasks[i].history[date];
-                await api("PUT", `/api/habits/${tasks[i].id}`, { history: tasks[i].history });
-                render();
-            }
+        // 🎤 VOICE NOTE RECORDING
+        let mediaRecorder = null, audioChunks = [], voiceData = null, recordingTimer = null, recordingSeconds = 0;
+        async function toggleRecording() {
+            const btn = document.getElementById("voiceBtn"), timerEl = document.getElementById("voiceTimer");
+            if (mediaRecorder && mediaRecorder.state === "recording") { mediaRecorder.stop(); clearInterval(recordingTimer); btn.textContent = t('recordVoice'); btn.classList.remove("recording"); timerEl.style.display = "none"; }
+            else { try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); audioChunks = [];
+                const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus" : MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "audio/ogg";
+                mediaRecorder = new MediaRecorder(stream, { mimeType });
+                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+                mediaRecorder.onstop = () => { const blob = new Blob(audioChunks, { type: mimeType }); const reader = new FileReader(); reader.onload = e => { voiceData = e.target.result; document.getElementById("voiceAudio").src = voiceData; document.getElementById("voicePreview").style.display = "flex"; }; reader.readAsDataURL(blob); stream.getTracks().forEach(t => t.stop()); };
+                mediaRecorder.start(); btn.textContent = t('stopRecording'); btn.classList.add("recording"); recordingSeconds = 0; timerEl.style.display = "block"; timerEl.textContent = "⏺ 0s";
+                recordingTimer = setInterval(() => { recordingSeconds++; timerEl.textContent = `⏺ ${recordingSeconds}s`; if (recordingSeconds >= 120) toggleRecording(); }, 1000);
+            } catch (err) { alert("❌ Microphone access denied. Please allow microphone access in your browser settings."); } }
+        }
+        function clearVoice() { voiceData = null; document.getElementById("voiceAudio").src = ""; document.getElementById("voicePreview").style.display = "none"; }
 
-            function editTask(i) {
-                let modal = document.createElement("div");
-                modal.className = "modal-overlay";
-                modal.innerHTML = `
-                    <div class="edit-modal">
-                        <h3>${t('editHabitTitle')}</h3>
-                        <label>${t('habitNameLabel')}</label>
-                        <input type="text" id="editHabitName" value="${escapeHtml(tasks[i].text)}" placeholder="${t('habitPlaceholder')}">
-                        <label style="display:block; margin-top:12px;">${t('timeLabel')}</label>
-                        <input type="time" id="editHabitTime" value="${tasks[i].time || ""}">
-                        <div class="edit-modal-buttons">
-                            <button onclick="closeModal()">${t('cancel')}</button>
-                            <button class="btn-primary" onclick="saveEditHabit(${i})">${t('save')}</button>
-                        </div>
-                    </div>`;
-                document.body.appendChild(modal);
-                window.currentModal = modal;
-            }
+        // DIARY
+        async function addDiary() {
+            let date = document.getElementById("diaryDate").value, text = document.getElementById("diaryInput").value;
+            if (!date || !text.trim()) return;
+            await api("POST", "/api/diaries", { date, entry: text, image: diaryImageData || null, voice: voiceData || null });
+            if (!diaries[date]) diaries[date] = []; diaries[date].push({ text, time: new Date().toLocaleTimeString(), image: diaryImageData || null, voice: voiceData || null });
+            document.getElementById("diaryInput").value = ""; clearDiaryImage(); clearVoice(); await loadAll();
+        }
+        async function deleteDiary(date, i) { const entry = diaries[date][i]; if (entry?.id) await api("DELETE", `/api/diaries/${entry.id}`); diaries[date].splice(i, 1); renderDiary(); }
+        async function editDiary(date, i) { let newText = prompt("Edit entry:", diaries[date][i].text); if (newText) { diaries[date][i].text = newText; if (diaries[date][i].id) await api("PUT", `/api/diaries/${diaries[date][i].id}`, { entry: newText }); renderDiary(); } }
+        function renderDiary() {
+            let date = document.getElementById("diaryDate").value, container = document.getElementById("diaryContainer"), title = document.getElementById("diaryTitle");
+            if (!date) { container.innerHTML = t('selectDate'); return; } title.innerText = t('entriesFor') + date;
+            let entries = diaries[date] || []; container.innerHTML = entries.map((d, i) => `<div class="entry"><small style="color:#b45309;">🕐 ${d.time}</small><p style="margin:8px 0;">${escapeHtml(d.text)}</p>${d.image ? `<img src="${d.image}" style="max-width:100%; max-height:300px; border-radius:12px; margin:8px 0; display:block; object-fit:cover;">` : ""}${d.voice ? `<div class="voice-preview" style="margin:8px 0;">🎤 <audio controls src="${d.voice}" style="flex:1; height:36px;"></audio></div>` : ""}<button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">✏️ ${t('edit')}</button><button onclick="deleteDiary('${date}',${i})" style="background:#ffe0e0;">${t('delete')}</button></div>`).join("");
+        }
 
-            function closeModal() { if (window.currentModal) { window.currentModal.remove(); window.currentModal = null; } }
+        function escapeHtml(str) { if (!str) return ""; return str.replace(/[&<>]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[m] || m)); }
 
-            async function saveEditHabit(i) {
-                let newName = document.getElementById("editHabitName").value.trim();
-                let newTime = document.getElementById("editHabitTime").value;
-                if (newName) tasks[i].text = newName;
-                tasks[i].time = newTime;
-                await api("PUT", `/api/habits/${tasks[i].id}`, { name: tasks[i].text, time: newTime });
-                closeModal(); render();
-            }
+        async function tryTelegramAutoLogin() {
+            const tg = window.Telegram?.WebApp; if (tg) { tg.ready(); await new Promise(r => setTimeout(r, 500)); const user = tg.initDataUnsafe?.user; if (user?.id) { await fetch('/auth/telegram', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user }) }); await fetch('/api/link-telegram', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telegramId: user.id }) }); } }
+        }
 
-            function getPercent(task, week) {
-                let done = 0;
-                week.forEach(d => { if (task.history[d.date]) done++; });
-                return Math.round((done / 7) * 100);
-            }
+        document.getElementById("diaryDate").addEventListener("change", renderDiary);
+        window.closeModal = closeModal; window.saveEditHabit = saveEditHabit;
+        // Ensure functions are globally accessible
+        window.addTask = addTask; window.addLesson = addLesson; window.addDiary = addDiary;
+        window.toggle = toggle; window.deleteTask = deleteTask; window.deleteLesson = deleteLesson;
+        window.deleteDiary = deleteDiary; window.showPage = showPage; window.setLanguage = setLanguage;
 
-            function getDailyPercent(week, dayIndex, tasks) {
-                let date = week[dayIndex].date;
-                let total = tasks.length;
-                if (total === 0) return 0;
-                let done = 0;
-                tasks.forEach(task => { if (task.history[date]) done++; });
-                return Math.round((done / total) * 100);
-            }
-
-            function render() {
-                const week = getWeek();
-                document.getElementById("weekTitle").innerText = t('weekTitlePrefix') + week[0].label;
-
-                let header = "<th>Habit</th>";
-                week.forEach(d => header += `<th>${d.label}</th>`);
-                header += "<th>Weekly %</th><th>⚙️</th>";
-                document.getElementById("weekHeader").innerHTML = header;
-
-                let body = "";
-                tasks.forEach((t, i) => {
-                    let color = categories.find(c => c.name === t.category)?.color || "#fff";
-                    let row = `<tr style="background:${color}">
-                        <td><strong>${escapeHtml(t.text)}</strong><br><small>⏰ ${t.time || t('anytime')}</small><br>
-                        <span style="font-size:10px; background:rgba(0,0,0,0.05); padding:2px 8px; border-radius:20px;">${t.category}</span></td>`;
-                    week.forEach(d => {
-                        let checked = t.history[d.date] ? "checked" : "";
-                        row += `<td><input type="checkbox" ${checked} onclick="toggle(${i},'${d.date}')" style="transform:scale(1.1); cursor:pointer;"></td>`;
-                    });
-                    row += `<td style="font-weight:bold; color:#667eea;">${getPercent(t, week)}%</td>`;
-                    row += `<td><button onclick="editTask(${i})" style="background:#e9ecef;">✏️ ${t('edit')}</button><button onclick="deleteTask(${i})" style="background:#ffe0e0;">${t('delete')}</button></td>`;
-                    body += row + "</tr>";
-                });
-
-                if (tasks.length > 0) {
-                    let dailyRow = `<tr class="daily-row"><td style="font-weight:bold;">${t('dailyPercentRow')}</td>`;
-                    for (let i = 0; i < week.length; i++) {
-                        let pct = getDailyPercent(week, i, tasks);
-                        let color = pct >= 70 ? "#28a745" : pct >= 40 ? "#fd7e14" : "#dc3545";
-                        dailyRow += `<td style="font-weight:bold; color:${color};">${pct}%</td>`;
-                    }
-                    dailyRow += `<td colspan="2">${t('completionNote')}</td></tr>`;
-                    body += dailyRow;
-                }
-
-                document.getElementById("taskBody").innerHTML = body;
-                renderLessons();
-            }
-
-            // STUDY
-            async function addLesson() {
-                let input = document.getElementById("lessonInput");
-                if (!input.value.trim()) return;
-                await api("POST", "/api/studies", { title: input.value });
-                input.value = "";
-                await loadAll();
-                
-                // Auto-open the newly added lesson
-                setTimeout(() => {
-                    const allLessons = document.querySelectorAll('details.lesson');
-                    if (allLessons.length > 0) {
-                        const lastLesson = allLessons[allLessons.length - 1];
-                        lastLesson.open = true;
-                        const arrow = lastLesson.querySelector('.lesson-toggle');
-                        if (arrow) arrow.style.transform = 'rotate(90deg)';
-                    }
-                }, 100);
-            }
-
-            async function deleteLesson(i) {
-                if (confirm(t('deleteLesson'))) { await api("DELETE", `/api/studies/${lessons[i].id}`); await loadAll(); }
-            }
-
-            let activityImageData = {};
-
-            function previewActivityImage(i, input) {
-                if (!input.files || !input.files[0]) return;
-                let reader = new FileReader();
-                reader.onload = e => {
-                    activityImageData[i] = e.target.result;
-                    let el = document.getElementById(`activity-img-name-${i}`);
-                    if (el) el.textContent = "✅ Photo ready";
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-
-            async function addLessonTask(i) {
-                let input = document.getElementById(`activity-${i}`);
-                if (!input.value.trim()) return;
-                lessons[i].tasks.push({ text: input.value, history: {}, comment: "", image: activityImageData[i] || null });
-                input.value = "";
-                activityImageData[i] = null;
-                await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
-                renderLessons();
-            }
-
-            async function deleteLessonTask(i, j) {
-                lessons[i].tasks.splice(j, 1);
-                await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
-                renderLessons();
-            }
-
-            async function toggleLessonTask(i, j) {
-                let today = new Date().toISOString().split("T")[0];
-                lessons[i].tasks[j].history[today] = !lessons[i].tasks[j].history[today];
-                await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
-                renderLessons();
-            }
-
-            async function saveComment(i, j, value) {
-                lessons[i].tasks[j].comment = value;
-                await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
-            }
-
-            function renderLessons() {
-                let html = "";
-                lessons.forEach((l, i) => {
-                    html += `
-                    <details class="lesson" style="padding:0; border:none; background:transparent; box-shadow:none;">
-                        <summary style="
-                            list-style:none; 
-                            cursor:pointer; 
-                            background:#fefefe; 
-                            border:1px solid #e9ecef; 
-                            border-radius:20px; 
-                            padding:20px; 
-                            display:flex; 
-                            justify-content:space-between; 
-                            align-items:center;
-                            transition:all 0.2s;
-                        " onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
-                            <h4 style="margin:0; color:#2c3e50; font-size:1.2rem;">📘 ${escapeHtml(l.title)}</h4>
-                            <span style="font-size:1.5rem; color:#667eea; transition:transform 0.2s;" class="lesson-toggle">▶</span>
-                        </summary>
-                        
-                        <div style="padding:0 20px 20px 20px; background:#fefefe; border:1px solid #e9ecef; border-top:none; border-radius:0 0 20px 20px;">
-                            <div style="margin:12px 0; display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
-                                <input id="activity-${i}" placeholder="New activity" style="flex:1; min-width:150px;">
-                                <label style="cursor:pointer; background:#f1f3f5; border-radius:10px; padding:6px 10px; font-size:13px;">
-                                    🖼️ <input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i}, this)">
-                                </label>
-                                <span id="activity-img-name-${i}" style="font-size:12px; color:#888;"></span>
-                                <button onclick="addLessonTask(${i})" style="background:#667eea; color:white;">➕ Add</button>
-                            </div>
-                            <ul style="list-style:none; padding-left:0;">`;
-
-                    l.tasks.forEach((t, j) => {
-                        let today = new Date().toISOString().split("T")[0];
-                        let checked = t.history[today] ? "checked" : "";
-                        html += `
-                        <li style="background:#f8f9fa; margin:8px 0; padding:12px; border-radius:12px;">
-                            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-                                <input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);">
-                                <strong style="flex:1;">${escapeHtml(t.text)}</strong>
-                                <button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button>
-                            </div>
-                            ${t.image ? `<img src="${t.image}" style="max-width:100%; max-height:250px; border-radius:10px; margin:8px 0; display:block; object-fit:cover;">` : ""}
-                            <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%; margin-top:8px;">${escapeHtml(t.comment)}</textarea>
-                        </li>`;
-                    });
-
-                    html += `</ul>
-                            <div style="margin-top:12px; text-align:right;">
-                                <button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ ${t('delete')} Module</button>
-                            </div>
-                        </div>
-                    </details>`;
-                });
-                document.getElementById("lessonContainer").innerHTML = html;
-
-                // Add smooth arrow rotation on expand/collapse
-                document.querySelectorAll('details.lesson').forEach((details) => {
-                    details.addEventListener('toggle', function() {
-                        const arrow = this.querySelector('.lesson-toggle');
-                        if (arrow) {
-                            arrow.style.transform = this.open ? 'rotate(90deg)' : 'rotate(0deg)';
-                        }
-                    });
-                });
-            }
-
-            // DIARY IMAGE
-            let diaryImageData = null;
-
-            function previewDiaryImage(input) {
-                if (!input.files || !input.files[0]) return;
-                let reader = new FileReader();
-                reader.onload = e => {
-                    diaryImageData = e.target.result;
-                    document.getElementById("diaryPreviewImg").src = diaryImageData;
-                    document.getElementById("diaryImagePreview").style.display = "flex";
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-
-            function clearDiaryImage() {
-                diaryImageData = null;
-                document.getElementById("diaryImage").value = "";
-                document.getElementById("diaryImagePreview").style.display = "none";
-            }
-
-            // 🎤 VOICE NOTE RECORDING
-            let mediaRecorder = null;
-            let audioChunks = [];
-            let voiceData = null;
-            let recordingTimer = null;
-            let recordingSeconds = 0;
-
-            async function toggleRecording() {
-                const btn = document.getElementById("voiceBtn");
-                const timerEl = document.getElementById("voiceTimer");
-
-                if (mediaRecorder && mediaRecorder.state === "recording") {
-                    mediaRecorder.stop();
-                    clearInterval(recordingTimer);
-                    btn.textContent = t('recordVoice');
-                    btn.classList.remove("recording");
-                    timerEl.style.display = "none";
-                } else {
-                    try {
-                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                        audioChunks = [];
-
-                        const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
-                            ? "audio/webm;codecs=opus"
-                            : MediaRecorder.isTypeSupported("audio/webm")
-                            ? "audio/webm"
-                            : "audio/ogg";
-
-                        mediaRecorder = new MediaRecorder(stream, { mimeType });
-
-                        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-
-                        mediaRecorder.onstop = () => {
-                            const blob = new Blob(audioChunks, { type: mimeType });
-                            const reader = new FileReader();
-                            reader.onload = e => {
-                                voiceData = e.target.result;
-                                document.getElementById("voiceAudio").src = voiceData;
-                                document.getElementById("voicePreview").style.display = "flex";
-                            };
-                            reader.readAsDataURL(blob);
-                            stream.getTracks().forEach(t => t.stop());
-                        };
-
-                        mediaRecorder.start();
-                        btn.textContent = t('stopRecording');
-                        btn.classList.add("recording");
-
-                        recordingSeconds = 0;
-                        timerEl.style.display = "block";
-                        timerEl.textContent = "⏺ 0s";
-                        recordingTimer = setInterval(() => {
-                            recordingSeconds++;
-                            timerEl.textContent = `⏺ ${recordingSeconds}s`;
-                            if (recordingSeconds >= 120) toggleRecording();
-                        }, 1000);
-
-                    } catch (err) {
-                        alert("❌ Microphone access denied. Please allow microphone access in your browser settings.");
-                    }
-                }
-            }
-
-            function clearVoice() {
-                voiceData = null;
-                document.getElementById("voiceAudio").src = "";
-                document.getElementById("voicePreview").style.display = "none";
-            }
-
-            // DIARY
-            async function addDiary() {
-                let date = document.getElementById("diaryDate").value;
-                let text = document.getElementById("diaryInput").value;
-                if (!date || !text.trim()) return;
-                await api("POST", "/api/diaries", { date, entry: text, image: diaryImageData || null, voice: voiceData || null });
-                if (!diaries[date]) diaries[date] = [];
-                diaries[date].push({ text, time: new Date().toLocaleTimeString(), image: diaryImageData || null, voice: voiceData || null });
-                document.getElementById("diaryInput").value = "";
-                clearDiaryImage();
-                clearVoice();
-                await loadAll();
-            }
-
-            async function deleteDiary(date, i) {
-                const entry = diaries[date][i];
-                if (entry?.id) await api("DELETE", `/api/diaries/${entry.id}`);
-                diaries[date].splice(i, 1);
-                renderDiary();
-            }
-
-            async function editDiary(date, i) {
-                let newText = prompt("Edit entry:", diaries[date][i].text);
-                if (newText) {
-                    diaries[date][i].text = newText;
-                    if (diaries[date][i].id) await api("PUT", `/api/diaries/${diaries[date][i].id}`, { entry: newText });
-                    renderDiary();
-                }
-            }
-
-            function renderDiary() {
-                let date = document.getElementById("diaryDate").value;
-                let container = document.getElementById("diaryContainer");
-                let title = document.getElementById("diaryTitle");
-                if (!date) { container.innerHTML = t('selectDate'); return; }
-                title.innerText = t('entriesFor') + date;
-                let entries = diaries[date] || [];
-                container.innerHTML = entries.map((d, i) => `
-                    <div class="entry">
-                        <small style="color:#b45309;">🕐 ${d.time}</small>
-                        <p style="margin:8px 0;">${escapeHtml(d.text)}</p>
-                        ${d.image ? `<img src="${d.image}" style="max-width:100%; max-height:300px; border-radius:12px; margin:8px 0; display:block; object-fit:cover;">` : ""}
-                        ${d.voice ? `<div class="voice-preview" style="margin:8px 0;">🎤 <audio controls src="${d.voice}" style="flex:1; height:36px;"></audio></div>` : ""}
-                        <button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">✏️ ${t('edit')}</button>
-                        <button onclick="deleteDiary('${date}',${i})" style="background:#ffe0e0;">${t('delete')}</button>
-                    </div>`).join("");
-            }
-
-            function escapeHtml(str) {
-                if (!str) return "";
-                return str.replace(/[&<>]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[m] || m));
-            }
-
-            async function tryTelegramAutoLogin() {
-                const tg = window.Telegram?.WebApp;
-                if (tg) {
-                    tg.ready();
-                    await new Promise(r => setTimeout(r, 500));
-                    const user = tg.initDataUnsafe?.user;
-                    if (user?.id) {
-                        await fetch('/auth/telegram', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user }) });
-                        await fetch('/api/link-telegram', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telegramId: user.id }) });
-                    }
-                }
-            }
-
-            document.getElementById("diaryDate").addEventListener("change", renderDiary);
-            window.closeModal = closeModal;
-            window.saveEditHabit = saveEditHabit;
-
-            // Initialize
-            tryTelegramAutoLogin().then(() => loadAll());
-            setTimeout(applyLanguage, 300);
-        </script>
-    </body>
+        // Initialize
+        tryTelegramAutoLogin().then(() => loadAll());
+        setTimeout(applyLanguage, 300);
+    </script>
+</body>
 </html>
