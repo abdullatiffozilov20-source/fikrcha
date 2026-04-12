@@ -541,20 +541,11 @@ async function api(method, url, body) {
 }
 
 async function loadAll() {
-    const user = await api("GET", "/api/user");
-    if (!user || user.error) {
-        console.warn("Not logged in, skipping data load");
-        return;
-    }
-    // ... rest of loadAll
-    
-    // Safety check — only update if server returned valid arrays
-    if (Array.isArray(habitsData) && habitsData !== null) {
-        tasks = habitsData.map(h => ({ id: h.id, text: h.name, time: h.time || "", category: h.category || "", history: h.history || {} }));
-    }
-    if (Array.isArray(studiesData) && studiesData !== null) {
-        lessons = studiesData;
-    }
+    const [habitsData, studiesData, diariesData] = await Promise.all([
+        api("GET", "/api/habits"), api("GET", "/api/studies"), api("GET", "/api/diaries")
+    ]);
+    tasks = (habitsData || []).map(h => ({ id: h.id, text: h.name, time: h.time || "", category: h.category || "", history: h.history || {} }));
+    lessons = studiesData || [];
     diaries = {};
     (diariesData || []).forEach(d => {
         if (!diaries[d.date]) diaries[d.date] = [];
