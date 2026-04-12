@@ -416,41 +416,92 @@ function setLanguage(lang) {
 }
 
 function applyLanguage() {
-  // Update static UI elements
-  document.getElementById('appSubtitle').textContent = t('subtitle');
-  document.getElementById('habitsTitle').textContent = t('habitsTitle');
-  document.getElementById('studyTitle').textContent = t('studyTitle');
-  document.getElementById('diaryTitleHeader').textContent = t('diaryTitle');
-  
-  // Update placeholders
-  document.getElementById('taskInput').placeholder = t('habitPlaceholder');
-  document.getElementById('lessonInput').placeholder = t('lessonPlaceholder');
-  document.getElementById('diaryInput').placeholder = t('diaryPlaceholder');
-  
-  // Update buttons
-  document.querySelector('.nav-btn[onclick*="habitPage"]').textContent = t('habitsTab');
-  document.querySelector('.nav-btn[onclick*="studyPage"]').textContent = t('studyTab');
-  document.querySelector('.nav-btn[onclick*="diaryPage"]').textContent = t('diaryTab');
-  document.querySelector('.week-nav button:nth-child(1)').textContent = t('prevWeek');
-  document.querySelector('.week-nav button:nth-child(2)').textContent = t('nextWeek');
-  document.querySelector('#habitPage .btn-primary').textContent = t('addHabit');
-  document.querySelector('#studyPage .btn-primary').textContent = t('addLesson');
-  document.querySelector('#diaryPage .btn-primary').textContent = t('saveEntry');
-  
-  // Update voice button text dynamically
-  const voiceBtn = document.getElementById('voiceBtn');
-  if (voiceBtn && !voiceBtn.classList.contains('recording')) {
-    voiceBtn.textContent = t('recordVoice');
-  }
-
-  // Update habit table footer note
-  const noteEl = document.querySelector('#habitPage > p[style*="12px"]');
-  if (noteEl) noteEl.textContent = t('completionNote');
-
-  // Re-render dynamic tables if needed
-  if (document.getElementById('habitPage').style.display !== 'none') render();
-  if (document.getElementById('diaryPage').style.display !== 'none' && document.getElementById('diaryDate').value) renderDiary();
-  
+    // Update subtitle
+    const subtitle = document.getElementById('appSubtitle');
+    if (subtitle) subtitle.textContent = t('subtitle');
+    
+    // Update page titles
+    const habitsTitle = document.getElementById('habitsTitle');
+    if (habitsTitle) habitsTitle.textContent = t('habitsTitle');
+    
+    const studyTitle = document.getElementById('studyTitle');
+    if (studyTitle) studyTitle.textContent = t('studyTitle');
+    
+    const diaryTitleHeader = document.getElementById('diaryTitleHeader');
+    if (diaryTitleHeader) diaryTitleHeader.textContent = t('diaryTitle');
+    
+    // Update navigation buttons
+    const navButtons = document.querySelectorAll('.nav-btn');
+    navButtons.forEach(btn => {
+        if (btn.getAttribute('onclick').includes('habitPage')) {
+            btn.textContent = t('habitsTab');
+        } else if (btn.getAttribute('onclick').includes('studyPage')) {
+            btn.textContent = t('studyTab');
+        } else if (btn.getAttribute('onclick').includes('diaryPage')) {
+            btn.textContent = t('diaryTab');
+        }
+    });
+    
+    // Update placeholders
+    const taskInput = document.getElementById('taskInput');
+    if (taskInput) taskInput.placeholder = t('habitPlaceholder');
+    
+    const lessonInput = document.getElementById('lessonInput');
+    if (lessonInput) lessonInput.placeholder = t('lessonPlaceholder');
+    
+    const diaryInput = document.getElementById('diaryInput');
+    if (diaryInput) diaryInput.placeholder = t('diaryPlaceholder');
+    
+    // Update week navigation buttons
+    const weekNavButtons = document.querySelectorAll('.week-nav button');
+    if (weekNavButtons[0]) weekNavButtons[0].textContent = t('prevWeek');
+    if (weekNavButtons[1]) weekNavButtons[1].textContent = t('nextWeek');
+    
+    // Update Add buttons
+    const addButtons = document.querySelectorAll('.btn-primary');
+    addButtons.forEach(btn => {
+        const parent = btn.closest('#habitPage, #studyPage, #diaryPage');
+        if (parent) {
+            if (parent.id === 'habitPage') {
+                btn.textContent = t('addHabit');
+            } else if (parent.id === 'studyPage') {
+                btn.textContent = t('addLesson');
+            } else if (parent.id === 'diaryPage') {
+                btn.textContent = t('saveEntry');
+            }
+        }
+    });
+    
+    // Update voice button
+    const voiceBtn = document.getElementById('voiceBtn');
+    if (voiceBtn && !voiceBtn.classList.contains('recording')) {
+        voiceBtn.textContent = t('recordVoice');
+    }
+    
+    // Update footer note in habits
+    const habitNote = document.querySelector('#habitPage > p[style*="12px"]');
+    if (habitNote) habitNote.textContent = t('completionNote');
+    
+    // Update language button styles
+    document.querySelectorAll('[onclick^="setLanguage"]').forEach(btn => {
+        const lang = btn.getAttribute('onclick').match(/'(\w+)'/)[1];
+        if (lang === currentLang) {
+            btn.style.background = '#667eea';
+            btn.style.color = 'white';
+        } else {
+            btn.style.background = '#f1f3f5';
+            btn.style.color = '#495057';
+        }
+    });
+    
+    // Re-render tables if visible
+    if (document.getElementById('habitPage').style.display !== 'none') {
+        render();
+    }
+    if (document.getElementById('diaryPage').style.display !== 'none' && document.getElementById('diaryDate').value) {
+        renderDiary();
+    }
+}
   // Highlight active language button
   document.querySelectorAll('[style*="border-radius:20px"]').forEach(btn => {
     if (['UZ','EN','RU'].includes(btn.textContent.trim())) {
