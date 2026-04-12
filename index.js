@@ -546,11 +546,7 @@ setInterval(() => {
 
 }, 60000);
 
-bot.launch({
-  allowedUpdates: [],
-  dropPendingUpdates: true,
-});
-console.log("🤖 Bot is running!");
+bot.launch({ dropPendingUpdates: true }).catch(err => console.error('Bot error:', err));
 
 const PORT = process.env.PORT || 10000;
 const server = app.listen(PORT, '0.0.0.0', () => {
