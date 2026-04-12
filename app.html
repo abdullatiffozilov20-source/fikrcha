@@ -9,21 +9,14 @@
         body {
             font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-            min-height: 100vh;
+            display: flex; justify-content: center;
+            padding: 20px; min-height: 100vh;
         }
         .app {
-            background: white;
-            width: 100%;
-            max-width: 1200px;
-            border-radius: 24px;
-            padding: 24px;
+            background: white; width: 100%; max-width: 1200px;
+            border-radius: 24px; padding: 24px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         }
-
-        /* DARK MODE */
         body.dark { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
         body.dark .app { background: #1e1e2e; color: #cdd6f4; }
         body.dark .app-header { border-color: #313244; }
@@ -36,107 +29,79 @@
         body.dark input, body.dark textarea, body.dark select { background: #313244; color: #cdd6f4; border-color: #45475a; }
         body.dark th { background: #313244; color: #cdd6f4; }
         body.dark td { background: #1e1e2e; color: #cdd6f4; border-color: #313244; }
-        body.dark .daily-row td { background: #313244; }
+        body.dark .daily-row td { background: #313244 !important; }
         body.dark .entry { background: #2a2a3e; border-color: #45475a; }
-        body.dark .lesson { background: #2a2a3e; border-color: #45475a; }
         body.dark .edit-modal { background: #1e1e2e; color: #cdd6f4; }
-        body.dark .streak-card { background: #313244; }
+        body.dark .streak-card { background: #313244 !important; }
         body.dark .stat-card { background: #313244; }
         body.dark .filter-btn { background: #313244; color: #cdd6f4; }
-        body.dark .search-input { background: #313244; color: #cdd6f4; border-color: #45475a; }
-        body.dark .profile-card { background: #313244; }
+        body.dark .chart-container { background: #313244; }
+        body.dark .best-habits-box { background: #313244; }
+        body.dark .notif-banner { background: #2a3a2a; color: #8ce99a; }
 
-        .app-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .header-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        h2 {
-            margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-size: 1.8rem;
-            letter-spacing: -0.5px;
-        }
+        .app-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid #e9ecef; }
+        .header-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        h2 { margin: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 1.8rem; letter-spacing: -0.5px; }
         .subtitle { color: #6c757d; font-size: 0.85rem; }
-        .header-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .header-right { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 
         .nav-buttons { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
-        .nav-btn {
-            padding: 10px 20px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f1f3f5;
-            color: #495057;
-        }
+        .nav-btn { padding: 10px 20px; font-size: 0.95rem; font-weight: 600; border: none; border-radius: 40px; cursor: pointer; transition: all 0.3s ease; background: #f1f3f5; color: #495057; }
         .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .nav-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 12px rgba(102,126,234,0.4); }
 
-        button {
-            padding: 8px 16px; margin: 4px; cursor: pointer; border: none;
-            border-radius: 40px; font-weight: 500; transition: all 0.2s ease;
-            background: #f1f3f5; color: #495057;
-        }
+        button { padding: 8px 16px; margin: 4px; cursor: pointer; border: none; border-radius: 40px; font-weight: 500; transition: all 0.2s ease; background: #f1f3f5; color: #495057; }
         button:hover { transform: translateY(-1px); background: #e9ecef; }
         button:active { transform: translateY(0); }
         .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
         .btn-primary:hover { box-shadow: 0 4px 10px rgba(102,126,234,0.3); }
         .btn-sm { padding: 4px 10px; font-size: 12px; margin: 2px; }
+        .export-btn { background: #d3f9d8; color: #2b8a3e; font-weight: 700; }
+        .dark-toggle { font-size: 18px; background: none; border: none; cursor: pointer; padding: 4px 8px; margin: 0; }
 
         .week-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
         .week-nav button { background: #e9ecef; font-weight: bold; }
-
-        input, textarea, select {
-            padding: 10px 14px; margin: 5px; border: 1px solid #dee2e6;
-            border-radius: 40px; font-family: inherit; font-size: 14px; transition: all 0.2s;
-        }
-        input:focus, textarea:focus, select:focus {
-            outline: none; border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
-        }
+        input, textarea, select { padding: 10px 14px; margin: 5px; border: 1px solid #dee2e6; border-radius: 40px; font-family: inherit; font-size: 14px; transition: all 0.2s; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
         textarea { border-radius: 20px; resize: vertical; height: 60px; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 16px; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         th, td { border: 1px solid #e9ecef; padding: 12px 8px; text-align: center; }
         th { background: #f8f9fa; font-weight: 600; color: #495057; }
         td { background: white; }
+        .daily-row td { background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important; font-weight: 600; color: #2c3e50; }
 
-        /* STREAK */
-        .streak-banner {
-            display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;
-        }
-        .streak-card {
-            background: linear-gradient(135deg, #fff3bf, #ffe066);
-            border-radius: 16px; padding: 12px 20px;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 2px 8px rgba(255,200,0,0.2);
-            flex: 1; min-width: 140px;
-        }
-        .streak-card .streak-num { font-size: 2rem; font-weight: 800; color: #e67700; }
-        .streak-card .streak-label { font-size: 0.8rem; color: #7c4a00; font-weight: 600; }
+        details.lesson summary::-webkit-details-marker { display: none; }
+        .lesson-toggle { display: inline-block; transition: transform 0.2s ease; }
+        details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
+        .lesson { border: 1px solid #e9ecef; border-radius: 20px; margin-top: 12px; background: #fefefe; overflow: hidden; }
+        .lesson:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+        .entry { border: 1px solid #e9ecef; padding: 16px; margin-top: 12px; border-radius: 16px; background: #fef9f0; }
+        .entry:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        .voice-btn { background: #f1f3f5; border-radius: 12px; padding: 8px 14px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; margin: 0; }
+        .voice-btn.recording { background: #ffe0e0; color: #c0392b; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(192,57,43,0.4); } 70% { box-shadow: 0 0 0 8px rgba(192,57,43,0); } 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); } }
+        .voice-preview { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f0f4ff; border-radius: 12px; margin-top: 4px; }
+        .voice-preview audio { flex: 1; height: 36px; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .edit-modal { background: white; border-radius: 24px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .edit-modal h3 { margin-top: 0; margin-bottom: 20px; color: #2c3e50; }
+        .edit-modal input { width: 100%; margin: 8px 0; }
+        .edit-modal-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
 
         /* STATS */
+        .notif-banner { background: #d3f9d8; border-radius: 12px; padding: 10px 16px; margin-bottom: 16px; font-size: 13px; color: #2b8a3e; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .streak-banner { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+        .streak-card { background: linear-gradient(135deg, #fff3bf, #ffe066); border-radius: 16px; padding: 14px 20px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(255,200,0,0.2); flex: 1; min-width: 120px; }
+        .streak-num { font-size: 2rem; font-weight: 800; color: #e67700; }
+        .streak-label { font-size: 0.8rem; color: #7c4a00; font-weight: 600; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .stat-card {
-            background: #f8f9fa; border-radius: 16px; padding: 14px;
-            text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-        }
-        .stat-card .stat-num { font-size: 1.6rem; font-weight: 800; color: #667eea; }
-        .stat-card .stat-label { font-size: 0.75rem; color: #6c757d; margin-top: 2px; }
-
-        /* CHART */
+        .stat-card { background: #f8f9fa; border-radius: 16px; padding: 14px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+        .stat-num { font-size: 1.6rem; font-weight: 800; color: #667eea; }
+        .stat-label { font-size: 0.75rem; color: #6c757d; margin-top: 2px; }
         .chart-container { margin: 16px 0; background: #f8f9fa; border-radius: 16px; padding: 16px; }
         .chart-title { font-weight: 700; color: #495057; margin-bottom: 12px; font-size: 0.9rem; }
         .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
@@ -144,94 +109,33 @@
         .chart-bar { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.4s ease; min-height: 4px; }
         .chart-bar-label { font-size: 9px; color: #6c757d; }
         .chart-bar-pct { font-size: 9px; font-weight: 700; color: #495057; }
-
-        /* FILTER */
-        .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
-        .filter-btn {
-            padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
-            border: 2px solid transparent; background: #f1f3f5; color: #495057; cursor: pointer;
-            transition: all 0.2s; margin: 0;
-        }
+        .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .filter-btn { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 2px solid transparent; background: #f1f3f5; color: #495057; cursor: pointer; transition: all 0.2s; margin: 0; }
         .filter-btn.active { border-color: #667eea; color: #667eea; background: #eef0ff; }
-
-        /* DIARY SEARCH */
-        .search-input {
-            border-radius: 40px; padding: 8px 16px; border: 1px solid #dee2e6;
-            font-size: 14px; width: 100%; margin: 0 0 12px 0;
-        }
+        .best-habits-box { background: #f8f9fa; border-radius: 16px; padding: 16px; margin-top: 12px; }
 
         /* DIARY CALENDAR */
-        .diary-calendar { margin-bottom: 16px; }
         .cal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 700; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .cal-day {
-            aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center;
-            justify-content: center; font-size: 12px; cursor: pointer; transition: all 0.2s;
-            background: #f8f9fa; color: #495057;
-        }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+        .cal-day { aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: all 0.2s; background: #f8f9fa; color: #495057; }
         .cal-day:hover { background: #e9ecef; }
         .cal-day.has-entry { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 700; }
         .cal-day.selected { box-shadow: 0 0 0 3px #667eea; }
         .cal-day.empty { background: transparent; cursor: default; }
-        .cal-day-header { font-size: 10px; font-weight: 700; color: #adb5bd; text-align: center; }
+        .cal-day-header { font-size: 10px; font-weight: 700; color: #adb5bd; text-align: center; padding: 4px 0; }
+        .search-input { border-radius: 40px; padding: 8px 16px; border: 1px solid #dee2e6; font-size: 14px; width: 100%; margin: 0 0 12px 0; }
 
-        /* PROFILE */
-        .profile-card {
-            background: #f8f9fa; border-radius: 20px; padding: 20px; margin-bottom: 20px;
-        }
-        .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-        .profile-avatar {
-            width: 60px; height: 60px; border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem; color: white; font-weight: 700;
-        }
-
-        /* LESSONS */
-        details.lesson summary::-webkit-details-marker { display: none; }
-        .lesson-toggle { display: inline-block; transition: transform 0.2s ease; }
-        details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
-        .lesson { border: 1px solid #e9ecef; border-radius: 20px; margin-top: 12px; background: #fefefe; transition: all 0.2s; overflow: hidden; }
-        .lesson:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-
-        /* ENTRY */
-        .entry { border: 1px solid #e9ecef; padding: 16px; margin-top: 12px; border-radius: 16px; background: #fef9f0; }
-        .entry:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .daily-row td { background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important; font-weight: 600; color: #2c3e50; }
-
-        /* VOICE */
-        .voice-btn { background: #f1f3f5; border-radius: 12px; padding: 8px 14px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; margin: 0; }
-        .voice-btn.recording { background: #ffe0e0; color: #c0392b; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(192,57,43,0.4); } 70% { box-shadow: 0 0 0 8px rgba(192,57,43,0); } 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); } }
-        .voice-preview { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f0f4ff; border-radius: 12px; margin-top: 4px; }
-        .voice-preview audio { flex: 1; height: 36px; }
-
-        /* MODAL */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .edit-modal { background: white; border-radius: 24px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .edit-modal h3 { margin-top: 0; margin-bottom: 20px; color: #2c3e50; }
-        .edit-modal input { width: 100%; margin: 8px 0; }
-        .edit-modal-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
-
-        /* EXPORT */
-        .export-btn { background: #d3f9d8; color: #2b8a3e; font-weight: 700; }
-
-        /* DARK TOGGLE */
-        .dark-toggle { font-size: 18px; background: none; border: none; cursor: pointer; padding: 4px 8px; margin: 0; }
-
-        /* NOTIFICATION BANNER */
-        .notif-banner { background: #d3f9d8; border-radius: 12px; padding: 10px 16px; margin-bottom: 12px; font-size: 13px; color: #2b8a3e; display: flex; align-items: center; gap: 8px; }
-
-        /* MOBILE */
         @media (max-width: 768px) {
             body { padding: 6px; }
             .app { padding: 14px; border-radius: 20px; }
             th, td { padding: 6px 3px; font-size: 11px; }
             td:first-child { font-size: 12px; max-width: 80px; word-break: break-word; }
             td:last-child button { display: block; width: 100%; margin: 2px 0; padding: 5px 4px; font-size: 11px; border-radius: 8px; }
-            .nav-btn { padding: 8px 12px; font-size: 12px; }
+            .nav-btn { padding: 8px 10px; font-size: 12px; }
             h2 { font-size: 1.3rem; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .streak-card { padding: 10px 14px; }
+            .streak-num { font-size: 1.5rem; }
         }
         @media (max-width: 480px) {
             body { padding: 0; }
@@ -239,944 +143,500 @@
             .app-header { flex-wrap: nowrap; }
             th, td { padding: 5px 2px; font-size: 10px; }
             td:first-child { max-width: 65px; font-size: 11px; }
-            td:first-child small, td:first-child span.cat-tag { display: none; }
+            td:first-child small, td:first-child .cat-tag { display: none; }
             input[type="checkbox"] { transform: scale(1.3) !important; }
             .nav-buttons { gap: 4px; }
             .nav-btn { flex: 1; padding: 8px 4px; font-size: 11px; text-align: center; }
-            .streak-card { padding: 10px 14px; }
-            .streak-card .streak-num { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 <div class="app">
-    <!-- HEADER -->
     <div class="app-header">
         <div class="header-left">
             <h2>✨ FIKRCHA</h2>
             <span class="subtitle" id="appSubtitle">think · grow · achieve</span>
         </div>
         <div class="header-right">
-            <button class="dark-toggle" onclick="toggleDark()" title="Dark mode">🌙</button>
-            <button onclick="showPage('profilePage')" id="nav-profile" style="padding:4px 10px; font-size:12px; border-radius:20px;">👤</button>
-            <button onclick="setLanguage('uz')" id="lang-uz" style="padding:4px 10px; font-size:12px; border-radius:20px;">UZ</button>
-            <button onclick="setLanguage('en')" id="lang-en" style="padding:4px 10px; font-size:12px; border-radius:20px;">EN</button>
-            <button onclick="setLanguage('ru')" id="lang-ru" style="padding:4px 10px; font-size:12px; border-radius:20px;">RU</button>
+            <button class="dark-toggle" onclick="toggleDark()">🌙</button>
+            <button onclick="setLanguage('uz')" id="lang-uz" style="padding:4px 10px;font-size:12px;border-radius:20px;">UZ</button>
+            <button onclick="setLanguage('en')" id="lang-en" style="padding:4px 10px;font-size:12px;border-radius:20px;">EN</button>
+            <button onclick="setLanguage('ru')" id="lang-ru" style="padding:4px 10px;font-size:12px;border-radius:20px;">RU</button>
         </div>
     </div>
 
-    <!-- NAV -->
     <div class="nav-buttons">
         <button class="nav-btn active" onclick="showPage('habitPage')" id="nav-habits">📅 Habits</button>
         <button class="nav-btn" onclick="showPage('studyPage')" id="nav-study">📚 Study</button>
         <button class="nav-btn" onclick="showPage('diaryPage')" id="nav-diary">🧠 Diary</button>
+        <button class="nav-btn" onclick="showPage('statsPage')" id="nav-stats">📊 Stats</button>
     </div>
 
-    <!-- ===== HABITS PAGE ===== -->
+    <!-- HABITS -->
     <div id="habitPage">
         <h3 id="habitsTitle">✨ Daily Habits Tracker</h3>
-
-        <!-- NOTIFICATION PROMPT -->
-        <div id="notifBanner" class="notif-banner" style="display:none;">
-            🔔 <span id="notifMsg"></span>
-            <button class="btn-sm btn-primary" onclick="requestNotifications()" id="notifBtn">Enable</button>
-        </div>
-
-        <!-- STREAKS -->
-        <div class="streak-banner" id="streakBanner"></div>
-
-        <!-- STATS -->
-        <div class="stats-grid" id="statsGrid"></div>
-
-        <!-- CHART -->
-        <div class="chart-container">
-            <div class="chart-title" id="chartTitle">📊 Last 7 Days</div>
-            <div class="chart-bars" id="chartBars"></div>
-        </div>
-
-        <!-- FILTER -->
-        <div class="filter-row" id="filterRow"></div>
-
-        <!-- ADD HABIT -->
-        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end; margin-bottom:16px;">
-            <input id="taskInput" placeholder="Habit name" style="flex:1; min-width:130px;" />
-            <input type="time" id="taskTime" style="width:110px;" />
-            <select id="categoryInput" style="width:110px;"></select>
-            <button class="btn-primary" onclick="addTask()" id="btn-add-habit">➕ Add Habit</button>
-            <button class="export-btn" onclick="exportCSV()">⬇️ CSV</button>
-        </div>
-
-        <!-- WEEK NAV -->
         <div class="week-nav">
-            <button onclick="changeWeek(-7)" id="btn-prev-week">◀ Prev</button>
-            <button onclick="changeWeek(7)" id="btn-next-week">Next ▶</button>
-            <h4 id="weekTitle" style="margin:0; color:#495057;"></h4>
+            <button onclick="changeWeek(-7)" id="btn-prev-week">◀ Previous Week</button>
+            <button onclick="changeWeek(7)" id="btn-next-week">Next Week ▶</button>
         </div>
-
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-bottom:20px;">
+            <div style="flex:1;min-width:150px;"><input id="taskInput" placeholder="Habit name" style="width:100%;" /></div>
+            <div style="width:110px;"><input type="time" id="taskTime" style="width:100%;" /></div>
+            <div style="width:110px;"><select id="categoryInput" style="width:100%;"></select></div>
+            <div><button class="btn-primary" onclick="addTask()" id="btn-add-habit">➕ Add Habit</button></div>
+        </div>
+        <h4 id="weekTitle" style="margin:16px 0 8px 0;color:#495057;"></h4>
         <div style="overflow-x:auto;">
-            <table>
-                <thead><tr id="weekHeader"></tr></thead>
-                <tbody id="taskBody"></tbody>
-            </table>
+            <table><thead><tr id="weekHeader"></tr></thead><tbody id="taskBody"></tbody></table>
         </div>
+        <p id="habit-footer-note" style="font-size:12px;color:#6c757d;margin-top:12px;">✅ Check daily boxes | 📊 Weekly % | 📅 Daily %</p>
     </div>
 
-    <!-- ===== STUDY PAGE ===== -->
+    <!-- STUDY -->
     <div id="studyPage" style="display:none;">
         <h3 id="studyTitle">📖 Study Journal</h3>
-        <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-            <input id="lessonInput" placeholder="New lesson/module" style="flex:1; min-width:200px;" />
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+            <input id="lessonInput" placeholder="New lesson/module" style="flex:1;min-width:200px;" />
             <button class="btn-primary" onclick="addLesson()" id="btn-add-lesson">➕ Add Lesson</button>
         </div>
         <div id="lessonContainer"></div>
     </div>
 
-    <!-- ===== DIARY PAGE ===== -->
+    <!-- DIARY -->
     <div id="diaryPage" style="display:none;">
         <h3 id="diaryTitleHeader">🧠 Life Diary</h3>
-
-        <!-- CALENDAR -->
-        <div class="diary-calendar">
+        <div style="margin-bottom:16px;">
             <div class="cal-header">
                 <button onclick="calPrev()" style="padding:4px 10px;">◀</button>
-                <span id="calMonthLabel" style="flex:1; text-align:center;"></span>
+                <span id="calMonthLabel" style="flex:1;text-align:center;font-weight:700;"></span>
                 <button onclick="calNext()" style="padding:4px 10px;">▶</button>
             </div>
             <div class="cal-grid" id="calDayHeaders"></div>
             <div class="cal-grid" id="calGrid"></div>
         </div>
-
-        <!-- SEARCH -->
         <input class="search-input" id="diarySearch" placeholder="🔍 Search diary..." oninput="renderDiary()" />
-
-        <!-- ADD ENTRY -->
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
             <input type="date" id="diaryDate" style="width:160px;" />
-            <textarea id="diaryInput" placeholder="Write your day..." style="flex:1; min-width:200px;"></textarea>
-            <div style="display:flex; flex-direction:column; gap:8px; justify-content:center;">
-                <label style="cursor:pointer; background:#f1f3f5; border-radius:12px; padding:8px 14px; font-size:14px; text-align:center;">
-                    🖼️ Photo
-                    <input type="file" id="diaryImage" accept="image/*" style="display:none;" onchange="previewDiaryImage(this)">
+            <textarea id="diaryInput" placeholder="Write your day, feelings, memories..." style="flex:1;min-width:200px;"></textarea>
+            <div style="display:flex;flex-direction:column;gap:8px;justify-content:center;">
+                <label style="cursor:pointer;background:#f1f3f5;border-radius:12px;padding:8px 14px;font-size:14px;text-align:center;">
+                    🖼️ Add Photo<input type="file" id="diaryImage" accept="image/*" style="display:none;" onchange="previewDiaryImage(this)">
                 </label>
-                <div id="diaryImagePreview" style="display:none; align-items:center;">
-                    <img id="diaryPreviewImg" style="max-width:120px; max-height:80px; border-radius:8px; object-fit:cover;">
-                    <button onclick="clearDiaryImage()" style="background:#ffe0e0; font-size:11px; padding:2px 6px; margin-left:4px;">✕</button>
+                <div id="diaryImagePreview" style="display:none;align-items:center;">
+                    <img id="diaryPreviewImg" style="max-width:120px;max-height:80px;border-radius:8px;object-fit:cover;">
+                    <button onclick="clearDiaryImage()" style="background:#ffe0e0;font-size:11px;padding:2px 6px;margin-left:4px;">✕</button>
                 </div>
                 <button id="voiceBtn" class="voice-btn" onclick="toggleRecording()">🎤 Record Voice</button>
-                <div id="voiceTimer" style="display:none; font-size:12px; color:#c0392b; text-align:center; font-weight:bold;"></div>
+                <div id="voiceTimer" style="display:none;font-size:12px;color:#c0392b;text-align:center;font-weight:bold;"></div>
                 <div id="voicePreview" class="voice-preview" style="display:none;">
                     <audio id="voiceAudio" controls></audio>
-                    <button onclick="clearVoice()" style="background:#ffe0e0; font-size:11px; padding:2px 6px; margin:0;">✕</button>
+                    <button onclick="clearVoice()" style="background:#ffe0e0;font-size:11px;padding:2px 6px;margin:0;">✕</button>
                 </div>
-                <button class="btn-primary" onclick="addDiary()" id="btn-save-diary">💾 Save</button>
+                <button class="btn-primary" onclick="addDiary()" id="btn-save-diary">💾 Save Entry</button>
             </div>
         </div>
-
         <h4 id="diaryTitle" style="margin:16px 0 8px;"></h4>
         <div id="diaryContainer"></div>
     </div>
 
-    <!-- ===== PROFILE PAGE ===== -->
-    <div id="profilePage" style="display:none;">
-        <h3 id="profileTitle">👤 Profile & Stats</h3>
-        <div class="profile-card">
-            <div class="profile-header">
-                <div class="profile-avatar" id="profileAvatar">🌟</div>
-                <div>
-                    <div style="font-weight:700; font-size:1.1rem;" id="profileName">FIKRCHA User</div>
-                    <div style="color:#6c757d; font-size:0.85rem;" id="profileSince"></div>
-                </div>
-            </div>
-            <div class="stats-grid" id="profileStats"></div>
+    <!-- STATS -->
+    <div id="statsPage" style="display:none;">
+        <h3 id="statsTitle">📊 Statistics</h3>
+        <div id="notifBanner" class="notif-banner" style="display:none;">
+            🔔 <span id="notifMsg"></span>
+            <button class="btn-sm btn-primary" onclick="requestNotifications()">Enable</button>
         </div>
-
-        <!-- LONG TERM CHART -->
+        <div class="streak-banner" id="streakBanner"></div>
+        <div class="stats-grid" id="statsGrid"></div>
         <div class="chart-container">
-            <div class="chart-title">📈 30-Day Completion Trend</div>
+            <div class="chart-title" id="chartTitle">📊 Last 7 Days</div>
+            <div class="chart-bars" id="chartBars"></div>
+        </div>
+        <h4 style="margin:16px 0 8px;color:#495057;">Filter by Category</h4>
+        <div class="filter-row" id="filterRow"></div>
+        <div style="margin:16px 0;">
+            <button class="export-btn" onclick="exportCSV()">⬇️ Export CSV</button>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title">📈 30-Day Trend</div>
             <div class="chart-bars" id="longChart" style="height:100px;"></div>
         </div>
-
-        <!-- BEST HABITS -->
-        <div id="bestHabits"></div>
+        <div id="bestHabitsSection"></div>
     </div>
 </div>
 
 <script>
-// ==================== TRANSLATIONS ====================
 const i18n = {
     en: {
-        subtitle: "think · grow · achieve",
-        habitsTab: "📅 Habits", studyTab: "📚 Study", diaryTab: "🧠 Diary", profileTab: "👤 Profile",
-        habitsTitle: "✨ Daily Habits Tracker", prevWeek: "◀ Prev", nextWeek: "Next ▶",
-        habitPlaceholder: "Habit name", addHabit: "➕ Add Habit",
-        studyTitle: "📖 Study Journal", lessonPlaceholder: "New lesson/module", addLesson: "➕ Add Lesson",
-        diaryTitle: "🧠 Life Diary", diaryPlaceholder: "Write your day, feelings, memories...",
-        recordVoice: "🎤 Record Voice", stopRecording: "⏹ Stop", saveEntry: "💾 Save",
-        selectDate: "Select a date", entriesFor: "📔 Entries for ",
-        deleteHabit: "Delete habit?", deleteLesson: "Delete lesson?",
-        editHabitTitle: "✏️ Edit Habit", habitNameLabel: "Habit name:", timeLabel: "Time:",
-        cancel: "Cancel", save: "Save", anytime: "anytime",
-        dailyPercentRow: "📊 Daily %",
-        weekTitlePrefix: "📅 Week: ", edit: "✏️", delete: "🗑️",
-        streakLabel: "day streak", bestDay: "Best day", totalDone: "Total done", activeHabits: "Active habits",
-        allFilter: "All", notifEnable: "Enable notifications for habit reminders",
-        chartTitle: "📊 Last 7 Days", profileTitle: "👤 Profile & Stats",
-        memberSince: "Member since", bestHabits: "🏆 Top Habits",
-        searchPlaceholder: "🔍 Search diary...",
-        days: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+        subtitle:"think · grow · achieve", habitsTab:"📅 Habits", studyTab:"📚 Study", diaryTab:"🧠 Diary", statsTab:"📊 Stats",
+        habitsTitle:"✨ Daily Habits Tracker", prevWeek:"◀ Previous Week", nextWeek:"Next Week ▶",
+        habitPlaceholder:"Habit name", addHabit:"➕ Add Habit",
+        studyTitle:"📖 Study Journal", lessonPlaceholder:"New lesson/module", addLesson:"➕ Add Lesson",
+        diaryTitle:"🧠 Life Diary", diaryPlaceholder:"Write your day, feelings, memories...",
+        recordVoice:"🎤 Record Voice", stopRecording:"⏹ Stop Recording", saveEntry:"💾 Save Entry",
+        selectDate:"Select a date", entriesFor:"📔 Entries for ",
+        deleteHabit:"Delete habit?", deleteLesson:"Delete lesson?",
+        editHabitTitle:"✏️ Edit Habit", habitNameLabel:"Habit name:", timeLabel:"Time:",
+        cancel:"Cancel", save:"Save", anytime:"anytime", dailyPercentRow:"📊 Daily %",
+        weekTitlePrefix:"📅 Week of ", edit:"✏️", delete:"🗑️",
+        streakLabel:"day streak", bestDay:"Best day", totalDone:"Total done", activeHabits:"Active habits",
+        allFilter:"All", notifEnable:"Enable notifications for habit reminders",
+        chartTitle:"📊 Last 7 Days", statsTitle:"📊 Statistics", bestHabits:"🏆 Top Habits",
+        searchPlaceholder:"🔍 Search diary...", days:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
     },
     uz: {
-        subtitle: "o'yla · o's · erish",
-        habitsTab: "📅 Odatlar", studyTab: "📚 O'qish", diaryTab: "🧠 Kundalik", profileTab: "👤 Profil",
-        habitsTitle: "✨ Kunlik Odatlar Kuzatuvchisi", prevWeek: "◀ Oldingi", nextWeek: "Keyingi ▶",
-        habitPlaceholder: "Odat nomi", addHabit: "➕ Qo'shish",
-        studyTitle: "📖 O'qish Jurnali", lessonPlaceholder: "Yangi dars/modul", addLesson: "➕ Dars Qo'shish",
-        diaryTitle: "🧠 Hayot Kundaligi", diaryPlaceholder: "Kuningiz, his-tuyg'ularingiz...",
-        recordVoice: "🎤 Yozish", stopRecording: "⏹ To'xtatish", saveEntry: "💾 Saqlash",
-        selectDate: "Sana tanlang", entriesFor: "📔 Yozuvlar: ",
-        deleteHabit: "Odatni o'chirilsinmi?", deleteLesson: "Darsni o'chirilsinmi?",
-        editHabitTitle: "✏️ Odatni Tahrirlash", habitNameLabel: "Odat nomi:", timeLabel: "Vaqt:",
-        cancel: "Bekor", save: "Saqlash", anytime: "istalgan vaqt",
-        dailyPercentRow: "📊 Kunlik %",
-        weekTitlePrefix: "📅 Hafta: ", edit: "✏️", delete: "🗑️",
-        streakLabel: "kunlik ketma-ketlik", bestDay: "Eng yaxshi kun", totalDone: "Jami bajarildi", activeHabits: "Faol odatlar",
-        allFilter: "Barchasi", notifEnable: "Odat eslatmalari uchun bildirishnomalarni yoqing",
-        chartTitle: "📊 So'nggi 7 kun", profileTitle: "👤 Profil va Statistika",
-        memberSince: "A'zo bo'lgan sana", bestHabits: "🏆 Eng yaxshi odatlar",
-        searchPlaceholder: "🔍 Kundaliklarni qidirish...",
-        days: ["Du","Se","Ch","Pa","Ju","Sh","Ya"]
+        subtitle:"o'yla · o's · erish", habitsTab:"📅 Odatlar", studyTab:"📚 O'qish", diaryTab:"🧠 Kundalik", statsTab:"📊 Statistika",
+        habitsTitle:"✨ Kunlik Odatlar Kuzatuvchisi", prevWeek:"◀ Oldingi Hafta", nextWeek:"Keyingi Hafta ▶",
+        habitPlaceholder:"Odat nomi", addHabit:"➕ Odat Qo'shish",
+        studyTitle:"📖 O'qish Jurnali", lessonPlaceholder:"Yangi dars/modul", addLesson:"➕ Dars Qo'shish",
+        diaryTitle:"🧠 Hayot Kundaligi", diaryPlaceholder:"Kuningiz, his-tuyg'ularingiz, xotiralaringizni yozing...",
+        recordVoice:"🎤 Ovoz Yozish", stopRecording:"⏹ To'xtatish", saveEntry:"💾 Saqlash",
+        selectDate:"Sana tanlang", entriesFor:"📔 Kirishlar: ",
+        deleteHabit:"Odatni o'chirilsinmi?", deleteLesson:"Darsni o'chirilsinmi?",
+        editHabitTitle:"✏️ Odatni Tahrirlash", habitNameLabel:"Odat nomi:", timeLabel:"Vaqt:",
+        cancel:"Bekor qilish", save:"Saqlash", anytime:"istalgan vaqt", dailyPercentRow:"📊 Kunlik %",
+        weekTitlePrefix:"📅 Hafta: ", edit:"✏️", delete:"🗑️",
+        streakLabel:"kunlik ketma-ketlik", bestDay:"Eng yaxshi kun", totalDone:"Jami bajarildi", activeHabits:"Faol odatlar",
+        allFilter:"Barchasi", notifEnable:"Odat eslatmalari uchun bildirishnomalarni yoqing",
+        chartTitle:"📊 So'nggi 7 kun", statsTitle:"📊 Statistika", bestHabits:"🏆 Eng yaxshi odatlar",
+        searchPlaceholder:"🔍 Kundaliklarni qidirish...", days:["Du","Se","Ch","Pa","Ju","Sh","Ya"]
     },
     ru: {
-        subtitle: "думай · расти · достигай",
-        habitsTab: "📅 Привычки", studyTab: "📚 Учеба", diaryTab: "🧠 Дневник", profileTab: "👤 Профиль",
-        habitsTitle: "✨ Трекер Привычек", prevWeek: "◀ Пред.", nextWeek: "След. ▶",
-        habitPlaceholder: "Название привычки", addHabit: "➕ Добавить",
-        studyTitle: "📖 Учебный Журнал", lessonPlaceholder: "Новый урок/модуль", addLesson: "➕ Добавить урок",
-        diaryTitle: "🧠 Жизненный Дневник", diaryPlaceholder: "Пишите о своём дне...",
-        recordVoice: "🎤 Записать", stopRecording: "⏹ Стоп", saveEntry: "💾 Сохранить",
-        selectDate: "Выберите дату", entriesFor: "📔 Записи за ",
-        deleteHabit: "Удалить привычку?", deleteLesson: "Удалить урок?",
-        editHabitTitle: "✏️ Редактировать", habitNameLabel: "Название:", timeLabel: "Время:",
-        cancel: "Отмена", save: "Сохранить", anytime: "в любое время",
-        dailyPercentRow: "📊 День %",
-        weekTitlePrefix: "📅 Неделя: ", edit: "✏️", delete: "🗑️",
-        streakLabel: "дней подряд", bestDay: "Лучший день", totalDone: "Всего выполнено", activeHabits: "Активных привычек",
-        allFilter: "Все", notifEnable: "Включить уведомления для напоминаний",
-        chartTitle: "📊 Последние 7 дней", profileTitle: "👤 Профиль и Статистика",
-        memberSince: "Участник с", bestHabits: "🏆 Лучшие привычки",
-        searchPlaceholder: "🔍 Поиск в дневнике...",
-        days: ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"]
+        subtitle:"думай · расти · достигай", habitsTab:"📅 Привычки", studyTab:"📚 Учеба", diaryTab:"🧠 Дневник", statsTab:"📊 Статистика",
+        habitsTitle:"✨ Трекер Привычек", prevWeek:"◀ Пред. неделя", nextWeek:"След. неделя ▶",
+        habitPlaceholder:"Название привычки", addHabit:"➕ Добавить",
+        studyTitle:"📖 Учебный Журнал", lessonPlaceholder:"Новый урок/модуль", addLesson:"➕ Добавить урок",
+        diaryTitle:"🧠 Жизненный Дневник", diaryPlaceholder:"Пишите о своём дне, чувствах, воспоминаниях...",
+        recordVoice:"🎤 Записать голос", stopRecording:"⏹ Остановить запись", saveEntry:"💾 Сохранить",
+        selectDate:"Выберите дату", entriesFor:"📔 Записи за ",
+        deleteHabit:"Удалить привычку?", deleteLesson:"Удалить урок?",
+        editHabitTitle:"✏️ Редактировать привычку", habitNameLabel:"Название:", timeLabel:"Время:",
+        cancel:"Отмена", save:"Сохранить", anytime:"в любое время", dailyPercentRow:"📊 День %",
+        weekTitlePrefix:"📅 Неделя: ", edit:"✏️", delete:"🗑️",
+        streakLabel:"дней подряд", bestDay:"Лучший день", totalDone:"Всего выполнено", activeHabits:"Активных привычек",
+        allFilter:"Все", notifEnable:"Включить уведомления для напоминаний",
+        chartTitle:"📊 Последние 7 дней", statsTitle:"📊 Статистика", bestHabits:"🏆 Лучшие привычки",
+        searchPlaceholder:"🔍 Поиск в дневнике...", days:["Пн","Вт","Ср","Чт","Пт","Сб","Вс"]
     }
 };
 
-let currentLang = localStorage.getItem('fikrcha_lang') ||
-    (navigator.language.startsWith('uz') ? 'uz' : navigator.language.startsWith('ru') ? 'ru' : 'en');
+let currentLang = localStorage.getItem('fikrcha_lang') || (navigator.language.startsWith('uz')?'uz':navigator.language.startsWith('ru')?'ru':'en');
 let darkMode = localStorage.getItem('fikrcha_dark') === '1';
 let activeFilter = 'All';
-let calYear, calMonth;
 
 function t(key) { return i18n[currentLang]?.[key] || i18n.en[key] || key; }
-
-function setLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('fikrcha_lang', lang);
-    applyLanguage();
-}
-
-function toggleDark() {
-    darkMode = !darkMode;
-    localStorage.setItem('fikrcha_dark', darkMode ? '1' : '0');
-    document.body.classList.toggle('dark', darkMode);
-}
+function setLanguage(lang) { currentLang=lang; localStorage.setItem('fikrcha_lang',lang); applyLanguage(); }
+function toggleDark() { darkMode=!darkMode; localStorage.setItem('fikrcha_dark',darkMode?'1':'0'); document.body.classList.toggle('dark',darkMode); }
 
 function applyLanguage() {
-    const setText = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
-    const setPlaceholder = (id, key) => { const e = document.getElementById(id); if (e) e.placeholder = t(key); };
-
-    setText('appSubtitle','subtitle'); setText('habitsTitle','habitsTitle');
-    setText('studyTitle','studyTitle'); setText('diaryTitleHeader','diaryTitle');
-    setText('profileTitle','profileTitle');
+    const setText=(id,key)=>{const e=document.getElementById(id);if(e)e.textContent=t(key);};
+    const setPlaceholder=(id,key)=>{const e=document.getElementById(id);if(e)e.placeholder=t(key);};
+    setText('appSubtitle','subtitle'); setText('habitsTitle','habitsTitle'); setText('studyTitle','studyTitle');
+    setText('diaryTitleHeader','diaryTitle'); setText('statsTitle','statsTitle');
     setPlaceholder('taskInput','habitPlaceholder'); setPlaceholder('lessonInput','lessonPlaceholder');
     setPlaceholder('diaryInput','diaryPlaceholder'); setPlaceholder('diarySearch','searchPlaceholder');
-    setText('nav-habits','habitsTab'); setText('nav-study','studyTab'); setText('nav-diary','diaryTab');
+    setText('nav-habits','habitsTab'); setText('nav-study','studyTab'); setText('nav-diary','diaryTab'); setText('nav-stats','statsTab');
     setText('btn-prev-week','prevWeek'); setText('btn-next-week','nextWeek');
     setText('btn-add-habit','addHabit'); setText('btn-add-lesson','addLesson'); setText('btn-save-diary','saveEntry');
     setText('chartTitle','chartTitle');
-
-    const vb = document.getElementById('voiceBtn');
-    if (vb && !vb.classList.contains('recording')) vb.textContent = t('recordVoice');
-
-    ['uz','en','ru'].forEach(lg => {
-        const btn = document.getElementById('lang-' + lg);
-        if (btn) { btn.style.background = lg === currentLang ? '#667eea' : ''; btn.style.color = lg === currentLang ? 'white' : ''; }
-    });
-
+    const vb=document.getElementById('voiceBtn'); if(vb&&!vb.classList.contains('recording')) vb.textContent=t('recordVoice');
+    ['uz','en','ru'].forEach(lg=>{const btn=document.getElementById('lang-'+lg);if(btn){btn.style.background=lg===currentLang?'#667eea':'';btn.style.color=lg===currentLang?'white':'';}});
     renderFilterRow();
-    if (document.getElementById('habitPage').style.display !== 'none') render();
-    if (document.getElementById('diaryPage').style.display !== 'none') { renderCalendar(); renderDiary(); }
-    if (document.getElementById('profilePage').style.display !== 'none') renderProfile();
+    if(document.getElementById('habitPage').style.display!=='none') render();
+    if(document.getElementById('diaryPage').style.display!=='none'){renderCalendar();renderDiary();}
+    if(document.getElementById('statsPage').style.display!=='none') renderStats();
 }
 
-// ==================== NAVIGATION ====================
 function showPage(id) {
-    ["habitPage","studyPage","diaryPage","profilePage"].forEach(p => document.getElementById(p).style.display = "none");
-    document.getElementById(id).style.display = "block";
-    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-    const navMap = { habitPage:"nav-habits", studyPage:"nav-study", diaryPage:"nav-diary", profilePage:"nav-profile" };
-    const navEl = document.getElementById(navMap[id]);
-    if (navEl) navEl.classList.add("active");
+    ["habitPage","studyPage","diaryPage","statsPage"].forEach(p=>document.getElementById(p).style.display="none");
+    document.getElementById(id).style.display="block";
+    document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+    const navMap={habitPage:"nav-habits",studyPage:"nav-study",diaryPage:"nav-diary",statsPage:"nav-stats"};
+    const navEl=document.getElementById(navMap[id]); if(navEl) navEl.classList.add("active");
     applyLanguage();
-    if (id === 'diaryPage') { renderCalendar(); renderDiary(); }
-    if (id === 'profilePage') renderProfile();
+    if(id==='diaryPage'){renderCalendar();renderDiary();}
+    if(id==='statsPage') renderStats();
 }
 
-// ==================== DATA ====================
-let tasks = [], lessons = [], diaries = {};
+let tasks=[], lessons=[], diaries={};
 
-async function api(method, url, body) {
-    const opts = { method, headers: { "Content-Type": "application/json" } };
-    if (body) opts.body = JSON.stringify(body);
-    const res = await fetch(url, opts);
-    return res.json();
+async function api(method,url,body) {
+    const opts={method,headers:{"Content-Type":"application/json"}};
+    if(body) opts.body=JSON.stringify(body);
+    const res=await fetch(url,opts); return res.json();
 }
 
 async function loadAll() {
-    const [habitsData, studiesData, diariesData] = await Promise.all([
-        api("GET", "/api/habits"), api("GET", "/api/studies"), api("GET", "/api/diaries")
-    ]);
-    tasks = (habitsData || []).map(h => ({ id: h.id, text: h.name, time: h.time || "", category: h.category || "", history: h.history || {} }));
-    lessons = studiesData || [];
-    diaries = {};
-    (diariesData || []).forEach(d => {
-        if (!diaries[d.date]) diaries[d.date] = [];
-        diaries[d.date].push({ id: d.id, text: d.entry, time: d.time, image: d.image || null, voice: d.voice || null });
-    });
+    const user=await api("GET","/api/user");
+    if(!user||user.error){console.warn("Not logged in");return;}
+    const [habitsData,studiesData,diariesData]=await Promise.all([api("GET","/api/habits"),api("GET","/api/studies"),api("GET","/api/diaries")]);
+    if(Array.isArray(habitsData)) tasks=habitsData.map(h=>({id:h.id,text:h.name,time:h.time||"",category:h.category||"",history:h.history||{}}));
+    if(Array.isArray(studiesData)) lessons=studiesData;
+    if(Array.isArray(diariesData)){diaries={};diariesData.forEach(d=>{if(!diaries[d.date])diaries[d.date]=[];diaries[d.date].push({id:d.id,text:d.entry,time:d.time,image:d.image||null,voice:d.voice||null});});}
     render(); renderLessons(); applyLanguage();
-    if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id)
-        api("POST", "/api/link-telegram", { telegramId: window.Telegram.WebApp.initDataUnsafe.user.id }).catch(() => {});
+    if(window.Telegram?.WebApp?.initDataUnsafe?.user?.id) api("POST","/api/link-telegram",{telegramId:window.Telegram.WebApp.initDataUnsafe.user.id}).catch(()=>{});
     checkNotificationPrompt();
 }
 
-// ==================== CATEGORIES ====================
-const categories = [
-    { name: "Study", color: "#d0ebff" }, { name: "Health", color: "#d3f9d8" },
-    { name: "Exercise", color: "#fff3bf" }, { name: "Work", color: "#ffd8a8" },
-    { name: "Mind", color: "#eebefa" }, { name: "Social", color: "#ffc9c9" },
-    { name: "Growth", color: "#c3fae8" }
-];
-const categoryInput = document.getElementById("categoryInput");
-categories.forEach(c => { categoryInput.innerHTML += `<option>${c.name}</option>`; });
+const categories=[{name:"Study",color:"#d0ebff"},{name:"Health",color:"#d3f9d8"},{name:"Exercise",color:"#fff3bf"},{name:"Work",color:"#ffd8a8"},{name:"Mind",color:"#eebefa"},{name:"Social",color:"#ffc9c9"},{name:"Growth",color:"#c3fae8"}];
+const categoryInput=document.getElementById("categoryInput");
+categories.forEach(c=>{categoryInput.innerHTML+=`<option>${c.name}</option>`;});
 
-// ==================== FILTER ROW ====================
 function renderFilterRow() {
-    const row = document.getElementById('filterRow');
-    if (!row) return;
-    const all = t('allFilter');
-    const cats = [all, ...categories.map(c => c.name)];
-    row.innerHTML = cats.map(c =>
-        `<button class="filter-btn ${activeFilter === c ? 'active' : ''}" onclick="setFilter('${c}')">${c}</button>`
-    ).join('');
+    const row=document.getElementById('filterRow'); if(!row) return;
+    const cats=[t('allFilter'),...categories.map(c=>c.name)];
+    row.innerHTML=cats.map(c=>`<button class="filter-btn ${(activeFilter==='All'&&c===t('allFilter'))||activeFilter===c?'active':''}" onclick="setFilter('${c}')">${c}</button>`).join('');
 }
+function setFilter(cat) { activeFilter=cat===t('allFilter')?'All':cat; renderFilterRow(); renderStats(); }
+function getFilteredTasks() { return activeFilter==='All'?tasks:tasks.filter(task=>task.category===activeFilter); }
 
-function setFilter(cat) {
-    activeFilter = cat;
-    renderFilterRow();
-    render();
-}
-
-function getFilteredTasks() {
-    if (activeFilter === 'All' || activeFilter === t('allFilter')) return tasks;
-    return tasks.filter(t => t.category === activeFilter);
-}
-
-// ==================== WEEK ====================
-function getMonday(d) {
-    let day = d.getDay(), diff = day === 0 ? -6 : 1 - day;
-    return new Date(new Date(d).setDate(d.getDate() + diff));
-}
-let currentMonday = getMonday(new Date());
-function changeWeek(days) { currentMonday.setDate(currentMonday.getDate() + days); render(); }
+function getMonday(d) { let day=d.getDay(),diff=day===0?-6:1-day; return new Date(new Date(d).setDate(d.getDate()+diff)); }
+let currentMonday=getMonday(new Date());
+function changeWeek(days) { currentMonday.setDate(currentMonday.getDate()+days); render(); }
 function getWeek() {
-    let arr = [];
-    for (let i = 0; i < 7; i++) {
-        let d = new Date(currentMonday); d.setDate(d.getDate() + i);
-        arr.push({ date: d.toISOString().split("T")[0], label: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) });
-    }
+    let arr=[];
+    for(let i=0;i<7;i++){let d=new Date(currentMonday);d.setDate(d.getDate()+i);arr.push({date:d.toISOString().split("T")[0],label:d.toLocaleDateString("en-US",{month:"short",day:"numeric"})});}
     return arr;
 }
 
-// ==================== STREAK ====================
-function getStreak(task) {
-    let streak = 0;
-    let d = new Date();
-    while (true) {
-        const dateStr = d.toISOString().split("T")[0];
-        if (task.history[dateStr]) { streak++; d.setDate(d.getDate() - 1); }
-        else break;
-    }
-    return streak;
-}
+function getStreak(task) { let streak=0,d=new Date(); while(true){const ds=d.toISOString().split("T")[0];if(task.history[ds]){streak++;d.setDate(d.getDate()-1);}else break;} return streak; }
+function getTotalDone(task) { return Object.values(task.history).filter(Boolean).length; }
 
-function getTotalDone(task) {
-    return Object.values(task.history).filter(Boolean).length;
+function renderStats() {
+    renderStreaks(); renderStatsGrid(); renderChart(); renderLongChart(); renderBestHabits(); renderFilterRow(); checkNotificationPrompt();
 }
 
 function renderStreaks() {
-    const banner = document.getElementById('streakBanner');
-    if (!banner) return;
-    const filtered = getFilteredTasks();
-    if (filtered.length === 0) { banner.innerHTML = ''; return; }
-
-    const maxStreak = Math.max(...filtered.map(getStreak));
-    const today = new Date().toISOString().split("T")[0];
-    const todayDone = filtered.filter(task => task.history[today]).length;
-    const total = filtered.reduce((a, task) => a + getTotalDone(task), 0);
-
-    banner.innerHTML = `
-        <div class="streak-card">
-            <div>
-                <div class="streak-num">🔥 ${maxStreak}</div>
-                <div class="streak-label">${t('streakLabel')}</div>
-            </div>
-        </div>
+    const banner=document.getElementById('streakBanner'); if(!banner) return;
+    const filtered=getFilteredTasks(); if(filtered.length===0){banner.innerHTML='';return;}
+    const maxStreak=Math.max(...filtered.map(getStreak));
+    const today=new Date().toISOString().split("T")[0];
+    const todayDone=filtered.filter(task=>task.history[today]).length;
+    const total=filtered.reduce((a,task)=>a+getTotalDone(task),0);
+    banner.innerHTML=`
+        <div class="streak-card"><div><div class="streak-num">🔥 ${maxStreak}</div><div class="streak-label">${t('streakLabel')}</div></div></div>
         <div class="streak-card" style="background:linear-gradient(135deg,#d3f9d8,#8ce99a);">
-            <div>
-                <div class="streak-num" style="color:#2b8a3e;">${todayDone}/${filtered.length}</div>
-                <div class="streak-label" style="color:#1a5c2a;">Today</div>
-            </div>
+            <div><div class="streak-num" style="color:#2b8a3e;">${todayDone}/${filtered.length}</div><div class="streak-label" style="color:#1a5c2a;">Today</div></div>
         </div>
         <div class="streak-card" style="background:linear-gradient(135deg,#d0ebff,#74c0fc);">
-            <div>
-                <div class="streak-num" style="color:#1864ab;">${total}</div>
-                <div class="streak-label" style="color:#1864ab;">${t('totalDone')}</div>
-            </div>
-        </div>
-    `;
-}
-
-// ==================== CHART ====================
-function renderChart() {
-    const bars = document.getElementById('chartBars');
-    if (!bars) return;
-    const filtered = getFilteredTasks();
-    if (filtered.length === 0) { bars.innerHTML = ''; return; }
-
-    let html = '';
-    for (let i = 6; i >= 0; i--) {
-        const d = new Date(); d.setDate(d.getDate() - i);
-        const dateStr = d.toISOString().split("T")[0];
-        const done = filtered.filter(task => task.history[dateStr]).length;
-        const pct = filtered.length > 0 ? Math.round((done / filtered.length) * 100) : 0;
-        const h = Math.max(4, pct * 0.76);
-        const color = pct >= 70 ? '#40c057' : pct >= 40 ? '#fd7e14' : '#868e96';
-        const label = d.toLocaleDateString('en-US', { weekday: 'short' });
-        html += `<div class="chart-bar-wrap">
-            <div class="chart-bar-pct">${pct}%</div>
-            <div class="chart-bar" style="height:${h}px; background:${color};"></div>
-            <div class="chart-bar-label">${label}</div>
+            <div><div class="streak-num" style="color:#1864ab;">${total}</div><div class="streak-label" style="color:#1864ab;">${t('totalDone')}</div></div>
         </div>`;
-    }
-    bars.innerHTML = html;
 }
 
-// ==================== STATS GRID ====================
 function renderStatsGrid() {
-    const grid = document.getElementById('statsGrid');
-    if (!grid) return;
-    const filtered = getFilteredTasks();
-    const today = new Date().toISOString().split("T")[0];
-    const todayDone = filtered.filter(task => task.history[today]).length;
-    const total = filtered.length;
-    const pct = total > 0 ? Math.round((todayDone / total) * 100) : 0;
-
-    // Best day in last 30 days
-    let bestPct = 0;
-    for (let i = 0; i < 30; i++) {
-        const d = new Date(); d.setDate(d.getDate() - i);
-        const ds = d.toISOString().split("T")[0];
-        const done = filtered.filter(task => task.history[ds]).length;
-        const p = total > 0 ? Math.round((done / total) * 100) : 0;
-        if (p > bestPct) bestPct = p;
-    }
-
-    grid.innerHTML = `
+    const grid=document.getElementById('statsGrid'); if(!grid) return;
+    const filtered=getFilteredTasks();
+    const today=new Date().toISOString().split("T")[0];
+    const todayDone=filtered.filter(task=>task.history[today]).length;
+    const total=filtered.length;
+    const pct=total>0?Math.round((todayDone/total)*100):0;
+    let bestPct=0;
+    for(let i=0;i<30;i++){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];const done=filtered.filter(task=>task.history[ds]).length;const p=total>0?Math.round((done/total)*100):0;if(p>bestPct)bestPct=p;}
+    grid.innerHTML=`
         <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">${t('activeHabits')}</div></div>
         <div class="stat-card"><div class="stat-num">${pct}%</div><div class="stat-label">Today</div></div>
         <div class="stat-card"><div class="stat-num">${bestPct}%</div><div class="stat-label">${t('bestDay')}</div></div>
-        <div class="stat-card"><div class="stat-num">${filtered.reduce((a, task) => a + getTotalDone(task), 0)}</div><div class="stat-label">${t('totalDone')}</div></div>
-    `;
+        <div class="stat-card"><div class="stat-num">${filtered.reduce((a,task)=>a+getTotalDone(task),0)}</div><div class="stat-label">${t('totalDone')}</div></div>`;
 }
 
-// ==================== HABITS RENDER ====================
-async function addTask() {
-    let input = document.getElementById("taskInput"), time = document.getElementById("taskTime");
-    if (!input.value.trim()) return;
-    await api("POST", "/api/habits", { name: input.value, time: time.value, category: categoryInput.value });
-    input.value = ""; time.value = ""; await loadAll();
+function renderChart() {
+    const bars=document.getElementById('chartBars'); if(!bars) return;
+    const filtered=getFilteredTasks(); if(filtered.length===0){bars.innerHTML='';return;}
+    let html='';
+    for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];const done=filtered.filter(task=>task.history[ds]).length;const pct=filtered.length>0?Math.round((done/filtered.length)*100):0;const h=Math.max(4,pct*0.76);const color=pct>=70?'#40c057':pct>=40?'#fd7e14':'#868e96';const label=d.toLocaleDateString('en-US',{weekday:'short'});html+=`<div class="chart-bar-wrap"><div class="chart-bar-pct">${pct}%</div><div class="chart-bar" style="height:${h}px;background:${color};"></div><div class="chart-bar-label">${label}</div></div>`;}
+    bars.innerHTML=html;
 }
-async function deleteTask(i) { if (confirm(t('deleteHabit'))) { await api("DELETE", `/api/habits/${tasks[i].id}`); await loadAll(); } }
-async function toggle(i, date) { tasks[i].history[date] = !tasks[i].history[date]; await api("PUT", `/api/habits/${tasks[i].id}`, { history: tasks[i].history }); render(); }
+
+function renderLongChart() {
+    const el=document.getElementById('longChart'); if(!el||tasks.length===0){if(el)el.innerHTML='';return;}
+    let html='';
+    for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];const done=tasks.filter(task=>task.history[ds]).length;const pct=tasks.length>0?Math.round((done/tasks.length)*100):0;const h=Math.max(2,pct*0.96);const color=pct>=70?'#40c057':pct>=40?'#fd7e14':'#dee2e6';html+=`<div class="chart-bar-wrap" style="gap:2px;"><div class="chart-bar" style="height:${h}px;background:${color};border-radius:3px 3px 0 0;"></div></div>`;}
+    el.innerHTML=html;
+}
+
+function renderBestHabits() {
+    const el=document.getElementById('bestHabitsSection'); if(!el||tasks.length===0){if(el)el.innerHTML='';return;}
+    const ranked=[...tasks].sort((a,b)=>getTotalDone(b)-getTotalDone(a)).slice(0,5);
+    el.innerHTML=`<div class="best-habits-box"><div style="font-weight:700;margin-bottom:12px;">${t('bestHabits')}</div>${ranked.map((task,i)=>{const done=getTotalDone(task);const streak=getStreak(task);return`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #e9ecef;"><span style="font-size:1.2rem;">${['🥇','🥈','🥉','4️⃣','5️⃣'][i]}</span><strong style="flex:1;">${escapeHtml(task.text)}</strong><span style="font-size:12px;color:#667eea;">${done} done</span>${streak>0?`<span style="font-size:12px;color:#e67700;">🔥${streak}</span>`:''}</div>`;}).join('')}</div>`;
+}
+
+function exportCSV() {
+    const week=getWeek();
+    let csv="Habit,Category,Time,"+week.map(d=>d.date).join(",")+",Weekly%\n";
+    tasks.forEach(task=>{let row=`"${task.text}","${task.category}","${task.time||''}"`;week.forEach(d=>row+=","+(task.history[d.date]?"1":"0"));row+=","+getPercent(task,week)+"%";csv+=row+"\n";});
+    const blob=new Blob([csv],{type:"text/csv"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`fikrcha_${new Date().toISOString().split("T")[0]}.csv`;a.click();URL.revokeObjectURL(url);
+}
+
+function checkNotificationPrompt() {
+    if('Notification' in window&&Notification.permission==='default'){const banner=document.getElementById('notifBanner');const msg=document.getElementById('notifMsg');if(banner&&msg){msg.textContent=t('notifEnable');banner.style.display='flex';}}
+    else{const banner=document.getElementById('notifBanner');if(banner)banner.style.display='none';}
+}
+async function requestNotifications() {
+    const perm=await Notification.requestPermission();
+    if(perm==='granted'){const banner=document.getElementById('notifBanner');if(banner)banner.style.display='none';scheduleNotifications();new Notification('FIKRCHA 🌟',{body:'Notifications enabled!'});}
+}
+function scheduleNotifications() {
+    setInterval(()=>{if(Notification.permission!=='granted')return;const now=new Date();const hh=String(now.getHours()).padStart(2,'0');const mm=String(now.getMinutes()).padStart(2,'0');const today=now.toISOString().split("T")[0];tasks.forEach(task=>{if(!task.time||task.history[today])return;if(task.time===`${hh}:${mm}`)new Notification(`⏰ FIKRCHA: ${task.text}`,{body:`Time for your habit!`});});},60000);
+}
+
+async function addTask() { let input=document.getElementById("taskInput"),time=document.getElementById("taskTime"); if(!input.value.trim())return; await api("POST","/api/habits",{name:input.value,time:time.value,category:categoryInput.value}); input.value="";time.value="";await loadAll(); }
+async function deleteTask(i) { if(confirm(t('deleteHabit'))){await api("DELETE",`/api/habits/${tasks[i].id}`);await loadAll();} }
+async function toggle(i,date) { tasks[i].history[date]=!tasks[i].history[date];await api("PUT",`/api/habits/${tasks[i].id}`,{history:tasks[i].history});render(); }
 
 function editTask(i) {
-    let modal = document.createElement("div"); modal.className = "modal-overlay";
-    modal.innerHTML = `<div class="edit-modal"><h3>${t('editHabitTitle')}</h3>
-        <label>${t('habitNameLabel')}</label>
-        <input type="text" id="editHabitName" value="${escapeHtml(tasks[i].text)}">
-        <label style="display:block;margin-top:12px;">${t('timeLabel')}</label>
-        <input type="time" id="editHabitTime" value="${tasks[i].time || ""}">
-        <div class="edit-modal-buttons">
-            <button onclick="closeModal()">${t('cancel')}</button>
-            <button class="btn-primary" onclick="saveEditHabit(${i})">${t('save')}</button>
-        </div></div>`;
-    document.body.appendChild(modal); window.currentModal = modal;
+    let modal=document.createElement("div");modal.className="modal-overlay";
+    modal.innerHTML=`<div class="edit-modal"><h3>${t('editHabitTitle')}</h3><label>${t('habitNameLabel')}</label><input type="text" id="editHabitName" value="${escapeHtml(tasks[i].text)}"><label style="display:block;margin-top:12px;">${t('timeLabel')}</label><input type="time" id="editHabitTime" value="${tasks[i].time||""}"><div class="edit-modal-buttons"><button onclick="closeModal()">${t('cancel')}</button><button class="btn-primary" onclick="saveEditHabit(${i})">${t('save')}</button></div></div>`;
+    document.body.appendChild(modal);window.currentModal=modal;
 }
-function closeModal() { if (window.currentModal) { window.currentModal.remove(); window.currentModal = null; } }
-async function saveEditHabit(i) {
-    let newName = document.getElementById("editHabitName").value.trim(), newTime = document.getElementById("editHabitTime").value;
-    if (newName) tasks[i].text = newName; tasks[i].time = newTime;
-    await api("PUT", `/api/habits/${tasks[i].id}`, { name: tasks[i].text, time: newTime }); closeModal(); render();
-}
+function closeModal() { if(window.currentModal){window.currentModal.remove();window.currentModal=null;} }
+async function saveEditHabit(i) { let newName=document.getElementById("editHabitName").value.trim(),newTime=document.getElementById("editHabitTime").value; if(newName)tasks[i].text=newName;tasks[i].time=newTime;await api("PUT",`/api/habits/${tasks[i].id}`,{name:tasks[i].text,time:newTime});closeModal();render(); }
 
-function getPercent(task, week) { let done = 0; week.forEach(d => { if (task.history[d.date]) done++; }); return Math.round((done / 7) * 100); }
-function getDailyPercent(week, dayIndex, taskList) {
-    let date = week[dayIndex].date, total = taskList.length; if (total === 0) return 0;
-    let done = 0; taskList.forEach(task => { if (task.history[date]) done++; });
-    return Math.round((done / total) * 100);
-}
+function getPercent(task,week){let done=0;week.forEach(d=>{if(task.history[d.date])done++;});return Math.round((done/7)*100);}
+function getDailyPercent(week,dayIndex,taskList){let date=week[dayIndex].date,total=taskList.length;if(total===0)return 0;let done=0;taskList.forEach(task=>{if(task.history[date])done++;});return Math.round((done/total)*100);}
 
 function render() {
-    renderStreaks();
-    renderChart();
-    renderStatsGrid();
-
-    const week = getWeek();
-    document.getElementById("weekTitle").innerText = t('weekTitlePrefix') + week[0].label;
-    let header = "<th>Habit</th>";
-    week.forEach(d => header += `<th>${d.label}</th>`);
-    header += "<th>%</th><th>⚙️</th>";
-    document.getElementById("weekHeader").innerHTML = header;
-
-    const filtered = getFilteredTasks();
-    let body = "";
-    filtered.forEach((task, fi) => {
-        const i = tasks.indexOf(task);
-        let color = categories.find(c => c.name === task.category)?.color || "#fff";
-        const streak = getStreak(task);
-        let row = `<tr style="background:${color}">
-            <td>
-                <strong>${escapeHtml(task.text)}</strong>
-                ${streak > 0 ? `<span style="font-size:10px;color:#e67700;"> 🔥${streak}</span>` : ''}
-                <br><small>⏰ ${task.time || t('anytime')}</small>
-                <br><span class="cat-tag" style="font-size:10px;background:rgba(0,0,0,0.05);padding:2px 8px;border-radius:20px;">${task.category}</span>
-            </td>`;
-        week.forEach(d => {
-            let checked = task.history[d.date] ? "checked" : "";
-            row += `<td><input type="checkbox" ${checked} onclick="toggle(${i},'${d.date}')" style="transform:scale(1.1);cursor:pointer;"></td>`;
-        });
-        row += `<td style="font-weight:bold;color:#667eea;">${getPercent(task, week)}%</td>
-            <td>
-                <button onclick="editTask(${i})" style="background:#e9ecef;">${t('edit')}</button>
-                <button onclick="deleteTask(${i})" style="background:#ffe0e0;">${t('delete')}</button>
-            </td></tr>`;
-        body += row;
+    const week=getWeek();
+    document.getElementById("weekTitle").innerText=t('weekTitlePrefix')+week[0].label;
+    let header="<th>Habit</th>";week.forEach(d=>header+=`<th>${d.label}</th>`);header+="<th>%</th><th>⚙️</th>";
+    document.getElementById("weekHeader").innerHTML=header;
+    let body="";
+    tasks.forEach((task,i)=>{
+        let color=categories.find(c=>c.name===task.category)?.color||"#fff";
+        const streak=getStreak(task);
+        let row=`<tr style="background:${color}"><td><strong>${escapeHtml(task.text)}</strong>${streak>0?`<span style="font-size:10px;color:#e67700;"> 🔥${streak}</span>`:''}<br><small>⏰ ${task.time||t('anytime')}</small><br><span class="cat-tag" style="font-size:10px;background:rgba(0,0,0,0.05);padding:2px 8px;border-radius:20px;">${task.category}</span></td>`;
+        week.forEach(d=>{let checked=task.history[d.date]?"checked":"";row+=`<td><input type="checkbox" ${checked} onclick="toggle(${i},'${d.date}')" style="transform:scale(1.1);cursor:pointer;"></td>`;});
+        row+=`<td style="font-weight:bold;color:#667eea;">${getPercent(task,week)}%</td><td><button onclick="editTask(${i})" style="background:#e9ecef;">${t('edit')}</button><button onclick="deleteTask(${i})" style="background:#ffe0e0;">${t('delete')}</button></td></tr>`;
+        body+=row;
     });
-
-    if (filtered.length > 0) {
-        let dailyRow = `<tr class="daily-row"><td style="font-weight:bold;">${t('dailyPercentRow')}</td>`;
-        for (let i = 0; i < week.length; i++) {
-            let pct = getDailyPercent(week, i, filtered);
-            let color = pct >= 70 ? "#28a745" : pct >= 40 ? "#fd7e14" : "#dc3545";
-            dailyRow += `<td style="font-weight:bold;color:${color};">${pct}%</td>`;
-        }
-        dailyRow += `<td colspan="2" style="font-size:10px;color:#6c757d;">✅ Daily | 📊 Weekly</td></tr>`;
-        body += dailyRow;
+    if(tasks.length>0){
+        let dailyRow=`<tr class="daily-row"><td style="font-weight:bold;">${t('dailyPercentRow')}</td>`;
+        for(let i=0;i<week.length;i++){let pct=getDailyPercent(week,i,tasks),color=pct>=70?"#28a745":pct>=40?"#fd7e14":"#dc3545";dailyRow+=`<td style="font-weight:bold;color:${color};">${pct}%</td>`;}
+        dailyRow+=`<td colspan="2" style="font-size:10px;color:#6c757d;">✅ Daily | 📊 Weekly</td></tr>`;body+=dailyRow;
     }
-    document.getElementById("taskBody").innerHTML = body;
+    document.getElementById("taskBody").innerHTML=body;
 }
 
-// ==================== EXPORT CSV ====================
-function exportCSV() {
-    const week = getWeek();
-    let csv = "Habit,Category,Time," + week.map(d => d.date).join(",") + ",Weekly%\n";
-    tasks.forEach(task => {
-        let row = `"${task.text}","${task.category}","${task.time || ''}"`;
-        week.forEach(d => row += "," + (task.history[d.date] ? "1" : "0"));
-        row += "," + getPercent(task, week) + "%";
-        csv += row + "\n";
-    });
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url;
-    a.download = `fikrcha_habits_${new Date().toISOString().split("T")[0]}.csv`;
-    a.click(); URL.revokeObjectURL(url);
-}
+async function addLesson() { let input=document.getElementById("lessonInput");if(!input.value.trim())return;await api("POST","/api/studies",{title:input.value});input.value="";await loadAll();setTimeout(()=>{const all=document.querySelectorAll('details.lesson');if(all.length>0){const last=all[all.length-1];last.open=true;}},100); }
+async function deleteLesson(i) { if(confirm(t('deleteLesson'))){await api("DELETE",`/api/studies/${lessons[i].id}`);await loadAll();} }
 
-// ==================== NOTIFICATIONS ====================
-function checkNotificationPrompt() {
-    if ('Notification' in window && Notification.permission === 'default') {
-        const banner = document.getElementById('notifBanner');
-        const msg = document.getElementById('notifMsg');
-        if (banner && msg) { msg.textContent = t('notifEnable'); banner.style.display = 'flex'; }
-    }
-}
+let activityImageData={};
+function previewActivityImage(i,input){if(!input.files||!input.files[0])return;let reader=new FileReader();reader.onload=e=>{activityImageData[i]=e.target.result;let el=document.getElementById(`activity-img-name-${i}`);if(el)el.textContent="✅ Photo ready";};reader.readAsDataURL(input.files[0]);}
 
-async function requestNotifications() {
-    const perm = await Notification.requestPermission();
-    const banner = document.getElementById('notifBanner');
-    if (perm === 'granted') {
-        if (banner) banner.style.display = 'none';
-        scheduleNotifications();
-        new Notification('FIKRCHA 🌟', { body: 'Notifications enabled! We\'ll remind you of your habits.' });
-    }
-}
+function saveOpenStates(){const s={};document.querySelectorAll('details.lesson').forEach((el,idx)=>{s[idx]=el.open;});return s;}
+function restoreOpenStates(s){document.querySelectorAll('details.lesson').forEach((el,idx)=>{if(s[idx]){el.open=true;const arrow=el.querySelector('.lesson-toggle');if(arrow)arrow.style.transform='rotate(90deg)';}});}
 
-function scheduleNotifications() {
-    // Check every minute for habits due soon
-    setInterval(() => {
-        if (Notification.permission !== 'granted') return;
-        const now = new Date();
-        const hh = String(now.getHours()).padStart(2, '0');
-        const mm = String(now.getMinutes()).padStart(2, '0');
-        const today = now.toISOString().split("T")[0];
-        tasks.forEach(task => {
-            if (!task.time || task.history[today]) return;
-            if (task.time === `${hh}:${mm}`) {
-                new Notification(`⏰ FIKRCHA: ${task.text}`, { body: `Time for your habit! Tap to open.`, icon: '/favicon.ico' });
-            }
-        });
-    }, 60000);
-}
-
-// ==================== STUDY ====================
-async function addLesson() {
-    let input = document.getElementById("lessonInput"); if (!input.value.trim()) return;
-    await api("POST", "/api/studies", { title: input.value }); input.value = ""; await loadAll();
-    setTimeout(() => {
-        const allLessons = document.querySelectorAll('details.lesson');
-        if (allLessons.length > 0) { const last = allLessons[allLessons.length - 1]; last.open = true; }
-    }, 100);
-}
-async function deleteLesson(i) { if (confirm(t('deleteLesson'))) { await api("DELETE", `/api/studies/${lessons[i].id}`); await loadAll(); } }
-
-let activityImageData = {};
-function previewActivityImage(i, input) {
-    if (!input.files || !input.files[0]) return;
-    let reader = new FileReader();
-    reader.onload = e => { activityImageData[i] = e.target.result; let el = document.getElementById(`activity-img-name-${i}`); if (el) el.textContent = "✅ Ready"; };
-    reader.readAsDataURL(input.files[0]);
-}
-
-async function addLessonTask(i) {
-    let input = document.getElementById(`activity-${i}`); if (!input.value.trim()) return;
-    lessons[i].tasks.push({ text: input.value, history: {}, comment: "", image: activityImageData[i] || null });
-    input.value = ""; activityImageData[i] = null;
-    await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
-    const openStates = {};
-    document.querySelectorAll('details.lesson').forEach((el, idx) => { openStates[idx] = el.open; });
-    renderLessons();
-    document.querySelectorAll('details.lesson').forEach((el, idx) => {
-        if (openStates[idx]) { el.open = true; const arrow = el.querySelector('.lesson-toggle'); if (arrow) arrow.style.transform = 'rotate(90deg)'; }
-    });
-}
-
-async function deleteLessonTask(i, j) { lessons[i].tasks.splice(j, 1); await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); renderLessons(); }
-async function toggleLessonTask(i, j) {
-    let today = new Date().toISOString().split("T")[0];
-    lessons[i].tasks[j].history[today] = !lessons[i].tasks[j].history[today];
-    await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
-    const openStates = {};
-    document.querySelectorAll('details.lesson').forEach((el, idx) => { openStates[idx] = el.open; });
-    renderLessons();
-    document.querySelectorAll('details.lesson').forEach((el, idx) => {
-        if (openStates[idx]) { el.open = true; const arrow = el.querySelector('.lesson-toggle'); if (arrow) arrow.style.transform = 'rotate(90deg)'; }
-    });
-}
-async function saveComment(i, j, value) { lessons[i].tasks[j].comment = value; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); }
+async function addLessonTask(i){let input=document.getElementById(`activity-${i}`);if(!input.value.trim())return;lessons[i].tasks.push({text:input.value,history:{},comment:"",image:activityImageData[i]||null});input.value="";activityImageData[i]=null;await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOpenStates();renderLessons();restoreOpenStates(s);}
+async function deleteLessonTask(i,j){lessons[i].tasks.splice(j,1);await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOpenStates();renderLessons();restoreOpenStates(s);}
+async function toggleLessonTask(i,j){let today=new Date().toISOString().split("T")[0];lessons[i].tasks[j].history[today]=!lessons[i].tasks[j].history[today];await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOpenStates();renderLessons();restoreOpenStates(s);}
+async function saveComment(i,j,value){lessons[i].tasks[j].comment=value;await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});}
 
 function renderLessons() {
-    let html = "";
-    lessons.forEach((l, i) => {
-        const done = l.tasks.filter(t => t.history[new Date().toISOString().split("T")[0]]).length;
-        const total = l.tasks.length;
-        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-        html += `<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;">
-            <summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;">
+    let html="";
+    lessons.forEach((l,i)=>{
+        const done=l.tasks.filter(task=>task.history[new Date().toISOString().split("T")[0]]).length;
+        const total=l.tasks.length;const pct=total>0?Math.round((done/total)*100):0;
+        html+=`<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;">
+            <summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
                 <div style="display:flex;align-items:center;gap:12px;">
                     <span style="font-size:1.1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>
-                    ${total > 0 ? `<span style="font-size:12px;background:#f1f3f5;padding:2px 10px;border-radius:20px;color:#495057;">${done}/${total} · ${pct}%</span>` : ''}
+                    ${total>0?`<span style="font-size:12px;background:#f1f3f5;padding:2px 10px;border-radius:20px;color:#495057;">${done}/${total} · ${pct}%</span>`:''}
                 </div>
                 <span style="font-size:1.2rem;color:#667eea;" class="lesson-toggle">▶</span>
             </summary>
             <div style="padding:0 20px 20px 20px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;">
                 <div style="margin:12px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
                     <input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:150px;">
-                    <label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:13px;">🖼️
-                        <input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i}, this)">
-                    </label>
+                    <label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:13px;">🖼️<input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i},this)"></label>
                     <span id="activity-img-name-${i}" style="font-size:12px;color:#888;"></span>
                     <button onclick="addLessonTask(${i})" style="background:#667eea;color:white;">➕ Add</button>
                 </div>
                 <ul style="list-style:none;padding-left:0;">`;
-        l.tasks.forEach((task, j) => {
-            let today = new Date().toISOString().split("T")[0], checked = task.history[today] ? "checked" : "";
-            html += `<li style="background:#f8f9fa;margin:8px 0;padding:12px;border-radius:12px;">
-                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                    <input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);">
-                    <strong style="flex:1;">${escapeHtml(task.text)}</strong>
-                    <button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button>
-                </div>
-                ${task.image ? `<img src="${task.image}" style="max-width:100%;max-height:200px;border-radius:10px;margin:8px 0;display:block;object-fit:cover;">` : ""}
-                <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%;margin-top:8px;">${escapeHtml(task.comment)}</textarea>
-            </li>`;
+        l.tasks.forEach((task,j)=>{
+            let today=new Date().toISOString().split("T")[0],checked=task.history[today]?"checked":"";
+            html+=`<li style="background:#f8f9fa;margin:8px 0;padding:12px;border-radius:12px;"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"><input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);"><strong style="flex:1;">${escapeHtml(task.text)}</strong><button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button></div>${task.image?`<img src="${task.image}" style="max-width:100%;max-height:250px;border-radius:10px;margin:8px 0;display:block;object-fit:cover;">`:""}
+                <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%;margin-top:8px;">${escapeHtml(task.comment)}</textarea></li>`;
         });
-        html += `</ul><div style="margin-top:12px;text-align:right;">
-            <button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ Delete Module</button>
-        </div></div></details>`;
+        html+=`</ul><div style="margin-top:12px;text-align:right;"><button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ ${t('delete')} Module</button></div></div></details>`;
     });
-    document.getElementById("lessonContainer").innerHTML = html;
-    document.querySelectorAll('details.lesson').forEach(details => {
-        details.addEventListener('toggle', function() {
-            const arrow = this.querySelector('.lesson-toggle');
-            if (arrow) arrow.style.transform = this.open ? 'rotate(90deg)' : 'rotate(0deg)';
-        });
-    });
+    document.getElementById("lessonContainer").innerHTML=html;
+    document.querySelectorAll('details.lesson').forEach(details=>{details.addEventListener('toggle',function(){const arrow=this.querySelector('.lesson-toggle');if(arrow)arrow.style.transform=this.open?'rotate(90deg)':'rotate(0deg)';});});
 }
 
-// ==================== DIARY ====================
-let calViewYear = new Date().getFullYear();
-let calViewMonth = new Date().getMonth();
-
-function calPrev() { calViewMonth--; if (calViewMonth < 0) { calViewMonth = 11; calViewYear--; } renderCalendar(); }
-function calNext() { calViewMonth++; if (calViewMonth > 11) { calViewMonth = 0; calViewYear++; } renderCalendar(); }
-
-function renderCalendar() {
-    const label = document.getElementById('calMonthLabel');
-    const grid = document.getElementById('calGrid');
-    const headers = document.getElementById('calDayHeaders');
-    if (!label || !grid || !headers) return;
-
-    const days = t('days');
-    headers.innerHTML = days.map(d => `<div class="cal-day-header">${d}</div>`).join('');
-
-    const monthName = new Date(calViewYear, calViewMonth, 1).toLocaleDateString(
-        currentLang === 'uz' ? 'uz-UZ' : currentLang === 'ru' ? 'ru-RU' : 'en-US',
-        { month: 'long', year: 'numeric' }
-    );
-    label.textContent = monthName;
-
-    const firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
-    const offset = firstDay === 0 ? 6 : firstDay - 1;
-    const daysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
-
-    const selectedDate = document.getElementById('diaryDate').value;
-    let html = '';
-    for (let i = 0; i < offset; i++) html += `<div class="cal-day empty"></div>`;
-    for (let d = 1; d <= daysInMonth; d++) {
-        const dateStr = `${calViewYear}-${String(calViewMonth + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-        const hasEntry = diaries[dateStr] && diaries[dateStr].length > 0;
-        const isSelected = dateStr === selectedDate;
-        html += `<div class="cal-day ${hasEntry ? 'has-entry' : ''} ${isSelected ? 'selected' : ''}" onclick="selectCalDay('${dateStr}')">${d}</div>`;
-    }
-    grid.innerHTML = html;
+let calViewYear=new Date().getFullYear(),calViewMonth=new Date().getMonth();
+function calPrev(){calViewMonth--;if(calViewMonth<0){calViewMonth=11;calViewYear--;}renderCalendar();}
+function calNext(){calViewMonth++;if(calViewMonth>11){calViewMonth=0;calViewYear++;}renderCalendar();}
+function renderCalendar(){
+    const label=document.getElementById('calMonthLabel'),grid=document.getElementById('calGrid'),headers=document.getElementById('calDayHeaders');
+    if(!label||!grid||!headers)return;
+    headers.innerHTML=t('days').map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+    label.textContent=new Date(calViewYear,calViewMonth,1).toLocaleDateString(currentLang==='uz'?'uz-UZ':currentLang==='ru'?'ru-RU':'en-US',{month:'long',year:'numeric'});
+    const firstDay=new Date(calViewYear,calViewMonth,1).getDay();
+    const offset=firstDay===0?6:firstDay-1;
+    const daysInMonth=new Date(calViewYear,calViewMonth+1,0).getDate();
+    const selectedDate=document.getElementById('diaryDate').value;
+    let html='';
+    for(let i=0;i<offset;i++)html+=`<div class="cal-day empty"></div>`;
+    for(let d=1;d<=daysInMonth;d++){const ds=`${calViewYear}-${String(calViewMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const hasEntry=diaries[ds]&&diaries[ds].length>0;const isSel=ds===selectedDate;html+=`<div class="cal-day ${hasEntry?'has-entry':''} ${isSel?'selected':''}" onclick="selectCalDay('${ds}')">${d}</div>`;}
+    grid.innerHTML=html;
 }
+function selectCalDay(ds){document.getElementById('diaryDate').value=ds;renderCalendar();renderDiary();}
 
-function selectCalDay(dateStr) {
-    document.getElementById('diaryDate').value = dateStr;
-    renderCalendar();
-    renderDiary();
+let diaryImageData=null;
+function previewDiaryImage(input){if(!input.files||!input.files[0])return;let reader=new FileReader();reader.onload=e=>{diaryImageData=e.target.result;document.getElementById("diaryPreviewImg").src=diaryImageData;document.getElementById("diaryImagePreview").style.display="flex";};reader.readAsDataURL(input.files[0]);}
+function clearDiaryImage(){diaryImageData=null;document.getElementById("diaryImage").value="";document.getElementById("diaryImagePreview").style.display="none";}
+
+let mediaRecorder=null,audioChunks=[],voiceData=null,recordingTimer=null,recordingSeconds=0;
+async function toggleRecording(){
+    const btn=document.getElementById("voiceBtn"),timerEl=document.getElementById("voiceTimer");
+    if(mediaRecorder&&mediaRecorder.state==="recording"){mediaRecorder.stop();clearInterval(recordingTimer);btn.textContent=t('recordVoice');btn.classList.remove("recording");timerEl.style.display="none";}
+    else{try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});audioChunks=[];const mimeType=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":MediaRecorder.isTypeSupported("audio/webm")?"audio/webm":"audio/ogg";mediaRecorder=new MediaRecorder(stream,{mimeType});mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};mediaRecorder.onstop=()=>{const blob=new Blob(audioChunks,{type:mimeType});const reader=new FileReader();reader.onload=e=>{voiceData=e.target.result;document.getElementById("voiceAudio").src=voiceData;document.getElementById("voicePreview").style.display="flex";};reader.readAsDataURL(blob);stream.getTracks().forEach(t=>t.stop());};mediaRecorder.start();btn.textContent=t('stopRecording');btn.classList.add("recording");recordingSeconds=0;timerEl.style.display="block";timerEl.textContent="⏺ 0s";recordingTimer=setInterval(()=>{recordingSeconds++;timerEl.textContent=`⏺ ${recordingSeconds}s`;if(recordingSeconds>=120)toggleRecording();},1000);}catch(err){alert("❌ Microphone access denied.");}}
 }
+function clearVoice(){voiceData=null;document.getElementById("voiceAudio").src="";document.getElementById("voicePreview").style.display="none";}
 
-let diaryImageData = null;
-function previewDiaryImage(input) {
-    if (!input.files || !input.files[0]) return;
-    let reader = new FileReader();
-    reader.onload = e => { diaryImageData = e.target.result; document.getElementById("diaryPreviewImg").src = diaryImageData; document.getElementById("diaryImagePreview").style.display = "flex"; };
-    reader.readAsDataURL(input.files[0]);
-}
-function clearDiaryImage() { diaryImageData = null; document.getElementById("diaryImage").value = ""; document.getElementById("diaryImagePreview").style.display = "none"; }
+async function addDiary(){let date=document.getElementById("diaryDate").value,text=document.getElementById("diaryInput").value;if(!date||!text.trim())return;await api("POST","/api/diaries",{date,entry:text,image:diaryImageData||null,voice:voiceData||null});if(!diaries[date])diaries[date]=[];diaries[date].push({text,time:new Date().toLocaleTimeString(),image:diaryImageData||null,voice:voiceData||null});document.getElementById("diaryInput").value="";clearDiaryImage();clearVoice();await loadAll();renderCalendar();renderDiary();}
+async function deleteDiary(date,i){const entry=diaries[date][i];if(entry?.id)await api("DELETE",`/api/diaries/${entry.id}`);diaries[date].splice(i,1);renderDiary();renderCalendar();}
+async function editDiary(date,i){let newText=prompt("Edit entry:",diaries[date][i].text);if(newText){diaries[date][i].text=newText;if(diaries[date][i].id)await api("PUT",`/api/diaries/${diaries[date][i].id}`,{entry:newText});renderDiary();}}
 
-let mediaRecorder = null, audioChunks = [], voiceData = null, recordingTimer = null, recordingSeconds = 0;
-async function toggleRecording() {
-    const btn = document.getElementById("voiceBtn"), timerEl = document.getElementById("voiceTimer");
-    if (mediaRecorder && mediaRecorder.state === "recording") {
-        mediaRecorder.stop(); clearInterval(recordingTimer);
-        btn.textContent = t('recordVoice'); btn.classList.remove("recording"); timerEl.style.display = "none";
-    } else {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); audioChunks = [];
-            const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus" : MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "audio/ogg";
-            mediaRecorder = new MediaRecorder(stream, { mimeType });
-            mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(audioChunks, { type: mimeType });
-                const reader = new FileReader();
-                reader.onload = e => { voiceData = e.target.result; document.getElementById("voiceAudio").src = voiceData; document.getElementById("voicePreview").style.display = "flex"; };
-                reader.readAsDataURL(blob); stream.getTracks().forEach(t => t.stop());
-            };
-            mediaRecorder.start(); btn.textContent = t('stopRecording'); btn.classList.add("recording");
-            recordingSeconds = 0; timerEl.style.display = "block"; timerEl.textContent = "⏺ 0s";
-            recordingTimer = setInterval(() => { recordingSeconds++; timerEl.textContent = `⏺ ${recordingSeconds}s`; if (recordingSeconds >= 120) toggleRecording(); }, 1000);
-        } catch (err) { alert("❌ Microphone access denied."); }
-    }
-}
-function clearVoice() { voiceData = null; document.getElementById("voiceAudio").src = ""; document.getElementById("voicePreview").style.display = "none"; }
-
-async function addDiary() {
-    let date = document.getElementById("diaryDate").value, text = document.getElementById("diaryInput").value;
-    if (!date || !text.trim()) return;
-    await api("POST", "/api/diaries", { date, entry: text, image: diaryImageData || null, voice: voiceData || null });
-    if (!diaries[date]) diaries[date] = [];
-    diaries[date].push({ text, time: new Date().toLocaleTimeString(), image: diaryImageData || null, voice: voiceData || null });
-    document.getElementById("diaryInput").value = ""; clearDiaryImage(); clearVoice();
-    await loadAll(); renderCalendar(); renderDiary();
-}
-
-async function deleteDiary(date, i) {
-    const entry = diaries[date][i]; if (entry?.id) await api("DELETE", `/api/diaries/${entry.id}`);
-    diaries[date].splice(i, 1); renderDiary(); renderCalendar();
-}
-async function editDiary(date, i) {
-    let newText = prompt("Edit entry:", diaries[date][i].text);
-    if (newText) { diaries[date][i].text = newText; if (diaries[date][i].id) await api("PUT", `/api/diaries/${diaries[date][i].id}`, { entry: newText }); renderDiary(); }
-}
-
-function renderDiary() {
-    const date = document.getElementById("diaryDate").value;
-    const container = document.getElementById("diaryContainer");
-    const title = document.getElementById("diaryTitle");
-    const searchVal = (document.getElementById("diarySearch")?.value || "").toLowerCase();
-
-    if (!date && !searchVal) { if (container) container.innerHTML = `<p style="color:#adb5bd;">${t('selectDate')}</p>`; if (title) title.innerText = ''; return; }
-
-    if (searchVal) {
-        // Search across all dates
-        let results = [];
-        Object.entries(diaries).forEach(([d, entries]) => {
-            entries.forEach((entry, i) => {
-                if (entry.text.toLowerCase().includes(searchVal)) results.push({ date: d, entry, i });
-            });
-        });
-        if (title) title.innerText = `🔍 ${results.length} result(s)`;
-        if (container) container.innerHTML = results.map(r =>
-            `<div class="entry"><small style="color:#667eea;">📅 ${r.date} · 🕐 ${r.entry.time}</small>
-            <p style="margin:8px 0;">${escapeHtml(r.entry.text)}</p>
-            ${r.entry.image ? `<img src="${r.entry.image}" style="max-width:100%;max-height:200px;border-radius:12px;margin:8px 0;display:block;">` : ""}
-            ${r.entry.voice ? `<div class="voice-preview"><audio controls src="${r.entry.voice}" style="flex:1;height:36px;"></audio></div>` : ""}
-            <button onclick="editDiary('${r.date}',${r.i})" style="background:#e9ecef;">${t('edit')}</button>
-            <button onclick="deleteDiary('${r.date}',${r.i})" style="background:#ffe0e0;">${t('delete')}</button></div>`
-        ).join('') || `<p style="color:#adb5bd;">No results found.</p>`;
+function renderDiary(){
+    const date=document.getElementById("diaryDate").value;
+    const container=document.getElementById("diaryContainer");
+    const title=document.getElementById("diaryTitle");
+    const searchVal=(document.getElementById("diarySearch")?.value||"").toLowerCase().trim();
+    if(searchVal){
+        let results=[];Object.entries(diaries).forEach(([d,entries])=>{entries.forEach((entry,i)=>{if(entry.text.toLowerCase().includes(searchVal))results.push({date:d,entry,i});});});
+        if(title)title.innerText=`🔍 ${results.length} result(s)`;
+        if(container)container.innerHTML=results.map(r=>`<div class="entry"><small style="color:#667eea;">📅 ${r.date} · 🕐 ${r.entry.time}</small><p style="margin:8px 0;">${escapeHtml(r.entry.text)}</p>${r.entry.image?`<img src="${r.entry.image}" style="max-width:100%;max-height:200px;border-radius:12px;margin:8px 0;display:block;">`:""}${r.entry.voice?`<div class="voice-preview"><audio controls src="${r.entry.voice}" style="flex:1;height:36px;"></audio></div>`:""}<button onclick="editDiary('${r.date}',${r.i})" style="background:#e9ecef;">${t('edit')}</button><button onclick="deleteDiary('${r.date}',${r.i})" style="background:#ffe0e0;">${t('delete')}</button></div>`).join('')||`<p style="color:#adb5bd;">No results.</p>`;
         return;
     }
-
-    if (title) title.innerText = t('entriesFor') + date;
-    const entries = diaries[date] || [];
-    if (container) container.innerHTML = entries.map((d, i) =>
-        `<div class="entry"><small style="color:#b45309;">🕐 ${d.time}</small>
-        <p style="margin:8px 0;">${escapeHtml(d.text)}</p>
-        ${d.image ? `<img src="${d.image}" style="max-width:100%;max-height:300px;border-radius:12px;margin:8px 0;display:block;object-fit:cover;">` : ""}
-        ${d.voice ? `<div class="voice-preview" style="margin:8px 0;">🎤 <audio controls src="${d.voice}" style="flex:1;height:36px;"></audio></div>` : ""}
-        <button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">${t('edit')}</button>
-        <button onclick="deleteDiary('${date}',${i})" style="background:#ffe0e0;">${t('delete')}</button></div>`
-    ).join('') || `<p style="color:#adb5bd;">${t('selectDate')}</p>`;
+    if(!date){if(container)container.innerHTML=`<p style="color:#adb5bd;">${t('selectDate')}</p>`;if(title)title.innerText='';return;}
+    if(title)title.innerText=t('entriesFor')+date;
+    const entries=diaries[date]||[];
+    if(container)container.innerHTML=entries.map((d,i)=>`<div class="entry"><small style="color:#b45309;">🕐 ${d.time}</small><p style="margin:8px 0;">${escapeHtml(d.text)}</p>${d.image?`<img src="${d.image}" style="max-width:100%;max-height:300px;border-radius:12px;margin:8px 0;display:block;object-fit:cover;">`:""}${d.voice?`<div class="voice-preview" style="margin:8px 0;">🎤 <audio controls src="${d.voice}" style="flex:1;height:36px;"></audio></div>`:""}<button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">${t('edit')}</button><button onclick="deleteDiary('${date}',${i})" style="background:#ffe0e0;">${t('delete')}</button></div>`).join('')||`<p style="color:#adb5bd;">${t('selectDate')}</p>`;
 }
 
-// ==================== PROFILE ====================
-function renderProfile() {
-    // Stats
-    const statsEl = document.getElementById('profileStats');
-    const totalHabits = tasks.length;
-    const totalDiaries = Object.values(diaries).reduce((a, b) => a + b.length, 0);
-    const totalStudies = lessons.length;
-    const totalDone = tasks.reduce((a, task) => a + getTotalDone(task), 0);
-    const memberSince = localStorage.getItem('fikrcha_since') || new Date().toISOString().split('T')[0];
-    localStorage.setItem('fikrcha_since', memberSince);
-    document.getElementById('profileSince').textContent = t('memberSince') + ': ' + memberSince;
+function escapeHtml(str){if(!str)return"";return str.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]||m));}
 
-    if (statsEl) statsEl.innerHTML = `
-        <div class="stat-card"><div class="stat-num">${totalHabits}</div><div class="stat-label">Habits</div></div>
-        <div class="stat-card"><div class="stat-num">${totalDone}</div><div class="stat-label">${t('totalDone')}</div></div>
-        <div class="stat-card"><div class="stat-num">${totalDiaries}</div><div class="stat-label">Diary entries</div></div>
-        <div class="stat-card"><div class="stat-num">${totalStudies}</div><div class="stat-label">Lessons</div></div>
-    `;
+async function tryTelegramAutoLogin(){const tg=window.Telegram?.WebApp;if(tg){tg.ready();await new Promise(r=>setTimeout(r,500));const user=tg.initDataUnsafe?.user;if(user?.id){await fetch('/auth/telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user})});await fetch('/api/link-telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({telegramId:user.id})});}}}
 
-    // 30-day chart
-    const longChart = document.getElementById('longChart');
-    if (longChart && tasks.length > 0) {
-        let html = '';
-        for (let i = 29; i >= 0; i--) {
-            const d = new Date(); d.setDate(d.getDate() - i);
-            const dateStr = d.toISOString().split("T")[0];
-            const done = tasks.filter(task => task.history[dateStr]).length;
-            const pct = tasks.length > 0 ? Math.round((done / tasks.length) * 100) : 0;
-            const h = Math.max(2, pct * 0.96);
-            const color = pct >= 70 ? '#40c057' : pct >= 40 ? '#fd7e14' : '#dee2e6';
-            html += `<div class="chart-bar-wrap" style="gap:2px;">
-                <div class="chart-bar" style="height:${h}px;background:${color};border-radius:3px 3px 0 0;"></div>
-            </div>`;
-        }
-        longChart.innerHTML = html;
-    }
+document.getElementById("diaryDate").addEventListener("change",()=>{renderCalendar();renderDiary();});
 
-    // Best habits
-    const best = document.getElementById('bestHabits');
-    if (best && tasks.length > 0) {
-        const ranked = [...tasks].sort((a, b) => getTotalDone(b) - getTotalDone(a)).slice(0, 5);
-        best.innerHTML = `<div style="background:#f8f9fa;border-radius:16px;padding:16px;margin-top:12px;">
-            <div style="font-weight:700;margin-bottom:12px;">${t('bestHabits')}</div>
-            ${ranked.map((task, i) => {
-                const done = getTotalDone(task);
-                const streak = getStreak(task);
-                return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #e9ecef;">
-                    <span style="font-size:1.2rem;">${['🥇','🥈','🥉','4️⃣','5️⃣'][i]}</span>
-                    <strong style="flex:1;">${escapeHtml(task.text)}</strong>
-                    <span style="font-size:12px;color:#667eea;">${done} done</span>
-                    ${streak > 0 ? `<span style="font-size:12px;color:#e67700;">🔥${streak}</span>` : ''}
-                </div>`;
-            }).join('')}
-        </div>`;
-    }
-}
+window.closeModal=closeModal;window.saveEditHabit=saveEditHabit;
+window.addTask=addTask;window.addLesson=addLesson;window.addDiary=addDiary;
+window.toggle=toggle;window.deleteTask=deleteTask;window.deleteLesson=deleteLesson;
+window.deleteDiary=deleteDiary;window.editDiary=editDiary;window.showPage=showPage;
+window.setLanguage=setLanguage;window.toggleDark=toggleDark;
+window.calPrev=calPrev;window.calNext=calNext;window.selectCalDay=selectCalDay;
+window.requestNotifications=requestNotifications;window.exportCSV=exportCSV;
+window.addLessonTask=addLessonTask;window.deleteLessonTask=deleteLessonTask;
+window.toggleLessonTask=toggleLessonTask;window.saveComment=saveComment;
+window.editTask=editTask;window.previewActivityImage=previewActivityImage;
+window.previewDiaryImage=previewDiaryImage;window.clearDiaryImage=clearDiaryImage;
+window.clearVoice=clearVoice;window.toggleRecording=toggleRecording;window.setFilter=setFilter;
 
-// ==================== UTILS ====================
-function escapeHtml(str) {
-    if (!str) return "";
-    return str.replace(/[&<>]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[m] || m));
-}
-
-async function tryTelegramAutoLogin() {
-    const tg = window.Telegram?.WebApp; if (tg) {
-        tg.ready(); await new Promise(r => setTimeout(r, 500));
-        const user = tg.initDataUnsafe?.user;
-        if (user?.id) {
-            await fetch('/auth/telegram', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user }) });
-            await fetch('/api/link-telegram', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telegramId: user.id }) });
-        }
-    }
-}
-
-// ==================== INIT ====================
-document.getElementById("diaryDate").addEventListener("change", () => { renderCalendar(); renderDiary(); });
-document.getElementById("diarySearch").addEventListener("input", renderDiary);
-
-// Expose globals
-window.closeModal = closeModal; window.saveEditHabit = saveEditHabit;
-window.addTask = addTask; window.addLesson = addLesson; window.addDiary = addDiary;
-window.toggle = toggle; window.deleteTask = deleteTask; window.deleteLesson = deleteLesson;
-window.deleteDiary = deleteDiary; window.editDiary = editDiary; window.showPage = showPage;
-window.setLanguage = setLanguage; window.toggleDark = toggleDark;
-window.calPrev = calPrev; window.calNext = calNext; window.selectCalDay = selectCalDay;
-window.requestNotifications = requestNotifications; window.exportCSV = exportCSV;
-window.addLessonTask = addLessonTask; window.deleteLessonTask = deleteLessonTask;
-window.toggleLessonTask = toggleLessonTask; window.saveComment = saveComment;
-window.editTask = editTask; window.previewActivityImage = previewActivityImage;
-window.previewDiaryImage = previewDiaryImage; window.clearDiaryImage = clearDiaryImage;
-window.clearVoice = clearVoice; window.toggleRecording = toggleRecording;
-window.setFilter = setFilter; window.renderProfile = renderProfile;
-
-document.body.classList.toggle('dark', darkMode);
-tryTelegramAutoLogin().then(() => loadAll());
-if (Notification.permission === 'granted') scheduleNotifications();
-setTimeout(applyLanguage, 300);
+document.body.classList.toggle('dark',darkMode);
+tryTelegramAutoLogin().then(()=>loadAll());
+if(Notification.permission==='granted') scheduleNotifications();
+setTimeout(applyLanguage,300);
 </script>
 </body>
 </html>
