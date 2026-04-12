@@ -202,7 +202,12 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
         <div class="app">
             <div class="app-header">
                 <h2>✨ FIKRCHA</h2>
-                <span class="subtitle">think · grow · achieve</span>
+                <span class="subtitle" id="appSubtitle">think · grow · achieve</span>
+<div style="display:flex; gap:4px; margin-left:12px;">
+  <button onclick="setLanguage('uz')" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">UZ</button>
+  <button onclick="setLanguage('en')" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">EN</button>
+  <button onclick="setLanguage('ru')" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">RU</button>
+</div>
             </div>
 
             <div class="nav-buttons">
@@ -298,9 +303,167 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
                 document.querySelector(`.nav-btn[onclick*="${map[id]}"]`).classList.add("active");
             }
 
-            let tasks = [];
-            let lessons = [];
-            let diaries = {};
+            // 🌍 TRANSLATIONS
+const i18n = {
+  en: {
+    subtitle: "think · grow · achieve",
+    habitsTab: "📅 Habits",
+    studyTab: "📚 Study",
+    diaryTab: "🧠 Diary",
+    habitsTitle: "✨ Daily Habits Tracker",
+    prevWeek: "◀ Previous Week",
+    nextWeek: "Next Week ▶",
+    habitPlaceholder: "Habit name",
+    addHabit: "➕ Add Habit",
+    studyTitle: "📖 Study Journal",
+    lessonPlaceholder: "New lesson/module",
+    addLesson: "➕ Add Lesson",
+    diaryTitle: "🧠 Life Diary",
+    diaryPlaceholder: "Write your day, feelings, memories...",
+    recordVoice: "🎤 Record Voice",
+    stopRecording: "⏹ Stop Recording",
+    saveEntry: "💾 Save Entry",
+    selectDate: "Select a date",
+    entriesFor: "📔 Entries for ",
+    deleteHabit: "Delete habit?",
+    deleteLesson: "Delete lesson?",
+    editHabitTitle: "✏️ Edit Habit",
+    habitNameLabel: "Habit name:",
+    timeLabel: "Time:",
+    cancel: "Cancel",
+    save: "Save",
+    anytime: "anytime",
+    dailyPercentRow: "📊 Daily %",
+    completionNote: "✅ Check daily boxes | 📊 Weekly % = completion rate | 📅 Daily % = overall completion for that day"
+  },
+  uz: {
+    subtitle: "o'yla · o's · erish",
+    habitsTab: "📅 Odatlar",
+    studyTab: "📚 O'qish",
+    diaryTab: "🧠 Kundalik",
+    habitsTitle: "✨ Kunlik Odatlar Kuzatuvchisi",
+    prevWeek: "◀ Oldingi Hafta",
+    nextWeek: "Keyingi Hafta ▶",
+    habitPlaceholder: "Odat nomi",
+    addHabit: "➕ Odat Qo'shish",
+    studyTitle: "📖 O'qish Jurnali",
+    lessonPlaceholder: "Yangi dars/modul",
+    addLesson: "➕ Dars Qo'shish",
+    diaryTitle: "🧠 Hayot Kundaligi",
+    diaryPlaceholder: "Kuningiz, his-tuyg'ularingiz, xotiralaringizni yozing...",
+    recordVoice: "🎤 Ovoz Yozish",
+    stopRecording: "⏹ Yozishni To'xtatish",
+    saveEntry: "💾 Saqlash",
+    selectDate: "Sana tanlang",
+    entriesFor: "📔 Kirishlar: ",
+    deleteHabit: "Odatni o'chirilsinmi?",
+    deleteLesson: "Darsni o'chirilsinmi?",
+    editHabitTitle: "✏️ Odatni Tahrirlash",
+    habitNameLabel: "Odat nomi:",
+    timeLabel: "Vaqt:",
+    cancel: "Bekor qilish",
+    save: "Saqlash",
+    anytime: "istalgan vaqt",
+    dailyPercentRow: "📊 Kunlik %",
+    completionNote: "✅ Kunlik belgilarni qo'ying | 📊 Haftalik % = bajarilish darajasi | 📅 Kunlik % = shu kun uchun umumiy bajarilish"
+  },
+  ru: {
+    subtitle: "думай · расти · достигай",
+    habitsTab: "📅 Привычки",
+    studyTab: "📚 Учеба",
+    diaryTab: "🧠 Дневник",
+    habitsTitle: "✨ Ежедневный Трекер Привычек",
+    prevWeek: "◀ Пред. неделя",
+    nextWeek: "След. неделя ▶",
+    habitPlaceholder: "Название привычки",
+    addHabit: "➕ Добавить",
+    studyTitle: "📖 Учебный Журнал",
+    lessonPlaceholder: "Новый урок/модуль",
+    addLesson: "➕ Добавить урок",
+    diaryTitle: "🧠 Жизненный Дневник",
+    diaryPlaceholder: "Пишите о своём дне, чувствах, воспоминаниях...",
+    recordVoice: "🎤 Записать голос",
+    stopRecording: "⏹ Остановить запись",
+    saveEntry: "💾 Сохранить",
+    selectDate: "Выберите дату",
+    entriesFor: "📔 Записи за ",
+    deleteHabit: "Удалить привычку?",
+    deleteLesson: "Удалить урок?",
+    editHabitTitle: "✏️ Редактировать привычку",
+    habitNameLabel: "Название:",
+    timeLabel: "Время:",
+    cancel: "Отмена",
+    save: "Сохранить",
+    anytime: "в любое время",
+    dailyPercentRow: "📊 День %",
+    completionNote: "✅ Отмечайте ежедневно | 📊 Недельный % = процент выполнения | 📅 Дневной % = общее выполнение за день"
+  }
+};
+
+// Current language (default: EN, fallback to browser or saved)
+let currentLang = localStorage.getItem('fikrcha_lang') || 
+                  (navigator.language.startsWith('uz') ? 'uz' : 
+                   navigator.language.startsWith('ru') ? 'ru' : 'en');
+
+function t(key) {
+  return i18n[currentLang]?.[key] || i18n.en[key] || key;
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('fikrcha_lang', lang);
+  applyLanguage();
+}
+
+function applyLanguage() {
+  // Update static UI elements
+  document.getElementById('appSubtitle').textContent = t('subtitle');
+  document.getElementById('habitsTitle').textContent = t('habitsTitle');
+  document.getElementById('studyTitle').textContent = t('studyTitle');
+  document.getElementById('diaryTitleHeader').textContent = t('diaryTitle');
+  
+  // Update placeholders
+  document.getElementById('taskInput').placeholder = t('habitPlaceholder');
+  document.getElementById('lessonInput').placeholder = t('lessonPlaceholder');
+  document.getElementById('diaryInput').placeholder = t('diaryPlaceholder');
+  
+  // Update buttons
+  document.querySelector('.nav-btn[onclick*="habitPage"]').textContent = t('habitsTab');
+  document.querySelector('.nav-btn[onclick*="studyPage"]').textContent = t('studyTab');
+  document.querySelector('.nav-btn[onclick*="diaryPage"]').textContent = t('diaryTab');
+  document.querySelector('.week-nav button:nth-child(1)').textContent = t('prevWeek');
+  document.querySelector('.week-nav button:nth-child(2)').textContent = t('nextWeek');
+  document.querySelector('#habitPage .btn-primary').textContent = t('addHabit');
+  document.querySelector('#studyPage .btn-primary').textContent = t('addLesson');
+  document.querySelector('#diaryPage .btn-primary').textContent = t('saveEntry');
+  
+  // Update voice button text dynamically
+  const voiceBtn = document.getElementById('voiceBtn');
+  if (voiceBtn && !voiceBtn.classList.contains('recording')) {
+    voiceBtn.textContent = t('recordVoice');
+  }
+
+  // Update habit table footer note
+  const noteEl = document.querySelector('#habitPage > p[style*="12px"]');
+  if (noteEl) noteEl.textContent = t('completionNote');
+
+  // Re-render dynamic tables if needed
+  if (document.getElementById('habitPage').style.display !== 'none') render();
+  if (document.getElementById('diaryPage').style.display !== 'none' && document.getElementById('diaryDate').value) renderDiary();
+  
+  // Highlight active language button
+  document.querySelectorAll('[style*="border-radius:20px"]').forEach(btn => {
+    if (['UZ','EN','RU'].includes(btn.textContent.trim())) {
+      const isActive = btn.textContent.trim().toLowerCase() === currentLang;
+      btn.style.background = isActive ? '#667eea' : '#f1f3f5';
+      btn.style.color = isActive ? 'white' : '#495057';
+    }
+  });
+}
+
+let tasks = [];
+let lessons = [];
+let diaries = {};
 
             async function api(method, url, body) {
                 const opts = { method, headers: { "Content-Type": "application/json" } };
@@ -754,6 +917,7 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
             window.saveEditHabit = saveEditHabit;
 
             tryTelegramAutoLogin().then(() => loadAll());
+setTimeout(applyLanguage, 300); // Runs after UI loads
         </script>
     </body>
 </html>
