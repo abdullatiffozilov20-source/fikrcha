@@ -273,8 +273,8 @@ app.get("/api/diaries", (req, res) => {
 app.post("/api/diaries", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const { date, entry, image } = req.body;
-  const newDiary = { id: Date.now(), date, entry, image: image || null, time: new Date().toLocaleTimeString() };
+  const { date, entry, image, voice } = req.body;
+  const newDiary = { id: Date.now(), date, entry, image: image || null, voice: voice || null, time: new Date().toLocaleTimeString() };
   if (!diaries[user.id]) diaries[user.id] = [];
   diaries[user.id].push(newDiary);
   saveData();
