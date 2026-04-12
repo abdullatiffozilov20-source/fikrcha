@@ -114,7 +114,11 @@
             th { background: #f8f9fa; font-weight: 600; color: #495057; }
             td { background: white; }
 
-            .lesson { border: 1px solid #e9ecef; border-radius: 20px; padding: 20px; margin-top: 16px; background: #fefefe; transition: all 0.2s; }
+            .lesson { border: 1px solid #e9ecef; border-radius: 20px; padding: 20px; margin-top: 16px; background: #fefefe; transition: all 0.2s; }/* Collapsible lesson fix */
+details.lesson summary::-webkit-details-marker { display: none; }
+details.lesson[open] summary { border-radius: 20px 20px 0 0; border-bottom: none; }
+.lesson-toggle { display: inline-block; transition: transform 0.2s ease; }
+details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
             .lesson:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
             .lesson h4 { margin-top: 0; margin-bottom: 12px; color: #2c3e50; font-size: 1.2rem; }
 
@@ -524,41 +528,71 @@
             }
 
             function renderLessons() {
-                let html = "";
-                lessons.forEach((l, i) => {
-                    html += `
-                    <div class="lesson">
-                        <h4>📘 ${escapeHtml(l.title)}</h4>
-                        <button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ Delete Module</button>
-                        <div style="margin:12px 0; display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
-                            <input id="activity-${i}" placeholder="New activity" style="flex:1; min-width:150px;">
-                            <label style="cursor:pointer; background:#f1f3f5; border-radius:10px; padding:6px 10px; font-size:13px;">
-                                🖼️ <input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i}, this)">
-                            </label>
-                            <span id="activity-img-name-${i}" style="font-size:12px; color:#888;"></span>
-                            <button onclick="addLessonTask(${i})" style="background:#667eea; color:white;">➕ Add</button>
-                        </div>
-                        <ul style="list-style:none; padding-left:0;">`;
+    let html = "";
+    lessons.forEach((l, i) => {
+        html += `
+        <details class="lesson" style="padding:0; border:none; background:transparent; box-shadow:none;">
+            <summary style="
+                list-style:none; 
+                cursor:pointer; 
+                background:#fefefe; 
+                border:1px solid #e9ecef; 
+                border-radius:20px; 
+                padding:20px; 
+                display:flex; 
+                justify-content:space-between; 
+                align-items:center;
+                transition:all 0.2s;
+            " onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+                <h4 style="margin:0; color:#2c3e50; font-size:1.2rem;">📘 ${escapeHtml(l.title)}</h4>
+                <span style="font-size:1.5rem; color:#667eea; transition:transform 0.2s;" class="lesson-toggle">▶</span>
+            </summary>
+            
+            <div style="padding:0 20px 20px 20px; background:#fefefe; border:1px solid #e9ecef; border-top:none; border-radius:0 0 20px 20px;">
+                <div style="margin:12px 0; display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+                    <input id="activity-${i}" placeholder="New activity" style="flex:1; min-width:150px;">
+                    <label style="cursor:pointer; background:#f1f3f5; border-radius:10px; padding:6px 10px; font-size:13px;">
+                        🖼️ <input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i}, this)">
+                    </label>
+                    <span id="activity-img-name-${i}" style="font-size:12px; color:#888;"></span>
+                    <button onclick="addLessonTask(${i})" style="background:#667eea; color:white;">➕ Add</button>
+                </div>
+                <ul style="list-style:none; padding-left:0;">`;
 
-                    l.tasks.forEach((t, j) => {
-                        let today = new Date().toISOString().split("T")[0];
-                        let checked = t.history[today] ? "checked" : "";
-                        html += `
-                        <li style="background:#f8f9fa; margin:8px 0; padding:12px; border-radius:12px;">
-                            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-                                <input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);">
-                                <strong style="flex:1;">${escapeHtml(t.text)}</strong>
-                                <button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button>
-                            </div>
-                            ${t.image ? `<img src="${t.image}" style="max-width:100%; max-height:250px; border-radius:10px; margin:8px 0; display:block; object-fit:cover;">` : ""}
-                            <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%; margin-top:8px;">${escapeHtml(t.comment)}</textarea>
-                        </li>`;
-                    });
+        l.tasks.forEach((t, j) => {
+            let today = new Date().toISOString().split("T")[0];
+            let checked = t.history[today] ? "checked" : "";
+            html += `
+            <li style="background:#f8f9fa; margin:8px 0; padding:12px; border-radius:12px;">
+                <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                    <input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);">
+                    <strong style="flex:1;">${escapeHtml(t.text)}</strong>
+                    <button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button>
+                </div>
+                ${t.image ? `<img src="${t.image}" style="max-width:100%; max-height:250px; border-radius:10px; margin:8px 0; display:block; object-fit:cover;">` : ""}
+                <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%; margin-top:8px;">${escapeHtml(t.comment)}</textarea>
+            </li>`;
+        });
 
-                    html += `</ul></div>`;
-                });
-                document.getElementById("lessonContainer").innerHTML = html;
+        html += `</ul>
+                <div style="margin-top:12px; text-align:right;">
+                    <button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ Delete Module</button>
+                </div>
+            </div>
+        </details>`;
+    });
+    document.getElementById("lessonContainer").innerHTML = html;
+
+    // Add smooth arrow rotation on expand/collapse
+    document.querySelectorAll('details.lesson').forEach((details) => {
+        details.addEventListener('toggle', function() {
+            const arrow = this.querySelector('.lesson-toggle');
+            if (arrow) {
+                arrow.style.transform = this.open ? 'rotate(90deg)' : 'rotate(0deg)';
             }
+        });
+    });
+}
 
             // DIARY IMAGE
             let diaryImageData = null;
