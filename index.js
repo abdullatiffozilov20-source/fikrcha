@@ -553,7 +553,9 @@ bot.launch({
 console.log("🤖 Bot is running!");
 
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`🌐 Web app running on port ${PORT}`);
     console.log(`🔗 URL: https://fikrcha.onrender.com`);
 });
+server.keepAliveTimeout = 120000;
+server.headersTimeout = 120000;
