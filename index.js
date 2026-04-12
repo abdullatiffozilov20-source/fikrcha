@@ -490,7 +490,11 @@ bot.command("progress", async (ctx) => {
 
 setInterval(() => {
   const now = new Date();
-  if (now.getHours() === 8 && now.getMinutes() === 0) {
+  const currentHour = now.getHours();
+  const currentMin = now.getMinutes();
+
+  // 🌅 8am morning reminder
+  if (currentHour === 8 && currentMin === 0) {
     Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
       const realId = getRealUserId(userId);
       const userHabits = habits[realId] || [];
@@ -503,6 +507,43 @@ setInterval(() => {
       ).catch(() => {});
     });
   }
+
+  // ⏰ 1-minute-before habit reminders
+  // Calculate what time is 1 minute from now
+  const reminderHour = currentMin === 59 ? (currentHour + 1) % 24 : currentHour;
+  const reminderMin = (currentMin + 1) % 60;
+  const reminderTimeStr = `${String(reminderHour).padStart(2, '0')}:${String(reminderMin).padStart(2, '0')}`;
+
+  const today = getTodayStr();
+
+  Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
+    const realId = getRealUserId(userId);
+    const userHabits = habits[realId] || [];
+
+    userHabits.forEach((habit) => {
+      if (!habit.time) return; // skip habits with no time set
+      if (habit.time !== reminderTimeStr) return; // not time yet
+      if (habit.history[today]) return; // already done today, skip reminder
+
+      const name = users[realId]?.name?.split(" ")[0] || "there";
+      bot.telegram.sendMessage(
+        telegramId,
+        `⏰ Hey ${name}! Your habit is starting in 1 minute:\n\n` +
+        `📌 *${habit.name}* at ${habit.time}\n\n` +
+        `Get ready! You can check it off below when done:`,
+        {
+          parse_mode: "Markdown",
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: `⬜ ${habit.name}`, callback_data: `tog_${realId}_${habit.id}` }],
+              [{ text: "🚀 Open App", web_app: { url: webAppUrl } }],
+            ],
+          },
+        }
+      ).catch(() => {});
+    });
+  });
+
 }, 60000);
 
 bot.launch({
