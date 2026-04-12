@@ -236,7 +236,7 @@
                         <select id="categoryInput" style="width: 100%"></select>
                     </div>
                     <div>
-                        <button class="btn-primary" onclick="addTask()" id="btn-add-habit">➕ Add Habit</button>
+                        <button class="btn-primary" onclick="addTask()" data-i18n-btn="addHabit">➕ Add Habit</button>
                     </div>
                 </div>
                 <h4 id="weekTitle" style="margin: 16px 0 8px 0; color: #495057;"></h4>
@@ -256,7 +256,7 @@
                 <h3 id="studyTitle">📖 Study Journal</h3>
                 <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
                     <input id="lessonInput" placeholder="New lesson/module" style="flex: 1; min-width: 200px" />
-                    <button class="btn-primary" onclick="addLesson()" id="btn-add-lesson">➕ Add Lesson</button>
+                    <button class="btn-primary" onclick="addLesson()" data-i18n-btn="addLesson">➕ Add Lesson</button>
                 </div>
                 <div id="lessonContainer"></div>
             </div>
@@ -287,7 +287,7 @@
                             <button onclick="clearVoice()" style="background:#ffe0e0; font-size: 11px; padding: 2px 6px; margin:0;">✕</button>
                         </div>
 
-                        <button class="btn-primary" onclick="addDiary()" id="btn-save-diary">💾 Save Entry</button>
+                       <button class="btn-primary" onclick="addDiary()" data-i18n-btn="saveEntry">💾 Save Entry</button>
                     </div>
                 </div>
                 <h4 id="diaryTitle" style="margin: 16px 0 8px"></h4>
@@ -408,59 +408,61 @@
             }
 
             function applyLanguage() {
-                // Update static text elements
-                const el = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
-                el('appSubtitle', 'subtitle');
-                el('habitsTitle', 'habitsTitle');
-                el('studyTitle', 'studyTitle');
-                el('diaryTitleHeader', 'diaryTitle');
-                
-                // Update placeholders
-                const ph = (id, key) => { const e = document.getElementById(id); if (e) e.placeholder = t(key); };
-                ph('taskInput', 'habitPlaceholder');
-                ph('lessonInput', 'lessonPlaceholder');
-                ph('diaryInput', 'diaryPlaceholder');
-                
-                // Update navigation buttons
-                const nav = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
-                nav('nav-habits', 'habitsTab');
-                nav('nav-study', 'studyTab');
-                nav('nav-diary', 'diaryTab');
-                
-                // Update week nav buttons
-                const wn = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
-                wn('btn-prev-week', 'prevWeek');
-                wn('btn-next-week', 'nextWeek');
-                
-                // Update action buttons
-                const ab = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
-                ab('btn-add-habit', 'addHabit');
-                ab('btn-add-lesson', 'addLesson');
-                ab('btn-save-diary', 'saveEntry');
-                
-                // Update voice button
-                const vb = document.getElementById('voiceBtn');
-                if (vb && !vb.classList.contains('recording')) vb.textContent = t('recordVoice');
-                
-                // Update footer note
-                const fn = document.getElementById('habit-footer-note');
-                if (fn) fn.textContent = t('completionNote');
-                
-                // Update language button styles
-                ['uz','en','ru'].forEach(lg => {
-                    const btn = document.getElementById('lang-' + lg);
-                    if (btn) {
-                        btn.style.background = (lg === currentLang) ? '#667eea' : '#f1f3f5';
-                        btn.style.color = (lg === currentLang) ? 'white' : '#495057';
-                    }
-                });
-                
-                // Re-render dynamic content
-                if (document.getElementById('habitPage').style.display !== 'none') render();
-                const dd = document.getElementById('diaryDate').value;
-                if (document.getElementById('diaryPage').style.display !== 'none' && dd) renderDiary();
-            }
-
+    // Update static text elements
+    const el = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
+    el('appSubtitle', 'subtitle');
+    el('habitsTitle', 'habitsTitle');
+    el('studyTitle', 'studyTitle');
+    el('diaryTitleHeader', 'diaryTitle');
+    
+    // Update placeholders
+    const ph = (id, key) => { const e = document.getElementById(id); if (e) e.placeholder = t(key); };
+    ph('taskInput', 'habitPlaceholder');
+    ph('lessonInput', 'lessonPlaceholder');
+    ph('diaryInput', 'diaryPlaceholder');
+    
+    // Update navigation buttons (by onclick attribute)
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        const onclick = btn.getAttribute('onclick');
+        if (onclick?.includes('habitPage')) btn.textContent = t('habitsTab');
+        else if (onclick?.includes('studyPage')) btn.textContent = t('studyTab');
+        else if (onclick?.includes('diaryPage')) btn.textContent = t('diaryTab');
+    });
+    
+    // Update week nav buttons
+    document.querySelectorAll('.week-nav button').forEach((btn, idx) => {
+        if (idx === 0) btn.textContent = t('prevWeek');
+        if (idx === 1) btn.textContent = t('nextWeek');
+    });
+    
+    // ✅ FIX: Update action buttons using data-i18n-btn attribute (safe for onclick)
+    document.querySelectorAll('[data-i18n-btn]').forEach(btn => {
+        const key = btn.getAttribute('data-i18n-btn');
+        if (key) btn.textContent = t(key);
+    });
+    
+    // Update voice button
+    const vb = document.getElementById('voiceBtn');
+    if (vb && !vb.classList.contains('recording')) vb.textContent = t('recordVoice');
+    
+    // Update footer note
+    const fn = document.getElementById('habit-footer-note');
+    if (fn) fn.textContent = t('completionNote');
+    
+    // Update language button styles
+    ['uz','en','ru'].forEach(lg => {
+        const btn = document.getElementById('lang-' + lg);
+        if (btn) {
+            btn.style.background = (lg === currentLang) ? '#667eea' : '#f1f3f5';
+            btn.style.color = (lg === currentLang) ? 'white' : '#495057';
+        }
+    });
+    
+    // Re-render dynamic content
+    if (document.getElementById('habitPage').style.display !== 'none') render();
+    const dd = document.getElementById('diaryDate').value;
+    if (document.getElementById('diaryPage').style.display !== 'none' && dd) renderDiary();
+}
             // NAVIGATION
             function showPage(id) {
                 ["habitPage","studyPage","diaryPage"].forEach(p => document.getElementById(p).style.display = "none");
