@@ -204,9 +204,9 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
                 <h2>✨ FIKRCHA</h2>
                 <span class="subtitle" id="appSubtitle">think · grow · achieve</span>
 <div style="display:flex; gap:4px; margin-left:12px;">
-  <button onclick="setLanguage('uz')" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">UZ</button>
-  <button onclick="setLanguage('en')" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">EN</button>
-  <button onclick="setLanguage('ru')" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">RU</button>
+    <button onclick="setLanguage('uz')" id="lang-uz" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">UZ</button>
+    <button onclick="setLanguage('en')" id="lang-en" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">EN</button>
+    <button onclick="setLanguage('ru')" id="lang-ru" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">RU</button>
 </div>
             </div>
 
@@ -689,12 +689,23 @@ let diaries = {};
 
             // STUDY
             async function addLesson() {
-                let input = document.getElementById("lessonInput");
-                if (!input.value.trim()) return;
-                await api("POST", "/api/studies", { title: input.value });
-                input.value = "";
-                await loadAll();
-            }
+    let input = document.getElementById("lessonInput");
+    if (!input.value.trim()) return;
+    await api("POST", "/api/studies", { title: input.value });
+    input.value = "";
+    await loadAll();
+    
+    // Auto-open the newly added lesson
+    setTimeout(() => {
+        const allLessons = document.querySelectorAll('details.lesson');
+        if (allLessons.length > 0) {
+            const lastLesson = allLessons[allLessons.length - 1];
+            lastLesson.open = true;
+            const arrow = lastLesson.querySelector('.lesson-toggle');
+            if (arrow) arrow.style.transform = 'rotate(90deg)';
+        }
+    }, 100);
+}
 
             async function deleteLesson(i) {
                 if (confirm("Delete lesson?")) { await api("DELETE", `/api/studies/${lessons[i].id}`); await loadAll(); }
