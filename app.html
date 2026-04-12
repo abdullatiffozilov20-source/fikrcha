@@ -476,7 +476,7 @@
             if (tasks.length > 0) {
                 let dailyRow = `<tr class="daily-row"><td style="font-weight:bold;">${t('dailyPercentRow')}</td>`;
                 for (let i = 0; i < week.length; i++) { let pct = getDailyPercent(week, i, tasks), color = pct >= 70 ? "#28a745" : pct >= 40 ? "#fd7e14" : "#dc3545"; dailyRow += `<td style="font-weight:bold; color:${color};">${pct}%</td>`; }
-                dailyRow += `<td colspan="2">${t('completionNote')}</td></tr>`; body += dailyRow;
+               dailyRow += `<td colspan="2" style="font-size:11px; color:#6c757d;">✅ Daily | 📊 Weekly % | 📅 Daily %</td></tr>`; body += dailyRow;
             }
             document.getElementById("taskBody").innerHTML = body; renderLessons();
         }
