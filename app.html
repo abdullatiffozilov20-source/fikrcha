@@ -505,10 +505,25 @@
             reader.readAsDataURL(input.files[0]);
         }
         async function addLessonTask(i) {
-            let input = document.getElementById(`activity-${i}`); if (!input.value.trim()) return;
-            lessons[i].tasks.push({ text: input.value, history: {}, comment: "", image: activityImageData[i] || null }); input.value = ""; activityImageData[i] = null;
-            await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); renderLessons();
-        }
+    let input = document.getElementById(`activity-${i}`); if (!input.value.trim()) return;
+    lessons[i].tasks.push({ text: input.value, history: {}, comment: "", image: activityImageData[i] || null }); input.value = ""; activityImageData[i] = null;
+    await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
+    
+    // Remember which lessons are open
+    const openStates = {};
+    document.querySelectorAll('details.lesson').forEach((el, idx) => { openStates[idx] = el.open; });
+    
+    renderLessons();
+    
+    // Restore open states
+    document.querySelectorAll('details.lesson').forEach((el, idx) => { 
+        if (openStates[idx]) { 
+            el.open = true; 
+            const arrow = el.querySelector('.lesson-toggle');
+            if (arrow) arrow.style.transform = 'rotate(90deg)';
+        } 
+    });
+}
         async function deleteLessonTask(i, j) { lessons[i].tasks.splice(j, 1); await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); renderLessons(); }
         async function toggleLessonTask(i, j) { let today = new Date().toISOString().split("T")[0]; lessons[i].tasks[j].history[today] = !lessons[i].tasks[j].history[today]; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); renderLessons(); }
         async function saveComment(i, j, value) { lessons[i].tasks[j].comment = value; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); }
