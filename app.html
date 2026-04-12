@@ -114,11 +114,13 @@
             th { background: #f8f9fa; font-weight: 600; color: #495057; }
             td { background: white; }
 
-            .lesson { border: 1px solid #e9ecef; border-radius: 20px; padding: 20px; margin-top: 16px; background: #fefefe; transition: all 0.2s; }/* Collapsible lesson fix */
-details.lesson summary::-webkit-details-marker { display: none; }
-details.lesson[open] summary { border-radius: 20px 20px 0 0; border-bottom: none; }
-.lesson-toggle { display: inline-block; transition: transform 0.2s ease; }
-details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
+            /* Collapsible lesson CSS */
+            details.lesson summary::-webkit-details-marker { display: none; }
+            details.lesson[open] summary { border-radius: 20px 20px 0 0; border-bottom: none; }
+            .lesson-toggle { display: inline-block; transition: transform 0.2s ease; }
+            details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
+
+            .lesson { border: 1px solid #e9ecef; border-radius: 20px; padding: 20px; margin-top: 16px; background: #fefefe; transition: all 0.2s; }
             .lesson:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
             .lesson h4 { margin-top: 0; margin-bottom: 12px; color: #2c3e50; font-size: 1.2rem; }
 
@@ -203,25 +205,25 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
             <div class="app-header">
                 <h2>✨ FIKRCHA</h2>
                 <span class="subtitle" id="appSubtitle">think · grow · achieve</span>
-<div style="display:flex; gap:4px; margin-left:12px;">
-    <button onclick="setLanguage('uz')" id="lang-uz" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">UZ</button>
-    <button onclick="setLanguage('en')" id="lang-en" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">EN</button>
-    <button onclick="setLanguage('ru')" id="lang-ru" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">RU</button>
-</div>
+                <div style="display:flex; gap:4px; margin-left:12px;">
+                    <button onclick="setLanguage('uz')" id="lang-uz" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">UZ</button>
+                    <button onclick="setLanguage('en')" id="lang-en" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">EN</button>
+                    <button onclick="setLanguage('ru')" id="lang-ru" style="padding:4px 10px; font-size:12px; border-radius:20px; background:#f1f3f5; color:#495057; border:none; cursor:pointer;">RU</button>
+                </div>
             </div>
 
             <div class="nav-buttons">
-                <button class="nav-btn active" onclick="showPage('habitPage')">📅 Habits</button>
-                <button class="nav-btn" onclick="showPage('studyPage')">📚 Study</button>
-                <button class="nav-btn" onclick="showPage('diaryPage')">🧠 Diary</button>
+                <button class="nav-btn active" onclick="showPage('habitPage')" id="nav-habits">📅 Habits</button>
+                <button class="nav-btn" onclick="showPage('studyPage')" id="nav-study">📚 Study</button>
+                <button class="nav-btn" onclick="showPage('diaryPage')" id="nav-diary">🧠 Diary</button>
             </div>
 
             <!-- HABITS -->
             <div id="habitPage">
-                <h3>✨ Daily Habits Tracker</h3>
+                <h3 id="habitsTitle">✨ Daily Habits Tracker</h3>
                 <div class="week-nav">
-                    <button onclick="changeWeek(-7)">◀ Previous Week</button>
-                    <button onclick="changeWeek(7)">Next Week ▶</button>
+                    <button onclick="changeWeek(-7)" id="btn-prev-week">◀ Previous Week</button>
+                    <button onclick="changeWeek(7)" id="btn-next-week">Next Week ▶</button>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; margin-bottom: 20px;">
                     <div style="flex: 1; min-width: 150px;">
@@ -234,7 +236,7 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
                         <select id="categoryInput" style="width: 100%"></select>
                     </div>
                     <div>
-                        <button class="btn-primary" onclick="addTask()">➕ Add Habit</button>
+                        <button class="btn-primary" onclick="addTask()" id="btn-add-habit">➕ Add Habit</button>
                     </div>
                 </div>
                 <h4 id="weekTitle" style="margin: 16px 0 8px 0; color: #495057;"></h4>
@@ -244,24 +246,24 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
                         <tbody id="taskBody"></tbody>
                     </table>
                 </div>
-                <p style="font-size: 12px; color: #6c757d; margin-top: 12px">
+                <p id="habit-footer-note" style="font-size: 12px; color: #6c757d; margin-top: 12px">
                     ✅ Check daily boxes | 📊 Weekly % = completion rate | 📅 Daily % = overall completion for that day
                 </p>
             </div>
 
             <!-- STUDY -->
             <div id="studyPage" style="display: none">
-                <h3>📖 Study Journal</h3>
+                <h3 id="studyTitle">📖 Study Journal</h3>
                 <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
                     <input id="lessonInput" placeholder="New lesson/module" style="flex: 1; min-width: 200px" />
-                    <button class="btn-primary" onclick="addLesson()">➕ Add Lesson</button>
+                    <button class="btn-primary" onclick="addLesson()" id="btn-add-lesson">➕ Add Lesson</button>
                 </div>
                 <div id="lessonContainer"></div>
             </div>
 
             <!-- DIARY -->
             <div id="diaryPage" style="display: none">
-                <h3>🧠 Life Diary</h3>
+                <h3 id="diaryTitleHeader">🧠 Life Diary</h3>
                 <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
                     <input type="date" id="diaryDate" style="width: 160px" />
                     <textarea id="diaryInput" placeholder="Write your day, feelings, memories..." style="flex: 1; min-width: 200px"></textarea>
@@ -285,7 +287,7 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
                             <button onclick="clearVoice()" style="background:#ffe0e0; font-size: 11px; padding: 2px 6px; margin:0;">✕</button>
                         </div>
 
-                        <button class="btn-primary" onclick="addDiary()">💾 Save Entry</button>
+                        <button class="btn-primary" onclick="addDiary()" id="btn-save-diary">💾 Save Entry</button>
                     </div>
                 </div>
                 <h4 id="diaryTitle" style="margin: 16px 0 8px"></h4>
@@ -294,6 +296,171 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
         </div>
 
         <script>
+            // 🌍 TRANSLATIONS
+            const i18n = {
+                en: {
+                    subtitle: "think · grow · achieve",
+                    habitsTab: "📅 Habits",
+                    studyTab: "📚 Study",
+                    diaryTab: "🧠 Diary",
+                    habitsTitle: "✨ Daily Habits Tracker",
+                    prevWeek: "◀ Previous Week",
+                    nextWeek: "Next Week ▶",
+                    habitPlaceholder: "Habit name",
+                    addHabit: "➕ Add Habit",
+                    studyTitle: "📖 Study Journal",
+                    lessonPlaceholder: "New lesson/module",
+                    addLesson: "➕ Add Lesson",
+                    diaryTitle: "🧠 Life Diary",
+                    diaryPlaceholder: "Write your day, feelings, memories...",
+                    recordVoice: "🎤 Record Voice",
+                    stopRecording: "⏹ Stop Recording",
+                    saveEntry: "💾 Save Entry",
+                    selectDate: "Select a date",
+                    entriesFor: "📔 Entries for ",
+                    deleteHabit: "Delete habit?",
+                    deleteLesson: "Delete lesson?",
+                    editHabitTitle: "✏️ Edit Habit",
+                    habitNameLabel: "Habit name:",
+                    timeLabel: "Time:",
+                    cancel: "Cancel",
+                    save: "Save",
+                    anytime: "anytime",
+                    dailyPercentRow: "📊 Daily %",
+                    completionNote: "✅ Check daily boxes | 📊 Weekly % = completion rate | 📅 Daily % = overall completion for that day"
+                },
+                uz: {
+                    subtitle: "o'yla · o's · erish",
+                    habitsTab: "📅 Odatlar",
+                    studyTab: "📚 O'qish",
+                    diaryTab: "🧠 Kundalik",
+                    habitsTitle: "✨ Kunlik Odatlar Kuzatuvchisi",
+                    prevWeek: "◀ Oldingi Hafta",
+                    nextWeek: "Keyingi Hafta ▶",
+                    habitPlaceholder: "Odat nomi",
+                    addHabit: "➕ Odat Qo'shish",
+                    studyTitle: "📖 O'qish Jurnali",
+                    lessonPlaceholder: "Yangi dars/modul",
+                    addLesson: "➕ Dars Qo'shish",
+                    diaryTitle: "🧠 Hayot Kundaligi",
+                    diaryPlaceholder: "Kuningiz, his-tuyg'ularingiz, xotiralaringizni yozing...",
+                    recordVoice: "🎤 Ovoz Yozish",
+                    stopRecording: "⏹ Yozishni To'xtatish",
+                    saveEntry: "💾 Saqlash",
+                    selectDate: "Sana tanlang",
+                    entriesFor: "📔 Kirishlar: ",
+                    deleteHabit: "Odatni o'chirilsinmi?",
+                    deleteLesson: "Darsni o'chirilsinmi?",
+                    editHabitTitle: "✏️ Odatni Tahrirlash",
+                    habitNameLabel: "Odat nomi:",
+                    timeLabel: "Vaqt:",
+                    cancel: "Bekor qilish",
+                    save: "Saqlash",
+                    anytime: "istalgan vaqt",
+                    dailyPercentRow: "📊 Kunlik %",
+                    completionNote: "✅ Kunlik belgilarni qo'ying | 📊 Haftalik % = bajarilish darajasi | 📅 Kunlik % = shu kun uchun umumiy bajarilish"
+                },
+                ru: {
+                    subtitle: "думай · расти · достигай",
+                    habitsTab: "📅 Привычки",
+                    studyTab: "📚 Учеба",
+                    diaryTab: "🧠 Дневник",
+                    habitsTitle: "✨ Ежедневный Трекер Привычек",
+                    prevWeek: "◀ Пред. неделя",
+                    nextWeek: "След. неделя ▶",
+                    habitPlaceholder: "Название привычки",
+                    addHabit: "➕ Добавить",
+                    studyTitle: "📖 Учебный Журнал",
+                    lessonPlaceholder: "Новый урок/модуль",
+                    addLesson: "➕ Добавить урок",
+                    diaryTitle: "🧠 Жизненный Дневник",
+                    diaryPlaceholder: "Пишите о своём дне, чувствах, воспоминаниях...",
+                    recordVoice: "🎤 Записать голос",
+                    stopRecording: "⏹ Остановить запись",
+                    saveEntry: "💾 Сохранить",
+                    selectDate: "Выберите дату",
+                    entriesFor: "📔 Записи за ",
+                    deleteHabit: "Удалить привычку?",
+                    deleteLesson: "Удалить урок?",
+                    editHabitTitle: "✏️ Редактировать привычку",
+                    habitNameLabel: "Название:",
+                    timeLabel: "Время:",
+                    cancel: "Отмена",
+                    save: "Сохранить",
+                    anytime: "в любое время",
+                    dailyPercentRow: "📊 День %",
+                    completionNote: "✅ Отмечайте ежедневно | 📊 Недельный % = процент выполнения | 📅 Дневной % = общее выполнение за день"
+                }
+            };
+
+            let currentLang = localStorage.getItem('fikrcha_lang') || 
+                              (navigator.language.startsWith('uz') ? 'uz' : 
+                               navigator.language.startsWith('ru') ? 'ru' : 'en');
+
+            function t(key) {
+                return i18n[currentLang]?.[key] || i18n.en[key] || key;
+            }
+
+            function setLanguage(lang) {
+                currentLang = lang;
+                localStorage.setItem('fikrcha_lang', lang);
+                applyLanguage();
+            }
+
+            function applyLanguage() {
+                // Update static text elements
+                const el = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
+                el('appSubtitle', 'subtitle');
+                el('habitsTitle', 'habitsTitle');
+                el('studyTitle', 'studyTitle');
+                el('diaryTitleHeader', 'diaryTitle');
+                
+                // Update placeholders
+                const ph = (id, key) => { const e = document.getElementById(id); if (e) e.placeholder = t(key); };
+                ph('taskInput', 'habitPlaceholder');
+                ph('lessonInput', 'lessonPlaceholder');
+                ph('diaryInput', 'diaryPlaceholder');
+                
+                // Update navigation buttons
+                const nav = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
+                nav('nav-habits', 'habitsTab');
+                nav('nav-study', 'studyTab');
+                nav('nav-diary', 'diaryTab');
+                
+                // Update week nav buttons
+                const wn = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
+                wn('btn-prev-week', 'prevWeek');
+                wn('btn-next-week', 'nextWeek');
+                
+                // Update action buttons
+                const ab = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
+                ab('btn-add-habit', 'addHabit');
+                ab('btn-add-lesson', 'addLesson');
+                ab('btn-save-diary', 'saveEntry');
+                
+                // Update voice button
+                const vb = document.getElementById('voiceBtn');
+                if (vb && !vb.classList.contains('recording')) vb.textContent = t('recordVoice');
+                
+                // Update footer note
+                const fn = document.getElementById('habit-footer-note');
+                if (fn) fn.textContent = t('completionNote');
+                
+                // Update language button styles
+                ['uz','en','ru'].forEach(lg => {
+                    const btn = document.getElementById('lang-' + lg);
+                    if (btn) {
+                        btn.style.background = (lg === currentLang) ? '#667eea' : '#f1f3f5';
+                        btn.style.color = (lg === currentLang) ? 'white' : '#495057';
+                    }
+                });
+                
+                // Re-render dynamic content
+                if (document.getElementById('habitPage').style.display !== 'none') render();
+                const dd = document.getElementById('diaryDate').value;
+                if (document.getElementById('diaryPage').style.display !== 'none' && dd) renderDiary();
+            }
+
             // NAVIGATION
             function showPage(id) {
                 ["habitPage","studyPage","diaryPage"].forEach(p => document.getElementById(p).style.display = "none");
@@ -301,191 +468,12 @@ details.lesson[open] .lesson-toggle { transform: rotate(90deg); }
                 document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
                 const map = { habitPage: "habitPage", studyPage: "studyPage", diaryPage: "diaryPage" };
                 document.querySelector(`.nav-btn[onclick*="${map[id]}"]`).classList.add("active");
+                applyLanguage(); // Re-apply language when switching pages
             }
 
-            // 🌍 TRANSLATIONS
-const i18n = {
-  en: {
-    subtitle: "think · grow · achieve",
-    habitsTab: "📅 Habits",
-    studyTab: "📚 Study",
-    diaryTab: "🧠 Diary",
-    habitsTitle: "✨ Daily Habits Tracker",
-    prevWeek: "◀ Previous Week",
-    nextWeek: "Next Week ▶",
-    habitPlaceholder: "Habit name",
-    addHabit: "➕ Add Habit",
-    studyTitle: "📖 Study Journal",
-    lessonPlaceholder: "New lesson/module",
-    addLesson: "➕ Add Lesson",
-    diaryTitle: "🧠 Life Diary",
-    diaryPlaceholder: "Write your day, feelings, memories...",
-    recordVoice: "🎤 Record Voice",
-    stopRecording: "⏹ Stop Recording",
-    saveEntry: "💾 Save Entry",
-    selectDate: "Select a date",
-    entriesFor: "📔 Entries for ",
-    deleteHabit: "Delete habit?",
-    deleteLesson: "Delete lesson?",
-    editHabitTitle: "✏️ Edit Habit",
-    habitNameLabel: "Habit name:",
-    timeLabel: "Time:",
-    cancel: "Cancel",
-    save: "Save",
-    anytime: "anytime",
-    dailyPercentRow: "📊 Daily %",
-    completionNote: "✅ Check daily boxes | 📊 Weekly % = completion rate | 📅 Daily % = overall completion for that day"
-  },
-  uz: {
-    subtitle: "o'yla · o's · erish",
-    habitsTab: "📅 Odatlar",
-    studyTab: "📚 O'qish",
-    diaryTab: "🧠 Kundalik",
-    habitsTitle: "✨ Kunlik Odatlar Kuzatuvchisi",
-    prevWeek: "◀ Oldingi Hafta",
-    nextWeek: "Keyingi Hafta ▶",
-    habitPlaceholder: "Odat nomi",
-    addHabit: "➕ Odat Qo'shish",
-    studyTitle: "📖 O'qish Jurnali",
-    lessonPlaceholder: "Yangi dars/modul",
-    addLesson: "➕ Dars Qo'shish",
-    diaryTitle: "🧠 Hayot Kundaligi",
-    diaryPlaceholder: "Kuningiz, his-tuyg'ularingiz, xotiralaringizni yozing...",
-    recordVoice: "🎤 Ovoz Yozish",
-    stopRecording: "⏹ Yozishni To'xtatish",
-    saveEntry: "💾 Saqlash",
-    selectDate: "Sana tanlang",
-    entriesFor: "📔 Kirishlar: ",
-    deleteHabit: "Odatni o'chirilsinmi?",
-    deleteLesson: "Darsni o'chirilsinmi?",
-    editHabitTitle: "✏️ Odatni Tahrirlash",
-    habitNameLabel: "Odat nomi:",
-    timeLabel: "Vaqt:",
-    cancel: "Bekor qilish",
-    save: "Saqlash",
-    anytime: "istalgan vaqt",
-    dailyPercentRow: "📊 Kunlik %",
-    completionNote: "✅ Kunlik belgilarni qo'ying | 📊 Haftalik % = bajarilish darajasi | 📅 Kunlik % = shu kun uchun umumiy bajarilish"
-  },
-  ru: {
-    subtitle: "думай · расти · достигай",
-    habitsTab: "📅 Привычки",
-    studyTab: "📚 Учеба",
-    diaryTab: "🧠 Дневник",
-    habitsTitle: "✨ Ежедневный Трекер Привычек",
-    prevWeek: "◀ Пред. неделя",
-    nextWeek: "След. неделя ▶",
-    habitPlaceholder: "Название привычки",
-    addHabit: "➕ Добавить",
-    studyTitle: "📖 Учебный Журнал",
-    lessonPlaceholder: "Новый урок/модуль",
-    addLesson: "➕ Добавить урок",
-    diaryTitle: "🧠 Жизненный Дневник",
-    diaryPlaceholder: "Пишите о своём дне, чувствах, воспоминаниях...",
-    recordVoice: "🎤 Записать голос",
-    stopRecording: "⏹ Остановить запись",
-    saveEntry: "💾 Сохранить",
-    selectDate: "Выберите дату",
-    entriesFor: "📔 Записи за ",
-    deleteHabit: "Удалить привычку?",
-    deleteLesson: "Удалить урок?",
-    editHabitTitle: "✏️ Редактировать привычку",
-    habitNameLabel: "Название:",
-    timeLabel: "Время:",
-    cancel: "Отмена",
-    save: "Сохранить",
-    anytime: "в любое время",
-    dailyPercentRow: "📊 День %",
-    completionNote: "✅ Отмечайте ежедневно | 📊 Недельный % = процент выполнения | 📅 Дневной % = общее выполнение за день"
-  }
-};
-
-// Current language (default: EN, fallback to browser or saved)
-let currentLang = localStorage.getItem('fikrcha_lang') || 
-                  (navigator.language.startsWith('uz') ? 'uz' : 
-                   navigator.language.startsWith('ru') ? 'ru' : 'en');
-
-function t(key) {
-  return i18n[currentLang]?.[key] || i18n.en[key] || key;
-}
-
-function setLanguage(lang) {
-    try {
-        currentLang = lang;
-        localStorage.setItem('fikrcha_lang', lang);
-        applyLanguage();
-        console.log('Language changed to:', lang);
-    } catch (e) {
-        console.error('setLanguage error:', e);
-    }
-}
-
-function applyLanguage() {
-    try {
-        // Update subtitle
-        const subtitle = document.getElementById('appSubtitle');
-        if (subtitle) subtitle.textContent = t('subtitle');
-        
-        // Update page titles
-        const habitsTitle = document.getElementById('habitsTitle');
-        if (habitsTitle) habitsTitle.textContent = t('habitsTitle');
-        
-        const studyTitle = document.getElementById('studyTitle');
-        if (studyTitle) studyTitle.textContent = t('studyTitle');
-        
-        const diaryTitleHeader = document.getElementById('diaryTitleHeader');
-        if (diaryTitleHeader) diaryTitleHeader.textContent = t('diaryTitle');
-        
-        // Update placeholders
-        const taskInput = document.getElementById('taskInput');
-        if (taskInput) taskInput.placeholder = t('habitPlaceholder');
-        
-        const lessonInput = document.getElementById('lessonInput');
-        if (lessonInput) lessonInput.placeholder = t('lessonPlaceholder');
-        
-        const diaryInput = document.getElementById('diaryInput');
-        if (diaryInput) diaryInput.placeholder = t('diaryPlaceholder');
-        
-        // Update voice button
-        const voiceBtn = document.getElementById('voiceBtn');
-        if (voiceBtn && !voiceBtn.classList.contains('recording')) {
-            voiceBtn.textContent = t('recordVoice');
-        }
-        
-        // Update language button styles
-        document.querySelectorAll('[onclick^="setLanguage"]').forEach(btn => {
-            const lang = btn.getAttribute('onclick').match(/'(\w+)'/)[1];
-            if (lang === currentLang) {
-                btn.style.background = '#667eea';
-                btn.style.color = 'white';
-            } else {
-                btn.style.background = '#f1f3f5';
-                btn.style.color = '#495057';
-            }
-        });
-        
-        // Re-render if needed
-        if (document.getElementById('habitPage').style.display !== 'none') {
-            render();
-        }
-        
-    } catch (e) {
-        console.error('Language switch error:', e);
-    }
-}
-  // Highlight active language button
-  document.querySelectorAll('[style*="border-radius:20px"]').forEach(btn => {
-    if (['UZ','EN','RU'].includes(btn.textContent.trim())) {
-      const isActive = btn.textContent.trim().toLowerCase() === currentLang;
-      btn.style.background = isActive ? '#667eea' : '#f1f3f5';
-      btn.style.color = isActive ? 'white' : '#495057';
-    }
-  });
-}
-
-let tasks = [];
-let lessons = [];
-let diaries = {};
+            let tasks = [];
+            let lessons = [];
+            let diaries = {};
 
             async function api(method, url, body) {
                 const opts = { method, headers: { "Content-Type": "application/json" } };
@@ -515,6 +503,7 @@ let diaries = {};
 
                 render();
                 renderDiary();
+                applyLanguage(); // Apply language after data loads
 
                 if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
                     api("POST", "/api/link-telegram", { telegramId: window.Telegram.WebApp.initDataUnsafe.user.id }).catch(() => {});
@@ -565,7 +554,7 @@ let diaries = {};
             }
 
             async function deleteTask(i) {
-                if (confirm("Delete habit?")) { await api("DELETE", `/api/habits/${tasks[i].id}`); await loadAll(); }
+                if (confirm(t('deleteHabit'))) { await api("DELETE", `/api/habits/${tasks[i].id}`); await loadAll(); }
             }
 
             async function toggle(i, date) {
@@ -579,14 +568,14 @@ let diaries = {};
                 modal.className = "modal-overlay";
                 modal.innerHTML = `
                     <div class="edit-modal">
-                        <h3>✏️ Edit Habit</h3>
-                        <label>Habit name:</label>
-                        <input type="text" id="editHabitName" value="${escapeHtml(tasks[i].text)}" placeholder="Habit name">
-                        <label style="display:block; margin-top:12px;">Time:</label>
+                        <h3>${t('editHabitTitle')}</h3>
+                        <label>${t('habitNameLabel')}</label>
+                        <input type="text" id="editHabitName" value="${escapeHtml(tasks[i].text)}" placeholder="${t('habitPlaceholder')}">
+                        <label style="display:block; margin-top:12px;">${t('timeLabel')}</label>
                         <input type="time" id="editHabitTime" value="${tasks[i].time || ""}">
                         <div class="edit-modal-buttons">
-                            <button onclick="closeModal()">Cancel</button>
-                            <button class="btn-primary" onclick="saveEditHabit(${i})">Save</button>
+                            <button onclick="closeModal()">${t('cancel')}</button>
+                            <button class="btn-primary" onclick="saveEditHabit(${i})">${t('save')}</button>
                         </div>
                     </div>`;
                 document.body.appendChild(modal);
@@ -621,7 +610,7 @@ let diaries = {};
 
             function render() {
                 const week = getWeek();
-                document.getElementById("weekTitle").innerText = "📅 Week of " + week[0].label;
+                document.getElementById("weekTitle").innerText = t('weekTitlePrefix') + week[0].label;
 
                 let header = "<th>Habit</th>";
                 week.forEach(d => header += `<th>${d.label}</th>`);
@@ -632,25 +621,25 @@ let diaries = {};
                 tasks.forEach((t, i) => {
                     let color = categories.find(c => c.name === t.category)?.color || "#fff";
                     let row = `<tr style="background:${color}">
-                        <td><strong>${escapeHtml(t.text)}</strong><br><small>⏰ ${t.time || "anytime"}</small><br>
+                        <td><strong>${escapeHtml(t.text)}</strong><br><small>⏰ ${t.time || t('anytime')}</small><br>
                         <span style="font-size:10px; background:rgba(0,0,0,0.05); padding:2px 8px; border-radius:20px;">${t.category}</span></td>`;
                     week.forEach(d => {
                         let checked = t.history[d.date] ? "checked" : "";
                         row += `<td><input type="checkbox" ${checked} onclick="toggle(${i},'${d.date}')" style="transform:scale(1.1); cursor:pointer;"></td>`;
                     });
                     row += `<td style="font-weight:bold; color:#667eea;">${getPercent(t, week)}%</td>`;
-                    row += `<td><button onclick="editTask(${i})" style="background:#e9ecef;">✏️ Edit</button><button onclick="deleteTask(${i})" style="background:#ffe0e0;">🗑️</button></td>`;
+                    row += `<td><button onclick="editTask(${i})" style="background:#e9ecef;">✏️ ${t('edit')}</button><button onclick="deleteTask(${i})" style="background:#ffe0e0;">${t('delete')}</button></td>`;
                     body += row + "</tr>";
                 });
 
                 if (tasks.length > 0) {
-                    let dailyRow = `<tr class="daily-row"><td style="font-weight:bold;">📊 Daily %</td>`;
+                    let dailyRow = `<tr class="daily-row"><td style="font-weight:bold;">${t('dailyPercentRow')}</td>`;
                     for (let i = 0; i < week.length; i++) {
                         let pct = getDailyPercent(week, i, tasks);
                         let color = pct >= 70 ? "#28a745" : pct >= 40 ? "#fd7e14" : "#dc3545";
                         dailyRow += `<td style="font-weight:bold; color:${color};">${pct}%</td>`;
                     }
-                    dailyRow += `<td colspan="2">Completion rate per day</td></tr>`;
+                    dailyRow += `<td colspan="2">${t('completionNote')}</td></tr>`;
                     body += dailyRow;
                 }
 
@@ -660,26 +649,26 @@ let diaries = {};
 
             // STUDY
             async function addLesson() {
-    let input = document.getElementById("lessonInput");
-    if (!input.value.trim()) return;
-    await api("POST", "/api/studies", { title: input.value });
-    input.value = "";
-    await loadAll();
-    
-    // Auto-open the newly added lesson
-    setTimeout(() => {
-        const allLessons = document.querySelectorAll('details.lesson');
-        if (allLessons.length > 0) {
-            const lastLesson = allLessons[allLessons.length - 1];
-            lastLesson.open = true;
-            const arrow = lastLesson.querySelector('.lesson-toggle');
-            if (arrow) arrow.style.transform = 'rotate(90deg)';
-        }
-    }, 100);
-}
+                let input = document.getElementById("lessonInput");
+                if (!input.value.trim()) return;
+                await api("POST", "/api/studies", { title: input.value });
+                input.value = "";
+                await loadAll();
+                
+                // Auto-open the newly added lesson
+                setTimeout(() => {
+                    const allLessons = document.querySelectorAll('details.lesson');
+                    if (allLessons.length > 0) {
+                        const lastLesson = allLessons[allLessons.length - 1];
+                        lastLesson.open = true;
+                        const arrow = lastLesson.querySelector('.lesson-toggle');
+                        if (arrow) arrow.style.transform = 'rotate(90deg)';
+                    }
+                }, 100);
+            }
 
             async function deleteLesson(i) {
-                if (confirm("Delete lesson?")) { await api("DELETE", `/api/studies/${lessons[i].id}`); await loadAll(); }
+                if (confirm(t('deleteLesson'))) { await api("DELETE", `/api/studies/${lessons[i].id}`); await loadAll(); }
             }
 
             let activityImageData = {};
@@ -724,71 +713,71 @@ let diaries = {};
             }
 
             function renderLessons() {
-    let html = "";
-    lessons.forEach((l, i) => {
-        html += `
-        <details class="lesson" style="padding:0; border:none; background:transparent; box-shadow:none;">
-            <summary style="
-                list-style:none; 
-                cursor:pointer; 
-                background:#fefefe; 
-                border:1px solid #e9ecef; 
-                border-radius:20px; 
-                padding:20px; 
-                display:flex; 
-                justify-content:space-between; 
-                align-items:center;
-                transition:all 0.2s;
-            " onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
-                <h4 style="margin:0; color:#2c3e50; font-size:1.2rem;">📘 ${escapeHtml(l.title)}</h4>
-                <span style="font-size:1.5rem; color:#667eea; transition:transform 0.2s;" class="lesson-toggle">▶</span>
-            </summary>
-            
-            <div style="padding:0 20px 20px 20px; background:#fefefe; border:1px solid #e9ecef; border-top:none; border-radius:0 0 20px 20px;">
-                <div style="margin:12px 0; display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
-                    <input id="activity-${i}" placeholder="New activity" style="flex:1; min-width:150px;">
-                    <label style="cursor:pointer; background:#f1f3f5; border-radius:10px; padding:6px 10px; font-size:13px;">
-                        🖼️ <input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i}, this)">
-                    </label>
-                    <span id="activity-img-name-${i}" style="font-size:12px; color:#888;"></span>
-                    <button onclick="addLessonTask(${i})" style="background:#667eea; color:white;">➕ Add</button>
-                </div>
-                <ul style="list-style:none; padding-left:0;">`;
+                let html = "";
+                lessons.forEach((l, i) => {
+                    html += `
+                    <details class="lesson" style="padding:0; border:none; background:transparent; box-shadow:none;">
+                        <summary style="
+                            list-style:none; 
+                            cursor:pointer; 
+                            background:#fefefe; 
+                            border:1px solid #e9ecef; 
+                            border-radius:20px; 
+                            padding:20px; 
+                            display:flex; 
+                            justify-content:space-between; 
+                            align-items:center;
+                            transition:all 0.2s;
+                        " onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+                            <h4 style="margin:0; color:#2c3e50; font-size:1.2rem;">📘 ${escapeHtml(l.title)}</h4>
+                            <span style="font-size:1.5rem; color:#667eea; transition:transform 0.2s;" class="lesson-toggle">▶</span>
+                        </summary>
+                        
+                        <div style="padding:0 20px 20px 20px; background:#fefefe; border:1px solid #e9ecef; border-top:none; border-radius:0 0 20px 20px;">
+                            <div style="margin:12px 0; display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+                                <input id="activity-${i}" placeholder="New activity" style="flex:1; min-width:150px;">
+                                <label style="cursor:pointer; background:#f1f3f5; border-radius:10px; padding:6px 10px; font-size:13px;">
+                                    🖼️ <input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i}, this)">
+                                </label>
+                                <span id="activity-img-name-${i}" style="font-size:12px; color:#888;"></span>
+                                <button onclick="addLessonTask(${i})" style="background:#667eea; color:white;">➕ Add</button>
+                            </div>
+                            <ul style="list-style:none; padding-left:0;">`;
 
-        l.tasks.forEach((t, j) => {
-            let today = new Date().toISOString().split("T")[0];
-            let checked = t.history[today] ? "checked" : "";
-            html += `
-            <li style="background:#f8f9fa; margin:8px 0; padding:12px; border-radius:12px;">
-                <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-                    <input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);">
-                    <strong style="flex:1;">${escapeHtml(t.text)}</strong>
-                    <button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button>
-                </div>
-                ${t.image ? `<img src="${t.image}" style="max-width:100%; max-height:250px; border-radius:10px; margin:8px 0; display:block; object-fit:cover;">` : ""}
-                <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%; margin-top:8px;">${escapeHtml(t.comment)}</textarea>
-            </li>`;
-        });
+                    l.tasks.forEach((t, j) => {
+                        let today = new Date().toISOString().split("T")[0];
+                        let checked = t.history[today] ? "checked" : "";
+                        html += `
+                        <li style="background:#f8f9fa; margin:8px 0; padding:12px; border-radius:12px;">
+                            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                                <input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);">
+                                <strong style="flex:1;">${escapeHtml(t.text)}</strong>
+                                <button onclick="deleteLessonTask(${i},${j})" style="background:#ffe0e0;">🗑️</button>
+                            </div>
+                            ${t.image ? `<img src="${t.image}" style="max-width:100%; max-height:250px; border-radius:10px; margin:8px 0; display:block; object-fit:cover;">` : ""}
+                            <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%; margin-top:8px;">${escapeHtml(t.comment)}</textarea>
+                        </li>`;
+                    });
 
-        html += `</ul>
-                <div style="margin-top:12px; text-align:right;">
-                    <button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ Delete Module</button>
-                </div>
-            </div>
-        </details>`;
-    });
-    document.getElementById("lessonContainer").innerHTML = html;
+                    html += `</ul>
+                            <div style="margin-top:12px; text-align:right;">
+                                <button onclick="deleteLesson(${i})" style="background:#ffe0e0;">🗑️ ${t('delete')} Module</button>
+                            </div>
+                        </div>
+                    </details>`;
+                });
+                document.getElementById("lessonContainer").innerHTML = html;
 
-    // Add smooth arrow rotation on expand/collapse
-    document.querySelectorAll('details.lesson').forEach((details) => {
-        details.addEventListener('toggle', function() {
-            const arrow = this.querySelector('.lesson-toggle');
-            if (arrow) {
-                arrow.style.transform = this.open ? 'rotate(90deg)' : 'rotate(0deg)';
+                // Add smooth arrow rotation on expand/collapse
+                document.querySelectorAll('details.lesson').forEach((details) => {
+                    details.addEventListener('toggle', function() {
+                        const arrow = this.querySelector('.lesson-toggle');
+                        if (arrow) {
+                            arrow.style.transform = this.open ? 'rotate(90deg)' : 'rotate(0deg)';
+                        }
+                    });
+                });
             }
-        });
-    });
-}
 
             // DIARY IMAGE
             let diaryImageData = null;
@@ -824,7 +813,7 @@ let diaries = {};
                 if (mediaRecorder && mediaRecorder.state === "recording") {
                     mediaRecorder.stop();
                     clearInterval(recordingTimer);
-                    btn.textContent = "🎤 Record Voice";
+                    btn.textContent = t('recordVoice');
                     btn.classList.remove("recording");
                     timerEl.style.display = "none";
                 } else {
@@ -855,7 +844,7 @@ let diaries = {};
                         };
 
                         mediaRecorder.start();
-                        btn.textContent = "⏹ Stop Recording";
+                        btn.textContent = t('stopRecording');
                         btn.classList.add("recording");
 
                         recordingSeconds = 0;
@@ -864,7 +853,7 @@ let diaries = {};
                         recordingTimer = setInterval(() => {
                             recordingSeconds++;
                             timerEl.textContent = `⏺ ${recordingSeconds}s`;
-                            if (recordingSeconds >= 120) toggleRecording(); // auto-stop at 2 min
+                            if (recordingSeconds >= 120) toggleRecording();
                         }, 1000);
 
                     } catch (err) {
@@ -913,8 +902,8 @@ let diaries = {};
                 let date = document.getElementById("diaryDate").value;
                 let container = document.getElementById("diaryContainer");
                 let title = document.getElementById("diaryTitle");
-                if (!date) { container.innerHTML = "Select a date"; return; }
-                title.innerText = "📔 Entries for " + date;
+                if (!date) { container.innerHTML = t('selectDate'); return; }
+                title.innerText = t('entriesFor') + date;
                 let entries = diaries[date] || [];
                 container.innerHTML = entries.map((d, i) => `
                     <div class="entry">
@@ -922,8 +911,8 @@ let diaries = {};
                         <p style="margin:8px 0;">${escapeHtml(d.text)}</p>
                         ${d.image ? `<img src="${d.image}" style="max-width:100%; max-height:300px; border-radius:12px; margin:8px 0; display:block; object-fit:cover;">` : ""}
                         ${d.voice ? `<div class="voice-preview" style="margin:8px 0;">🎤 <audio controls src="${d.voice}" style="flex:1; height:36px;"></audio></div>` : ""}
-                        <button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">✏️ Edit</button>
-                        <button onclick="deleteDiary('${date}',${i})" style="background:#ffe0e0;">🗑️ Delete</button>
+                        <button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">✏️ ${t('edit')}</button>
+                        <button onclick="deleteDiary('${date}',${i})" style="background:#ffe0e0;">${t('delete')}</button>
                     </div>`).join("");
             }
 
@@ -949,8 +938,9 @@ let diaries = {};
             window.closeModal = closeModal;
             window.saveEditHabit = saveEditHabit;
 
+            // Initialize
             tryTelegramAutoLogin().then(() => loadAll());
-setTimeout(applyLanguage, 300); // Runs after UI loads
+            setTimeout(applyLanguage, 300);
         </script>
     </body>
 </html>
