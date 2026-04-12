@@ -467,12 +467,12 @@
             const week = getWeek(); document.getElementById("weekTitle").innerText = t('weekTitlePrefix') + week[0].label;
             let header = "<th>Habit</th>"; week.forEach(d => header += `<th>${d.label}</th>`); header += "<th>Weekly %</th><th>⚙️</th>";
             document.getElementById("weekHeader").innerHTML = header; let body = "";
-            tasks.forEach((t, i) => {
-                let color = categories.find(c => c.name === t.category)?.color || "#fff";
-                let row = `<tr style="background:${color}"><td><strong>${escapeHtml(t.text)}</strong><br><small>⏰ ${t.time || t('anytime')}</small><br><span style="font-size:10px; background:rgba(0,0,0,0.05); padding:2px 8px; border-radius:20px;">${t.category}</span></td>`;
-                week.forEach(d => { let checked = t.history[d.date] ? "checked" : ""; row += `<td><input type="checkbox" ${checked} onclick="toggle(${i},'${d.date}')" style="transform:scale(1.1); cursor:pointer;"></td>`; });
-                row += `<td style="font-weight:bold; color:#667eea;">${getPercent(t, week)}%</td><td><button onclick="editTask(${i})" style="background:#e9ecef;">✏️ ${t('edit')}</button><button onclick="deleteTask(${i})" style="background:#ffe0e0;">${t('delete')}</button></td>`; body += row + "</tr>";
-            });
+            tasks.forEach((task, i) => {
+    let color = categories.find(c => c.name === task.category)?.color || "#fff";
+    let row = `<tr style="background:${color}"><td><strong>${escapeHtml(task.text)}</strong><br><small>⏰ ${task.time || t('anytime')}</small><br><span style="font-size:10px; background:rgba(0,0,0,0.05); padding:2px 8px; border-radius:20px;">${task.category}</span></td>`;
+    week.forEach(d => { let checked = task.history[d.date] ? "checked" : ""; row += `<td><input type="checkbox" ${checked} onclick="toggle(${i},'${d.date}')" style="transform:scale(1.1); cursor:pointer;"></td>`; });
+    row += `<td style="font-weight:bold; color:#667eea;">${getPercent(task, week)}%</td><td><button onclick="editTask(${i})" style="background:#e9ecef;">✏️ ${t('edit')}</button><button onclick="deleteTask(${i})" style="background:#ffe0e0;">${t('delete')}</button></td>`; body += row + "</tr>";
+});
             if (tasks.length > 0) {
                 let dailyRow = `<tr class="daily-row"><td style="font-weight:bold;">${t('dailyPercentRow')}</td>`;
                 for (let i = 0; i < week.length; i++) { let pct = getDailyPercent(week, i, tasks), color = pct >= 70 ? "#28a745" : pct >= 40 ? "#fd7e14" : "#dc3545"; dailyRow += `<td style="font-weight:bold; color:${color};">${pct}%</td>`; }
