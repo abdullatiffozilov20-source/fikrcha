@@ -317,7 +317,9 @@ app.get("/admin.html", (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
- app.post('/api/ai-chat', async (req, res) => {
+
+ // ===== GROQ AI ROUTE (FREE) =====
+app.post('/api/ai-chat', async (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: 'Not logged in' });
 
@@ -339,7 +341,7 @@ app.get("/admin.html", (req, res) => {
         'Authorization': `Bearer ${GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',  // ✅ NEW MODEL (replaced llama3-8b-8192)
+        model: 'llama-3.1-8b-instant',
         max_tokens: 512,
         messages: [
           { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant.' },
