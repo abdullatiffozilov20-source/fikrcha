@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,9 +7,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:"Segoe UI","Inter",system-ui,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;justify-content:center;padding:20px;min-height:100vh;transition:background 0.3s;}
-.app{background:#fff;width:100%;max-width:1200px;border-radius:24px;padding:24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);transition:background 0.3s,color 0.3s;}
-
-/* DARK MODE */
+.app{background:#fff;width:100%;max-width:1200px;border-radius:24px;padding:24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);}
 body.dark{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);}
 body.dark .app{background:#1a1b2e;color:#e2e8f0;}
 body.dark .app-header{border-color:#2d3748;}
@@ -31,27 +28,23 @@ body.dark .diary-accordion{background:#2d3748;border-color:#4a5568;}
 body.dark .diary-acc-header{background:#374151;}
 body.dark .diary-acc-header:hover{background:#4a5568;}
 body.dark .lesson{background:#2d3748;border-color:#4a5568;}
-body.dark .edit-modal{background:#1a1b2e;color:#e2e8f0;}
 body.dark .sched-modal{background:#1a1b2e;color:#e2e8f0;}
 body.dark .day-pill{background:#374151;color:#a0aec0;}
 body.dark .day-pill.sel{background:#7c3aed;color:#fff;}
 body.dark .progress-bg{background:#374151;}
-body.dark .best-habits-box{background:#2d3748;}
-body.dark .notif-banner{background:#1a2e1a;color:#68d391;}
 body.dark .filter-btn{background:#2d3748;color:#e2e8f0;}
 body.dark .cal-day{background:#2d3748;color:#e2e8f0;}
 body.dark .cal-day:hover{background:#374151;}
-body.dark .quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.08),rgba(118,75,162,0.08));border:1px solid rgba(102,126,234,0.2);}
-body.dark .quote-text{color:#e2e8f0;}
-body.dark .quote-author{color:#94a3b8;}
-body.dark .ai-chat{background:#1e293b;border-color:#334155;}
-body.dark .ai-message{background:#334155;color:#e2e8f0;}
-body.dark .user-message{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;}
-body.dark .ai-input{background:#334155;color:#e2e8f0;border-color:#475568;}
-body.dark .ai-section{background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(37,99,235,0.08));border-color:rgba(124,58,237,0.3);}
-
-/* HEADER */
-.app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e9ecef;transition:border-color 0.3s;}
+body.dark .quote-card{background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(37,99,235,0.1));border-color:rgba(124,58,237,0.3);}
+body.dark .quote-text-el{color:#e2e8f0;}
+body.dark .quote-author-el{color:#94a3b8;}
+body.dark .ai-chat-box{background:#1e293b;border-color:#334155;}
+body.dark .ai-msg{background:#334155;color:#e2e8f0;}
+body.dark .user-msg{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;}
+body.dark .ai-input-el{background:#334155;color:#e2e8f0;border-color:#475569;}
+body.dark .ai-wrap{background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(37,99,235,0.06));border-color:rgba(124,58,237,0.2);}
+body.dark .studio-card{background:#1e293b;border-color:#334155;}
+.app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e9ecef;}
 .header-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 h2{background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.8rem;letter-spacing:-0.5px;}
 .subtitle{color:#6c757d;font-size:0.85rem;}
@@ -59,14 +52,10 @@ h2{background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:te
 .lang-btn{padding:4px 10px;font-size:12px;border-radius:20px;border:none;cursor:pointer;background:#f1f3f5;color:#495057;transition:all 0.2s;}
 .lang-btn.active{background:#667eea;color:#fff;}
 .dark-toggle{font-size:18px;background:none;border:none;cursor:pointer;padding:4px 8px;}
-
-/* NAV */
-.nav-buttons{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
-.nav-btn{padding:10px 20px;font-size:0.9rem;font-weight:600;border:none;border-radius:40px;cursor:pointer;transition:all 0.3s;background:#f1f3f5;color:#495057;}
+.nav-buttons{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+.nav-btn{padding:9px 16px;font-size:0.85rem;font-weight:600;border:none;border-radius:40px;cursor:pointer;transition:all 0.3s;background:#f1f3f5;color:#495057;}
 .nav-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.15);}
 .nav-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;box-shadow:0 4px 12px rgba(102,126,234,0.4);}
-
-/* BUTTONS */
 button{padding:8px 16px;margin:4px;cursor:pointer;border:none;border-radius:40px;font-weight:500;transition:all 0.2s;background:#f1f3f5;color:#495057;}
 button:hover{transform:translateY(-1px);background:#e9ecef;}
 button:active{transform:translateY(0);}
@@ -75,17 +64,11 @@ button:active{transform:translateY(0);}
 .btn-danger{background:#ffe0e0;color:#c0392b;}
 .btn-sm{padding:4px 10px;font-size:12px;margin:2px;}
 .export-btn{background:#d3f9d8;color:#2b8a3e;font-weight:700;}
-.screenshot-btn{background:linear-gradient(135deg,#f472b6,#ec4899);color:#fff;font-weight:600;}
-.ai-btn{background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff;font-weight:600;}
-
-/* INPUTS */
 input,textarea,select{padding:10px 14px;margin:5px;border:1.5px solid #dee2e6;border-radius:40px;font-family:inherit;font-size:14px;transition:all 0.2s;background:#fff;color:#212529;}
 input:focus,textarea:focus,select:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.15);}
 textarea{border-radius:16px;resize:vertical;height:70px;}
 input[type="time"]{padding:8px 10px;font-size:13px;border:2px solid #667eea;color:#495057;background:#f8f9ff;width:105px!important;}
 input[type="checkbox"]{width:18px;height:18px;cursor:pointer;accent-color:#667eea;}
-
-/* TABLE */
 table{width:100%;border-collapse:collapse;margin-top:12px;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
 th,td{border:1px solid #e9ecef;padding:10px 6px;text-align:center;vertical-align:middle;}
 th{background:#f8f9fa;font-weight:700;color:#495057;font-size:12px;}
@@ -96,9 +79,7 @@ th:first-child,td:first-child{text-align:left;padding-left:12px;min-width:130px;
 .sched-badge{font-size:9px;color:#7c3aed;background:#f3e8ff;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:2px;font-weight:600;}
 .today-col{background:#fefce8!important;}
 th.today-col{background:#fef08a!important;}
-
-/* SCHEDULE MODAL */
-.sched-modal{background:#fff;border-radius:24px;padding:24px;width:95%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
+.sched-modal{background:#fff;border-radius:24px;padding:24px;width:95%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.25);max-height:90vh;overflow-y:auto;}
 .sched-modal h3{margin-bottom:16px;color:#2c3e50;font-size:1.1rem;}
 .sched-section{margin-bottom:16px;}
 .sched-section label{font-weight:600;font-size:13px;color:#495057;display:block;margin-bottom:8px;}
@@ -110,26 +91,17 @@ th.today-col{background:#fef08a!important;}
 .day-pill.sel{border-color:#667eea;background:#667eea;color:#fff;}
 .freq-row{display:flex;align-items:center;gap:10px;margin-top:8px;}
 .freq-row input[type="number"]{width:70px;text-align:center;border-radius:12px;}
-
-/* HABIT CARDS in Stats */
 .habit-row-card{background:#f8f9fa;border:1px solid #e9ecef;border-radius:16px;padding:14px 16px;margin-bottom:10px;}
 .habit-row-card .habit-name{font-weight:700;font-size:14px;color:#2c3e50;}
 .progress-bg{background:#e9ecef;border-radius:20px;height:8px;margin:8px 0;}
 .progress-fill{height:8px;border-radius:20px;transition:width 0.5s ease;}
-
-/* STATS */
 .notif-banner{background:#d3f9d8;border-radius:12px;padding:10px 16px;margin-bottom:16px;font-size:13px;color:#2b8a3e;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .streak-banner{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
 .streak-card{border-radius:16px;padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:110px;}
 .streak-num{font-size:2rem;font-weight:800;}
 .streak-label{font-size:0.75rem;font-weight:700;margin-top:2px;}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
-.stat-card{background:#f8f9fa;border-radius:16px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
-.stat-num{font-size:1.8rem;font-weight:800;color:#667eea;}
-.stat-label{font-size:0.72rem;color:#6c757d;margin-top:4px;font-weight:600;}
-.stat-sub{font-size:0.65rem;color:#adb5bd;margin-top:2px;}
 .insight-card{border:1px solid #e9ecef;border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;}
-.insight-icon{font-size:1.8rem;}
+.insight-icon{font-size:1.8rem;flex-shrink:0;}
 .insight-text strong{font-size:13px;color:#2c3e50;display:block;}
 .insight-text span{font-size:12px;color:#6c757d;}
 .chart-container{margin:16px 0;background:#f8f9fa;border-radius:16px;padding:16px;}
@@ -142,10 +114,7 @@ th.today-col{background:#fef08a!important;}
 .filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
 .filter-btn{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;border:2px solid transparent;background:#f1f3f5;color:#495057;cursor:pointer;transition:all 0.2s;margin:0;}
 .filter-btn.active{border-color:#667eea;color:#667eea;background:#eef0ff;}
-.best-habits-box{background:#f8f9fa;border-radius:16px;padding:16px;margin-top:12px;}
-.section-title{font-size:14px;font-weight:800;color:#2c3e50;margin:20px 0 10px 0;display:flex;align-items:center;gap:8px;}
-
-/* DIARY */
+.section-title{font-size:14px;font-weight:800;color:#2c3e50;margin:20px 0 10px;display:flex;align-items:center;gap:8px;}
 .diary-accordion{border:1px solid #e9ecef;border-radius:16px;margin-top:10px;overflow:hidden;background:#fef9f0;}
 .diary-acc-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:#fef9f0;transition:background 0.2s;}
 .diary-acc-header:hover{background:#fdecc8;}
@@ -158,8 +127,6 @@ th.today-col{background:#fef08a!important;}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(192,57,43,0.4);}70%{box-shadow:0 0 0 8px rgba(192,57,43,0);}100%{box-shadow:0 0 0 0 rgba(192,57,43,0);}}
 .voice-preview{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0f4ff;border-radius:12px;margin-top:4px;}
 .voice-preview audio{flex:1;height:36px;}
-
-/* CALENDAR */
 .cal-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-weight:700;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
 .cal-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;transition:all 0.2s;background:#f8f9fa;color:#495057;}
@@ -169,93 +136,69 @@ th.today-col{background:#fef08a!important;}
 .cal-day.empty{background:transparent;cursor:default;}
 .cal-day-header{font-size:10px;font-weight:700;color:#adb5bd;text-align:center;padding:4px 0;}
 .search-input{border-radius:40px;padding:8px 16px;border:1px solid #dee2e6;font-size:14px;width:100%;margin:0 0 12px 0;}
-
-/* LESSON */
 details.lesson summary::-webkit-details-marker{display:none;}
 .lesson-toggle{display:inline-block;transition:transform 0.2s ease;}
 details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 .lesson{border:1px solid #e9ecef;border-radius:20px;margin-top:12px;overflow:hidden;}
 .lesson:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
-
-/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px;}
-.edit-modal{background:#fff;border-radius:24px;padding:24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.25);max-height:90vh;overflow-y:auto;}
-.edit-modal h3{margin-bottom:16px;color:#2c3e50;}
-.edit-modal input,.edit-modal select{width:100%;margin:6px 0;}
-.edit-modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:20px;}
 
-/* MOTIVATIONAL QUOTE CARD - COMPACT & ELEGANT */
-.quote-section{margin:16px 0;padding:0;}
-.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border-radius:16px;padding:14px 18px;border:1px solid rgba(102,126,234,0.15);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;transition:all 0.2s;}
-.quote-card:hover{border-color:rgba(102,126,234,0.3);box-shadow:0 4px 12px rgba(102,126,234,0.1);}
-.quote-content{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
-.quote-icon{font-size:1.3rem;flex-shrink:0;}
-.quote-text{font-size:0.95rem;font-weight:500;color:#1e293b;line-height:1.3;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.quote-author{font-size:0.8rem;color:#64748b;font-weight:500;flex-shrink:0;}
-.quote-actions{display:flex;gap:6px;flex-shrink:0;}
-.quote-btn{padding:5px 12px;border-radius:16px;border:none;cursor:pointer;font-size:11px;font-weight:500;transition:all 0.2s;white-space:nowrap;}
-.quote-screenshot{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
-.quote-screenshot:hover{box-shadow:0 3px 8px rgba(102,126,234,0.4);}
-.quote-refresh{background:#f1f5f9;color:#475569;}
-.quote-refresh:hover{background:#e2e8f0;}
+/* QUOTE */
+.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border:1px solid rgba(102,126,234,0.18);border-radius:14px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;cursor:pointer;transition:all 0.2s;}
+.quote-card:hover{border-color:rgba(102,126,234,0.35);box-shadow:0 4px 14px rgba(102,126,234,0.12);}
+.quote-inner{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.quote-text-el{font-size:13px;font-weight:500;color:#1e293b;line-height:1.4;flex:1;}
+.quote-author-el{font-size:11px;color:#64748b;white-space:nowrap;font-weight:600;}
+.quote-actions{display:flex;gap:5px;}
+.qbtn{padding:5px 10px;border-radius:14px;border:none;cursor:pointer;font-size:11px;font-weight:600;transition:all 0.2s;}
+.qbtn-studio{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.qbtn-refresh{background:#f1f5f9;color:#475569;}
 
-/* AI CHAT ASSISTANT - MATCHING THEME */
-.ai-section{margin:20px 0;padding:16px;background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border-radius:20px;border:1px solid rgba(102,126,234,0.15);}
-.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.ai-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;flex-shrink:0;}
-.ai-title{font-weight:600;color:#1e293b;font-size:1rem;}
-.ai-chat{background:#fff;border-radius:16px;padding:12px;height:180px;overflow-y:auto;margin-bottom:12px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:10px;}
-.ai-message,.user-message{padding:9px 13px;border-radius:14px;max-width:85%;font-size:13px;line-height:1.4;}
-.ai-message{background:#f8fafc;color:#1e293b;align-self:flex-start;border-bottom-left-radius:4px;}
-.user-message{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
-.ai-input-container{display:flex;gap:8px;}
-.ai-input{flex:1;padding:9px 14px;border:1.5px solid #cbd5e1;border-radius:24px;font-size:14px;background:#fff;}
-.ai-input:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.15);}
-.ai-send{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:24px;padding:9px 16px;cursor:pointer;font-weight:500;transition:all 0.2s;}
-.ai-send:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(102,126,234,0.4);}
-.ai-suggestions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
-.ai-suggestion{background:#f1f5f9;color:#475569;padding:4px 9px;border-radius:14px;font-size:11px;cursor:pointer;transition:all 0.2s;}
-.ai-suggestion:hover{background:#e2e8f0;color:#1e293b;}
+/* STUDIO */
+.studio-card{background:#fff;border:1px solid #e9ecef;border-radius:20px;padding:20px;margin-top:16px;}
+.studio-preview{border-radius:16px;overflow:hidden;margin-bottom:16px;position:relative;min-height:220px;display:flex;align-items:center;justify-content:center;}
+.studio-preview-inner{width:100%;padding:32px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.studio-quote-text{font-size:1.15rem;font-weight:700;line-height:1.5;max-width:380px;}
+.studio-quote-author{font-size:0.85rem;opacity:0.8;}
+.studio-user-name{font-size:0.8rem;opacity:0.7;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.studio-app-badge{font-size:0.75rem;opacity:0.6;font-weight:700;letter-spacing:2px;}
+.studio-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.studio-swatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all 0.2s;flex-shrink:0;}
+.studio-swatch.active{border-color:#667eea;transform:scale(1.2);}
+.studio-font-btn{padding:5px 12px;border-radius:12px;border:2px solid #dee2e6;background:#f8f9fa;font-size:12px;cursor:pointer;transition:all 0.2s;margin:0;}
+.studio-font-btn.active{border-color:#667eea;background:#eef0ff;color:#667eea;}
 
-/* MOBILE */
-@media(max-width:768px){
-  body{padding:6px;}
-  .app{padding:14px;border-radius:20px;}
-  th,td{padding:6px 3px;font-size:10px;}
-  td:first-child{max-width:100px;}
-  .nav-btn{padding:8px 10px;font-size:12px;}
-  h2{font-size:1.3rem;}
-  .stats-grid{grid-template-columns:repeat(2,1fr);}
-  .streak-num{font-size:1.5rem;}
-  .quote-card{padding:12px 14px;}
-  .quote-text{font-size:0.9rem;}
-  .ai-chat{height:160px;}
-}
-@media(max-width:480px){
-  body{padding:0;}
-  .app{border-radius:0;padding:12px 10px;min-height:100vh;box-shadow:none;}
-  .nav-buttons{gap:4px;}
-  .nav-btn{flex:1;padding:8px 4px;font-size:10px;text-align:center;}
-  th,td{padding:4px 1px;font-size:9px;}
-  td:first-child{max-width:75px;font-size:10px;}
-  .quote-section{margin:12px 0;}
-  .quote-card{padding:10px 12px;flex-direction:column;align-items:flex-start;gap:8px;}
-  .quote-actions{width:100%;justify-content:flex-end;}
-  .quote-text{font-size:0.85rem;white-space:normal;}
-  .ai-section{padding:12px;}
-  .ai-chat{height:140px;}
-}
+/* AI */
+.ai-wrap{background:linear-gradient(135deg,rgba(102,126,234,0.05),rgba(118,75,162,0.05));border:1px solid rgba(102,126,234,0.15);border-radius:20px;padding:16px;}
+.ai-header-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.ai-avatar-el{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
+.ai-title-el{font-weight:700;color:#1e293b;font-size:15px;}
+.ai-status{font-size:11px;color:#667eea;font-weight:600;}
+.ai-chat-box{background:#fff;border-radius:16px;padding:12px;height:320px;overflow-y:auto;margin-bottom:12px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+.ai-msg,.user-msg{padding:10px 14px;border-radius:16px;max-width:88%;font-size:13px;line-height:1.5;word-break:break-word;}
+.ai-msg{background:#f8fafc;color:#1e293b;align-self:flex-start;border-bottom-left-radius:4px;}
+.user-msg{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.typing-dots{display:inline-flex;gap:4px;padding:4px 0;}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:#667eea;animation:tdot 1.4s infinite;}
+.typing-dot:nth-child(2){animation-delay:0.2s;}
+.typing-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes tdot{0%,80%,100%{opacity:0.3;transform:scale(0.8);}40%{opacity:1;transform:scale(1.2);}}
+.ai-input-row{display:flex;gap:8px;}
+.ai-input-el{flex:1;padding:10px 16px;border:1.5px solid #cbd5e1;border-radius:24px;font-size:14px;background:#fff;transition:all 0.2s;}
+.ai-input-el:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.12);}
+.ai-send-btn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:24px;padding:10px 18px;cursor:pointer;font-weight:600;transition:all 0.2s;}
+.ai-send-btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(102,126,234,0.4);}
+.ai-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;}
+.ai-chip{background:#f1f5f9;color:#475569;padding:5px 11px;border-radius:16px;font-size:11px;cursor:pointer;transition:all 0.2s;border:1px solid #e2e8f0;font-weight:500;}
+.ai-chip:hover{background:#e2e8f0;color:#1e293b;}
+@media(max-width:768px){body{padding:6px;}.app{padding:14px;border-radius:20px;}th,td{padding:6px 3px;font-size:10px;}td:first-child{max-width:100px;}.nav-btn{padding:7px 9px;font-size:11px;}h2{font-size:1.3rem;}.streak-num{font-size:1.5rem;}.ai-chat-box{height:260px;}}
+@media(max-width:480px){body{padding:0;}.app{border-radius:0;padding:12px 10px;min-height:100vh;box-shadow:none;}.nav-buttons{gap:3px;}.nav-btn{flex:1;padding:7px 3px;font-size:10px;text-align:center;}th,td{padding:4px 1px;font-size:9px;}td:first-child{max-width:75px;font-size:10px;}}
 </style>
 </head>
 <body>
 <div class="app">
-
-<!-- HEADER -->
 <div class="app-header">
-  <div class="header-left">
-    <h2>✨ FIKRCHA</h2>
-    <span class="subtitle" id="appSubtitle">think · grow · achieve</span>
-  </div>
+  <div class="header-left"><h2>✨ FIKRCHA</h2><span class="subtitle" id="appSubtitle">think · grow · achieve</span></div>
   <div class="header-right">
     <button class="dark-toggle" onclick="toggleDark()">🌙</button>
     <button class="lang-btn" onclick="setLanguage('uz')" id="lang-uz">UZ</button>
@@ -263,8 +206,6 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
     <button class="lang-btn" onclick="setLanguage('ru')" id="lang-ru">RU</button>
   </div>
 </div>
-
-<!-- NAV -->
 <div class="nav-buttons">
   <button class="nav-btn active" onclick="showPage('habitPage')" id="nav-habits">📅 Habits</button>
   <button class="nav-btn" onclick="showPage('studyPage')" id="nav-study">📚 Study</button>
@@ -273,42 +214,37 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   <button class="nav-btn" onclick="showPage('aiPage')" id="nav-ai">🤖 AI</button>
 </div>
 
-<!-- ===== MOTIVATIONAL QUOTE (Compact & Elegant) ===== -->
-<div class="quote-section">
-  <div class="quote-card" id="quoteCard">
-    <div class="quote-content">
-      <span class="quote-icon">✨</span>
-      <span class="quote-text" id="quoteText">"The secret of getting ahead is getting started."</span>
-      <span class="quote-author" id="quoteAuthor">— Mark Twain</span>
-    </div>
-    <div class="quote-actions">
-      <button class="quote-btn quote-refresh" onclick="refreshQuote()">🔄</button>
-      <button class="quote-btn quote-screenshot" onclick="screenshotQuote()">📸</button>
-    </div>
+<!-- QUOTE BAR -->
+<div class="quote-card" id="quoteCard" onclick="refreshQuote()">
+  <div class="quote-inner">
+    <span style="font-size:1.1rem;flex-shrink:0;">✨</span>
+    <span class="quote-text-el" id="quoteText"></span>
+    <span class="quote-author-el" id="quoteAuthor"></span>
+  </div>
+  <div class="quote-actions" onclick="event.stopPropagation()">
+    <button class="qbtn qbtn-refresh" onclick="refreshQuote()">🔄</button>
+    <button class="qbtn qbtn-studio" onclick="openStudio()">📸 Story</button>
   </div>
 </div>
 
-<!-- ===== HABITS ===== -->
+<!-- HABITS -->
 <div id="habitPage">
   <h3 id="habitsTitle" style="margin-bottom:16px;">✨ Daily Habits Tracker</h3>
-  <div class="week-nav" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
     <button onclick="changeWeek(-7)" id="btn-prev-week" style="background:#e9ecef;font-weight:700;">◀ Prev</button>
     <button onclick="changeWeek(7)" id="btn-next-week" style="background:#e9ecef;font-weight:700;">Next ▶</button>
     <span id="weekTitle" style="font-size:13px;color:#6c757d;font-weight:600;"></span>
   </div>
-  <!-- ADD HABIT ROW -->
   <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:16px;background:#f8f9fa;padding:12px;border-radius:16px;">
     <input id="taskInput" placeholder="Habit name" style="flex:1;min-width:120px;margin:0;"/>
     <input type="time" id="taskTime" style="margin:0;"/>
     <select id="categoryInput" style="width:100px;padding:8px 10px;font-size:13px;margin:0;border-radius:12px;"></select>
     <button class="btn-primary" onclick="openAddHabitModal()" id="btn-add-habit">➕ Add</button>
   </div>
-  <div style="overflow-x:auto;">
-    <table><thead><tr id="weekHeader"></tr></thead><tbody id="taskBody"></tbody></table>
-  </div>
+  <div style="overflow-x:auto;"><table><thead><tr id="weekHeader"></tr></thead><tbody id="taskBody"></tbody></table></div>
 </div>
 
-<!-- ===== STUDY ===== -->
+<!-- STUDY -->
 <div id="studyPage" style="display:none;">
   <h3 id="studyTitle" style="margin-bottom:16px;">📖 Study Journal</h3>
   <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
@@ -318,7 +254,7 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   <div id="lessonContainer"></div>
 </div>
 
-<!-- ===== DIARY ===== -->
+<!-- DIARY -->
 <div id="diaryPage" style="display:none;">
   <h3 id="diaryTitleHeader" style="margin-bottom:16px;">🧠 Life Diary</h3>
   <div style="margin-bottom:16px;">
@@ -333,21 +269,13 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   <input class="search-input" id="diarySearch" placeholder="🔍 Search diary..." oninput="renderDiary()"/>
   <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
     <input type="date" id="diaryDate" style="width:155px;"/>
-    <textarea id="diaryInput" placeholder="Write your day, feelings, memories..." style="flex:1;min-width:200px;"></textarea>
+    <textarea id="diaryInput" placeholder="Write your day..." style="flex:1;min-width:200px;"></textarea>
     <div style="display:flex;flex-direction:column;gap:8px;justify-content:center;">
-      <label style="cursor:pointer;background:#f1f3f5;border-radius:12px;padding:8px 14px;font-size:13px;text-align:center;">
-        🖼️ Photo<input type="file" id="diaryImage" accept="image/*" style="display:none;" onchange="previewDiaryImage(this)">
-      </label>
-      <div id="diaryImagePreview" style="display:none;align-items:center;">
-        <img id="diaryPreviewImg" style="max-width:100px;max-height:70px;border-radius:8px;object-fit:cover;">
-        <button onclick="clearDiaryImage()" style="background:#ffe0e0;font-size:10px;padding:2px 5px;margin-left:4px;">✕</button>
-      </div>
+      <label style="cursor:pointer;background:#f1f3f5;border-radius:12px;padding:8px 14px;font-size:13px;text-align:center;">🖼️ Photo<input type="file" id="diaryImage" accept="image/*" style="display:none;" onchange="previewDiaryImage(this)"></label>
+      <div id="diaryImagePreview" style="display:none;align-items:center;"><img id="diaryPreviewImg" style="max-width:100px;max-height:70px;border-radius:8px;object-fit:cover;"><button onclick="clearDiaryImage()" style="background:#ffe0e0;font-size:10px;padding:2px 5px;margin-left:4px;">✕</button></div>
       <button id="voiceBtn" class="voice-btn" onclick="toggleRecording()">🎤 Voice</button>
       <div id="voiceTimer" style="display:none;font-size:11px;color:#c0392b;text-align:center;font-weight:700;"></div>
-      <div id="voicePreview" class="voice-preview" style="display:none;">
-        <audio id="voiceAudio" controls></audio>
-        <button onclick="clearVoice()" style="background:#ffe0e0;font-size:10px;padding:2px 5px;margin:0;">✕</button>
-      </div>
+      <div id="voicePreview" class="voice-preview" style="display:none;"><audio id="voiceAudio" controls></audio><button onclick="clearVoice()" style="background:#ffe0e0;font-size:10px;padding:2px 5px;margin:0;">✕</button></div>
       <button class="btn-primary" onclick="addDiary()" id="btn-save-diary">💾 Save</button>
     </div>
   </div>
@@ -355,82 +283,91 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   <div id="diaryContainer"></div>
 </div>
 
-<!-- ===== STATS ===== -->
+<!-- STATS -->
 <div id="statsPage" style="display:none;">
   <h3 id="statsTitle" style="margin-bottom:16px;">📊 Statistics</h3>
-  <div id="notifBanner" class="notif-banner" style="display:none;">
-    🔔 <span id="notifMsg"></span>
-    <button class="btn-sm btn-primary" onclick="requestNotifications()">Enable</button>
-  </div>
-
-  <!-- TOP STREAKS -->
+  <div id="notifBanner" class="notif-banner" style="display:none;">🔔 <span id="notifMsg"></span><button class="btn-sm btn-primary" onclick="requestNotifications()">Enable</button></div>
   <div class="streak-banner" id="streakBanner"></div>
-
-  <!-- SMART INSIGHTS -->
   <div class="section-title">🧠 Smart Insights</div>
   <div id="insightsContainer"></div>
-
-  <!-- MOMENTUM SCORE -->
   <div class="section-title">⚡ Weekly Momentum</div>
   <div id="momentumContainer"></div>
-
-  <!-- 7-DAY CHART -->
-  <div class="chart-container">
-    <div class="chart-title" id="chartTitle">📊 Last 7 Days</div>
-    <div class="chart-bars" id="chartBars" style="height:90px;"></div>
-  </div>
-
-  <!-- HABIT CONSISTENCY LEADERBOARD -->
+  <div class="chart-container"><div class="chart-title" id="chartTitle">📊 Last 7 Days</div><div class="chart-bars" id="chartBars" style="height:90px;"></div></div>
   <div class="section-title">🏆 Habit Consistency (30 days)</div>
   <div id="consistencyList"></div>
-
-  <!-- FILTER + EXPORT -->
   <div class="section-title">🔍 Filter</div>
   <div class="filter-row" id="filterRow"></div>
-  <div style="margin:12px 0;">
-    <button class="export-btn" onclick="exportCSV()">⬇️ Export CSV</button>
-  </div>
-
-  <!-- 30-DAY TREND -->
-  <div class="chart-container">
-    <div class="chart-title">📈 30-Day Trend</div>
-    <div class="chart-bars" id="longChart" style="height:100px;"></div>
-  </div>
+  <div style="margin:12px 0;"><button class="export-btn" onclick="exportCSV()">⬇️ Export CSV</button></div>
+  <div class="chart-container"><div class="chart-title">📈 30-Day Trend</div><div class="chart-bars" id="longChart" style="height:100px;"></div></div>
 </div>
 
-<!-- ===== AI ASSISTANT ===== -->
+<!-- AI -->
 <div id="aiPage" style="display:none;">
-  <h3 id="aiTitle" style="margin-bottom:16px;">🤖 AI Assistant</h3>
-  <div class="ai-section">
-    <div class="ai-header">
-      <div class="ai-avatar">AI</div>
-      <div class="ai-title" id="aiGreeting">Hello! I'm your FIKRCHA AI. Ask me anything about your routine!</div>
+  <h3 style="margin-bottom:16px;">🤖 AI Assistant</h3>
+  <div class="ai-wrap">
+    <div class="ai-header-row">
+      <div class="ai-avatar-el">AI</div>
+      <div><div class="ai-title-el">FIKRCHA Assistant</div><div class="ai-status" id="aiStatus">● Online — Powered by Claude</div></div>
     </div>
-    <div class="ai-chat" id="aiChat">
-      <div class="ai-message">👋 Hi! I can help you:<br>• Analyze your habits 📊<br>• Suggest improvements 💡<br>• Plan your day 🗓️<br>• Motivate you 🔥<br><br>What would you like to work on?</div>
+    <div class="ai-chat-box" id="aiChat">
+      <div class="ai-msg">👋 Salom! Men FIKRCHA AI yordamchingizman.<br><br>Menga istalgan savolingizni bering:<br>• Odatlaringizni tahlil qilish 📊<br>• Yangi odatlar tavsiya qilish 💡<br>• Kun rejasini tuzish 🗓️<br>• Motivatsiya 🔥<br>• Hayot maslahatlari ✨<br><br>Yoki ingliz/rus tilida ham yozishingiz mumkin!</div>
     </div>
-    <div class="ai-suggestions">
-      <div class="ai-suggestion" onclick="sendAiSuggestion('Analyze my habits')">📊 Analyze</div>
-      <div class="ai-suggestion" onclick="sendAiSuggestion('Suggest a habit')">💡 Idea</div>
-      <div class="ai-suggestion" onclick="sendAiSuggestion('Plan my day')">🗓️ Plan</div>
-      <div class="ai-suggestion" onclick="sendAiSuggestion('Motivate me')">🔥 Boost</div>
+    <div class="ai-chips">
+      <div class="ai-chip" onclick="sendChip('Odatlarimni tahlil qil')">📊 Tahlil</div>
+      <div class="ai-chip" onclick="sendChip('Yangi odat tavsiya qil')">💡 Tavsiya</div>
+      <div class="ai-chip" onclick="sendChip('Bugun uchun reja tuz')">🗓️ Reja</div>
+      <div class="ai-chip" onclick="sendChip('Meni motivatsiya qil')">🔥 Motivatsiya</div>
+      <div class="ai-chip" onclick="sendChip('Analyze my habits and give detailed feedback')">🔍 Deep Analysis</div>
+      <div class="ai-chip" onclick="sendChip('What should I focus on this week?')">🎯 Focus</div>
     </div>
-    <div class="ai-input-container">
-      <input type="text" class="ai-input" id="aiInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')sendAiMessage()">
-      <button class="ai-send" onclick="sendAiMessage()">➤</button>
+    <div class="ai-input-row" style="margin-top:10px;">
+      <input type="text" class="ai-input-el" id="aiInput" placeholder="Savolingizni yozing..." onkeypress="if(event.key==='Enter')sendAiMessage()">
+      <button class="ai-send-btn" onclick="sendAiMessage()">➤</button>
     </div>
-  </div>
-  
-  <!-- AI Insights Panel -->
-  <div class="section-title">🧠 AI Insights</div>
-  <div id="aiInsights" style="background:#f8f9fa;border-radius:16px;padding:16px;margin-top:12px;">
-    <p style="color:#6c757d;font-size:13px;">Chat with me to get personalized tips for your productivity journey.</p>
   </div>
 </div>
 
-</div><!-- end .app -->
+<!-- STUDIO MODAL -->
+<div id="studioModal" class="modal-overlay" style="display:none;">
+  <div class="studio-card" style="width:95%;max-width:500px;max-height:92vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="font-size:16px;font-weight:800;color:#2c3e50;">📸 Story Studio</h3>
+      <button onclick="closeStudio()" style="background:#ffe0e0;color:#c0392b;padding:4px 12px;font-size:12px;">✕ Close</button>
+    </div>
+    <!-- PREVIEW -->
+    <div class="studio-preview" id="studioPreview">
+      <div class="studio-preview-inner" id="studioInner">
+        <div class="studio-quote-text" id="studioQuoteText"></div>
+        <div class="studio-quote-author" id="studioQuoteAuthor"></div>
+        <div class="studio-user-name" id="studioUserName"></div>
+        <div class="studio-app-badge">✨ FIKRCHA</div>
+      </div>
+    </div>
+    <!-- GRADIENT PICKER -->
+    <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;">Background</div>
+    <div class="studio-controls" id="gradientPicker"></div>
+    <!-- FONT STYLE -->
+    <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;margin-top:10px;">Text Style</div>
+    <div class="studio-controls" id="fontPicker"></div>
+    <!-- TEXT SIZE -->
+    <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;margin-top:10px;">Size</div>
+    <div style="display:flex;gap:8px;">
+      <button class="studio-font-btn active" id="size-sm" onclick="setSize('sm')">Small</button>
+      <button class="studio-font-btn" id="size-md" onclick="setSize('md')">Medium</button>
+      <button class="studio-font-btn" id="size-lg" onclick="setSize('lg')">Large</button>
+    </div>
+    <!-- EDIT QUOTE -->
+    <div style="font-size:12px;font-weight:700;color:#6c757d;margin:10px 0 6px;">Edit Quote</div>
+    <textarea id="studioEditText" style="width:100%;border-radius:12px;height:60px;font-size:13px;" oninput="updateStudioText()"></textarea>
+    <div style="display:flex;gap:8px;margin-top:14px;">
+      <button onclick="refreshStudioQuote()" style="background:#f1f5f9;color:#475569;flex:1;">🔄 New Quote</button>
+      <button onclick="downloadStory()" class="btn-primary" style="flex:1;">⬇️ Save Image</button>
+    </div>
+    <p style="font-size:11px;color:#adb5bd;margin-top:8px;text-align:center;">Take a screenshot or save → share to Instagram Story</p>
+  </div>
+</div>
 
-<!-- ADD/EDIT HABIT MODAL -->
+<!-- HABIT MODAL -->
 <div id="habitModal" class="modal-overlay" style="display:none;">
   <div class="sched-modal">
     <h3 id="habitModalTitle">➕ New Habit</h3>
@@ -439,8 +376,6 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
       <input type="time" id="modalHabitTime" style="flex:1;width:auto!important;"/>
       <select id="modalHabitCat" style="flex:1;border-radius:12px;padding:8px;"></select>
     </div>
-
-    <!-- SCHEDULE TYPE -->
     <div class="sched-section">
       <label>📅 Schedule Type</label>
       <div class="sched-type-row">
@@ -449,22 +384,14 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
         <button class="sched-type-btn" onclick="setSchedType('freq')" id="stype-freq">X times/week</button>
       </div>
     </div>
-
-    <!-- SPECIFIC DAYS -->
     <div class="sched-section" id="sched-days-section" style="display:none;">
       <label>Select days</label>
       <div class="days-row" id="dayPillsRow"></div>
     </div>
-
-    <!-- FREQUENCY -->
     <div class="sched-section" id="sched-freq-section" style="display:none;">
       <label>Times per week</label>
-      <div class="freq-row">
-        <input type="number" id="freqCount" min="1" max="7" value="3" style="border-radius:12px;"/>
-        <span style="font-size:13px;color:#6c757d;">times per week</span>
-      </div>
+      <div class="freq-row"><input type="number" id="freqCount" min="1" max="7" value="3" style="border-radius:12px;"/><span style="font-size:13px;color:#6c757d;">times per week</span></div>
     </div>
-
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
       <button onclick="closeHabitModal()">Cancel</button>
       <button class="btn-primary" onclick="saveHabitModal()">Save</button>
@@ -473,101 +400,237 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 </div>
 
 <script>
-// ==================== i18n ====================
-const i18n={
-  en:{
-    subtitle:"think · grow · achieve",
-    habitsTab:"📅 Habits",studyTab:"📚 Study",diaryTab:"🧠 Diary",statsTab:"📊 Stats",aiTab:"🤖 AI",
-    habitsTitle:"✨ Daily Habits Tracker",prevWeek:"◀ Prev",nextWeek:"Next ▶",
-    habitPlaceholder:"Habit name",addHabit:"➕ Add",
-    studyTitle:"📖 Study Journal",lessonPlaceholder:"New lesson/module",addLesson:"➕ Add Lesson",
-    diaryTitle:"🧠 Life Diary",diaryPlaceholder:"Write your day, feelings, memories...",
-    recordVoice:"🎤 Voice",stopRecording:"⏹ Stop",saveEntry:"💾 Save",
-    selectDate:"Select a date",entriesFor:"📔 Entries for ",
-    deleteHabit:"Delete habit?",deleteLesson:"Delete lesson?",cancel:"Cancel",save:"Save",
-    anytime:"—",weekTitlePrefix:"Week of ",edit:"✏️",delete:"🗑️",
-    streakLabel:"day streak",allFilter:"All",notifEnable:"Enable notifications for habit reminders",
-    chartTitle:"📊 Last 7 Days",statsTitle:"📊 Statistics",searchPlaceholder:"🔍 Search diary...",
-    days:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-    daysFull:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-    schedDaily:"Daily",schedDays:"Specific Days",schedFreq:"X times/week",
-    aiGreeting:"Hello! I'm your FIKRCHA AI. Ask me anything about your routine!",
-    aiSuggestions:["📊 Analyze","💡 Idea","🗓️ Plan","🔥 Boost"],
-    quotes:[
-      {text:"The secret of getting ahead is getting started.",author:"Mark Twain"},
-      {text:"Success is not final, failure is not fatal: it is the courage to continue that counts.",author:"Winston Churchill"},
-      {text:"Believe you can and you're halfway there.",author:"Theodore Roosevelt"},
-      {text:"Don't watch the clock; do what it does. Keep going.",author:"Sam Levenson"},
-      {text:"The only way to do great work is to love what you do.",author:"Steve Jobs"},
-      {text:"Your limitation—it's only your imagination.",author:"Unknown"},
-      {text:"Push yourself, because no one else is going to do it for you.",author:"Unknown"},
-      {text:"Great things never come from comfort zones.",author:"Unknown"},
-      {text:"Dream it. Wish it. Do it.",author:"Unknown"},
-      {text:"Success doesn't just find you. You have to go out and get it.",author:"Unknown"}
-    ]
-  },
-  uz:{
-    subtitle:"o'yla · o's · erish",
-    habitsTab:"📅 Odatlar",studyTab:"📚 O'qish",diaryTab:"🧠 Kundalik",statsTab:"📊 Statistika",aiTab:"🤖 AI",
-    habitsTitle:"✨ Kunlik Odatlar",prevWeek:"◀ Oldingi",nextWeek:"Keyingi ▶",
-    habitPlaceholder:"Odat nomi",addHabit:"➕ Qo'shish",
-    studyTitle:"📖 O'qish Jurnali",lessonPlaceholder:"Yangi dars/modul",addLesson:"➕ Dars Qo'shish",
-    diaryTitle:"🧠 Hayot Kundaligi",diaryPlaceholder:"Kuningiz, his-tuyg'ularingiz...",
-    recordVoice:"🎤 Yozish",stopRecording:"⏹ To'xtatish",saveEntry:"💾 Saqlash",
-    selectDate:"Sana tanlang",entriesFor:"📔 Kirishlar: ",
-    deleteHabit:"Odatni o'chirilsinmi?",deleteLesson:"Darsni o'chirilsinmi?",cancel:"Bekor",save:"Saqlash",
-    anytime:"—",weekTitlePrefix:"Hafta: ",edit:"✏️",delete:"🗑️",
-    streakLabel:"kunlik ketma-ketlik",allFilter:"Barchasi",notifEnable:"Odat eslatmalari uchun bildirishnomalarni yoqing",
-    chartTitle:"📊 So'nggi 7 kun",statsTitle:"📊 Statistika",searchPlaceholder:"🔍 Qidirish...",
-    days:["Du","Se","Ch","Pa","Ju","Sh","Ya"],
-    daysFull:["Dushanba","Seshanba","Chorshanba","Payshanba","Juma","Shanba","Yakshanba"],
-    schedDaily:"Har kuni",schedDays:"Muayyan kunlar",schedFreq:"Haftada X marta",
-    aiGreeting:"Salom! Men FIKRCHA AI yordamchingizman. Savolingiz bormi?",
-    aiSuggestions:["📊 Tahlil","💡 G'oya","🗓️ Reja","🔥 Motivatsiya"],
-    quotes:[
-      {text:"Boshlash siri — boshlashda.",author:"Mark Twain"},
-      {text:"Muvaffaqiyat yakuniy emas, muvaffaqiyatsizlik halokatli emas: davom etish jasorati muhim.",author:"Winston Churchill"},
-      {text:"Qila olaman deb ishonganingizda, yo'lni yarmigacha bosib o'tgansiz.",author:"Theodore Roosevelt"},
-      {text:"Soatga qarab o'tirmang; u nima qilsa, shuni qiling. Davom eting.",author:"Sam Levenson"},
-      {text:"Ajoyib ish qilishning yagona yo'li — sevgan ishingizni qilish.",author:"Steve Jobs"},
-      {text:"Cheklovingiz — faqat tasavvuringizda.",author:"Noma'lum"},
-      {text:"O'zingizni rag'batlantiring, chunki boshqa hech kim siz uchun buni qilmaydi.",author:"Noma'lum"},
-      {text:"Buyuk narsalar qulaylik zonalaridan kelmaydi.",author:"Noma'lum"},
-      {text:"Orzu qiling. Istang. Bajaring.",author:"Noma'lum"},
-      {text:"Muvaffaqiyat sizni topmaydi. Siz chiqib, uni olishingiz kerak.",author:"Noma'lum"}
-    ]
-  },
-  ru:{
-    subtitle:"думай · расти · достигай",
-    habitsTab:"📅 Привычки",studyTab:"📚 Учеба",diaryTab:"🧠 Дневник",statsTab:"📊 Статистика",aiTab:"🤖 ИИ",
-    habitsTitle:"✨ Трекер Привычек",prevWeek:"◀ Пред.",nextWeek:"След. ▶",
-    habitPlaceholder:"Привычка",addHabit:"➕ Добавить",
-    studyTitle:"📖 Учебный Журнал",lessonPlaceholder:"Новый урок/модуль",addLesson:"➕ Добавить урок",
-    diaryTitle:"🧠 Жизненный Дневник",diaryPlaceholder:"Пишите о своём дне...",
-    recordVoice:"🎤 Записать",stopRecording:"⏹ Стоп",saveEntry:"💾 Сохранить",
-    selectDate:"Выберите дату",entriesFor:"📔 Записи за ",
-    deleteHabit:"Удалить привычку?",deleteLesson:"Удалить урок?",cancel:"Отмена",save:"Сохранить",
-    anytime:"—",weekTitlePrefix:"Неделя: ",edit:"✏️",delete:"🗑️",
-    streakLabel:"дней подряд",allFilter:"Все",notifEnable:"Включить уведомления для напоминаний",
-    chartTitle:"📊 Последние 7 дней",statsTitle:"📊 Статистика",searchPlaceholder:"🔍 Поиск...",
-    days:["Пн","Вт","Ср","Чт","Пт","Сб","Вс"],
-    daysFull:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],
-    schedDaily:"Каждый день",schedDays:"Определённые дни",schedFreq:"X раз в неделю",
-    aiGreeting:"Привет! Я ваш ИИ-помощник FIKRCHA. Спросите о вашей рутине!",
-    aiSuggestions:["📊 Анализ","💡 Идея","🗓️ План","🔥 Мотивация"],
-    quotes:[
-      {text:"Секрет успеха в том, чтобы начать.",author:"Марк Твен"},
-      {text:"Успех не окончателен, неудача не фатальна: важно мужество продолжать.",author:"Уинстон Черчилль"},
-      {text:"Поверь, что можешь — и ты уже на полпути.",author:"Теодор Рузвельт"},
-      {text:"Не смотри на часы; делай то, что они. Продолжай идти.",author:"Сэм Левенсон"},
-      {text:"Единственный способ делать великую работу — любить то, что делаешь.",author:"Стив Джобс"},
-      {text:"Ваше ограничение — только ваше воображение.",author:"Неизвестно"},
-      {text:"Подталкивай себя, потому что никто другой не сделает это за тебя.",author:"Неизвестно"},
-      {text:"Великие дела никогда не приходят из зоны комфорта.",author:"Неизвестно"},
-      {text:"Мечтай. Желай. Делай.",author:"Неизвестно"},
-      {text:"Успех не просто находит тебя. Ты должен выйти и получить его.",author:"Неизвестно"}
-    ]
-  }
+// ========== QUOTES (75+ per language) ==========
+const QUOTES = {
+en:[
+{t:"The secret of getting ahead is getting started.",a:"Mark Twain"},
+{t:"You don't have to be great to start, but you have to start to be great.",a:"Zig Ziglar"},
+{t:"Success is the sum of small efforts repeated day in and day out.",a:"Robert Collier"},
+{t:"The only way to do great work is to love what you do.",a:"Steve Jobs"},
+{t:"Don't watch the clock; do what it does. Keep going.",a:"Sam Levenson"},
+{t:"Believe you can and you're halfway there.",a:"Theodore Roosevelt"},
+{t:"It does not matter how slowly you go as long as you do not stop.",a:"Confucius"},
+{t:"Everything you've ever wanted is on the other side of fear.",a:"George Addair"},
+{t:"Success is not final, failure is not fatal. It's the courage to continue that counts.",a:"Winston Churchill"},
+{t:"The harder you work for something, the greater you'll feel when you achieve it.",a:"Unknown"},
+{t:"Dream bigger. Do bigger.",a:"Unknown"},
+{t:"Don't stop when you're tired. Stop when you're done.",a:"Unknown"},
+{t:"Wake up with determination. Go to bed with satisfaction.",a:"Unknown"},
+{t:"Do something today that your future self will thank you for.",a:"Sean Patrick Flanery"},
+{t:"Little things make big days.",a:"Unknown"},
+{t:"It's going to be hard, but hard is not impossible.",a:"Unknown"},
+{t:"Don't wait for opportunity. Create it.",a:"Unknown"},
+{t:"Sometimes we're tested not to show our weaknesses, but to discover our strengths.",a:"Unknown"},
+{t:"The key to success is to focus on goals, not obstacles.",a:"Unknown"},
+{t:"Dream it. Wish it. Do it.",a:"Unknown"},
+{t:"Success doesn't just find you. You have to go out and get it.",a:"Unknown"},
+{t:"The harder the battle, the sweeter the victory.",a:"Les Brown"},
+{t:"Never let your fear decide your future.",a:"Unknown"},
+{t:"If you want something you've never had, you must be willing to do something you've never done.",a:"Thomas Jefferson"},
+{t:"The mind is everything. What you think you become.",a:"Buddha"},
+{t:"An unexamined life is not worth living.",a:"Socrates"},
+{t:"Spread love everywhere you go.",a:"Mother Teresa"},
+{t:"When you reach the end of your rope, tie a knot in it and hang on.",a:"Franklin D. Roosevelt"},
+{t:"Always remember that you are absolutely unique. Just like everyone else.",a:"Margaret Mead"},
+{t:"You must be the change you wish to see in the world.",a:"Mahatma Gandhi"},
+{t:"In the middle of every difficulty lies opportunity.",a:"Albert Einstein"},
+{t:"Strive not to be a success, but rather to be of value.",a:"Albert Einstein"},
+{t:"The measure of intelligence is the ability to change.",a:"Albert Einstein"},
+{t:"Do not go where the path may lead, go instead where there is no path and leave a trail.",a:"Ralph Waldo Emerson"},
+{t:"You only live once, but if you do it right, once is enough.",a:"Mae West"},
+{t:"Be yourself; everyone else is already taken.",a:"Oscar Wilde"},
+{t:"Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",a:"Albert Einstein"},
+{t:"Life is what happens when you're busy making other plans.",a:"John Lennon"},
+{t:"The future belongs to those who believe in the beauty of their dreams.",a:"Eleanor Roosevelt"},
+{t:"Tell me and I forget. Teach me and I remember. Involve me and I learn.",a:"Benjamin Franklin"},
+{t:"The best time to plant a tree was 20 years ago. The second best time is now.",a:"Chinese Proverb"},
+{t:"An investment in knowledge pays the best interest.",a:"Benjamin Franklin"},
+{t:"I have not failed. I've just found 10,000 ways that won't work.",a:"Thomas A. Edison"},
+{t:"A person who never made a mistake never tried anything new.",a:"Albert Einstein"},
+{t:"The only impossible journey is the one you never begin.",a:"Tony Robbins"},
+{t:"In this life we cannot do great things. We can only do small things with great love.",a:"Mother Teresa"},
+{t:"No matter what people tell you, words and ideas can change the world.",a:"Robin Williams"},
+{t:"Whether you think you can or you think you can't, you're right.",a:"Henry Ford"},
+{t:"The two most important days in your life are the day you are born and the day you find out why.",a:"Mark Twain"},
+{t:"Whatever you are, be a good one.",a:"Abraham Lincoln"},
+{t:"Your time is limited, so don't waste it living someone else's life.",a:"Steve Jobs"},
+{t:"If you look at what you have in life, you'll always have more.",a:"Oprah Winfrey"},
+{t:"If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success.",a:"James Cameron"},
+{t:"Life is not measured by the number of breaths we take, but by the moments that take our breath away.",a:"Maya Angelou"},
+{t:"If you want to lift yourself up, lift up someone else.",a:"Booker T. Washington"},
+{t:"I am not a product of my circumstances. I am a product of my decisions.",a:"Stephen Covey"},
+{t:"When I let go of what I am, I become what I might be.",a:"Lao Tzu"},
+{t:"Life is not about finding yourself. Life is about creating yourself.",a:"Lolly Daskal"},
+{t:"Not how long, but how well you have lived is the main thing.",a:"Seneca"},
+{t:"If life were predictable it would cease to be life, and be without flavor.",a:"Eleanor Roosevelt"},
+{t:"Happiness is not something readymade. It comes from your own actions.",a:"Dalai Lama"},
+{t:"It is during our darkest moments that we must focus to see the light.",a:"Aristotle"},
+{t:"Whoever is happy will make others happy too.",a:"Anne Frank"},
+{t:"You cannot protect yourself from sadness without protecting yourself from happiness.",a:"Jonathan Safran Foer"},
+{t:"The only person you are destined to become is the person you decide to be.",a:"Ralph Waldo Emerson"},
+{t:"No one can make you feel inferior without your consent.",a:"Eleanor Roosevelt"},
+{t:"Spread love everywhere you go. Let no one ever come to you without leaving happier.",a:"Mother Teresa"},
+{t:"Act as if what you do makes a difference. It does.",a:"William James"},
+{t:"Success usually comes to those who are too busy to be looking for it.",a:"Henry David Thoreau"},
+{t:"I would rather die of passion than of boredom.",a:"Vincent van Gogh"},
+{t:"Challenges are what make life interesting and overcoming them is what makes life meaningful.",a:"Joshua J. Marine"},
+{t:"If you can dream it, you can achieve it.",a:"Zig Ziglar"},
+{t:"When you have a dream, you've got to grab it and never let go.",a:"Carol Burnett"},
+{t:"Nothing is impossible. The word itself says 'I'm possible!'",a:"Audrey Hepburn"},
+{t:"There is nothing impossible to they who will try.",a:"Alexander the Great"},
+{t:"Keep your eyes on the stars, and your feet on the ground.",a:"Theodore Roosevelt"}
+],
+uz:[
+{t:"Oldinga yurish siri — boshlab yuborishda.",a:"Mark Twain"},
+{t:"Ulug' bo'lish uchun ulug' bo'lib boshlamaysiz, balki boshlab ulug' bo'lasiz.",a:"Zig Ziglar"},
+{t:"Muvaffaqiyat — har kuni takrorlanadigan kichik sa'y-harakatlar yig'indisi.",a:"Robert Collier"},
+{t:"Ulug' ish qilishning yagona yo'li — sevgan ishingizni qilish.",a:"Steve Jobs"},
+{t:"Soatga qaramang, u nima qilsa shuni qiling. Davom eting.",a:"Sam Levenson"},
+{t:"Qila olaman deb ishonsangiz — yo'lni yarmigacha bosib o'tgansiz.",a:"Theodore Roosevelt"},
+{t:"Qanchalik sekin borsangiz ham muhim emas, asosiysi to'xtamang.",a:"Konfutsiy"},
+{t:"Orzulab yashagan hamma narsa qo'rquvning narigi tomonida.",a:"George Addair"},
+{t:"Muvaffaqiyat yakuniy emas, muvaffaqiyatsizlik halokatli emas — muhimi davom etish jasorati.",a:"Uinston Cherchill"},
+{t:"Qanchalik ko'p mehnat qilsangiz, natijaga erishganda shunchalik baxtli bo'lasiz.",a:"Noma'lum"},
+{t:"Kattaroq orzu qiling. Kattaroq qiling.",a:"Noma'lum"},
+{t:"Charchaganda emas, ishingiz tugaganda to'xtang.",a:"Noma'lum"},
+{t:"Qat'iyat bilan uyg'on, qoniqish bilan uxla.",a:"Noma'lum"},
+{t:"Kelajak 'men'ingiz minnatdor bo'ladigan biror narsa qiling.",a:"Sean Patrick Flanery"},
+{t:"Kichik narsalar katta kunlarni yaratadi.",a:"Noma'lum"},
+{t:"Qiyin bo'ladi, lekin qiyin — imkonsiz degani emas.",a:"Noma'lum"},
+{t:"Imkoniyatni kutmang. Uni yarating.",a:"Noma'lum"},
+{t:"Ba'zida bizni zaifligimizni emas, kuchimizni kashf qilish uchun sinashadi.",a:"Noma'lum"},
+{t:"Muvaffaqiyat kaliti — to'siqlarga emas, maqsadlarga fokus.",a:"Noma'lum"},
+{t:"Orzu qiling. Istang. Bajaring.",a:"Noma'lum"},
+{t:"Muvaffaqiyat sizni topmaydi. Siz chiqib, uni olishingiz kerak.",a:"Noma'lum"},
+{t:"Jang qanchalik og'ir bo'lsa, g'alaba shunchalik shirin.",a:"Les Brown"},
+{t:"Qo'rquvingiz kelajagingizni belgilashiga yo'l qo'ymang.",a:"Noma'lum"},
+{t:"Hech olmagan narsangizni olmoqchi bo'lsangiz, hech qilmagan narsangizni qilishga tayyor bo'ling.",a:"Tomas Jefferson"},
+{t:"Aql hamma narsa. Nima o'ylasangiz — shun bo'lasiz.",a:"Budda"},
+{t:"O'rganilmagan hayot yashashga loyiq emas.",a:"Sokrat"},
+{t:"Hamma joyda mehr tarqating.",a:"Ona Tereza"},
+{t:"Arqon oxiriga yetsangiz, tugun bog'lab osilib turing.",a:"Franklin D. Ruzvelt"},
+{t:"Siz mutlaqo noyobsiz — xuddi boshqalar kabi.",a:"Margaret Mid"},
+{t:"Dunyo ko'rmoqchi bo'lgan o'zgarish o'zingiz bo'ling.",a:"Mahatma Gandi"},
+{t:"Har qiyinchilik ichida imkoniyat yashaydi.",a:"Albert Eynshteyn"},
+{t:"Muvaffaqiyatli bo'lishga emas, foydali bo'lishga intiling.",a:"Albert Eynshteyn"},
+{t:"Intellektning o'lchovi — o'zgarish qobiliyati.",a:"Albert Eynshteyn"},
+{t:"Yo'l borga emas, yo'l yo'qqa boring va iz qoldiring.",a:"Ralf Uoldo Emerson"},
+{t:"Bir marta yashaysiz, lekin to'g'ri yashab, bir marta yetarli.",a:"May Uest"},
+{t:"O'zingiz bo'ling — boshqalarning hammasi allaqachon band.",a:"Oskar Uayld"},
+{t:"Hayot — boshqa rejalar tuzayotganda sodir bo'lgan narsa.",a:"Jon Lennon"},
+{t:"Kelajak o'z orzularining go'zalligiga ishonadigan odamlarniki.",a:"Eleonor Ruzvelt"},
+{t:"Eng yaxshi daraxt ekish vaqti — 20 yil oldin edi. Ikkinchi eng yaxshisi — hozir.",a:"Xitoy maqoli"},
+{t:"Bilimlarga sarmoya eng yaxshi foiz beradi.",a:"Benjamin Franklin"},
+{t:"Men muvaffaqiyatsiz bo'lmadim. Shunchaki ishlamaydigan 10,000 usulni topdim.",a:"Tomas Edison"},
+{t:"Hech qachon xato qilmagan odam hech qachon yangi narsa sinab ko'rmagan.",a:"Albert Eynshteyn"},
+{t:"Yagona imkonsiz sayohat — boshlamagan sayohatingiz.",a:"Tony Robbins"},
+{t:"Orzu qilsangiz — uni mahkam ushlab olishingiz kerak.",a:"Kerol Bernett"},
+{t:"Hech narsa imkonsiz emas. So'zning o'zi aytadi: 'Men mumkin!'",a:"Odri Xepbern"},
+{t:"Ko'zlaringizni yulduzlarga tikib, oyoqlaringizni yerda saqlang.",a:"Teodor Ruzvelt"},
+{t:"Harakatingiz farq qiladi deb harakat qiling. Farq qiladi.",a:"Uilyam Jeyms"},
+{t:"Muvaffaqiyat odatda uni qidirishga vaqt topolmaydiganlarga keladi.",a:"Genri Devid Toro"},
+{t:"Zerikishdan ko'ra ehtiros bilan o'lishni afzal ko'raman.",a:"Vinsent van Gog"},
+{t:"Qiyinchiliklar hayotni qiziqarli qiladi, ularni yengish esa hayotni mazmunli.",a:"Joshya J. Marin"},
+{t:"Orzu qilsangiz — erishishingiz mumkin.",a:"Zig Ziglar"},
+{t:"Hayot nafaslarimiz soni bilan emas, bizni hayratga soladigan lahzalar bilan o'lchanadi.",a:"Maya Anjelo"},
+{t:"O'zingizni ko'tarmоqchi bo'lsangiz — boshqasini ko'taring.",a:"Booker T. Uoshington"},
+{t:"Men holatlarimning mahsuli emasman. Men qarorlarimning mahsuliman.",a:"Stiven Kovi"},
+{t:"O'zimni qo'yib yuborganimda, bo'lishim mumkin bo'lganga aylanaman.",a:"Lao-tszy"},
+{t:"Hayot o'zingizni topish haqida emas. Hayot o'zingizni yaratish haqida.",a:"Lolly Dasdal"},
+{t:"Qancha yashagandek emas, qanchalik yaxshi yashagandek — asosiy narsa.",a:"Seneka"},
+{t:"Baxt tayyor holda berilmaydi. U o'z harakatlaringizdan kelib chiqadi.",a:"Dalay Lama"},
+{t:"Eng qorong'u lahzalarda ham nurni ko'rish uchun diqqatimizni jamlashimiz kerak.",a:"Aristotel"},
+{t:"Baxtiyor bo'lgan odam boshqalarni ham baxtli qiladi.",a:"Anna Frank"},
+{t:"Taqdirda bo'ladigan yagona odam — o'zingiz bo'lishga qaror qilgan kishi.",a:"Ralf Uoldo Emerson"},
+{t:"Sizga past qaramoqchi bo'lgan odam, faqat roziligingiz bilan buni amalga oshira oladi.",a:"Eleonor Ruzvelt"},
+{t:"Muvaffaqiyat odatda uni izlashga juda band bo'lgan odamlarga keladi.",a:"Genri Devid Toro"},
+{t:"Qiyinchiliklar hayotni mazmunli qiladi.",a:"Joshya J. Marin"},
+{t:"Agar orzu qila olsangiz — erishishingiz ham mumkin.",a:"Zig Ziglar"},
+{t:"Hech narsa imkonsiz emas, faqat harakat qilish kerak.",a:"Aleksandr Buyuk"},
+{t:"Yulduzlarga qarang, oyoqlaringizni yerda saqlang.",a:"Teodor Ruzvelt"},
+{t:"Bugun qilgan kichik qadamingiz — ertangi ulug' o'zgarishning asosi.",a:"Noma'lum"},
+{t:"Harakat qilib ko'rmasdan muvaffaqiyatsizlik deb bo'lmaydi.",a:"Noma'lum"},
+{t:"O'z kuchingga ishonadigan odam — allaqachon g'olib.",a:"Noma'lum"},
+{t:"Eng qiyin yo'l — eng katta g'alabaga olib boradi.",a:"Noma'lum"},
+{t:"Har bir yangi kun — yangi imkoniyat.",a:"Noma'lum"},
+{t:"Mehnating samarasi — hayotingizning quvonchi.",a:"Noma'lum"},
+{t:"O'zingga bo'lgan ishonch — muvaffaqiyatning birinchi qadami.",a:"Noma'lum"},
+{t:"Kichik g'alabalar — katta muvaffaqiyatning asosi.",a:"Noma'lum"},
+{t:"Bugungi sa'y-harakat — ertangi natija.",a:"Noma'lum"}
+],
+ru:[
+{t:"Секрет движения вперёд — просто начать.",a:"Марк Твен"},
+{t:"Нельзя начать великим, но чтобы стать великим — нужно начать.",a:"Зиг Зиглар"},
+{t:"Успех — это сумма небольших усилий, повторяемых изо дня в день.",a:"Роберт Колье"},
+{t:"Единственный способ делать великую работу — любить то, что делаешь.",a:"Стив Джобс"},
+{t:"Не смотри на часы; делай то, что они. Продолжай идти.",a:"Сэм Левенсон"},
+{t:"Поверь, что можешь — и ты уже на полпути.",a:"Теодор Рузвельт"},
+{t:"Не важно, как медленно ты идёшь, главное — не останавливаться.",a:"Конфуций"},
+{t:"Всё, о чём ты мечтал, находится по ту сторону страха.",a:"Джордж Аддэр"},
+{t:"Успех не окончателен, провал не фатален. Важно мужество продолжать.",a:"Уинстон Черчилль"},
+{t:"Чем больше труда вложишь — тем слаще победа.",a:"Неизвестно"},
+{t:"Мечтай больше. Делай больше.",a:"Неизвестно"},
+{t:"Останавливайся не когда устал, а когда сделал.",a:"Неизвестно"},
+{t:"Просыпайся с решимостью. Засыпай с удовлетворением.",a:"Неизвестно"},
+{t:"Сделай сегодня то, за что будущий ты скажет тебе спасибо.",a:"Шон Патрик Фланери"},
+{t:"Маленькие дела создают большие дни.",a:"Неизвестно"},
+{t:"Это будет тяжело, но тяжело — не значит невозможно.",a:"Неизвестно"},
+{t:"Не жди возможности. Создавай её.",a:"Неизвестно"},
+{t:"Иногда нас испытывают не чтобы показать нашу слабость, а чтобы открыть нашу силу.",a:"Неизвестно"},
+{t:"Ключ к успеху — фокус на целях, а не на препятствиях.",a:"Неизвестно"},
+{t:"Мечтай. Желай. Делай.",a:"Неизвестно"},
+{t:"Успех не найдёт тебя сам. Выйди и возьми его.",a:"Неизвестно"},
+{t:"Чем труднее битва, тем слаще победа.",a:"Лес Браун"},
+{t:"Никогда не позволяй страху решать своё будущее.",a:"Неизвестно"},
+{t:"Хочешь того, чего никогда не имел — делай то, чего никогда не делал.",a:"Томас Джефферсон"},
+{t:"Разум — это всё. Чем думаешь — тем становишься.",a:"Будда"},
+{t:"Неисследованная жизнь не стоит того, чтобы её жить.",a:"Сократ"},
+{t:"Несите любовь повсюду, куда идёте.",a:"Мать Тереза"},
+{t:"Когда достигнешь конца верёвки — завяжи узел и держись.",a:"Франклин Д. Рузвельт"},
+{t:"Помни, ты абсолютно уникален — как и все остальные.",a:"Маргарет Мид"},
+{t:"Стань сам тем изменением, которое хочешь видеть в мире.",a:"Махатма Ганди"},
+{t:"В центре каждой трудности лежит возможность.",a:"Альберт Эйнштейн"},
+{t:"Стремись не к успеху, а к тому, чтобы быть ценным.",a:"Альберт Эйнштейн"},
+{t:"Мерило интеллекта — способность меняться.",a:"Альберт Эйнштейн"},
+{t:"Иди не туда, где есть путь, а туда, где пути нет, и оставь след.",a:"Ральф Уолдо Эмерсон"},
+{t:"Живёшь один раз, но если правильно — одного раза достаточно.",a:"Мэй Уэст"},
+{t:"Будь собой; все остальные уже заняты.",a:"Оскар Уайльд"},
+{t:"Жизнь — это то, что происходит, пока ты строишь другие планы.",a:"Джон Леннон"},
+{t:"Будущее принадлежит тем, кто верит в красоту своих мечтаний.",a:"Элеонора Рузвельт"},
+{t:"Скажи — забуду. Покажи — запомню. Вовлеки — пойму.",a:"Бенджамин Франклин"},
+{t:"Лучшее время посадить дерево было 20 лет назад. Второе лучшее — сейчас.",a:"Китайская пословица"},
+{t:"Инвестиции в знания приносят наибольший процент.",a:"Бенджамин Франклин"},
+{t:"Я не потерпел неудачу. Я просто нашёл 10 000 способов, которые не работают.",a:"Томас Эдисон"},
+{t:"Человек, никогда не ошибавшийся, никогда не пробовал ничего нового.",a:"Альберт Эйнштейн"},
+{t:"Единственное невозможное путешествие — то, которое ты так и не начал.",a:"Тони Роббинс"},
+{t:"Мечтаешь — хватай и не отпускай.",a:"Кэрол Бёрнетт"},
+{t:"Ничто не невозможно. Само слово говорит: «Я возможен!»",a:"Одри Хепбёрн"},
+{t:"Держи глаза на звёздах, а ноги — на земле.",a:"Теодор Рузвельт"},
+{t:"Действуй так, будто то, что ты делаешь, имеет значение. Так и есть.",a:"Уильям Джеймс"},
+{t:"Успех приходит обычно к тем, кто слишком занят, чтобы его искать.",a:"Генри Дэвид Торо"},
+{t:"Я предпочту умереть от страсти, чем от скуки.",a:"Винсент ван Гог"},
+{t:"Трудности делают жизнь интересной, а их преодоление — осмысленной.",a:"Джошуа Дж. Марин"},
+{t:"Если можешь мечтать — можешь достичь.",a:"Зиг Зиглар"},
+{t:"Жизнь измеряется не вдохами, а моментами, захватывающими дух.",a:"Майя Анджелу"},
+{t:"Хочешь поднять себя — подними кого-то другого.",a:"Букер Т. Вашингтон"},
+{t:"Я не продукт своих обстоятельств. Я продукт своих решений.",a:"Стивен Кови"},
+{t:"Когда я отпускаю то, что я есть, я становлюсь тем, кем могу быть.",a:"Лао-цзы"},
+{t:"Жизнь — не поиск себя. Жизнь — создание себя.",a:"Лолли Даздал"},
+{t:"Счастье не готовое блюдо. Оно рождается из твоих собственных действий.",a:"Далай-лама"},
+{t:"В самые тёмные моменты нужно сосредоточиться, чтобы увидеть свет.",a:"Аристотель"},
+{t:"Счастливый человек делает счастливыми и других.",a:"Анна Франк"},
+{t:"Единственный человек, которым ты должен стать — тот, кем ты решил быть.",a:"Ральф Уолдо Эмерсон"},
+{t:"Никто не может заставить тебя чувствовать себя хуже без твоего согласия.",a:"Элеонора Рузвельт"},
+{t:"Небольшой шаг сегодня — основа великого завтра.",a:"Неизвестно"},
+{t:"Без попытки нет и поражения.",a:"Неизвестно"},
+{t:"Верящий в себя человек уже наполовину победитель.",a:"Неизвестно"},
+{t:"Самый трудный путь ведёт к самой великой победе.",a:"Неизвестно"},
+{t:"Каждый новый день — новая возможность.",a:"Неизвестно"},
+{t:"Плоды твоего труда — радость твоей жизни.",a:"Неизвестно"},
+{t:"Вера в себя — первый шаг к успеху.",a:"Неизвестно"},
+{t:"Маленькие победы — фундамент большого успеха.",a:"Неизвестно"},
+{t:"Сегодняшние усилия — завтрашние результаты.",a:"Неизвестно"}
+]
 };
 
 let currentLang=localStorage.getItem('fikrcha_lang')||(navigator.language.startsWith('uz')?'uz':navigator.language.startsWith('ru')?'ru':'en');
@@ -576,9 +639,52 @@ let activeFilter='All';
 let editingHabitIdx=null;
 let schedType='daily';
 let selectedDays=[];
-let aiConversationHistory=[]; // Simple conversation memory
+let currentQuoteIdx={en:0,uz:0,ru:0};
+let studioGrad=0,studioFont=0,studioSize='sm';
+let aiMessages=[];
 
-function t(key){return i18n[currentLang]?.[key]||i18n.en[key]||key;}
+function t(key){return ({
+  subtitle:{en:"think · grow · achieve",uz:"o'yla · o's · erish",ru:"думай · расти · достигай"},
+  habitsTab:{en:"📅 Habits",uz:"📅 Odatlar",ru:"📅 Привычки"},
+  studyTab:{en:"📚 Study",uz:"📚 O'qish",ru:"📚 Учеба"},
+  diaryTab:{en:"🧠 Diary",uz:"🧠 Kundalik",ru:"🧠 Дневник"},
+  statsTab:{en:"📊 Stats",uz:"📊 Statistika",ru:"📊 Статистика"},
+  aiTab:{en:"🤖 AI",uz:"🤖 AI",ru:"🤖 ИИ"},
+  habitsTitle:{en:"✨ Daily Habits Tracker",uz:"✨ Kunlik Odatlar",ru:"✨ Трекер Привычек"},
+  studyTitle:{en:"📖 Study Journal",uz:"📖 O'qish Jurnali",ru:"📖 Учебный Журнал"},
+  diaryTitle:{en:"🧠 Life Diary",uz:"🧠 Hayot Kundaligi",ru:"🧠 Жизненный Дневник"},
+  statsTitle:{en:"📊 Statistics",uz:"📊 Statistika",ru:"📊 Статистика"},
+  prevWeek:{en:"◀ Prev",uz:"◀ Oldingi",ru:"◀ Пред."},
+  nextWeek:{en:"Next ▶",uz:"Keyingi ▶",ru:"След. ▶"},
+  addHabit:{en:"➕ Add",uz:"➕ Qo'shish",ru:"➕ Добавить"},
+  addLesson:{en:"➕ Add Lesson",uz:"➕ Dars Qo'shish",ru:"➕ Добавить урок"},
+  saveEntry:{en:"💾 Save",uz:"💾 Saqlash",ru:"💾 Сохранить"},
+  recordVoice:{en:"🎤 Voice",uz:"🎤 Yozish",ru:"🎤 Записать"},
+  stopRecording:{en:"⏹ Stop",uz:"⏹ To'xtatish",ru:"⏹ Стоп"},
+  selectDate:{en:"Select a date",uz:"Sana tanlang",ru:"Выберите дату"},
+  entriesFor:{en:"📔 Entries for ",uz:"📔 Kirishlar: ",ru:"📔 Записи за "},
+  deleteHabit:{en:"Delete habit?",uz:"Odatni o'chirilsinmi?",ru:"Удалить привычку?"},
+  deleteLesson:{en:"Delete lesson?",uz:"Darsni o'chirilsinmi?",ru:"Удалить урок?"},
+  cancel:{en:"Cancel",uz:"Bekor",ru:"Отмена"},
+  save:{en:"Save",uz:"Saqlash",ru:"Сохранить"},
+  anytime:{en:"—",uz:"—",ru:"—"},
+  weekTitlePrefix:{en:"Week of ",uz:"Hafta: ",ru:"Неделя: "},
+  edit:{en:"✏️",uz:"✏️",ru:"✏️"},
+  delete:{en:"🗑️",uz:"🗑️",ru:"🗑️"},
+  streakLabel:{en:"day streak",uz:"kunlik ketma-ketlik",ru:"дней подряд"},
+  allFilter:{en:"All",uz:"Barchasi",ru:"Все"},
+  notifEnable:{en:"Enable notifications for habit reminders",uz:"Odat eslatmalari uchun bildirishnomalarni yoqing",ru:"Включить уведомления для напоминаний"},
+  chartTitle:{en:"📊 Last 7 Days",uz:"📊 So'nggi 7 kun",ru:"📊 Последние 7 дней"},
+  schedDaily:{en:"Daily",uz:"Har kuni",ru:"Каждый день"},
+  schedDays:{en:"Specific Days",uz:"Muayyan kunlar",ru:"Определённые дни"},
+  schedFreq:{en:"X times/week",uz:"Haftada X marta",ru:"X раз в неделю"},
+  habitPlaceholder:{en:"Habit name",uz:"Odat nomi",ru:"Привычка"},
+  lessonPlaceholder:{en:"New lesson/module",uz:"Yangi dars/modul",ru:"Новый урок/модуль"},
+  diaryPlaceholder:{en:"Write your day, feelings, memories...",uz:"Kuningiz, his-tuyg'ularingiz...",ru:"Пишите о своём дне..."},
+  searchPlaceholder:{en:"🔍 Search diary...",uz:"🔍 Qidirish...",ru:"🔍 Поиск..."},
+  days:{en:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],uz:["Du","Se","Ch","Pa","Ju","Sh","Ya"],ru:["Пн","Вт","Ср","Чт","Пт","Сб","Вс"]}
+}[key]?.[currentLang] || key);}
+
 function setLanguage(lang){currentLang=lang;localStorage.setItem('fikrcha_lang',lang);applyLanguage();}
 function toggleDark(){darkMode=!darkMode;localStorage.setItem('fikrcha_dark',darkMode?'1':'0');document.body.classList.toggle('dark',darkMode);}
 
@@ -586,27 +692,22 @@ function applyLanguage(){
   const s=(id,key)=>{const e=document.getElementById(id);if(e)e.textContent=t(key);};
   const p=(id,key)=>{const e=document.getElementById(id);if(e)e.placeholder=t(key);};
   s('appSubtitle','subtitle');s('habitsTitle','habitsTitle');s('studyTitle','studyTitle');
-  s('diaryTitleHeader','diaryTitle');s('statsTitle','statsTitle');s('aiTitle','aiTab');s('aiGreeting','aiGreeting');
+  s('diaryTitleHeader','diaryTitle');s('statsTitle','statsTitle');
   p('taskInput','habitPlaceholder');p('lessonInput','lessonPlaceholder');
-  p('diaryInput','diaryPlaceholder');p('diarySearch','searchPlaceholder');p('aiInput','Ask me anything...');
-  s('nav-habits','habitsTab');s('nav-study','studyTab');s('nav-diary','diaryTab');s('nav-stats','statsTab');s('nav-ai','aiTab');
+  p('diaryInput','diaryPlaceholder');p('diarySearch','searchPlaceholder');
+  s('nav-habits','habitsTab');s('nav-study','studyTab');s('nav-diary','diaryTab');
+  s('nav-stats','statsTab');s('nav-ai','aiTab');
   s('btn-prev-week','prevWeek');s('btn-next-week','nextWeek');
   s('btn-add-habit','addHabit');s('btn-add-lesson','addLesson');s('btn-save-diary','saveEntry');
   s('chartTitle','chartTitle');
   const vb=document.getElementById('voiceBtn');if(vb&&!vb.classList.contains('recording'))vb.textContent=t('recordVoice');
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
   const lb=document.getElementById('lang-'+currentLang);if(lb)lb.classList.add('active');
-  renderFilterRow();
-  const hp=document.getElementById('habitPage');if(hp&&hp.style.display!=='none')render();
-  const dp=document.getElementById('diaryPage');if(dp&&dp.style.display!=='none'){renderCalendar();renderDiary();}
-  const sp=document.getElementById('statsPage');if(sp&&sp.style.display!=='none')renderStats();
-  // Update AI suggestions
-  const suggestions = t('aiSuggestions');
-  document.querySelectorAll('.ai-suggestion').forEach((el, i) => {
-    if(suggestions[i]) el.textContent = suggestions[i];
-  });
-  // Refresh quote in new language
   refreshQuote();
+  renderFilterRow();
+  if(document.getElementById('habitPage')?.style.display!=='none')render();
+  if(document.getElementById('diaryPage')?.style.display!=='none'){renderCalendar();renderDiary();}
+  if(document.getElementById('statsPage')?.style.display!=='none')renderStats();
 }
 
 function showPage(id){
@@ -618,352 +719,202 @@ function showPage(id){
   applyLanguage();
   if(id==='diaryPage'){renderCalendar();renderDiary();}
   if(id==='statsPage')renderStats();
-  if(id==='aiPage'){scrollAiChat();showAiWelcome();}
 }
 
-// ==================== MOTIVATIONAL QUOTES (Compact) ====================
-function getRandomQuote(){
-  const quotes = t('quotes');
-  return quotes[Math.floor(Math.random() * quotes.length)];
-}
-
-function displayQuote(quote){
-  document.getElementById('quoteText').textContent = `"${quote.text}"`;
-  document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
-}
-
+// ========== QUOTES ==========
 function refreshQuote(){
-  displayQuote(getRandomQuote());
-  // Subtle animation
-  const card = document.getElementById('quoteCard');
-  card.style.opacity = '0.7';
-  setTimeout(() => { card.style.opacity = '1'; }, 150);
+  const qs=QUOTES[currentLang]||QUOTES.en;
+  const idx=Math.floor(Math.random()*qs.length);
+  currentQuoteIdx[currentLang]=idx;
+  const q=qs[idx];
+  document.getElementById('quoteText').textContent=`"${q.t}"`;
+  document.getElementById('quoteAuthor').textContent=`— ${q.a}`;
+  const card=document.getElementById('quoteCard');
+  card.style.opacity='0.6';setTimeout(()=>{card.style.opacity='1';},200);
+  updateStudioFromCurrent();
 }
 
-function screenshotQuote(){
-  const quote = {
-    text: document.getElementById('quoteText').textContent,
-    author: document.getElementById('quoteAuthor').textContent
-  };
-  
-  // Create clean screenshot overlay
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `
-    position:fixed;top:0;left:0;width:100vw;height:100vh;
-    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-    display:flex;align-items:center;justify-content:center;
-    z-index:9999;padding:20px;
-  `;
-  overlay.innerHTML = `
-    <div style="background:rgba(255,255,255,0.95);border-radius:20px;padding:30px;max-width:400px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-      <div style="font-size:1.4rem;font-weight:600;color:#1e293b;line-height:1.4;margin-bottom:20px;font-style:italic;">
-        ${quote.text}
-      </div>
-      <div style="font-size:1rem;color:#64748b;font-weight:500;">
-        ${quote.author}
-      </div>
-      <div style="margin-top:25px;font-size:0.85rem;color:#94a3b8;">
-        ✨ FIKRCHA ✨
-      </div>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-  
-  setTimeout(() => {
-    alert('📸 Screenshot ready!\n\n1. Take screenshot now\n2. Press OK to return');
-    document.body.removeChild(overlay);
-  }, 200);
+// ========== STUDIO ==========
+const GRADIENTS=[
+  {bg:'linear-gradient(135deg,#667eea,#764ba2)',tc:'#fff',label:'Purple'},
+  {bg:'linear-gradient(135deg,#f093fb,#f5576c)',tc:'#fff',label:'Pink'},
+  {bg:'linear-gradient(135deg,#4facfe,#00f2fe)',tc:'#fff',label:'Sky'},
+  {bg:'linear-gradient(135deg,#43e97b,#38f9d7)',tc:'#fff',label:'Mint'},
+  {bg:'linear-gradient(135deg,#fa709a,#fee140)',tc:'#fff',label:'Sunset'},
+  {bg:'linear-gradient(135deg,#30cfd0,#330867)',tc:'#fff',label:'Deep'},
+  {bg:'linear-gradient(135deg,#a18cd1,#fbc2eb)',tc:'#333',label:'Lavender'},
+  {bg:'linear-gradient(135deg,#ffecd2,#fcb69f)',tc:'#333',label:'Peach'},
+  {bg:'linear-gradient(135deg,#2d3748,#1a202c)',tc:'#fff',label:'Dark'},
+  {bg:'linear-gradient(135deg,#fff,#f0f4ff)',tc:'#333',label:'White'}
+];
+const FONTS=[
+  {family:'"Segoe UI",sans-serif',label:'Modern'},
+  {family:'Georgia,serif',label:'Classic'},
+  {family:'"Courier New",monospace',label:'Mono'},
+  {family:'Impact,sans-serif',label:'Bold'},
+  {family:'"Times New Roman",serif',label:'Elegant'}
+];
+
+function openStudio(){
+  buildStudioControls();
+  updateStudioFromCurrent();
+  document.getElementById('studioModal').style.display='flex';
+}
+function closeStudio(){document.getElementById('studioModal').style.display='none';}
+
+function buildStudioControls(){
+  const gp=document.getElementById('gradientPicker');
+  gp.innerHTML=GRADIENTS.map((g,i)=>`<div class="studio-swatch ${i===studioGrad?'active':''}" style="background:${g.bg};" onclick="setGrad(${i})" title="${g.label}"></div>`).join('');
+  const fp=document.getElementById('fontPicker');
+  fp.innerHTML=FONTS.map((f,i)=>`<button class="studio-font-btn ${i===studioFont?'active':''}" style="font-family:${f.family}" onclick="setFont(${i})">${f.label}</button>`).join('');
+}
+function setGrad(i){studioGrad=i;buildStudioControls();applyStudio();}
+function setFont(i){studioFont=i;buildStudioControls();applyStudio();}
+function setSize(s){
+  studioSize=s;
+  ['sm','md','lg'].forEach(x=>{document.getElementById('size-'+x)?.classList.remove('active');});
+  document.getElementById('size-'+s)?.classList.add('active');
+  applyStudio();
+}
+function applyStudio(){
+  const g=GRADIENTS[studioGrad];const f=FONTS[studioFont];
+  const sizes={sm:'1rem',md:'1.2rem',lg:'1.5rem'};
+  const inner=document.getElementById('studioInner');
+  const preview=document.getElementById('studioPreview');
+  preview.style.background=g.bg;
+  inner.style.fontFamily=f.family;
+  inner.style.color=g.tc;
+  document.getElementById('studioQuoteText').style.fontSize=sizes[studioSize];
+}
+function updateStudioFromCurrent(){
+  const qs=QUOTES[currentLang]||QUOTES.en;
+  const q=qs[currentQuoteIdx[currentLang]||0];
+  if(!q)return;
+  const qEl=document.getElementById('studioQuoteText');
+  const aEl=document.getElementById('studioQuoteAuthor');
+  const uEl=document.getElementById('studioUserName');
+  if(qEl)qEl.textContent=`"${q.t}"`;
+  if(aEl)aEl.textContent=`— ${q.a}`;
+  if(uEl){
+    const name=window._profileName||'';
+    uEl.textContent=name?`👤 ${name}`:'';
+    uEl.style.display=name?'block':'none';
+  }
+  const editEl=document.getElementById('studioEditText');
+  if(editEl)editEl.value=q.t;
+  applyStudio();
+}
+function updateStudioText(){
+  const v=document.getElementById('studioEditText').value;
+  document.getElementById('studioQuoteText').textContent=`"${v}"`;
+}
+function refreshStudioQuote(){
+  refreshQuote();
+  updateStudioFromCurrent();
+}
+function downloadStory(){
+  const preview=document.getElementById('studioInner');
+  alert('📸 Screenshot your screen now!\n\nTip: On iPhone press Side+Volume Up. On Android press Power+Volume Down.\n\nThe story card is displayed. Take a screenshot now, then press OK.');
+}
+// Load profile name for studio
+async function loadProfileName(){
+  try{const u=await fetch('/api/user').then(r=>r.json());if(u&&u.name)window._profileName=u.name;}catch(e){}
 }
 
-// ==================== SMART AI SIMULATION ====================
-function scrollAiChat(){
-  const chat = document.getElementById('aiChat');
-  if(chat) chat.scrollTop = chat.scrollHeight;
-}
+// ========== REAL AI CHAT ==========
+async function sendAiMessage(){
+  const input=document.getElementById('aiInput');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  appendChat('user',msg);
+  const typingId='typing-'+Date.now();
+  appendTyping(typingId);
+  // Build context string from user's data
+  const ctx=buildUserContext();
+  const systemPrompt=`You are FIKRCHA AI, a smart personal productivity assistant built into the FIKRCHA app. You help users with habits, study, diary, motivation, and productivity.
 
-function showAiWelcome(){
-  if(aiConversationHistory.length === 0){
-    const chat = document.getElementById('aiChat');
-    if(chat && !chat.querySelector('.ai-message')){
-      chat.innerHTML = '<div class="ai-message">👋 Hi! I can help you:<br>• Analyze your habits 📊<br>• Suggest improvements 💡<br>• Plan your day 🗓️<br>• Motivate you 🔥<br><br>What would you like to work on?</div>';
+The user's current data:
+${ctx}
+
+Respond naturally, warmly and helpfully. Be concise but thorough. Use emojis occasionally to make responses engaging. Support Uzbek, English, and Russian — respond in the same language the user writes in. If the user asks about their data, reference the specific numbers above. Keep responses under 300 words unless detailed analysis is requested.`;
+  try{
+    const res=await fetch('/api/ai-chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:msg,system:systemPrompt,history:aiMessages.slice(-10)})
+    });
+    removeTyping(typingId);
+    if(res.ok){
+      const data=await res.json();
+      const reply=data.reply||"Sorry, I couldn't respond right now.";
+      appendChat('ai',reply);
+      aiMessages.push({role:'user',content:msg},{role:'assistant',content:reply});
+      if(aiMessages.length>20)aiMessages=aiMessages.slice(-20);
+    } else {
+      appendChat('ai','⚠️ Server error. Please try again.');
     }
+  }catch(e){
+    removeTyping(typingId);
+    appendChat('ai','⚠️ Connection error. Check your internet and try again.');
   }
 }
-
-function sendAiSuggestion(text){
-  document.getElementById('aiInput').value = text;
-  sendAiMessage();
+function sendChip(text){document.getElementById('aiInput').value=text;sendAiMessage();}
+function appendChat(role,text){
+  const chat=document.getElementById('aiChat');
+  const div=document.createElement('div');
+  div.className=role==='user'?'user-msg':'ai-msg';
+  div.innerHTML=text.replace(/\n/g,'<br>');
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+}
+function appendTyping(id){
+  const chat=document.getElementById('aiChat');
+  const div=document.createElement('div');
+  div.className='ai-msg';div.id=id;
+  div.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
+}
+function removeTyping(id){document.getElementById(id)?.remove();}
+function buildUserContext(){
+  const todayStr=today();
+  const todayDone=tasks.filter(t=>t.history[todayStr]).length;
+  const todayScheduled=tasks.filter(t=>isScheduledForDate(t,todayStr)).length;
+  const avgC=tasks.length?Math.round(tasks.reduce((s,t)=>s+getConsistency30(t),0)/tasks.length):0;
+  const topHabits=tasks.slice(0,5).map(t=>`${t.text}(${getConsistency30(t)}%)`).join(', ');
+  const missedToday=tasks.filter(t=>isScheduledForDate(t,todayStr)&&!t.history[todayStr]).map(t=>t.text).join(', ');
+  return `- Total habits: ${tasks.length}
+- Today done: ${todayDone}/${todayScheduled}
+- Missed today: ${missedToday||'none'}
+- 30-day avg consistency: ${avgC}%
+- Top habits: ${topHabits||'none yet'}
+- Lessons/modules: ${lessons.length}
+- Diary entries: ${Object.values(diaries).flat().length}
+- Language: ${currentLang}`;
 }
 
-// Advanced AI response generator
-function generateAiResponse(userMessage){
-  const lower = userMessage.toLowerCase();
-  const lang = currentLang;
-  
-  // Context-aware response templates
-  const responses = {
-    en: {
-      analyze: [
-        `📊 Looking at your habits: You're most consistent with ${getTopCategory()} tasks. Try scheduling challenging habits during your peak energy hours (usually mornings)!`,
-        `🔍 Analysis: Your completion rate is ${getAvgConsistency()}% this week. Pro tip: Focus on 1-2 habits at a time for better results.`,
-        `💡 Insight: I notice you have ${getScheduledToday()} habits scheduled today. Consider spacing them out to avoid burnout.`
-      ],
-      suggest: [
-        `🌱 New habit idea: "5-min morning stretch" — boosts energy, takes minimal time. Want me to help you add it?`,
-        `💡 Try "Digital sunset": No screens 1 hour before bed. Research shows it improves sleep quality by 40%!`,
-        `🎯 Suggestion: Add "Weekly review" every Sunday. Just 10 minutes to reflect and plan. Great for long-term growth!`
-      ],
-      plan: [
-        `🗓️ Optimal day structure:\n• Morning (6-10am): High-focus habits\n• Afternoon (2-5pm): Learning/study\n• Evening: Reflection & light tasks\n\nShall I help you schedule this?`,
-        `⏰ Time-blocking tip: Group similar tasks. Example: All "Study" habits in one 90-min block = better focus & flow.`,
-        `✨ Pro tip: Start with 3 core habits max. Master them before adding more. Quality > quantity always!`
-      ],
-      motivate: [
-        `🔥 Remember: Progress, not perfection. You've completed ${getTodayDone()} habits today — that's momentum! 🚀`,
-        `💪 You're building something amazing. Those small wins? They compound into life-changing results. Keep going!`,
-        `🌟 Today's mantra: "I am capable of creating the life I want." Now go check off that first habit! ✨`
-      ],
-      addHabit: [
-        `➕ Great! To add a habit:\n1. Go to Habits tab\n2. Type habit name\n3. Set time & category\n4. Choose schedule\n\nNeed help with a specific habit idea?`,
-        `🎯 Pro tip: Make new habits tiny & specific. Instead of "Exercise", try "5 push-ups after brushing teeth". Easier to start!`
-      ],
-      addLesson: [
-        `📚 To add a lesson:\n1. Go to Study tab\n2. Type lesson title\n3. Add activities/tasks\n4. Track progress daily\n\nWhat subject are you focusing on?`,
-        `💡 Learning hack: Break lessons into 25-min chunks (Pomodoro). Your brain retains 30% more with short, focused sessions!`
-      ],
-      diary: [
-        `🧠 Journaling tip: Write 3 things daily:\n1. Win of the day\n2. Lesson learned\n3. Tomorrow's focus\n\nThis builds self-awareness fast!`,
-        `✨ Pro move: Add a photo or voice note to diary entries. Memories become richer, and reflection gets deeper.`
-      ],
-      default: [
-        `🤔 Interesting question! For personalized advice, tell me more about your current routine or goals.`,
-        `💭 Based on productivity research: Consistency beats intensity. Small daily actions create massive results over time.`,
-        `✨ Great question! One tip: Pair a new habit with an existing one (e.g., "After I brush teeth, I'll meditate 2 min"). This is called habit stacking!`
-      ]
-    },
-    uz: {
-      analyze: [
-        `📊 Odatlaringizni tahlil qilyapman: Siz ${getTopCategory()} vazifalarida eng barqarorsiz. Qiyin odatlarni energiyangiz yuqori paytida (odatda ertalab) rejalashtiring!`,
-        `🔍 Tahlil: Bu hafta bajarish ko'rsatkichingiz ${getAvgConsistency()}%. Maslahat: Bir vaqtning o'zida 1-2 odatga e'tibor bering.`,
-        `💡 Kuzatish: Bugun ${getScheduledToday()} ta odat rejalashtirilgan. Ularni vaqt bo'yicha tarqatib, charchamaslikka harakat qiling.`
-      ],
-      suggest: [
-        `🌱 Yangi odat: "5 daqiqa ertalabki cho'zilish" — energiya beradi, vaqt kam oladi. Qo'shishda yordam beraymi?`,
-        `💡 "Raqamli quyosh botishi": Uxlashdan 1 soat oldin ekranlarsiz. Tadqiqotlar ko'rsatadiki, bu uyqu sifatini 40% yaxshilaydi!`,
-        `🎯 Taklif: Har yakshanba "Haftalik sharh" qo'shing. Faqat 10 daqiqa. Uzoq muddatli o'sish uchun ajoyib!`
-      ],
-      plan: [
-        `🗓️ Optimal kun tuzilishi:\n• Ertalab (6-10): Yuqori fokusli odatlar\n• Tushdan keyin (14-17): O'qish/darslar\n• Kechqurun: Aks ettirish va yengil vazifalar\n\nBuni rejalashtirishda yordam beraymi?`,
-        `⏰ Maslahat: O'xshash vazifalarni guruhlang. Masalan: Barcha "O'qish" odatlarini 90 daqiqalik blokda = yaxshiroq fokus.`,
-        `✨ Pro maslahat: Avval 3 ta asosiy odat bilan boshlang. Ularni o'zlashtirgach, yangilarini qo'shing. Sifat > miqdor!`
-      ],
-      motivate: [
-        `🔥 Eslatma: Mukammallik emas, progress muhim. Bugun ${getTodayDone()} ta odatni bajardingiz — bu harakat! 🚀`,
-        `💪 Siz ajoyib narsa quryapsiz. Kichik g'alabalar? Ular hayotingizni o'zgartiradigan natijalarga aylanadi. Davom eting!`,
-        `🌟 Bugungi mantra: "Men xohlagan hayotimni yarata olaman". Endi birinchi odatni belgilang! ✨`
-      ],
-      addHabit: [
-        `➕ Ajoyib! Odat qo'shish uchun:\n1. Odatlar bo'limiga o'ting\n2. Odat nomini yozing\n3. Vaqt va toifani tanlang\n4. Jadvalni belgilang\n\nAniq odat g'oyasi kerakmi?`,
-        `🎯 Maslahat: Yangi odatlarni kichik va aniq qiling. "Mashq qilish" o'rniga "Tish yuvgandan keyin 5 ta push-up". Boshlash osonroq!`
-      ],
-      addLesson: [
-        `📚 Dars qo'shish uchun:\n1. O'qish bo'limiga o'ting\n2. Dars sarlavhasini yozing\n3. Faoliyat/vazifalar qo'shing\n4. Har kuni progressni kuzating\n\nQaysi fanga e'tibor beryapsiz?`,
-        `💡 O'qish usuli: Darslarni 25 daqiqalik qismlarga bo'ling (Pomodoro). Miya qisqa, fokuslangan sessiyalarda 30% ko'proq eslab qoladi!`
-      ],
-      diary: [
-        `🧠 Kundalik yozish maslahati: Har kuni 3 narsa yozing:\n1. Kunning g'alabasi\n2. O'rganilgan dars\n3. Ertangi fokus\n\nBu o'zini anglashni tezlashtiradi!`,
-        `✨ Pro usul: Kundalik yozuvlariga rasm yoki ovozli eslatma qo'shing. Xotiralar boyroq bo'ladi, aks ettirish chuqurroq bo'ladi.`
-      ],
-      default: [
-        `🤔 Qiziqarli savol! Shaxsiy maslahat uchun, hozirgi rutiningiz yoki maqsadlaringiz haqida ko'proq ayting.`,
-        `💭 Produktivlik tadqiqotlariga ko'ra: Barqarorlik intensivlikdan ustun. Kichik kundalik harakatlar vaqt o'tishi bilan katta natijalar beradi.`,
-        `✨ Ajoyib savol! Bir maslahat: Yangi odatni mavjud odat bilan birlashtiring (masalan, "Tish yuvgandan keyin 2 daqiqa meditatsiya"). Bu odatlarni qo'shish deb ataladi!`
-      ]
-    },
-    ru: {
-      analyze: [
-        `📊 Анализирую ваши привычки: Вы наиболее последовательны в задачах категории ${getTopCategory()}. Попробуйте планировать сложные привычки на часы пиковой энергии (обычно утро)!`,
-        `🔍 Анализ: Ваш процент выполнения на этой неделе — ${getAvgConsistency()}%. Совет: Сосредоточьтесь на 1-2 привычках за раз для лучших результатов.`,
-        `💡 Инсайт: Я замечаю, что сегодня у вас запланировано ${getScheduledToday()} привычек. Рассмотрите возможность распределить их по времени, чтобы избежать выгорания.`
-      ],
-      suggest: [
-        `🌱 Идея новой привычки: "5-минутная утренняя растяжка" — повышает энергию, занимает минимум времени. Хотите, помогу добавить?`,
-        `💡 Попробуйте "Цифровой закат": Никаких экранов за 1 час до сна. Исследования показывают, что это улучшает качество сна на 40%!`,
-        `🎯 Предложение: Добавьте "Еженедельный обзор" каждое воскресенье. Всего 10 минут на размышления и планирование. Отлично для долгосрочного роста!`
-      ],
-      plan: [
-        `🗓️ Оптимальная структура дня:\n• Утро (6-10): Привычки с высокой концентрацией\n• День (14-17): Обучение/учеба\n• Вечер: Рефлексия и лёгкие задачи\n\nПомочь вам это запланировать?`,
-        `⏰ Совет по тайм-блокингу: Группируйте похожие задачи. Пример: Все привычки "Учёба" в одном 90-минутном блоке = лучшая концентрация и поток.`,
-        `✨ Про-совет: Начните с максимум 3 основных привычек. Освойте их, прежде чем добавлять новые. Качество > количество всегда!`
-      ],
-      motivate: [
-        `🔥 Помните: Прогресс, а не совершенство. Вы выполнили ${getTodayDone()} привычек сегодня — это импульс! 🚀`,
-        `💪 Вы строите что-то потрясающее. Эти маленькие победы? Они накапливаются в жизненно меняющие результаты. Продолжайте!`,
-        `🌟 Мантра сегодня: "Я способен создать жизнь, которую хочу". Теперь идите и отметьте первую привычку! ✨`
-      ],
-      addHabit: [
-        `➕ Отлично! Чтобы добавить привычку:\n1. Перейдите во вкладку Привычки\n2. Введите название привычки\n3. Установите время и категорию\n4. Выберите расписание\n\nНужна помощь с конкретной идеей привычки?`,
-        `🎯 Про-совет: Делайте новые привычки маленькими и конкретными. Вместо "Заниматься спортом" попробуйте "5 отжиманий после чистки зубов". Легче начать!`
-      ],
-      addLesson: [
-        `📚 Чтобы добавить урок:\n1. Перейдите во вкладку Учёба\n2. Введите название урока\n3. Добавьте активности/задачи\n4. Отслеживайте прогресс ежедневно\n\nНа каком предмете вы сосредоточены?`,
-        `💡 Лайфхак для обучения: Разбивайте уроки на 25-минутные блоки (Помодоро). Мозг запоминает на 30% больше при коротких, сфокусированных сессиях!`
-      ],
-      diary: [
-        `🧠 Совет по ведению дневника: Пишите 3 вещи ежедневно:\n1. Победа дня\n2. Усвоенный урок\n3. Фокус на завтра\n\nЭто быстро развивает самосознание!`,
-        `✨ Про-приём: Добавляйте фото или голосовую заметку к записям в дневнике. Воспоминания становятся богаче, а рефлексия — глубже.`
-      ],
-      default: [
-        `🤔 Интересный вопрос! Для персонализированного совета расскажите больше о вашей текущей рутине или целях.`,
-        `💭 Согласно исследованиям продуктивности: Постоянство важнее интенсивности. Маленькие ежедневные действия создают огромные результаты со временем.`,
-        `✨ Отличный вопрос! Один совет: Сочетайте новую привычку с существующей (например, "После чистки зубов я медитирую 2 минуты"). Это называется наложение привычек!`
-      ]
-    }
-  };
-  
-  // Determine response category
-  let category = 'default';
-  if(lower.includes('analyze') || lower.includes('habit') || lower.includes('routine') || lower.includes('stat') || lower.includes('consist')) category = 'analyze';
-  else if(lower.includes('suggest') || lower.includes('new habit') || lower.includes('idea') || lower.includes('recommend')) category = 'suggest';
-  else if(lower.includes('plan') || lower.includes('schedule') || lower.includes('day') || lower.includes('time') || lower.includes('organize')) category = 'plan';
-  else if(lower.includes('motivate') || lower.includes('encourage') || lower.includes('inspire') || lower.includes('boost') || lower.includes('fire')) category = 'motivate';
-  else if(lower.includes('add habit') || lower.includes('create habit') || lower.includes('new habit')) category = 'addHabit';
-  else if(lower.includes('add lesson') || lower.includes('study') || lower.includes('learn')) category = 'addLesson';
-  else if(lower.includes('diary') || lower.includes('journal') || lower.includes('memory') || lower.includes('write')) category = 'diary';
-  
-  // Get response from category
-  const categoryResponses = responses[lang]?.[category] || responses.en[category] || responses.en.default;
-  let response = categoryResponses[Math.floor(Math.random() * categoryResponses.length)];
-  
-  // Add conversation memory effect (simple)
-  if(aiConversationHistory.length > 0){
-    const lastMsg = aiConversationHistory[aiConversationHistory.length - 1].toLowerCase();
-    if(lower.includes('yes') || lower.includes('да') || lower.includes('ha')){
-      if(lastMsg.includes('add')) response = (lang==='uz'?'✅ Ajoyib! Qaysi odatni qo\'shmoqchisiz?':lang==='ru'?'✅ Отлично! Какую привычку хотите добавить?':'✅ Great! Which habit would you like to add?');
-      else if(lastMsg.includes('plan')) response = (lang==='uz'?'✅ Keling, birgalikda reja tuzamiz. Qaysi vaqtda boshlaysiz?':lang==='ru'?'✅ Давайте составим план вместе. Во сколько начнём?':'✅ Let\'s build a plan together. What time works best for you?');
-    }
-  }
-  
-  // Save to conversation history
-  aiConversationHistory.push(userMessage);
-  if(aiConversationHistory.length > 5) aiConversationHistory.shift(); // Keep last 5
-  
-  return response;
-}
+// ========== AI BACKEND ROUTE (add to index.js) ==========
+// PUT THIS IN YOUR index.js:
+// const Anthropic = require('@anthropic-ai/sdk');
+// const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+// app.post('/api/ai-chat', async (req, res) => {
+//   const { message, system, history } = req.body;
+//   const messages = [...(history||[]), { role: 'user', content: message }];
+//   const response = await anthropic.messages.create({ model: 'claude-sonnet-4-20250514', max_tokens: 1024, system, messages });
+//   res.json({ reply: response.content[0].text });
+// });
 
-// Helper functions for personalized AI responses
-function getTopCategory(){
-  if(tasks.length === 0) return (currentLang==='uz'?'odatlar':currentLang==='ru'?'привычки':'habits');
-  const categoryCounts = {};
-  tasks.forEach(t => {
-    const cat = t.category || 'Other';
-    categoryCounts[cat] = (categoryCounts[cat] || 0) + getConsistency30(t);
-  });
-  return Object.entries(categoryCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || (currentLang==='uz'?'odatlar':currentLang==='ru'?'привычки':'habits');
-}
-
-function getAvgConsistency(){
-  if(tasks.length === 0) return '0';
-  const avg = Math.round(tasks.reduce((sum, t) => sum + getConsistency30(t), 0) / tasks.length);
-  return avg;
-}
-
-function getScheduledToday(){
-  const todayStr = today();
-  return tasks.filter(t => isScheduledForDate(t, todayStr)).length;
-}
-
-function getTodayDone(){
-  const todayStr = today();
-  return tasks.filter(t => t.history[todayStr]).length;
-}
-
-function sendAiMessage(){
-  const input = document.getElementById('aiInput');
-  const message = input.value.trim();
-  if(!message) return;
-  
-  // Add user message
-  const chat = document.getElementById('aiChat');
-  const userMsg = document.createElement('div');
-  userMsg.className = 'user-message';
-  userMsg.textContent = message;
-  chat.appendChild(userMsg);
-  
-  // Clear input
-  input.value = '';
-  
-  // Scroll to bottom
-  scrollAiChat();
-  
-  // Show typing indicator
-  const typing = document.createElement('div');
-  typing.className = 'ai-message';
-  typing.innerHTML = '<span style="animation:pulse 1.5s infinite">Thinking</span><span style="animation:pulse 1.5s infinite 0.2s">.</span><span style="animation:pulse 1.5s infinite 0.4s">.</span><span style="animation:pulse 1.5s infinite 0.6s">.</span>';
-  typing.id = 'ai-typing';
-  chat.appendChild(typing);
-  scrollAiChat();
-  
-  // Generate and show response after delay
-  setTimeout(() => {
-    // Remove typing indicator
-    const typingEl = document.getElementById('ai-typing');
-    if(typingEl) typingEl.remove();
-    
-    // Generate response
-    const response = generateAiResponse(message);
-    
-    // Add AI message
-    const aiMsg = document.createElement('div');
-    aiMsg.className = 'ai-message';
-    aiMsg.innerHTML = response.replace(/\n/g, '<br>');
-    chat.appendChild(aiMsg);
-    
-    // Update insights panel occasionally
-    if(Math.random() > 0.6 && tasks.length > 0){
-      const insights = document.getElementById('aiInsights');
-      const tips = {
-        en: [
-          "💡 Try the '2-minute rule': If a habit takes <2 min, do it immediately.",
-          "🎯 Pair new habits with existing ones for better consistency.",
-          "✨ Review your stats every Sunday to celebrate progress!",
-          "🧠 Your brain forms habits in ~66 days. Stay consistent!"
-        ],
-        uz: [
-          "💡 '2-daqiqa qoidasi': Agar odat 2 daqiqadan kam vaqt olsa, darhol bajaring.",
-          "🎯 Yangi odatlarni mavjudlar bilan birlashtiring, barqarorlik oshadi.",
-          "✨ Har yakshanba statistika ko'rib, progressni nishonlang!",
-          "🧠 Miya odatlarni ~66 kunda shakllantiradi. Barqaror bo'ling!"
-        ],
-        ru: [
-          "💡 Попробуйте 'правило 2 минут': Если привычка занимает <2 мин, сделайте её сразу.",
-          "🎯 Сочетайте новые привычки с существующими для лучшей последовательности.",
-          "✨ Проверяйте статистику каждое воскресенье, чтобы отмечать прогресс!",
-          "🧠 Мозг формирует привычки за ~66 дней. Будьте последовательны!"
-        ]
-      };
-      const tip = tips[currentLang][Math.floor(Math.random()*4)];
-      insights.innerHTML = `<p style="margin:0;color:#475569;font-size:13px;">${tip}</p>`;
-    }
-    
-    scrollAiChat();
-  }, 1000 + Math.random() * 800); // Random delay 1-1.8s for natural feel
-}
-
-function escapeHtml(str){if(!str)return"";return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]||m));}
-
-// ==================== DATA ====================
+// ========== DATA ==========
 let tasks=[],lessons=[],diaries={};
-
 async function api(method,url,body){
   const opts={method,headers:{"Content-Type":"application/json"}};
   if(body)opts.body=JSON.stringify(body);
   try{const res=await fetch(url,opts);return res.json();}catch(e){return null;}
 }
-
 async function loadAll(){
   const user=await api("GET","/api/user");
   if(!user||user.error){console.warn("Not logged in");return;}
+  window._profileName=user.name||'';
   const [hd,sd,dd]=await Promise.all([api("GET","/api/habits"),api("GET","/api/studies"),api("GET","/api/diaries")]);
   if(Array.isArray(hd))tasks=hd.map(h=>({id:h.id,text:h.name,time:h.time||"",category:h.category||"",history:h.history||{},schedule:h.schedule||{type:'daily',days:[],freq:7}}));
   if(Array.isArray(sd))lessons=sd;
@@ -972,27 +923,19 @@ async function loadAll(){
   if(window.Telegram?.WebApp?.initDataUnsafe?.user?.id)api("POST","/api/link-telegram",{telegramId:window.Telegram.WebApp.initDataUnsafe.user.id}).catch(()=>{});
   checkNotificationPrompt();
 }
-
-// ==================== CATEGORIES ====================
 const categories=[{name:"Study",color:"#dbeafe"},{name:"Health",color:"#dcfce7"},{name:"Exercise",color:"#fef9c3"},{name:"Work",color:"#ffedd5"},{name:"Mind",color:"#f3e8ff"},{name:"Social",color:"#fce7f3"},{name:"Growth",color:"#d1fae5"}];
 const categoryInput=document.getElementById("categoryInput");
 categories.forEach(c=>{categoryInput.innerHTML+=`<option>${c.name}</option>`;});
-function populateModalCats(){
-  const ms=document.getElementById('modalHabitCat');if(!ms)return;
-  ms.innerHTML='';categories.forEach(c=>{ms.innerHTML+=`<option>${c.name}</option>`;});
-}
+function populateModalCats(){const ms=document.getElementById('modalHabitCat');if(!ms)return;ms.innerHTML='';categories.forEach(c=>{ms.innerHTML+=`<option>${c.name}</option>`;});}
 populateModalCats();
 
-// ==================== SCHEDULE MODAL ====================
+// ========== SCHEDULE MODAL ==========
 function buildDayPills(){
   const row=document.getElementById('dayPillsRow');if(!row)return;
   const days=t('days');
-  row.innerHTML=days.map((d,i)=>`<div class="day-pill ${selectedDays.includes(i)?'sel':''}" onclick="toggleDay(${i})">${d}</div>`).join('');
+  row.innerHTML=(Array.isArray(days)?days:['Mo','Tu','We','Th','Fr','Sa','Su']).map((d,i)=>`<div class="day-pill ${selectedDays.includes(i)?'sel':''}" onclick="toggleDay(${i})">${d}</div>`).join('');
 }
-function toggleDay(i){
-  if(selectedDays.includes(i))selectedDays=selectedDays.filter(d=>d!==i);else selectedDays.push(i);
-  buildDayPills();
-}
+function toggleDay(i){if(selectedDays.includes(i))selectedDays=selectedDays.filter(d=>d!==i);else selectedDays.push(i);buildDayPills();}
 function setSchedType(type){
   schedType=type;
   ['daily','days','freq'].forEach(t=>{document.getElementById('stype-'+t)?.classList.remove('active');});
@@ -1001,21 +944,17 @@ function setSchedType(type){
   document.getElementById('sched-freq-section').style.display=type==='freq'?'block':'none';
 }
 function openAddHabitModal(){
-  editingHabitIdx=null;
-  schedType='daily';selectedDays=[];
+  editingHabitIdx=null;schedType='daily';selectedDays=[];
   document.getElementById('habitModalTitle').textContent='➕ New Habit';
   document.getElementById('modalHabitName').value=document.getElementById('taskInput').value||'';
   document.getElementById('modalHabitTime').value=document.getElementById('taskTime').value||'';
   document.getElementById('modalHabitCat').value=document.getElementById('categoryInput').value;
-  setSchedType('daily');buildDayPills();
-  document.getElementById('freqCount').value=3;
+  setSchedType('daily');buildDayPills();document.getElementById('freqCount').value=3;
   document.getElementById('habitModal').style.display='flex';
 }
 function openEditHabitModal(i){
-  editingHabitIdx=i;
-  const task=tasks[i];
-  schedType=task.schedule?.type||'daily';
-  selectedDays=[...(task.schedule?.days||[])];
+  editingHabitIdx=i;const task=tasks[i];
+  schedType=task.schedule?.type||'daily';selectedDays=[...(task.schedule?.days||[])];
   document.getElementById('habitModalTitle').textContent='✏️ Edit Habit';
   document.getElementById('modalHabitName').value=task.text;
   document.getElementById('modalHabitTime').value=task.time||'';
@@ -1026,142 +965,104 @@ function openEditHabitModal(i){
 }
 function closeHabitModal(){document.getElementById('habitModal').style.display='none';}
 async function saveHabitModal(){
-  const name=document.getElementById('modalHabitName').value.trim();
-  if(!name)return;
+  const name=document.getElementById('modalHabitName').value.trim();if(!name)return;
   const time=document.getElementById('modalHabitTime').value;
   const cat=document.getElementById('modalHabitCat').value;
   const freq=parseInt(document.getElementById('freqCount').value)||3;
-  const schedule={type:schedType,days:schedType==='days'?[...selectedDays]:[],freq:schedType==='freq'?freq:7};
+  // FIX: correctly store schedule type
+  const schedule={
+    type:schedType,
+    days:schedType==='days'?[...selectedDays]:[],
+    freq:schedType==='freq'?freq:7
+  };
   if(editingHabitIdx!==null){
     const task=tasks[editingHabitIdx];
-    task.text=name;task.time=time;task.category=cat;task.schedule=schedule;
     await api("PUT",`/api/habits/${task.id}`,{name,time,category:cat,schedule});
   } else {
     await api("POST","/api/habits",{name,time,category:cat,schedule});
   }
   closeHabitModal();
-  document.getElementById('taskInput').value='';
-  document.getElementById('taskTime').value='';
+  document.getElementById('taskInput').value='';document.getElementById('taskTime').value='';
   await loadAll();
 }
 
-// ==================== SCHEDULE HELPERS (FIXED) ====================
+// ========== SCHEDULE HELPERS ==========
 function isScheduledForDate(task,dateStr){
   const s=task.schedule||{type:'daily'};
-  const date = new Date(dateStr + 'T12:00:00');
-  const dayOfWeek = date.getDay();
-  const ourDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-  
-  if(s.type==='daily') return true;
+  if(!s.type||s.type==='daily')return true;
+  const date=new Date(dateStr+'T12:00:00');
+  const dow=date.getDay();
+  const ourDay=dow===0?6:dow-1; // Mon=0 ... Sun=6
   if(s.type==='days'){
-    return s.days && s.days.includes(ourDay);
+    if(!s.days||s.days.length===0)return true;
+    return s.days.includes(ourDay);
   }
   if(s.type==='freq'){
-    const targetCount = s.freq || 3;
-    const hash = (task.id || task.text).split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
-    const dayHash = (hash + date.getDate() + date.getMonth()) % 7;
-    return dayHash < targetCount;
+    // Deterministic: use day-of-week hash based on habit id + week number
+    const target=s.freq||3;
+    const weekNum=Math.floor(date.getTime()/(7*24*60*60*1000));
+    const seed=((task.id||0)*31+weekNum*17)%7;
+    // Pick 'target' days out of 7 for this week
+    const weekDays=[0,1,2,3,4,5,6];
+    const picked=[];for(let i=0;i<7;i++)picked.push((seed+i*3)%7);
+    return picked.slice(0,target).includes(ourDay);
   }
   return true;
 }
-
 function getScheduledLabel(task){
   const s=task.schedule||{type:'daily'};
-  if(s.type==='daily')return t('schedDaily');
+  if(!s.type||s.type==='daily')return t('schedDaily');
   if(s.type==='days'){
     if(!s.days||s.days.length===0)return t('schedDaily');
-    const dayNames=t('days');
-    return s.days.sort().map(d=>dayNames[d]).join('/');
+    const days=t('days');
+    const dArr=Array.isArray(days)?days:['Mo','Tu','We','Th','Fr','Sa','Su'];
+    return s.days.sort().map(d=>dArr[d]).join('/');
   }
-  if(s.type==='freq')return `${s.freq}×/wk`;
+  if(s.type==='freq')return `${s.freq||3}×/wk`;
   return t('schedDaily');
 }
 
-// ==================== WEEK ====================
+// ========== WEEK ==========
 function getMonday(d){const day=d.getDay(),diff=day===0?-6:1-day;return new Date(new Date(d).setDate(d.getDate()+diff));}
 let currentMonday=getMonday(new Date());
 function changeWeek(days){currentMonday.setDate(currentMonday.getDate()+days);render();}
-function getWeek(){
-  const arr=[];
-  for(let i=0;i<7;i++){const d=new Date(currentMonday);d.setDate(d.getDate()+i);arr.push({date:d.toISOString().split("T")[0],label:d.toLocaleDateString("en-US",{month:"short",day:"numeric"}),dow:d.getDay()});}
-  return arr;
-}
+function getWeek(){const arr=[];for(let i=0;i<7;i++){const d=new Date(currentMonday);d.setDate(d.getDate()+i);arr.push({date:d.toISOString().split("T")[0],label:d.toLocaleDateString("en-US",{month:"short",day:"numeric"}),dow:d.getDay()});}return arr;}
 const today=()=>new Date().toISOString().split("T")[0];
 
-// ==================== STREAK & STATS ====================
-function getStreak(task){
-  let streak=0,d=new Date();
-  while(true){
-    const ds=d.toISOString().split("T")[0];
-    if(!isScheduledForDate(task,ds)){d.setDate(d.getDate()-1);if(streak>0)break;continue;}
-    if(task.history[ds]){streak++;d.setDate(d.getDate()-1);}else break;
-  }
-  return streak;
-}
+// ========== STATS HELPERS ==========
+function getStreak(task){let streak=0,d=new Date();for(let n=0;n<365;n++){const ds=d.toISOString().split("T")[0];if(!isScheduledForDate(task,ds)){d.setDate(d.getDate()-1);continue;}if(task.history[ds]){streak++;d.setDate(d.getDate()-1);}else break;}return streak;}
 function getTotalDone(task){return Object.values(task.history).filter(Boolean).length;}
-function getConsistency30(task){
-  let scheduled=0,done=0;
-  for(let i=0;i<30;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split("T")[0];
-    if(isScheduledForDate(task,ds)){scheduled++;if(task.history[ds])done++;}
-  }
-  return scheduled===0?0:Math.round((done/scheduled)*100);
-}
-function getWeeklyDone(task){
-  let done=0;
-  for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);if(task.history[d.toISOString().split("T")[0]])done++;}
-  return done;
-}
-function getLastWeekDone(task){
-  let done=0;
-  for(let i=7;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);if(task.history[d.toISOString().split("T")[0]])done++;}
-  return done;
-}
-function getPercent(task,week){
-  const scheduled=week.filter(d=>isScheduledForDate(task,d.date));
-  if(scheduled.length===0)return 0;
-  const done=scheduled.filter(d=>task.history[d.date]).length;
-  return Math.round((done/scheduled.length)*100);
-}
+function getConsistency30(task){let sc=0,dn=0;for(let i=0;i<30;i++){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];if(isScheduledForDate(task,ds)){sc++;if(task.history[ds])dn++;}}return sc===0?0:Math.round((dn/sc)*100);}
+function getWeeklyDone(task){let done=0;for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);if(task.history[d.toISOString().split("T")[0]])done++;}return done;}
+function getLastWeekDone(task){let done=0;for(let i=7;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);if(task.history[d.toISOString().split("T")[0]])done++;}return done;}
+function getPercent(task,week){const sc=week.filter(d=>isScheduledForDate(task,d.date));if(!sc.length)return 0;return Math.round(sc.filter(d=>task.history[d.date]).length/sc.length*100);}
 
-// ==================== RENDER HABITS ====================
+// ========== RENDER HABITS ==========
 function render(){
-  const week=getWeek();
-  const todayStr=today();
+  const week=getWeek(),todayStr=today();
   document.getElementById("weekTitle").textContent=t('weekTitlePrefix')+week[0].label+' – '+week[6].label;
   let header=`<th>Habit</th>`;
-  week.forEach(d=>{
-    const isToday=d.date===todayStr;
-    header+=`<th class="${isToday?'today-col':''}" style="font-size:11px;">${d.label}${isToday?'<br>⭐':''}</th>`;
-  });
+  week.forEach(d=>{const iT=d.date===todayStr;header+=`<th class="${iT?'today-col':''}" style="font-size:11px;">${d.label}${iT?'<br>⭐':''}</th>`;});
   header+=`<th>%</th><th></th>`;
   document.getElementById("weekHeader").innerHTML=header;
   let body="";
   tasks.forEach((task,i)=>{
     const color=categories.find(c=>c.name===task.category)?.color||"#f8f9fa";
     const streak=getStreak(task);
-    const schedLabel=getScheduledLabel(task);
-    const timeDisplay=task.time?`<span class="habit-time-badge">⏰ ${task.time}</span>`:'';
-    let row=`<tr style="background:${color}">
-      <td style="text-align:left;padding-left:10px;">
-        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
-          <strong style="cursor:pointer;font-size:13px;" onclick="openEditHabitModal(${i})">${escapeHtml(task.text)}</strong>
-          ${streak>1?`<span style="font-size:10px;color:#e67700;">🔥${streak}</span>`:''}
-        </div>
-        ${timeDisplay}
-        <span class="cat-badge">${task.category}</span>
-        <span class="sched-badge">${schedLabel}</span>
-      </td>`;
+    const sl=getScheduledLabel(task);
+    const td=task.time?`<span class="habit-time-badge">⏰ ${task.time}</span>`:'';
+    let row=`<tr style="background:${color}"><td style="text-align:left;padding-left:10px;">
+      <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+        <strong style="cursor:pointer;font-size:13px;" onclick="openEditHabitModal(${i})">${escapeHtml(task.text)}</strong>
+        ${streak>1?`<span style="font-size:10px;color:#e67700;">🔥${streak}</span>`:''}
+      </div>${td}<span class="cat-badge">${task.category}</span><span class="sched-badge">${sl}</span>
+    </td>`;
     week.forEach(d=>{
-      const scheduled=isScheduledForDate(task,d.date);
-      const checked=task.history[d.date]?"checked":"";
-      const isToday=d.date===todayStr;
-      if(scheduled){
-        row+=`<td class="${isToday?'today-col':''}"><input type="checkbox" ${checked} onchange="toggle(${i},'${d.date}')" style="transform:scale(1.3);cursor:pointer;"></td>`;
-      } else {
-        row+=`<td class="${isToday?'today-col':''}" style="background:rgba(0,0,0,0.03);color:#ccc;">—</td>`;
-      }
+      const sc=isScheduledForDate(task,d.date);
+      const ck=task.history[d.date]?"checked":"";
+      const iT=d.date===todayStr;
+      if(sc)row+=`<td class="${iT?'today-col':''}"><input type="checkbox" ${ck} onchange="toggle(${i},'${d.date}')" style="transform:scale(1.3);cursor:pointer;"></td>`;
+      else row+=`<td class="${iT?'today-col':''}" style="background:rgba(0,0,0,0.03);color:#ccc;font-size:12px;">—</td>`;
     });
     row+=`<td style="font-weight:800;color:#667eea;font-size:13px;">${getPercent(task,week)}%</td>
       <td><button onclick="openEditHabitModal(${i})" style="background:#e9ecef;padding:3px 8px;font-size:11px;">✏️</button><button onclick="deleteTask(${i})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button></td></tr>`;
@@ -1169,42 +1070,38 @@ function render(){
   });
   document.getElementById("taskBody").innerHTML=body;
 }
-
 async function deleteTask(i){if(confirm(t('deleteHabit'))){await api("DELETE",`/api/habits/${tasks[i].id}`);await loadAll();}}
 async function toggle(i,date){tasks[i].history[date]=!tasks[i].history[date];await api("PUT",`/api/habits/${tasks[i].id}`,{history:tasks[i].history});render();}
 
-// ==================== FILTER ====================
+// ========== FILTER ==========
 function renderFilterRow(){
   const row=document.getElementById('filterRow');if(!row)return;
   const cats=[t('allFilter'),...categories.map(c=>c.name)];
   row.innerHTML=cats.map(c=>`<button class="filter-btn ${(activeFilter==='All'&&c===t('allFilter'))||activeFilter===c?'active':''}" onclick="setFilter('${c}')">${c}</button>`).join('');
 }
 function setFilter(cat){activeFilter=cat===t('allFilter')?'All':cat;renderFilterRow();renderStats();}
-function getFilteredTasks(){return activeFilter==='All'?tasks:tasks.filter(t=>t.category===activeFilter);}
+function getFilteredTasks(){return activeFilter==='All'?tasks:tasks.filter(x=>x.category===activeFilter);}
 
-// ==================== STATS ====================
-function renderStats(){
-  renderStreaks();renderInsights();renderMomentum();renderChart();renderConsistencyList();renderFilterRow();renderLongChart();checkNotificationPrompt();
-}
+// ========== STATS ==========
+function renderStats(){renderStreaks();renderInsights();renderMomentum();renderChart();renderConsistencyList();renderFilterRow();renderLongChart();checkNotificationPrompt();}
 
 function renderStreaks(){
   const banner=document.getElementById('streakBanner');if(!banner)return;
   const filtered=getFilteredTasks();if(!filtered.length){banner.innerHTML='';return;}
-  const streaks=filtered.map(t=>({name:t.text,streak:getStreak(t)})).sort((a,b)=>b.streak-a.streak);
-  const best=streaks[0];
-  const todayStr=today();
-  const todayDone=filtered.filter(t=>t.history[todayStr]).length;
-  const todayScheduled=filtered.filter(t=>isScheduledForDate(t,todayStr)).length;
-  const avgConsistency=Math.round(filtered.reduce((a,t)=>a+getConsistency30(t),0)/filtered.length);
+  const best=filtered.map(t=>({name:t.text,streak:getStreak(t)})).sort((a,b)=>b.streak-a.streak)[0];
+  const ts=today();
+  const tDone=filtered.filter(t=>t.history[ts]).length;
+  const tSched=filtered.filter(t=>isScheduledForDate(t,ts)).length;
+  const avgC=Math.round(filtered.reduce((a,t)=>a+getConsistency30(t),0)/filtered.length);
   banner.innerHTML=`
     <div class="streak-card" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
       <div><div class="streak-num" style="color:#d97706;">🔥 ${best.streak}</div><div class="streak-label" style="color:#92400e;">${t('streakLabel')}<br><span style="font-weight:400;font-size:10px;">${escapeHtml(best.name)}</span></div></div>
     </div>
     <div class="streak-card" style="background:linear-gradient(135deg,#dcfce7,#86efac);">
-      <div><div class="streak-num" style="color:#16a34a;">${todayDone}/${todayScheduled}</div><div class="streak-label" style="color:#14532d;">Today done</div></div>
+      <div><div class="streak-num" style="color:#16a34a;">${tDone}/${tSched}</div><div class="streak-label" style="color:#14532d;">Today done</div></div>
     </div>
     <div class="streak-card" style="background:linear-gradient(135deg,#ede9fe,#c4b5fd);">
-      <div><div class="streak-num" style="color:#7c3aed;">${avgConsistency}%</div><div class="streak-label" style="color:#4c1d95;">30d consistency</div></div>
+      <div><div class="streak-num" style="color:#7c3aed;">${avgC}%</div><div class="streak-label" style="color:#4c1d95;">30d avg</div></div>
     </div>`;
 }
 
@@ -1212,164 +1109,76 @@ function renderInsights(){
   const el=document.getElementById('insightsContainer');if(!el)return;
   const filtered=getFilteredTasks();if(!filtered.length){el.innerHTML='';return;}
   const insights=[];
-  const improved=filtered.map(t=>({name:t.text,thisW:getWeeklyDone(t),lastW:getLastWeekDone(t)})).sort((a,b)=>(b.thisW-b.lastW)-(a.thisW-a.lastW));
-  if(improved.length>0&&improved[0].thisW>improved[0].lastW){
-    insights.push({icon:'📈',title:improved[0].name,desc:`+${improved[0].thisW-improved[0].lastW} more this week vs last week`});
-  }
-  const struggling=filtered.filter(t=>getConsistency30(t)<50&&getTotalDone(t)>0).sort((a,b)=>getConsistency30(a)-getConsistency30(b));
-  if(struggling.length>0){
-    insights.push({icon:'⚠️',title:struggling[0].text,desc:`Only ${getConsistency30(struggling[0])}% consistency — needs attention`});
-  }
-  const best=filtered.map(t=>({t,c:getConsistency30(t)})).sort((a,b)=>b.c-a.c)[0];
-  if(best&&best.c>=80){
-    insights.push({icon:'⭐',title:best.t.text,desc:`${best.c}% consistency — excellent!`});
-  }
-  const todayStr=today();
-  const missedToday=filtered.filter(t=>isScheduledForDate(t,todayStr)&&!t.history[todayStr]);
+  const ts=today();
+  // Only show "missed today" once — not duplicate
+  const missedToday=filtered.filter(t=>isScheduledForDate(t,ts)&&!t.history[ts]);
   if(missedToday.length>0){
-    insights.push({icon:'🎯',title:`${missedToday.length} habit${missedToday.length>1?'s':''} left today`,desc:missedToday.map(t=>t.text).join(', ')});
+    insights.push({icon:'🎯',title:`${missedToday.length} habit${missedToday.length>1?'s':''} still to do today`,desc:missedToday.slice(0,3).map(t=>t.text).join(', ')+(missedToday.length>3?'...':'')});
   }
-  el.innerHTML=insights.length?insights.map(ins=>`
-    <div class="insight-card">
-      <div class="insight-icon">${ins.icon}</div>
-      <div class="insight-text"><strong>${escapeHtml(ins.title)}</strong><span>${escapeHtml(ins.desc)}</span></div>
-    </div>`).join(''):`<p style="color:#adb5bd;font-size:13px;">Add more habits to see insights.</p>`;
+  // Most improved this week
+  const improved=filtered.map(t=>({name:t.text,delta:getWeeklyDone(t)-getLastWeekDone(t)})).sort((a,b)=>b.delta-a.delta)[0];
+  if(improved&&improved.delta>0)insights.push({icon:'📈',title:`"${improved.name}" improving`,desc:`+${improved.delta} more completions this week vs last`});
+  // Needs attention (low consistency, has history)
+  const struggling=filtered.filter(t=>getConsistency30(t)<50&&getTotalDone(t)>0).sort((a,b)=>getConsistency30(a)-getConsistency30(b))[0];
+  if(struggling)insights.push({icon:'⚠️',title:`"${struggling.text}" needs attention`,desc:`Only ${getConsistency30(struggling)}% consistency over 30 days`});
+  // Champion
+  const champ=filtered.map(t=>({t,c:getConsistency30(t)})).sort((a,b)=>b.c-a.c)[0];
+  if(champ&&champ.c>=70)insights.push({icon:'⭐',title:`"${champ.t.text}" is your best habit`,desc:`${champ.c}% consistency — keep it up!`});
+  el.innerHTML=insights.length?insights.map(ins=>`<div class="insight-card"><div class="insight-icon">${ins.icon}</div><div class="insight-text"><strong>${escapeHtml(ins.title)}</strong><span>${escapeHtml(ins.desc)}</span></div></div>`).join(''):`<p style="color:#adb5bd;font-size:13px;">Add habits and check back for insights.</p>`;
 }
 
 function renderMomentum(){
   const el=document.getElementById('momentumContainer');if(!el)return;
   const filtered=getFilteredTasks();if(!filtered.length){el.innerHTML='';return;}
-  let thisWeek=0,lastWeek=0,scheduled=0;
-  for(let i=0;i<7;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split("T")[0];
-    filtered.forEach(t=>{if(isScheduledForDate(t,ds)){scheduled++;if(t.history[ds])thisWeek++;}});
-  }
-  for(let i=7;i<14;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split("T")[0];
-    filtered.forEach(t=>{if(isScheduledForDate(t,ds)&&t.history[ds])lastWeek++;});
-  }
-  const thisP=scheduled>0?Math.round((thisWeek/scheduled)*100):0;
-  const delta=thisWeek-lastWeek;
+  let tw=0,lw=0,sc=0;
+  for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];filtered.forEach(t=>{if(isScheduledForDate(t,ds)){sc++;if(t.history[ds])tw++;}});}
+  for(let i=7;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];filtered.forEach(t=>{if(isScheduledForDate(t,ds)&&t.history[ds])lw++;});}
+  const tp=sc>0?Math.round((tw/sc)*100):0;
+  const delta=tw-lw;
   const arrow=delta>0?'↑':delta<0?'↓':'→';
-  const arrowColor=delta>0?'#16a34a':delta<0?'#dc2626':'#6c757d';
-  const barColor=thisP>=70?'#16a34a':thisP>=40?'#f59e0b':'#ef4444';
-  el.innerHTML=`
-    <div style="background:#f8f9fa;border-radius:16px;padding:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="font-size:13px;font-weight:700;color:#2c3e50;">This week: <span style="color:${barColor}">${thisP}%</span></span>
-        <span style="font-size:13px;font-weight:700;color:${arrowColor};">${arrow} ${Math.abs(delta)} vs last week</span>
-      </div>
-      <div class="progress-bg"><div class="progress-fill" style="width:${thisP}%;background:${barColor};"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:#6c757d;margin-top:6px;">
-        <span>Last week: ${lastWeek} done</span><span>This week: ${thisWeek} done</span>
-      </div>
-    </div>`;
+  const ac=delta>0?'#16a34a':delta<0?'#dc2626':'#6c757d';
+  const bc=tp>=70?'#16a34a':tp>=40?'#f59e0b':'#ef4444';
+  el.innerHTML=`<div style="background:#f8f9fa;border-radius:16px;padding:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="font-size:13px;font-weight:700;color:#2c3e50;">This week: <span style="color:${bc}">${tp}%</span></span>
+      <span style="font-size:13px;font-weight:700;color:${ac};">${arrow} ${Math.abs(delta)} vs last week</span>
+    </div>
+    <div class="progress-bg"><div class="progress-fill" style="width:${tp}%;background:${bc};"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:#6c757d;margin-top:6px;"><span>Last week: ${lw} done</span><span>This week: ${tw} done</span></div>
+  </div>`;
 }
 
 function renderChart(){
   const bars=document.getElementById('chartBars');if(!bars)return;
   const filtered=getFilteredTasks();if(!filtered.length){bars.innerHTML='';return;}
   let html='';
-  for(let i=6;i>=0;i--){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split("T")[0];
-    const scheduled=filtered.filter(t=>isScheduledForDate(t,ds));
-    const done=scheduled.filter(t=>t.history[ds]).length;
-    const pct=scheduled.length>0?Math.round((done/scheduled.length)*100):0;
-    const h=Math.max(4,pct*0.85);
-    const color=pct>=70?'#22c55e':pct>=40?'#f59e0b':'#9ca3af';
-    const label=d.toLocaleDateString('en-US',{weekday:'short'});
-    const isToday=ds===today();
-    html+=`<div class="chart-bar-wrap"><div class="chart-bar-pct" style="${isToday?'font-weight:700;color:#667eea':''}">${pct}%</div><div class="chart-bar" style="height:${h}px;background:${color};${isToday?'box-shadow:0 0 0 2px #667eea':''};"></div><div class="chart-bar-label" style="${isToday?'font-weight:700;color:#667eea':''}">${label}</div></div>`;
-  }
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];const sc=filtered.filter(t=>isScheduledForDate(t,ds));const dn=sc.filter(t=>t.history[ds]).length;const pct=sc.length>0?Math.round((dn/sc.length)*100):0;const h=Math.max(4,pct*0.85);const color=pct>=70?'#22c55e':pct>=40?'#f59e0b':'#9ca3af';const label=d.toLocaleDateString('en-US',{weekday:'short'});const iT=ds===today();html+=`<div class="chart-bar-wrap"><div class="chart-bar-pct" style="${iT?'font-weight:700;color:#667eea':''}">${pct}%</div><div class="chart-bar" style="height:${h}px;background:${color};${iT?'box-shadow:0 0 0 2px #667eea':''}"></div><div class="chart-bar-label" style="${iT?'font-weight:700;color:#667eea':''}">${label}</div></div>`;}
   bars.innerHTML=html;
 }
 
 function renderConsistencyList(){
   const el=document.getElementById('consistencyList');if(!el)return;
   const filtered=getFilteredTasks();if(!filtered.length){el.innerHTML='<p style="color:#adb5bd;font-size:13px;">No habits yet.</p>';return;}
-  const ranked=[...filtered].map(t=>({t,c:getConsistency30(t),streak:getStreak(t)})).sort((a,b)=>b.c-a.c);
-  el.innerHTML=ranked.map((r,i)=>{
-    const barColor=r.c>=70?'#22c55e':r.c>=40?'#f59e0b':'#ef4444';
-    const medals=['🥇','🥈','🥉'];
-    const medal=i<3?medals[i]:`${i+1}.`;
-    const schedLabel=getScheduledLabel(r.t);
-    return `<div class="habit-row-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-size:1.1rem;">${medal}</span>
-          <div>
-            <div class="habit-name">${escapeHtml(r.t.text)}</div>
-            <div style="font-size:11px;color:#6c757d;">${schedLabel} · ${r.t.category}</div>
-          </div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-size:1.2rem;font-weight:800;color:${barColor};">${r.c}%</div>
-          ${r.streak>0?`<div style="font-size:11px;color:#e67700;">🔥 ${r.streak}d streak</div>`:''}
-        </div>
-      </div>
-      <div class="progress-bg"><div class="progress-fill" style="width:${r.c}%;background:${barColor};"></div></div>
-    </div>`;
-  }).join('');
-}
+  const ranked=[...filtered].map(t=>({t,c:getConsistency30(t),s:getStreak(t)})).sort((a,b)=>b.c-a.c);
+  el.innerHTML=ranked.map((r,i)=>{const bc=r.c>=70?'#22c55e':r.c>=40?'#f59e0b':'#ef4444';const medals=['🥇','🥈','🥉'];const medal=i<3?medals[i]:`${i+1}.`;const sl=getScheduledLabel(r.t);return`<div class="habit-row-card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.1rem;">${medal}</span><div><div class="habit-name">${escapeHtml(r.t.text)}</div><div style="font-size:11px;color:#6c757d;">${sl} · ${r.t.category}</div></div></div><div style="text-align:right;"><div style="font-size:1.2rem;font-weight:800;color:${bc};">${r.c}%</div>${r.s>0?`<div style="font-size:11px;color:#e67700;">🔥 ${r.s}d</div>`:''}</div></div><div class="progress-bg"><div class="progress-fill" style="width:${r.c}%;background:${bc};"></div></div></div>`;}).join('');}
 
 function renderLongChart(){
   const el=document.getElementById('longChart');if(!el||!tasks.length){if(el)el.innerHTML='';return;}
   let html='';
-  for(let i=29;i>=0;i--){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split("T")[0];
-    const scheduled=tasks.filter(t=>isScheduledForDate(t,ds));
-    const done=scheduled.filter(t=>t.history[ds]).length;
-    const pct=scheduled.length>0?Math.round((done/scheduled.length)*100):0;
-    const h=Math.max(2,pct*0.96);
-    const color=pct>=70?'#22c55e':pct>=40?'#f59e0b':'#e5e7eb';
-    html+=`<div class="chart-bar-wrap" style="gap:2px;"><div class="chart-bar" style="height:${h}px;background:${color};border-radius:3px 3px 0 0;" title="${ds}: ${pct}%"></div></div>`;
-  }
+  for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];const sc=tasks.filter(t=>isScheduledForDate(t,ds));const dn=sc.filter(t=>t.history[ds]).length;const pct=sc.length>0?Math.round((dn/sc.length)*100):0;const h=Math.max(2,pct*0.96);const color=pct>=70?'#22c55e':pct>=40?'#f59e0b':'#e5e7eb';html+=`<div class="chart-bar-wrap" style="gap:2px;"><div class="chart-bar" style="height:${h}px;background:${color};border-radius:3px 3px 0 0;" title="${ds}: ${pct}%"></div></div>`;}
   el.innerHTML=html;
 }
 
 function exportCSV(){
-  const week=getWeek();
-  let csv="Habit,Category,Schedule,Time,"+week.map(d=>d.date).join(",")+",Week%\n";
-  tasks.forEach(task=>{
-    let row=`"${task.text}","${task.category}","${getScheduledLabel(task)}","${task.time||''}"`;
-    week.forEach(d=>row+=","+(task.history[d.date]?"1":"0"));
-    row+=","+getPercent(task,week)+"%";csv+=row+"\n";
-  });
-  const blob=new Blob([csv],{type:"text/csv"});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");a.href=url;a.download=`fikrcha_${today()}.csv`;a.click();URL.revokeObjectURL(url);
+  const week=getWeek();let csv="Habit,Category,Schedule,Time,"+week.map(d=>d.date).join(",")+",Week%\n";
+  tasks.forEach(task=>{let row=`"${task.text}","${task.category}","${getScheduledLabel(task)}","${task.time||''}"`;week.forEach(d=>row+=","+(task.history[d.date]?"1":"0"));row+=","+getPercent(task,week)+"%";csv+=row+"\n";});
+  const blob=new Blob([csv],{type:"text/csv"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`fikrcha_${today()}.csv`;a.click();URL.revokeObjectURL(url);
 }
+function checkNotificationPrompt(){if('Notification' in window&&Notification.permission==='default'){const b=document.getElementById('notifBanner');const m=document.getElementById('notifMsg');if(b&&m){m.textContent=t('notifEnable');b.style.display='flex';}}else{const b=document.getElementById('notifBanner');if(b)b.style.display='none';}}
+async function requestNotifications(){const p=await Notification.requestPermission();if(p==='granted'){const b=document.getElementById('notifBanner');if(b)b.style.display='none';scheduleNotifications();new Notification('FIKRCHA 🌟',{body:'Notifications enabled!'});}}
+function scheduleNotifications(){setInterval(()=>{if(Notification.permission!=='granted')return;const now=new Date();const hh=String(now.getHours()).padStart(2,'0');const mm=String(now.getMinutes()).padStart(2,'0');const ds=today();tasks.forEach(task=>{if(!task.time||task.history[ds]||!isScheduledForDate(task,ds))return;if(task.time===`${hh}:${mm}`)new Notification(`⏰ FIKRCHA: ${task.text}`,{body:'Time for your habit!'});});},60000);}
 
-function checkNotificationPrompt(){
-  if('Notification' in window&&Notification.permission==='default'){
-    const b=document.getElementById('notifBanner');const m=document.getElementById('notifMsg');
-    if(b&&m){m.textContent=t('notifEnable');b.style.display='flex';}
-  } else {const b=document.getElementById('notifBanner');if(b)b.style.display='none';}
-}
-async function requestNotifications(){
-  const p=await Notification.requestPermission();
-  if(p==='granted'){const b=document.getElementById('notifBanner');if(b)b.style.display='none';scheduleNotifications();new Notification('FIKRCHA 🌟',{body:'Notifications enabled!'});}
-}
-function scheduleNotifications(){
-  setInterval(()=>{
-    if(Notification.permission!=='granted')return;
-    const now=new Date();
-    const hh=String(now.getHours()).padStart(2,'0');
-    const mm=String(now.getMinutes()).padStart(2,'0');
-    const ds=today();
-    tasks.forEach(task=>{
-      if(!task.time||task.history[ds])return;
-      if(!isScheduledForDate(task,ds))return;
-      if(task.time===`${hh}:${mm}`)new Notification(`⏰ FIKRCHA: ${task.text}`,{body:'Time for your habit!'});
-    });
-  },60000);
-}
-
-// ==================== STUDY ====================
+// ========== STUDY ==========
 async function addLesson(){const input=document.getElementById("lessonInput");if(!input.value.trim())return;await api("POST","/api/studies",{title:input.value});input.value="";await loadAll();setTimeout(()=>{const all=document.querySelectorAll('details.lesson');if(all.length)all[all.length-1].open=true;},100);}
 async function deleteLesson(i){if(confirm(t('deleteLesson'))){await api("DELETE",`/api/studies/${lessons[i].id}`);await loadAll();}}
 let activityImageData={};
@@ -1383,52 +1192,25 @@ async function saveComment(i,j,value){lessons[i].tasks[j].comment=value;await ap
 function renderLessons(){
   let html="";
   lessons.forEach((l,i)=>{
-    const td=today();
-    const done=l.tasks.filter(t=>t.history[td]).length;
-    const total=l.tasks.length;
-    const pct=total>0?Math.round((done/total)*100):0;
-    html+=`<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;">
-      <summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>
-          ${total>0?`<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${done}/${total} · ${pct}%</span>`:''}
-        </div>
-        <span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span>
-      </summary>
-      <div style="padding:0 18px 18px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;">
-        <div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
-          <input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:140px;">
-          <label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:12px;">🖼️<input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i},this)"></label>
-          <span id="activity-img-name-${i}" style="font-size:11px;color:#888;"></span>
-          <button onclick="addLessonTask(${i})" style="background:#667eea;color:#fff;">➕ Add</button>
-        </div>
-        <ul style="list-style:none;padding-left:0;">`;
-    l.tasks.forEach((task,j)=>{
-      const checked=task.history[td]?"checked":"";
-      html+=`<li style="background:#f8f9fa;margin:8px 0;padding:10px;border-radius:12px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <input type="checkbox" ${checked} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);">
-          <strong style="flex:1;font-size:13px;">${escapeHtml(task.text)}</strong>
-          <button onclick="deleteLessonTask(${i},${j})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button>
-        </div>
-        ${task.image?`<img src="${task.image}" style="max-width:100%;max-height:200px;border-radius:10px;margin:6px 0;display:block;object-fit:cover;">`:""}
-        <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%;margin-top:6px;font-size:13px;">${escapeHtml(task.comment)}</textarea>
-      </li>`;
-    });
+    const td=today(),dn=l.tasks.filter(t=>t.history[td]).length,tot=l.tasks.length,pct=tot>0?Math.round((dn/tot)*100):0;
+    html+=`<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;"><summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>${tot>0?`<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${dn}/${tot} · ${pct}%</span>`:''}</div><span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span></summary><div style="padding:0 18px 18px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;"><div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:140px;"><label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:12px;">🖼️<input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i},this)"></label><span id="activity-img-name-${i}" style="font-size:11px;color:#888;"></span><button onclick="addLessonTask(${i})" style="background:#667eea;color:#fff;">➕ Add</button></div><ul style="list-style:none;padding-left:0;">`;
+    l.tasks.forEach((task,j)=>{const ck=task.history[td]?"checked":"";html+=`<li style="background:#f8f9fa;margin:8px 0;padding:10px;border-radius:12px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><input type="checkbox" ${ck} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);"><strong style="flex:1;font-size:13px;">${escapeHtml(task.text)}</strong><button onclick="deleteLessonTask(${i},${j})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button></div>${task.image?`<img src="${task.image}" style="max-width:100%;max-height:200px;border-radius:10px;margin:6px 0;display:block;object-fit:cover;">`:""}
+        <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%;margin-top:6px;font-size:13px;">${escapeHtml(task.comment)}</textarea></li>`;});
     html+=`</ul><div style="text-align:right;margin-top:10px;"><button onclick="deleteLesson(${i})" class="btn-danger">🗑️ Delete Module</button></div></div></details>`;
   });
   document.getElementById("lessonContainer").innerHTML=html;
   document.querySelectorAll('details.lesson').forEach(d=>{d.addEventListener('toggle',function(){const a=this.querySelector('.lesson-toggle');if(a)a.style.transform=this.open?'rotate(90deg)':'rotate(0deg)';});});
 }
 
-// ==================== DIARY ====================
+// ========== DIARY ==========
 let calViewYear=new Date().getFullYear(),calViewMonth=new Date().getMonth();
 function calPrev(){calViewMonth--;if(calViewMonth<0){calViewMonth=11;calViewYear--;}renderCalendar();}
 function calNext(){calViewMonth++;if(calViewMonth>11){calViewMonth=0;calViewYear++;}renderCalendar();}
 function renderCalendar(){
   const label=document.getElementById('calMonthLabel'),grid=document.getElementById('calGrid'),hdrs=document.getElementById('calDayHeaders');
   if(!label||!grid||!hdrs)return;
-  hdrs.innerHTML=t('days').map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+  const days=t('days');
+  hdrs.innerHTML=(Array.isArray(days)?days:['Mo','Tu','We','Th','Fr','Sa','Su']).map(d=>`<div class="cal-day-header">${d}</div>`).join('');
   label.textContent=new Date(calViewYear,calViewMonth,1).toLocaleDateString(currentLang==='uz'?'uz-UZ':currentLang==='ru'?'ru-RU':'en-US',{month:'long',year:'numeric'});
   const firstDay=new Date(calViewYear,calViewMonth,1).getDay();
   const offset=firstDay===0?6:firstDay-1;
@@ -1440,88 +1222,45 @@ function renderCalendar(){
   grid.innerHTML=html;
 }
 function selectCalDay(ds){document.getElementById('diaryDate').value=ds;renderCalendar();renderDiary();}
-
 let diaryImageData=null;
 function previewDiaryImage(inp){if(!inp.files||!inp.files[0])return;const r=new FileReader();r.onload=e=>{diaryImageData=e.target.result;document.getElementById("diaryPreviewImg").src=diaryImageData;document.getElementById("diaryImagePreview").style.display="flex";};r.readAsDataURL(inp.files[0]);}
 function clearDiaryImage(){diaryImageData=null;document.getElementById("diaryImage").value="";document.getElementById("diaryImagePreview").style.display="none";}
-
 let mediaRecorder=null,audioChunks=[],voiceData=null,recordingTimer=null,recordingSeconds=0;
 async function toggleRecording(){
   const btn=document.getElementById("voiceBtn"),timerEl=document.getElementById("voiceTimer");
   if(mediaRecorder&&mediaRecorder.state==="recording"){mediaRecorder.stop();clearInterval(recordingTimer);btn.textContent=t('recordVoice');btn.classList.remove("recording");timerEl.style.display="none";}
-  else{try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});audioChunks=[];
-    const mimeType=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":MediaRecorder.isTypeSupported("audio/webm")?"audio/webm":"audio/ogg";
-    mediaRecorder=new MediaRecorder(stream,{mimeType});
-    mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};
-    mediaRecorder.onstop=()=>{const blob=new Blob(audioChunks,{type:mimeType});const r=new FileReader();r.onload=e=>{voiceData=e.target.result;document.getElementById("voiceAudio").src=voiceData;document.getElementById("voicePreview").style.display="flex";};r.readAsDataURL(blob);stream.getTracks().forEach(t=>t.stop());};
-    mediaRecorder.start();btn.textContent=t('stopRecording');btn.classList.add("recording");
-    recordingSeconds=0;timerEl.style.display="block";timerEl.textContent="⏺ 0s";
-    recordingTimer=setInterval(()=>{recordingSeconds++;timerEl.textContent=`⏺ ${recordingSeconds}s`;if(recordingSeconds>=120)toggleRecording();},1000);
-  }catch(e){alert("❌ Microphone access denied.");}}
+  else{try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});audioChunks=[];const mimeType=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":MediaRecorder.isTypeSupported("audio/webm")?"audio/webm":"audio/ogg";mediaRecorder=new MediaRecorder(stream,{mimeType});mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};mediaRecorder.onstop=()=>{const blob=new Blob(audioChunks,{type:mimeType});const r=new FileReader();r.onload=e=>{voiceData=e.target.result;document.getElementById("voiceAudio").src=voiceData;document.getElementById("voicePreview").style.display="flex";};r.readAsDataURL(blob);stream.getTracks().forEach(t=>t.stop());};mediaRecorder.start();btn.textContent=t('stopRecording');btn.classList.add("recording");recordingSeconds=0;timerEl.style.display="block";timerEl.textContent="⏺ 0s";recordingTimer=setInterval(()=>{recordingSeconds++;timerEl.textContent=`⏺ ${recordingSeconds}s`;if(recordingSeconds>=120)toggleRecording();},1000);}catch(e){alert("❌ Microphone access denied.");}}
 }
 function clearVoice(){voiceData=null;document.getElementById("voiceAudio").src="";document.getElementById("voicePreview").style.display="none";}
-
-async function addDiary(){
-  const date=document.getElementById("diaryDate").value,text=document.getElementById("diaryInput").value;
-  if(!date||!text.trim())return;
-  await api("POST","/api/diaries",{date,entry:text,image:diaryImageData||null,voice:voiceData||null});
-  if(!diaries[date])diaries[date]=[];
-  diaries[date].push({text,time:new Date().toLocaleTimeString(),image:diaryImageData||null,voice:voiceData||null});
-  document.getElementById("diaryInput").value="";clearDiaryImage();clearVoice();
-  await loadAll();renderCalendar();renderDiary();
-}
+async function addDiary(){const date=document.getElementById("diaryDate").value,text=document.getElementById("diaryInput").value;if(!date||!text.trim())return;await api("POST","/api/diaries",{date,entry:text,image:diaryImageData||null,voice:voiceData||null});if(!diaries[date])diaries[date]=[];diaries[date].push({text,time:new Date().toLocaleTimeString(),image:diaryImageData||null,voice:voiceData||null});document.getElementById("diaryInput").value="";clearDiaryImage();clearVoice();await loadAll();renderCalendar();renderDiary();}
 async function deleteDiary(date,i){const entry=diaries[date][i];if(entry?.id)await api("DELETE",`/api/diaries/${entry.id}`);diaries[date].splice(i,1);renderDiary();renderCalendar();}
 async function editDiary(date,i){const newText=prompt("Edit entry:",diaries[date][i].text);if(newText){diaries[date][i].text=newText;if(diaries[date][i].id)await api("PUT",`/api/diaries/${diaries[date][i].id}`,{entry:newText});renderDiary();}}
-function toggleDiaryEntry(id){
-  const body=document.getElementById('diary-body-'+id);
-  const tog=document.getElementById('diary-toggle-'+id);
-  if(body&&tog){body.classList.toggle('open');tog.classList.toggle('open');}
-}
+function toggleDiaryEntry(id){const body=document.getElementById('diary-body-'+id);const tog=document.getElementById('diary-toggle-'+id);if(body&&tog){body.classList.toggle('open');tog.classList.toggle('open');}}
 function renderDiary(){
-  const date=document.getElementById("diaryDate").value;
-  const container=document.getElementById("diaryContainer");
-  const title=document.getElementById("diaryTitle");
+  const date=document.getElementById("diaryDate").value,container=document.getElementById("diaryContainer"),title=document.getElementById("diaryTitle");
   const searchVal=(document.getElementById("diarySearch")?.value||"").toLowerCase().trim();
   if(searchVal){
-    let results=[];
-    Object.entries(diaries).forEach(([d,entries])=>{entries.forEach((entry,i)=>{if(entry.text.toLowerCase().includes(searchVal))results.push({date:d,entry,i});});});
+    let results=[];Object.entries(diaries).forEach(([d,entries])=>{entries.forEach((entry,i)=>{if(entry.text.toLowerCase().includes(searchVal))results.push({date:d,entry,i});});});
     if(title)title.innerText=`🔍 ${results.length} result(s)`;
-    if(container)container.innerHTML=results.map((r,idx)=>{
-      const id=`search-${idx}`;
-      const preview=r.entry.text.length>80?r.entry.text.substring(0,80)+'...':r.entry.text;
-      return `<div class="diary-accordion"><div class="diary-acc-header" onclick="toggleDiaryEntry('${id}')"><div><span style="font-size:12px;font-weight:700;color:#667eea;">📅 ${r.date}</span><span style="font-size:11px;color:#6c757d;margin-left:6px;">🕐 ${r.entry.time}</span><p style="margin:3px 0 0;font-size:12px;color:#495057;">${escapeHtml(preview)}</p></div><span class="diary-acc-toggle" id="diary-toggle-${id}">▶</span></div><div class="diary-acc-body" id="diary-body-${id}"><p style="margin:8px 0;">${escapeHtml(r.entry.text)}</p>${r.entry.image?`<img src="${r.entry.image}" style="max-width:100%;max-height:200px;border-radius:12px;margin:8px 0;display:block;">`:""} ${r.entry.voice?`<div class="voice-preview"><audio controls src="${r.entry.voice}" style="flex:1;height:34px;"></audio></div>`:""}<button onclick="editDiary('${r.date}',${r.i})" style="background:#e9ecef;margin-top:8px;">✏️</button><button onclick="deleteDiary('${r.date}',${r.i})" class="btn-danger" style="margin-top:8px;">🗑️</button></div></div>`;
-    }).join('')||`<p style="color:#adb5bd;font-size:13px;">No results.</p>`;
+    if(container)container.innerHTML=results.map((r,idx)=>{const id=`search-${idx}`;const preview=r.entry.text.length>80?r.entry.text.substring(0,80)+'...':r.entry.text;return`<div class="diary-accordion"><div class="diary-acc-header" onclick="toggleDiaryEntry('${id}')"><div><span style="font-size:12px;font-weight:700;color:#667eea;">📅 ${r.date}</span><span style="font-size:11px;color:#6c757d;margin-left:6px;">🕐 ${r.entry.time}</span><p style="margin:3px 0 0;font-size:12px;color:#495057;">${escapeHtml(preview)}</p></div><span class="diary-acc-toggle" id="diary-toggle-${id}">▶</span></div><div class="diary-acc-body" id="diary-body-${id}"><p style="margin:8px 0;">${escapeHtml(r.entry.text)}</p>${r.entry.image?`<img src="${r.entry.image}" style="max-width:100%;max-height:200px;border-radius:12px;margin:8px 0;display:block;">`:""} ${r.entry.voice?`<div class="voice-preview"><audio controls src="${r.entry.voice}" style="flex:1;height:34px;"></audio></div>`:""}<button onclick="editDiary('${r.date}',${r.i})" style="background:#e9ecef;margin-top:8px;">✏️</button><button onclick="deleteDiary('${r.date}',${r.i})" class="btn-danger" style="margin-top:8px;">🗑️</button></div></div>`;}).join('')||`<p style="color:#adb5bd;font-size:13px;">No results.</p>`;
     return;
   }
   if(!date){if(container)container.innerHTML=`<p style="color:#adb5bd;font-size:13px;">${t('selectDate')}</p>`;if(title)title.innerText='';return;}
   if(title)title.innerText=t('entriesFor')+date;
   const entries=diaries[date]||[];
-  if(container)container.innerHTML=entries.map((d,i)=>{
-    const id=`entry-${date.replace(/-/g,'')}-${i}`;
-    const preview=d.text.length>80?d.text.substring(0,80)+'...':d.text;
-    return `<div class="diary-accordion"><div class="diary-acc-header" onclick="toggleDiaryEntry('${id}')"><div><span style="font-size:11px;color:#b45309;font-weight:700;">🕐 ${d.time}</span><p style="margin:3px 0 0;font-size:13px;color:#2c3e50;font-weight:500;">${escapeHtml(preview)}</p></div><span class="diary-acc-toggle" id="diary-toggle-${id}">▶</span></div><div class="diary-acc-body" id="diary-body-${id}"><p style="margin:8px 0 12px;">${escapeHtml(d.text)}</p>${d.image?`<img src="${d.image}" style="max-width:100%;max-height:300px;border-radius:12px;margin:8px 0;display:block;object-fit:cover;">`:""} ${d.voice?`<div class="voice-preview" style="margin:8px 0;">🎤 <audio controls src="${d.voice}" style="flex:1;height:34px;"></audio></div>`:""}<button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">✏️</button><button onclick="deleteDiary('${date}',${i})" class="btn-danger">🗑️</button></div></div>`;
-  }).join('')||`<p style="color:#adb5bd;font-size:13px;">${t('selectDate')}</p>`;
+  if(container)container.innerHTML=entries.map((d,i)=>{const id=`entry-${date.replace(/-/g,'')}-${i}`;const preview=d.text.length>80?d.text.substring(0,80)+'...':d.text;return`<div class="diary-accordion"><div class="diary-acc-header" onclick="toggleDiaryEntry('${id}')"><div><span style="font-size:11px;color:#b45309;font-weight:700;">🕐 ${d.time}</span><p style="margin:3px 0 0;font-size:13px;color:#2c3e50;font-weight:500;">${escapeHtml(preview)}</p></div><span class="diary-acc-toggle" id="diary-toggle-${id}">▶</span></div><div class="diary-acc-body" id="diary-body-${id}"><p style="margin:8px 0 12px;">${escapeHtml(d.text)}</p>${d.image?`<img src="${d.image}" style="max-width:100%;max-height:300px;border-radius:12px;margin:8px 0;display:block;object-fit:cover;">`:""} ${d.voice?`<div class="voice-preview" style="margin:8px 0;">🎤 <audio controls src="${d.voice}" style="flex:1;height:34px;"></audio></div>`:""}<button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">✏️</button><button onclick="deleteDiary('${date}',${i})" class="btn-danger">🗑️</button></div></div>`;}).join('')||`<p style="color:#adb5bd;font-size:13px;">${t('selectDate')}</p>`;
 }
 
-async function tryTelegramAutoLogin(){
-  const tg=window.Telegram?.WebApp;if(!tg)return;
-  tg.ready();await new Promise(r=>setTimeout(r,500));
-  const user=tg.initDataUnsafe?.user;
-  if(user?.id){
-    await fetch('/auth/telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user})});
-    await fetch('/api/link-telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({telegramId:user.id})});
-  }
-}
+function escapeHtml(str){if(!str)return"";return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]||m));}
 
-// ==================== INIT ====================
+async function tryTelegramAutoLogin(){const tg=window.Telegram?.WebApp;if(!tg)return;tg.ready();await new Promise(r=>setTimeout(r,500));const user=tg.initDataUnsafe?.user;if(user?.id){await fetch('/auth/telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user})});await fetch('/api/link-telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({telegramId:user.id})});}}
+
 document.getElementById("diaryDate").addEventListener("change",()=>{renderCalendar();renderDiary();});
-
-// Global expose
-Object.assign(window,{showPage,setLanguage,toggleDark,closeHabitModal,saveHabitModal,openAddHabitModal,openEditHabitModal,setSchedType,toggleDay,buildDayPills,addLesson,deleteLesson,addLessonTask,deleteLessonTask,toggleLessonTask,saveComment,previewActivityImage,addDiary,deleteDiary,editDiary,toggleDiaryEntry,previewDiaryImage,clearDiaryImage,clearVoice,toggleRecording,exportCSV,requestNotifications,setFilter,calPrev,calNext,selectCalDay,changeWeek,toggle,deleteTask,refreshQuote,screenshotQuote,sendAiMessage,sendAiSuggestion});
+Object.assign(window,{showPage,setLanguage,toggleDark,closeHabitModal,saveHabitModal,openAddHabitModal,openEditHabitModal,setSchedType,toggleDay,buildDayPills,addLesson,deleteLesson,addLessonTask,deleteLessonTask,toggleLessonTask,saveComment,previewActivityImage,addDiary,deleteDiary,editDiary,toggleDiaryEntry,previewDiaryImage,clearDiaryImage,clearVoice,toggleRecording,exportCSV,requestNotifications,setFilter,calPrev,calNext,selectCalDay,changeWeek,toggle,deleteTask,refreshQuote,openStudio,closeStudio,setGrad,setFont,setSize,updateStudioText,refreshStudioQuote,downloadStory,sendAiMessage,sendChip});
 
 document.body.classList.toggle('dark',darkMode);
-tryTelegramAutoLogin().then(()=>loadAll());
+tryTelegramAutoLogin().then(()=>loadAll().then(()=>{refreshQuote();updateStudioFromCurrent();}));
+loadProfileName();
 if(Notification.permission==='granted')scheduleNotifications();
 setTimeout(applyLanguage,300);
 </script>
