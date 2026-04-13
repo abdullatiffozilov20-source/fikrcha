@@ -317,6 +317,72 @@ app.get("/admin.html", (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
+// ===== ADD THIS TO YOUR index.js =====
+// FREE AI using Groq (Llama 3) — completely free tier, no credit card needed
+//
+// Setup:
+// 1. Go to https://console.groq.com → Sign up free
+// 2. Create an API key (free, no credit card)
+// 3. Add GROQ_API_KEY to your Render environment variables
+// 4. Paste this block into index.js after your other API routes
+// NO npm install needed — uses built-in fetch
+
+app.post('/api/ai-chat', async (req, res) => {
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: 'Not logged in' });
+
+  const { message, system, history } = req.body;
+  if (!message) return res.status(400).json({ error: 'No message' });
+
+  const GROQ_API_KEY = process.env.GROQ_API_KEY;
+  if (!GROQ_API_KEY) {
+    return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to your Render environment variables. Get a free key at console.groq.com' });
+  }
+
+  try {
+    const messages = [
+      ...(history || []).slice(-6),
+      { role: 'user', content: message }
+    ];
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'llama3-8b-8192',  // Free model — fast and smart
+        max_tokens: 512,
+        messages: [
+          { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant.' },
+          ...messages
+        ]
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.choices && data.choices[0]) {
+      res.json({ reply: data.choices[0].message.content });
+    } else {
+      console.error('Groq error:', data);
+      res.json({ reply: '⚠️ AI error. Please try again.' });
+    }
+  } catch (err) {
+    console.error('AI route error:', err);
+    res.json({ reply: '⚠️ AI temporarily unavailable.' });
+  }
+});
+
+// ============================================================
+// WHY GROQ IS BETTER THAN CLAUDE FOR FREE TIER:
+// - Groq free tier: ~14,400 requests/day (very generous)
+// - Uses Llama 3 8B — excellent for productivity assistant tasks
+// - No credit card required
+// - Much faster responses (Groq's hardware is ultra-fast)
+// - Claude free tier: very limited, requires payment for production use
+// ============================================================
 // TELEGRAM BOT
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const webAppUrl = DOMAIN;
