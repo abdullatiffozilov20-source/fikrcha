@@ -144,29 +144,30 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px;}
 
 /* QUOTE */
-.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border:1px solid rgba(102,126,234,0.18);border-radius:16px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all 0.2s;}
+.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border:1px solid rgba(102,126,234,0.18);border-radius:16px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;transition:all 0.2s;}
 .quote-card:hover{border-color:rgba(102,126,234,0.35);box-shadow:0 4px 14px rgba(102,126,234,0.12);}
-.quote-inner{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
-.quote-text-el{font-size:13px;font-weight:500;color:#1e293b;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.quote-author-el{font-size:12px;color:#64748b;font-weight:600;white-space:nowrap;flex-shrink:0;}
-.quote-actions{display:flex;gap:6px;flex-shrink:0;}
-.qbtn{padding:6px 12px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;white-space:nowrap;}
+.quote-inner{display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;flex-direction:column;}
+.quote-text-el{font-size:13px;font-weight:500;color:#1e293b;line-height:1.5;flex:1;}
+.quote-author-el{font-size:11px;color:#64748b;font-weight:600;margin-top:2px;}
+.quote-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:flex-end;}
+.qbtn{padding:5px 11px;border-radius:20px;border:none;cursor:pointer;font-size:11px;font-weight:600;transition:all 0.2s;white-space:nowrap;}
 .qbtn-studio{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
 .qbtn-refresh{background:#f1f5f9;color:#475569;}
 
 /* STUDIO */
 .studio-card{background:#fff;border:1px solid #e9ecef;border-radius:20px;padding:20px;margin-top:16px;}
-.studio-preview{border-radius:16px;overflow:hidden;margin-bottom:16px;position:relative;min-height:220px;display:flex;align-items:center;justify-content:center;}
-.studio-preview-inner{width:100%;padding:32px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
-.studio-quote-text{font-size:1.15rem;font-weight:700;line-height:1.5;max-width:380px;}
-.studio-quote-author{font-size:0.85rem;opacity:0.8;}
-.studio-user-name{font-size:0.8rem;opacity:0.7;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
-.studio-app-badge{font-size:0.75rem;opacity:0.6;font-weight:700;letter-spacing:2px;}
-.studio-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
-.studio-swatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all 0.2s;flex-shrink:0;}
-.studio-swatch.active{border-color:#667eea;transform:scale(1.2);}
-.studio-font-btn{padding:5px 12px;border-radius:12px;border:2px solid #dee2e6;background:#f8f9fa;font-size:12px;cursor:pointer;transition:all 0.2s;margin:0;}
-.studio-font-btn.active{border-color:#667eea;background:#eef0ff;color:#667eea;}
+.studio-preview{border-radius:20px;overflow:hidden;margin-bottom:16px;position:relative;min-height:260px;display:flex;align-items:center;justify-content:center;}
+.studio-preview-inner{width:100%;padding:36px 28px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.studio-quote-text{font-weight:700;line-height:1.6;max-width:360px;}
+.studio-quote-author{font-size:0.9rem;opacity:0.85;font-weight:500;}
+.studio-user-name{font-size:0.75rem;opacity:0.65;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.studio-app-badge{font-size:0.7rem;opacity:0.55;font-weight:700;letter-spacing:2px;}
+.studio-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.studio-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all 0.2s;flex-shrink:0;}
+.studio-swatch.active{border-color:#fff;box-shadow:0 0 0 2px #667eea;transform:scale(1.15);}
+.studio-font-btn{padding:7px 16px;border-radius:20px;border:none;background:#f1f3f5;color:#495057;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;margin:0;min-width:70px;}
+.studio-font-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.studio-section-label{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.8px;margin:12px 0 6px;}
 
 /* AI */
 .ai-wrap{background:linear-gradient(135deg,rgba(102,126,234,0.05),rgba(118,75,162,0.05));border:1px solid rgba(102,126,234,0.15);border-radius:20px;padding:16px;}
@@ -217,13 +218,17 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 <!-- QUOTE BAR -->
 <div class="quote-card" id="quoteCard">
   <div class="quote-inner">
-    <span style="font-size:1rem;flex-shrink:0;opacity:0.7;">✨</span>
-    <span class="quote-text-el" id="quoteText"></span>
-    <span class="quote-author-el" id="quoteAuthor"></span>
+    <div style="display:flex;gap:8px;align-items:flex-start;flex:1;">
+      <span style="font-size:1rem;flex-shrink:0;opacity:0.7;margin-top:1px;">✨</span>
+      <div>
+        <div class="quote-text-el" id="quoteText"></div>
+        <div class="quote-author-el" id="quoteAuthor"></div>
+      </div>
+    </div>
   </div>
   <div class="quote-actions">
     <button class="qbtn qbtn-refresh" onclick="refreshQuote()" title="New quote">🔄</button>
-    <button class="qbtn qbtn-studio" onclick="openStudio()">📸 Story</button>
+    <button class="qbtn qbtn-studio" onclick="openStudio()">📸</button>
   </div>
 </div>
 
@@ -343,29 +348,19 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
         <div class="studio-app-badge">✨ FIKRCHA</div>
       </div>
     </div>
-    <!-- CONTROLS ROW -->
-    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:12px;">
-      <div style="flex:1;min-width:140px;">
-        <div style="font-size:11px;font-weight:700;color:#6c757d;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Background</div>
-        <div class="studio-controls" id="gradientPicker" style="gap:6px;"></div>
-      </div>
-      <div>
-        <div style="font-size:11px;font-weight:700;color:#6c757d;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Size</div>
-        <div style="display:flex;gap:6px;">
-          <button class="studio-font-btn active" id="size-sm" onclick="setSize('sm')">S</button>
-          <button class="studio-font-btn" id="size-md" onclick="setSize('md')">M</button>
-          <button class="studio-font-btn" id="size-lg" onclick="setSize('lg')">L</button>
-        </div>
-      </div>
-    </div>
-    <!-- FONT ROW -->
-    <div style="font-size:11px;font-weight:700;color:#6c757d;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Font</div>
-    <div class="studio-controls" id="fontPicker" style="margin-bottom:12px;"></div>
-    <!-- EDIT QUOTE -->
-    <textarea id="studioEditText" style="width:100%;border-radius:12px;height:56px;font-size:13px;margin-bottom:12px;" placeholder="Edit quote text..." oninput="updateStudioText()"></textarea>
-    <div style="display:flex;gap:8px;">
-      <button onclick="refreshStudioQuote()" style="background:#f1f5f9;color:#475569;flex:1;font-size:13px;">🔄 New Quote</button>
-      <button onclick="downloadStory()" class="btn-primary" style="flex:1;font-size:13px;">📸 Screenshot & Share</button>
+    <!-- GRADIENT SWATCHES -->
+    <div class="studio-section-label">Background</div>
+    <div class="studio-controls" id="gradientPicker"></div>
+    <!-- FONT: 3 cycling buttons, same gradient color -->
+    <div class="studio-section-label">Font Style</div>
+    <div style="display:flex;gap:8px;margin-bottom:4px;" id="fontPicker"></div>
+    <!-- EDIT QUOTE TEXT -->
+    <div class="studio-section-label">Edit Text</div>
+    <textarea id="studioEditText" style="width:100%;border-radius:12px;height:54px;font-size:13px;margin-bottom:14px;" placeholder="Edit quote text..." oninput="updateStudioText()"></textarea>
+    <!-- BOTTOM ROW: small screenshot left, new quote right -->
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button onclick="downloadStory()" style="background:#f1f5f9;color:#475569;font-size:12px;padding:8px 14px;flex-shrink:0;">📸 Screenshot</button>
+      <button onclick="refreshStudioQuote()" class="btn-primary" style="flex:1;font-size:13px;">🔄 New Quote</button>
     </div>
   </div>
 </div>
@@ -768,18 +763,14 @@ function closeStudio(){document.getElementById('studioModal').style.display='non
 
 function buildStudioControls(){
   const gp=document.getElementById('gradientPicker');
-  gp.innerHTML=GRADIENTS.map((g,i)=>`<div class="studio-swatch ${i===studioGrad?'active':''}" style="background:${g.bg};" onclick="setGrad(${i})" title="${g.label}"></div>`).join('');
+  if(gp)gp.innerHTML=GRADIENTS.map((g,i)=>`<div class="studio-swatch ${i===studioGrad?'active':''}" style="background:${g.bg};" onclick="setGrad(${i})" title="${g.label}"></div>`).join('');
+  // 3 font buttons cycling — all same gradient color, just label differs
   const fp=document.getElementById('fontPicker');
-  fp.innerHTML=FONTS.map((f,i)=>`<button class="studio-font-btn ${i===studioFont?'active':''}" style="font-family:${f.family}" onclick="setFont(${i})">${f.label}</button>`).join('');
+  if(fp)fp.innerHTML=FONTS.slice(0,3).map((f,i)=>`<button class="studio-font-btn ${i===studioFont?'active':''}" onclick="setFont(${i})">${f.label}</button>`).join('');
 }
 function setGrad(i){studioGrad=i;buildStudioControls();applyStudio();}
 function setFont(i){studioFont=i;buildStudioControls();applyStudio();}
-function setSize(s){
-  studioSize=s;
-  ['sm','md','lg'].forEach(x=>{document.getElementById('size-'+x)?.classList.remove('active');});
-  document.getElementById('size-'+s)?.classList.add('active');
-  applyStudio();
-}
+function setSize(s){studioSize=s;applyStudio();}
 function applyStudio(){
   const g=GRADIENTS[studioGrad];const f=FONTS[studioFont];
   const sizes={sm:'1rem',md:'1.2rem',lg:'1.5rem'};
@@ -964,11 +955,10 @@ function openEditHabitModal(i){
 }
 function closeHabitModal(){document.getElementById('habitModal').style.display='none';}
 async function saveHabitModal(){
-  const name=document.getElementById('modalHabitName').value.trim();if(!name)return;
+  const name=document.getElementById('modalHabitName').value.trim();if(!name){alert('Please enter a habit name');return;}
   const time=document.getElementById('modalHabitTime').value;
   const cat=document.getElementById('modalHabitCat').value;
-  const freq=parseInt(document.getElementById('freqCount').value)||3;
-  // FIX: correctly store schedule type
+  // Build schedule (no freq anymore)
   const onceDate=schedType==='once'?(document.getElementById('onceDate')?.value||today()):'';
   const schedule={
     type:schedType,
@@ -1190,13 +1180,65 @@ async function addLessonTask(i){const inp=document.getElementById(`activity-${i}
 async function deleteLessonTask(i,j){lessons[i].tasks.splice(j,1);await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOS();renderLessons();restoreOS(s);}
 async function toggleLessonTask(i,j){const td=today();lessons[i].tasks[j].history[td]=!lessons[i].tasks[j].history[td];await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOS();renderLessons();restoreOS(s);}
 async function saveComment(i,j,value){lessons[i].tasks[j].comment=value;await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});}
+async function saveNoteVoice(i,j,voiceB64){lessons[i].tasks[j].noteVoice=voiceB64;await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});}
+async function deleteNoteVoice(i,j){lessons[i].tasks[j].noteVoice=null;await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOS();renderLessons();restoreOS(s);}
+
+// Per-task voice recording state
+const noteRecorders={};
+async function toggleNoteRecording(i,j){
+  const btnId=`note-voice-btn-${i}-${j}`;
+  const btn=document.getElementById(btnId);
+  const key=`${i}-${j}`;
+  if(noteRecorders[key]&&noteRecorders[key].state==='recording'){
+    noteRecorders[key].stop();
+    if(btn){btn.textContent='🎤';btn.style.background='#f1f3f5';btn.style.color='#495057';}
+  } else {
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      const chunks=[];
+      const mimeType=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm';
+      const mr=new MediaRecorder(stream,{mimeType});
+      noteRecorders[key]=mr;
+      mr.ondataavailable=e=>{if(e.data.size>0)chunks.push(e.data);};
+      mr.onstop=()=>{
+        const blob=new Blob(chunks,{type:mimeType});
+        const reader=new FileReader();
+        reader.onload=async e=>{
+          await saveNoteVoice(i,j,e.target.result);
+          stream.getTracks().forEach(t=>t.stop());
+          const s=saveOS();renderLessons();restoreOS(s);
+        };
+        reader.readAsDataURL(blob);
+      };
+      mr.start();
+      if(btn){btn.textContent='⏹';btn.style.background='#ffe0e0';btn.style.color='#c0392b';}
+    }catch(e){alert('Microphone access denied.');}
+  }
+}
 function renderLessons(){
   let html="";
   lessons.forEach((l,i)=>{
     const td=today(),dn=l.tasks.filter(t=>t.history[td]).length,tot=l.tasks.length,pct=tot>0?Math.round((dn/tot)*100):0;
     html+=`<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;"><summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>${tot>0?`<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${dn}/${tot} · ${pct}%</span>`:''}</div><span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span></summary><div style="padding:0 18px 18px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;"><div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:140px;"><label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:12px;">🖼️<input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i},this)"></label><span id="activity-img-name-${i}" style="font-size:11px;color:#888;"></span><button onclick="addLessonTask(${i})" style="background:#667eea;color:#fff;">➕ Add</button></div><ul style="list-style:none;padding-left:0;">`;
-    l.tasks.forEach((task,j)=>{const ck=task.history[td]?"checked":"";html+=`<li style="background:#f8f9fa;margin:8px 0;padding:10px;border-radius:12px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><input type="checkbox" ${ck} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);"><strong style="flex:1;font-size:13px;">${escapeHtml(task.text)}</strong><button onclick="deleteLessonTask(${i},${j})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button></div>${task.image?`<img src="${task.image}" style="max-width:100%;max-height:200px;border-radius:10px;margin:6px 0;display:block;object-fit:cover;">`:""}
-        <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%;margin-top:6px;font-size:13px;">${escapeHtml(task.comment)}</textarea></li>`;});
+    l.tasks.forEach((task,j)=>{const ck=task.history[td]?"checked":"";html+=`<li style="background:#f8f9fa;margin:8px 0;padding:10px;border-radius:12px;">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <input type="checkbox" ${ck} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);">
+        <strong style="flex:1;font-size:13px;">${escapeHtml(task.text)}</strong>
+        <button onclick="deleteLessonTask(${i},${j})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button>
+      </div>
+      ${task.image?`<img src="${task.image}" style="max-width:100%;max-height:200px;border-radius:10px;margin:6px 0;display:block;object-fit:cover;">`:""}
+      <div style="margin-top:8px;background:#fff;border:1px solid #e9ecef;border-radius:14px;padding:10px;">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">📝 Notes</div>
+        <textarea placeholder="Write notes here..." oninput="saveComment(${i},${j},this.value)" style="width:100%;border:none;outline:none;font-size:13px;resize:vertical;min-height:50px;background:transparent;padding:0;">${escapeHtml(task.comment)}</textarea>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid #f1f3f5;">
+          <span style="font-size:11px;color:#adb5bd;">Voice note</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            ${task.noteVoice?`<audio controls src="${task.noteVoice}" style="height:28px;max-width:160px;"></audio><button onclick="deleteNoteVoice(${i},${j})" style="background:#ffe0e0;color:#c0392b;padding:2px 7px;font-size:10px;margin:0;">✕</button>`:''}
+            <button id="note-voice-btn-${i}-${j}" onclick="toggleNoteRecording(${i},${j})" style="background:#f1f3f5;color:#495057;padding:5px 12px;font-size:12px;margin:0;border-radius:20px;">🎤</button>
+          </div>
+        </div>
+      </div>
+    </li>`;});
     html+=`</ul><div style="text-align:right;margin-top:10px;"><button onclick="deleteLesson(${i})" class="btn-danger">🗑️ Delete Module</button></div></div></details>`;
   });
   document.getElementById("lessonContainer").innerHTML=html;
