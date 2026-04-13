@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,8 +7,8 @@
 <title>FIKRCHA | Productivity System</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"Segoe UI","Inter",system-ui,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;justify-content:center;padding:20px;min-height:100vh;}
-.app{background:#fff;width:100%;max-width:1200px;border-radius:24px;padding:24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);}
+body{font-family:"Segoe UI","Inter",system-ui,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;justify-content:center;padding:20px;min-height:100vh;transition:background 0.3s;}
+.app{background:#fff;width:100%;max-width:1200px;border-radius:24px;padding:24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);transition:background 0.3s,color 0.3s;}
 
 /* DARK MODE */
 body.dark{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);}
@@ -40,9 +41,17 @@ body.dark .notif-banner{background:#1a2e1a;color:#68d391;}
 body.dark .filter-btn{background:#2d3748;color:#e2e8f0;}
 body.dark .cal-day{background:#2d3748;color:#e2e8f0;}
 body.dark .cal-day:hover{background:#374151;}
+body.dark .quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.08),rgba(118,75,162,0.08));border:1px solid rgba(102,126,234,0.2);}
+body.dark .quote-text{color:#e2e8f0;}
+body.dark .quote-author{color:#94a3b8;}
+body.dark .ai-chat{background:#1e293b;border-color:#334155;}
+body.dark .ai-message{background:#334155;color:#e2e8f0;}
+body.dark .user-message{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;}
+body.dark .ai-input{background:#334155;color:#e2e8f0;border-color:#475568;}
+body.dark .ai-section{background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(37,99,235,0.08));border-color:rgba(124,58,237,0.3);}
 
 /* HEADER */
-.app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e9ecef;}
+.app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e9ecef;transition:border-color 0.3s;}
 .header-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 h2{background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.8rem;letter-spacing:-0.5px;}
 .subtitle{color:#6c757d;font-size:0.85rem;}
@@ -66,6 +75,8 @@ button:active{transform:translateY(0);}
 .btn-danger{background:#ffe0e0;color:#c0392b;}
 .btn-sm{padding:4px 10px;font-size:12px;margin:2px;}
 .export-btn{background:#d3f9d8;color:#2b8a3e;font-weight:700;}
+.screenshot-btn{background:linear-gradient(135deg,#f472b6,#ec4899);color:#fff;font-weight:600;}
+.ai-btn{background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff;font-weight:600;}
 
 /* INPUTS */
 input,textarea,select{padding:10px 14px;margin:5px;border:1.5px solid #dee2e6;border-radius:40px;font-family:inherit;font-size:14px;transition:all 0.2s;background:#fff;color:#212529;}
@@ -173,6 +184,39 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 .edit-modal input,.edit-modal select{width:100%;margin:6px 0;}
 .edit-modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:20px;}
 
+/* MOTIVATIONAL QUOTE CARD - COMPACT & ELEGANT */
+.quote-section{margin:16px 0;padding:0;}
+.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border-radius:16px;padding:14px 18px;border:1px solid rgba(102,126,234,0.15);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;transition:all 0.2s;}
+.quote-card:hover{border-color:rgba(102,126,234,0.3);box-shadow:0 4px 12px rgba(102,126,234,0.1);}
+.quote-content{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.quote-icon{font-size:1.3rem;flex-shrink:0;}
+.quote-text{font-size:0.95rem;font-weight:500;color:#1e293b;line-height:1.3;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.quote-author{font-size:0.8rem;color:#64748b;font-weight:500;flex-shrink:0;}
+.quote-actions{display:flex;gap:6px;flex-shrink:0;}
+.quote-btn{padding:5px 12px;border-radius:16px;border:none;cursor:pointer;font-size:11px;font-weight:500;transition:all 0.2s;white-space:nowrap;}
+.quote-screenshot{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.quote-screenshot:hover{box-shadow:0 3px 8px rgba(102,126,234,0.4);}
+.quote-refresh{background:#f1f5f9;color:#475569;}
+.quote-refresh:hover{background:#e2e8f0;}
+
+/* AI CHAT ASSISTANT - MATCHING THEME */
+.ai-section{margin:20px 0;padding:16px;background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border-radius:20px;border:1px solid rgba(102,126,234,0.15);}
+.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.ai-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;flex-shrink:0;}
+.ai-title{font-weight:600;color:#1e293b;font-size:1rem;}
+.ai-chat{background:#fff;border-radius:16px;padding:12px;height:180px;overflow-y:auto;margin-bottom:12px;border:1px solid #e2e8f0;display:flex;flex-direction:column;gap:10px;}
+.ai-message,.user-message{padding:9px 13px;border-radius:14px;max-width:85%;font-size:13px;line-height:1.4;}
+.ai-message{background:#f8fafc;color:#1e293b;align-self:flex-start;border-bottom-left-radius:4px;}
+.user-message{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.ai-input-container{display:flex;gap:8px;}
+.ai-input{flex:1;padding:9px 14px;border:1.5px solid #cbd5e1;border-radius:24px;font-size:14px;background:#fff;}
+.ai-input:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.15);}
+.ai-send{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:24px;padding:9px 16px;cursor:pointer;font-weight:500;transition:all 0.2s;}
+.ai-send:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(102,126,234,0.4);}
+.ai-suggestions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.ai-suggestion{background:#f1f5f9;color:#475569;padding:4px 9px;border-radius:14px;font-size:11px;cursor:pointer;transition:all 0.2s;}
+.ai-suggestion:hover{background:#e2e8f0;color:#1e293b;}
+
 /* MOBILE */
 @media(max-width:768px){
   body{padding:6px;}
@@ -183,6 +227,9 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   h2{font-size:1.3rem;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
   .streak-num{font-size:1.5rem;}
+  .quote-card{padding:12px 14px;}
+  .quote-text{font-size:0.9rem;}
+  .ai-chat{height:160px;}
 }
 @media(max-width:480px){
   body{padding:0;}
@@ -191,6 +238,12 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   .nav-btn{flex:1;padding:8px 4px;font-size:10px;text-align:center;}
   th,td{padding:4px 1px;font-size:9px;}
   td:first-child{max-width:75px;font-size:10px;}
+  .quote-section{margin:12px 0;}
+  .quote-card{padding:10px 12px;flex-direction:column;align-items:flex-start;gap:8px;}
+  .quote-actions{width:100%;justify-content:flex-end;}
+  .quote-text{font-size:0.85rem;white-space:normal;}
+  .ai-section{padding:12px;}
+  .ai-chat{height:140px;}
 }
 </style>
 </head>
@@ -217,6 +270,22 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   <button class="nav-btn" onclick="showPage('studyPage')" id="nav-study">📚 Study</button>
   <button class="nav-btn" onclick="showPage('diaryPage')" id="nav-diary">🧠 Diary</button>
   <button class="nav-btn" onclick="showPage('statsPage')" id="nav-stats">📊 Stats</button>
+  <button class="nav-btn" onclick="showPage('aiPage')" id="nav-ai">🤖 AI</button>
+</div>
+
+<!-- ===== MOTIVATIONAL QUOTE (Compact & Elegant) ===== -->
+<div class="quote-section">
+  <div class="quote-card" id="quoteCard">
+    <div class="quote-content">
+      <span class="quote-icon">✨</span>
+      <span class="quote-text" id="quoteText">"The secret of getting ahead is getting started."</span>
+      <span class="quote-author" id="quoteAuthor">— Mark Twain</span>
+    </div>
+    <div class="quote-actions">
+      <button class="quote-btn quote-refresh" onclick="refreshQuote()">🔄</button>
+      <button class="quote-btn quote-screenshot" onclick="screenshotQuote()">📸</button>
+    </div>
+  </div>
 </div>
 
 <!-- ===== HABITS ===== -->
@@ -329,6 +398,36 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   </div>
 </div>
 
+<!-- ===== AI ASSISTANT ===== -->
+<div id="aiPage" style="display:none;">
+  <h3 id="aiTitle" style="margin-bottom:16px;">🤖 AI Assistant</h3>
+  <div class="ai-section">
+    <div class="ai-header">
+      <div class="ai-avatar">AI</div>
+      <div class="ai-title" id="aiGreeting">Hello! I'm your FIKRCHA AI. Ask me anything about your routine!</div>
+    </div>
+    <div class="ai-chat" id="aiChat">
+      <div class="ai-message">👋 Hi! I can help you:<br>• Analyze your habits 📊<br>• Suggest improvements 💡<br>• Plan your day 🗓️<br>• Motivate you 🔥<br><br>What would you like to work on?</div>
+    </div>
+    <div class="ai-suggestions">
+      <div class="ai-suggestion" onclick="sendAiSuggestion('Analyze my habits')">📊 Analyze</div>
+      <div class="ai-suggestion" onclick="sendAiSuggestion('Suggest a habit')">💡 Idea</div>
+      <div class="ai-suggestion" onclick="sendAiSuggestion('Plan my day')">🗓️ Plan</div>
+      <div class="ai-suggestion" onclick="sendAiSuggestion('Motivate me')">🔥 Boost</div>
+    </div>
+    <div class="ai-input-container">
+      <input type="text" class="ai-input" id="aiInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')sendAiMessage()">
+      <button class="ai-send" onclick="sendAiMessage()">➤</button>
+    </div>
+  </div>
+  
+  <!-- AI Insights Panel -->
+  <div class="section-title">🧠 AI Insights</div>
+  <div id="aiInsights" style="background:#f8f9fa;border-radius:16px;padding:16px;margin-top:12px;">
+    <p style="color:#6c757d;font-size:13px;">Chat with me to get personalized tips for your productivity journey.</p>
+  </div>
+</div>
+
 </div><!-- end .app -->
 
 <!-- ADD/EDIT HABIT MODAL -->
@@ -376,9 +475,99 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 <script>
 // ==================== i18n ====================
 const i18n={
-  en:{subtitle:"think · grow · achieve",habitsTab:"📅 Habits",studyTab:"📚 Study",diaryTab:"🧠 Diary",statsTab:"📊 Stats",habitsTitle:"✨ Daily Habits Tracker",prevWeek:"◀ Prev",nextWeek:"Next ▶",habitPlaceholder:"Habit name",addHabit:"➕ Add",studyTitle:"📖 Study Journal",lessonPlaceholder:"New lesson/module",addLesson:"➕ Add Lesson",diaryTitle:"🧠 Life Diary",diaryPlaceholder:"Write your day, feelings, memories...",recordVoice:"🎤 Voice",stopRecording:"⏹ Stop",saveEntry:"💾 Save",selectDate:"Select a date",entriesFor:"📔 Entries for ",deleteHabit:"Delete habit?",deleteLesson:"Delete lesson?",cancel:"Cancel",save:"Save",anytime:"—",weekTitlePrefix:"Week of ",edit:"✏️",delete:"🗑️",streakLabel:"day streak",allFilter:"All",notifEnable:"Enable notifications for habit reminders",chartTitle:"📊 Last 7 Days",statsTitle:"📊 Statistics",searchPlaceholder:"🔍 Search diary...",days:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],daysFull:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],schedDaily:"Daily",schedDays:"Specific Days",schedFreq:"X times/week"},
-  uz:{subtitle:"o'yla · o's · erish",habitsTab:"📅 Odatlar",studyTab:"📚 O'qish",diaryTab:"🧠 Kundalik",statsTab:"📊 Statistika",habitsTitle:"✨ Kunlik Odatlar",prevWeek:"◀ Oldingi",nextWeek:"Keyingi ▶",habitPlaceholder:"Odat nomi",addHabit:"➕ Qo'shish",studyTitle:"📖 O'qish Jurnali",lessonPlaceholder:"Yangi dars/modul",addLesson:"➕ Dars Qo'shish",diaryTitle:"🧠 Hayot Kundaligi",diaryPlaceholder:"Kuningiz, his-tuyg'ularingiz...",recordVoice:"🎤 Yozish",stopRecording:"⏹ To'xtatish",saveEntry:"💾 Saqlash",selectDate:"Sana tanlang",entriesFor:"📔 Kirishlar: ",deleteHabit:"Odatni o'chirilsinmi?",deleteLesson:"Darsni o'chirilsinmi?",cancel:"Bekor",save:"Saqlash",anytime:"—",weekTitlePrefix:"Hafta: ",edit:"✏️",delete:"🗑️",streakLabel:"kunlik ketma-ketlik",allFilter:"Barchasi",notifEnable:"Odat eslatmalari uchun bildirishnomalarni yoqing",chartTitle:"📊 So'nggi 7 kun",statsTitle:"📊 Statistika",searchPlaceholder:"🔍 Qidirish...",days:["Du","Se","Ch","Pa","Ju","Sh","Ya"],daysFull:["Dushanba","Seshanba","Chorshanba","Payshanba","Juma","Shanba","Yakshanba"],schedDaily:"Har kuni",schedDays:"Muayyan kunlar",schedFreq:"Haftada X marta"},
-  ru:{subtitle:"думай · расти · достигай",habitsTab:"📅 Привычки",studyTab:"📚 Учеба",diaryTab:"🧠 Дневник",statsTab:"📊 Статистика",habitsTitle:"✨ Трекер Привычек",prevWeek:"◀ Пред.",nextWeek:"След. ▶",habitPlaceholder:"Привычка",addHabit:"➕ Добавить",studyTitle:"📖 Учебный Журнал",lessonPlaceholder:"Новый урок/модуль",addLesson:"➕ Добавить урок",diaryTitle:"🧠 Жизненный Дневник",diaryPlaceholder:"Пишите о своём дне...",recordVoice:"🎤 Записать",stopRecording:"⏹ Стоп",saveEntry:"💾 Сохранить",selectDate:"Выберите дату",entriesFor:"📔 Записи за ",deleteHabit:"Удалить привычку?",deleteLesson:"Удалить урок?",cancel:"Отмена",save:"Сохранить",anytime:"—",weekTitlePrefix:"Неделя: ",edit:"✏️",delete:"🗑️",streakLabel:"дней подряд",allFilter:"Все",notifEnable:"Включить уведомления для напоминаний",chartTitle:"📊 Последние 7 дней",statsTitle:"📊 Статистика",searchPlaceholder:"🔍 Поиск...",days:["Пн","Вт","Ср","Чт","Пт","Сб","Вс"],daysFull:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],schedDaily:"Каждый день",schedDays:"Определённые дни",schedFreq:"X раз в неделю"}
+  en:{
+    subtitle:"think · grow · achieve",
+    habitsTab:"📅 Habits",studyTab:"📚 Study",diaryTab:"🧠 Diary",statsTab:"📊 Stats",aiTab:"🤖 AI",
+    habitsTitle:"✨ Daily Habits Tracker",prevWeek:"◀ Prev",nextWeek:"Next ▶",
+    habitPlaceholder:"Habit name",addHabit:"➕ Add",
+    studyTitle:"📖 Study Journal",lessonPlaceholder:"New lesson/module",addLesson:"➕ Add Lesson",
+    diaryTitle:"🧠 Life Diary",diaryPlaceholder:"Write your day, feelings, memories...",
+    recordVoice:"🎤 Voice",stopRecording:"⏹ Stop",saveEntry:"💾 Save",
+    selectDate:"Select a date",entriesFor:"📔 Entries for ",
+    deleteHabit:"Delete habit?",deleteLesson:"Delete lesson?",cancel:"Cancel",save:"Save",
+    anytime:"—",weekTitlePrefix:"Week of ",edit:"✏️",delete:"🗑️",
+    streakLabel:"day streak",allFilter:"All",notifEnable:"Enable notifications for habit reminders",
+    chartTitle:"📊 Last 7 Days",statsTitle:"📊 Statistics",searchPlaceholder:"🔍 Search diary...",
+    days:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    daysFull:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    schedDaily:"Daily",schedDays:"Specific Days",schedFreq:"X times/week",
+    aiGreeting:"Hello! I'm your FIKRCHA AI. Ask me anything about your routine!",
+    aiSuggestions:["📊 Analyze","💡 Idea","🗓️ Plan","🔥 Boost"],
+    quotes:[
+      {text:"The secret of getting ahead is getting started.",author:"Mark Twain"},
+      {text:"Success is not final, failure is not fatal: it is the courage to continue that counts.",author:"Winston Churchill"},
+      {text:"Believe you can and you're halfway there.",author:"Theodore Roosevelt"},
+      {text:"Don't watch the clock; do what it does. Keep going.",author:"Sam Levenson"},
+      {text:"The only way to do great work is to love what you do.",author:"Steve Jobs"},
+      {text:"Your limitation—it's only your imagination.",author:"Unknown"},
+      {text:"Push yourself, because no one else is going to do it for you.",author:"Unknown"},
+      {text:"Great things never come from comfort zones.",author:"Unknown"},
+      {text:"Dream it. Wish it. Do it.",author:"Unknown"},
+      {text:"Success doesn't just find you. You have to go out and get it.",author:"Unknown"}
+    ]
+  },
+  uz:{
+    subtitle:"o'yla · o's · erish",
+    habitsTab:"📅 Odatlar",studyTab:"📚 O'qish",diaryTab:"🧠 Kundalik",statsTab:"📊 Statistika",aiTab:"🤖 AI",
+    habitsTitle:"✨ Kunlik Odatlar",prevWeek:"◀ Oldingi",nextWeek:"Keyingi ▶",
+    habitPlaceholder:"Odat nomi",addHabit:"➕ Qo'shish",
+    studyTitle:"📖 O'qish Jurnali",lessonPlaceholder:"Yangi dars/modul",addLesson:"➕ Dars Qo'shish",
+    diaryTitle:"🧠 Hayot Kundaligi",diaryPlaceholder:"Kuningiz, his-tuyg'ularingiz...",
+    recordVoice:"🎤 Yozish",stopRecording:"⏹ To'xtatish",saveEntry:"💾 Saqlash",
+    selectDate:"Sana tanlang",entriesFor:"📔 Kirishlar: ",
+    deleteHabit:"Odatni o'chirilsinmi?",deleteLesson:"Darsni o'chirilsinmi?",cancel:"Bekor",save:"Saqlash",
+    anytime:"—",weekTitlePrefix:"Hafta: ",edit:"✏️",delete:"🗑️",
+    streakLabel:"kunlik ketma-ketlik",allFilter:"Barchasi",notifEnable:"Odat eslatmalari uchun bildirishnomalarni yoqing",
+    chartTitle:"📊 So'nggi 7 kun",statsTitle:"📊 Statistika",searchPlaceholder:"🔍 Qidirish...",
+    days:["Du","Se","Ch","Pa","Ju","Sh","Ya"],
+    daysFull:["Dushanba","Seshanba","Chorshanba","Payshanba","Juma","Shanba","Yakshanba"],
+    schedDaily:"Har kuni",schedDays:"Muayyan kunlar",schedFreq:"Haftada X marta",
+    aiGreeting:"Salom! Men FIKRCHA AI yordamchingizman. Savolingiz bormi?",
+    aiSuggestions:["📊 Tahlil","💡 G'oya","🗓️ Reja","🔥 Motivatsiya"],
+    quotes:[
+      {text:"Boshlash siri — boshlashda.",author:"Mark Twain"},
+      {text:"Muvaffaqiyat yakuniy emas, muvaffaqiyatsizlik halokatli emas: davom etish jasorati muhim.",author:"Winston Churchill"},
+      {text:"Qila olaman deb ishonganingizda, yo'lni yarmigacha bosib o'tgansiz.",author:"Theodore Roosevelt"},
+      {text:"Soatga qarab o'tirmang; u nima qilsa, shuni qiling. Davom eting.",author:"Sam Levenson"},
+      {text:"Ajoyib ish qilishning yagona yo'li — sevgan ishingizni qilish.",author:"Steve Jobs"},
+      {text:"Cheklovingiz — faqat tasavvuringizda.",author:"Noma'lum"},
+      {text:"O'zingizni rag'batlantiring, chunki boshqa hech kim siz uchun buni qilmaydi.",author:"Noma'lum"},
+      {text:"Buyuk narsalar qulaylik zonalaridan kelmaydi.",author:"Noma'lum"},
+      {text:"Orzu qiling. Istang. Bajaring.",author:"Noma'lum"},
+      {text:"Muvaffaqiyat sizni topmaydi. Siz chiqib, uni olishingiz kerak.",author:"Noma'lum"}
+    ]
+  },
+  ru:{
+    subtitle:"думай · расти · достигай",
+    habitsTab:"📅 Привычки",studyTab:"📚 Учеба",diaryTab:"🧠 Дневник",statsTab:"📊 Статистика",aiTab:"🤖 ИИ",
+    habitsTitle:"✨ Трекер Привычек",prevWeek:"◀ Пред.",nextWeek:"След. ▶",
+    habitPlaceholder:"Привычка",addHabit:"➕ Добавить",
+    studyTitle:"📖 Учебный Журнал",lessonPlaceholder:"Новый урок/модуль",addLesson:"➕ Добавить урок",
+    diaryTitle:"🧠 Жизненный Дневник",diaryPlaceholder:"Пишите о своём дне...",
+    recordVoice:"🎤 Записать",stopRecording:"⏹ Стоп",saveEntry:"💾 Сохранить",
+    selectDate:"Выберите дату",entriesFor:"📔 Записи за ",
+    deleteHabit:"Удалить привычку?",deleteLesson:"Удалить урок?",cancel:"Отмена",save:"Сохранить",
+    anytime:"—",weekTitlePrefix:"Неделя: ",edit:"✏️",delete:"🗑️",
+    streakLabel:"дней подряд",allFilter:"Все",notifEnable:"Включить уведомления для напоминаний",
+    chartTitle:"📊 Последние 7 дней",statsTitle:"📊 Статистика",searchPlaceholder:"🔍 Поиск...",
+    days:["Пн","Вт","Ср","Чт","Пт","Сб","Вс"],
+    daysFull:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],
+    schedDaily:"Каждый день",schedDays:"Определённые дни",schedFreq:"X раз в неделю",
+    aiGreeting:"Привет! Я ваш ИИ-помощник FIKRCHA. Спросите о вашей рутине!",
+    aiSuggestions:["📊 Анализ","💡 Идея","🗓️ План","🔥 Мотивация"],
+    quotes:[
+      {text:"Секрет успеха в том, чтобы начать.",author:"Марк Твен"},
+      {text:"Успех не окончателен, неудача не фатальна: важно мужество продолжать.",author:"Уинстон Черчилль"},
+      {text:"Поверь, что можешь — и ты уже на полпути.",author:"Теодор Рузвельт"},
+      {text:"Не смотри на часы; делай то, что они. Продолжай идти.",author:"Сэм Левенсон"},
+      {text:"Единственный способ делать великую работу — любить то, что делаешь.",author:"Стив Джобс"},
+      {text:"Ваше ограничение — только ваше воображение.",author:"Неизвестно"},
+      {text:"Подталкивай себя, потому что никто другой не сделает это за тебя.",author:"Неизвестно"},
+      {text:"Великие дела никогда не приходят из зоны комфорта.",author:"Неизвестно"},
+      {text:"Мечтай. Желай. Делай.",author:"Неизвестно"},
+      {text:"Успех не просто находит тебя. Ты должен выйти и получить его.",author:"Неизвестно"}
+    ]
+  }
 };
 
 let currentLang=localStorage.getItem('fikrcha_lang')||(navigator.language.startsWith('uz')?'uz':navigator.language.startsWith('ru')?'ru':'en');
@@ -387,6 +576,7 @@ let activeFilter='All';
 let editingHabitIdx=null;
 let schedType='daily';
 let selectedDays=[];
+let aiConversationHistory=[]; // Simple conversation memory
 
 function t(key){return i18n[currentLang]?.[key]||i18n.en[key]||key;}
 function setLanguage(lang){currentLang=lang;localStorage.setItem('fikrcha_lang',lang);applyLanguage();}
@@ -396,10 +586,10 @@ function applyLanguage(){
   const s=(id,key)=>{const e=document.getElementById(id);if(e)e.textContent=t(key);};
   const p=(id,key)=>{const e=document.getElementById(id);if(e)e.placeholder=t(key);};
   s('appSubtitle','subtitle');s('habitsTitle','habitsTitle');s('studyTitle','studyTitle');
-  s('diaryTitleHeader','diaryTitle');s('statsTitle','statsTitle');
+  s('diaryTitleHeader','diaryTitle');s('statsTitle','statsTitle');s('aiTitle','aiTab');s('aiGreeting','aiGreeting');
   p('taskInput','habitPlaceholder');p('lessonInput','lessonPlaceholder');
-  p('diaryInput','diaryPlaceholder');p('diarySearch','searchPlaceholder');
-  s('nav-habits','habitsTab');s('nav-study','studyTab');s('nav-diary','diaryTab');s('nav-stats','statsTab');
+  p('diaryInput','diaryPlaceholder');p('diarySearch','searchPlaceholder');p('aiInput','Ask me anything...');
+  s('nav-habits','habitsTab');s('nav-study','studyTab');s('nav-diary','diaryTab');s('nav-stats','statsTab');s('nav-ai','aiTab');
   s('btn-prev-week','prevWeek');s('btn-next-week','nextWeek');
   s('btn-add-habit','addHabit');s('btn-add-lesson','addLesson');s('btn-save-diary','saveEntry');
   s('chartTitle','chartTitle');
@@ -410,18 +600,357 @@ function applyLanguage(){
   const hp=document.getElementById('habitPage');if(hp&&hp.style.display!=='none')render();
   const dp=document.getElementById('diaryPage');if(dp&&dp.style.display!=='none'){renderCalendar();renderDiary();}
   const sp=document.getElementById('statsPage');if(sp&&sp.style.display!=='none')renderStats();
+  // Update AI suggestions
+  const suggestions = t('aiSuggestions');
+  document.querySelectorAll('.ai-suggestion').forEach((el, i) => {
+    if(suggestions[i]) el.textContent = suggestions[i];
+  });
+  // Refresh quote in new language
+  refreshQuote();
 }
 
 function showPage(id){
-  ["habitPage","studyPage","diaryPage","statsPage"].forEach(p=>document.getElementById(p).style.display="none");
+  ["habitPage","studyPage","diaryPage","statsPage","aiPage"].forEach(p=>document.getElementById(p).style.display="none");
   document.getElementById(id).style.display="block";
   document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  const m={habitPage:"nav-habits",studyPage:"nav-study",diaryPage:"nav-diary",statsPage:"nav-stats"};
+  const m={habitPage:"nav-habits",studyPage:"nav-study",diaryPage:"nav-diary",statsPage:"nav-stats",aiPage:"nav-ai"};
   const n=document.getElementById(m[id]);if(n)n.classList.add("active");
   applyLanguage();
   if(id==='diaryPage'){renderCalendar();renderDiary();}
   if(id==='statsPage')renderStats();
+  if(id==='aiPage'){scrollAiChat();showAiWelcome();}
 }
+
+// ==================== MOTIVATIONAL QUOTES (Compact) ====================
+function getRandomQuote(){
+  const quotes = t('quotes');
+  return quotes[Math.floor(Math.random() * quotes.length)];
+}
+
+function displayQuote(quote){
+  document.getElementById('quoteText').textContent = `"${quote.text}"`;
+  document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
+}
+
+function refreshQuote(){
+  displayQuote(getRandomQuote());
+  // Subtle animation
+  const card = document.getElementById('quoteCard');
+  card.style.opacity = '0.7';
+  setTimeout(() => { card.style.opacity = '1'; }, 150);
+}
+
+function screenshotQuote(){
+  const quote = {
+    text: document.getElementById('quoteText').textContent,
+    author: document.getElementById('quoteAuthor').textContent
+  };
+  
+  // Create clean screenshot overlay
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;width:100vw;height:100vh;
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+    display:flex;align-items:center;justify-content:center;
+    z-index:9999;padding:20px;
+  `;
+  overlay.innerHTML = `
+    <div style="background:rgba(255,255,255,0.95);border-radius:20px;padding:30px;max-width:400px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+      <div style="font-size:1.4rem;font-weight:600;color:#1e293b;line-height:1.4;margin-bottom:20px;font-style:italic;">
+        ${quote.text}
+      </div>
+      <div style="font-size:1rem;color:#64748b;font-weight:500;">
+        ${quote.author}
+      </div>
+      <div style="margin-top:25px;font-size:0.85rem;color:#94a3b8;">
+        ✨ FIKRCHA ✨
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  
+  setTimeout(() => {
+    alert('📸 Screenshot ready!\n\n1. Take screenshot now\n2. Press OK to return');
+    document.body.removeChild(overlay);
+  }, 200);
+}
+
+// ==================== SMART AI SIMULATION ====================
+function scrollAiChat(){
+  const chat = document.getElementById('aiChat');
+  if(chat) chat.scrollTop = chat.scrollHeight;
+}
+
+function showAiWelcome(){
+  if(aiConversationHistory.length === 0){
+    const chat = document.getElementById('aiChat');
+    if(chat && !chat.querySelector('.ai-message')){
+      chat.innerHTML = '<div class="ai-message">👋 Hi! I can help you:<br>• Analyze your habits 📊<br>• Suggest improvements 💡<br>• Plan your day 🗓️<br>• Motivate you 🔥<br><br>What would you like to work on?</div>';
+    }
+  }
+}
+
+function sendAiSuggestion(text){
+  document.getElementById('aiInput').value = text;
+  sendAiMessage();
+}
+
+// Advanced AI response generator
+function generateAiResponse(userMessage){
+  const lower = userMessage.toLowerCase();
+  const lang = currentLang;
+  
+  // Context-aware response templates
+  const responses = {
+    en: {
+      analyze: [
+        `📊 Looking at your habits: You're most consistent with ${getTopCategory()} tasks. Try scheduling challenging habits during your peak energy hours (usually mornings)!`,
+        `🔍 Analysis: Your completion rate is ${getAvgConsistency()}% this week. Pro tip: Focus on 1-2 habits at a time for better results.`,
+        `💡 Insight: I notice you have ${getScheduledToday()} habits scheduled today. Consider spacing them out to avoid burnout.`
+      ],
+      suggest: [
+        `🌱 New habit idea: "5-min morning stretch" — boosts energy, takes minimal time. Want me to help you add it?`,
+        `💡 Try "Digital sunset": No screens 1 hour before bed. Research shows it improves sleep quality by 40%!`,
+        `🎯 Suggestion: Add "Weekly review" every Sunday. Just 10 minutes to reflect and plan. Great for long-term growth!`
+      ],
+      plan: [
+        `🗓️ Optimal day structure:\n• Morning (6-10am): High-focus habits\n• Afternoon (2-5pm): Learning/study\n• Evening: Reflection & light tasks\n\nShall I help you schedule this?`,
+        `⏰ Time-blocking tip: Group similar tasks. Example: All "Study" habits in one 90-min block = better focus & flow.`,
+        `✨ Pro tip: Start with 3 core habits max. Master them before adding more. Quality > quantity always!`
+      ],
+      motivate: [
+        `🔥 Remember: Progress, not perfection. You've completed ${getTodayDone()} habits today — that's momentum! 🚀`,
+        `💪 You're building something amazing. Those small wins? They compound into life-changing results. Keep going!`,
+        `🌟 Today's mantra: "I am capable of creating the life I want." Now go check off that first habit! ✨`
+      ],
+      addHabit: [
+        `➕ Great! To add a habit:\n1. Go to Habits tab\n2. Type habit name\n3. Set time & category\n4. Choose schedule\n\nNeed help with a specific habit idea?`,
+        `🎯 Pro tip: Make new habits tiny & specific. Instead of "Exercise", try "5 push-ups after brushing teeth". Easier to start!`
+      ],
+      addLesson: [
+        `📚 To add a lesson:\n1. Go to Study tab\n2. Type lesson title\n3. Add activities/tasks\n4. Track progress daily\n\nWhat subject are you focusing on?`,
+        `💡 Learning hack: Break lessons into 25-min chunks (Pomodoro). Your brain retains 30% more with short, focused sessions!`
+      ],
+      diary: [
+        `🧠 Journaling tip: Write 3 things daily:\n1. Win of the day\n2. Lesson learned\n3. Tomorrow's focus\n\nThis builds self-awareness fast!`,
+        `✨ Pro move: Add a photo or voice note to diary entries. Memories become richer, and reflection gets deeper.`
+      ],
+      default: [
+        `🤔 Interesting question! For personalized advice, tell me more about your current routine or goals.`,
+        `💭 Based on productivity research: Consistency beats intensity. Small daily actions create massive results over time.`,
+        `✨ Great question! One tip: Pair a new habit with an existing one (e.g., "After I brush teeth, I'll meditate 2 min"). This is called habit stacking!`
+      ]
+    },
+    uz: {
+      analyze: [
+        `📊 Odatlaringizni tahlil qilyapman: Siz ${getTopCategory()} vazifalarida eng barqarorsiz. Qiyin odatlarni energiyangiz yuqori paytida (odatda ertalab) rejalashtiring!`,
+        `🔍 Tahlil: Bu hafta bajarish ko'rsatkichingiz ${getAvgConsistency()}%. Maslahat: Bir vaqtning o'zida 1-2 odatga e'tibor bering.`,
+        `💡 Kuzatish: Bugun ${getScheduledToday()} ta odat rejalashtirilgan. Ularni vaqt bo'yicha tarqatib, charchamaslikka harakat qiling.`
+      ],
+      suggest: [
+        `🌱 Yangi odat: "5 daqiqa ertalabki cho'zilish" — energiya beradi, vaqt kam oladi. Qo'shishda yordam beraymi?`,
+        `💡 "Raqamli quyosh botishi": Uxlashdan 1 soat oldin ekranlarsiz. Tadqiqotlar ko'rsatadiki, bu uyqu sifatini 40% yaxshilaydi!`,
+        `🎯 Taklif: Har yakshanba "Haftalik sharh" qo'shing. Faqat 10 daqiqa. Uzoq muddatli o'sish uchun ajoyib!`
+      ],
+      plan: [
+        `🗓️ Optimal kun tuzilishi:\n• Ertalab (6-10): Yuqori fokusli odatlar\n• Tushdan keyin (14-17): O'qish/darslar\n• Kechqurun: Aks ettirish va yengil vazifalar\n\nBuni rejalashtirishda yordam beraymi?`,
+        `⏰ Maslahat: O'xshash vazifalarni guruhlang. Masalan: Barcha "O'qish" odatlarini 90 daqiqalik blokda = yaxshiroq fokus.`,
+        `✨ Pro maslahat: Avval 3 ta asosiy odat bilan boshlang. Ularni o'zlashtirgach, yangilarini qo'shing. Sifat > miqdor!`
+      ],
+      motivate: [
+        `🔥 Eslatma: Mukammallik emas, progress muhim. Bugun ${getTodayDone()} ta odatni bajardingiz — bu harakat! 🚀`,
+        `💪 Siz ajoyib narsa quryapsiz. Kichik g'alabalar? Ular hayotingizni o'zgartiradigan natijalarga aylanadi. Davom eting!`,
+        `🌟 Bugungi mantra: "Men xohlagan hayotimni yarata olaman". Endi birinchi odatni belgilang! ✨`
+      ],
+      addHabit: [
+        `➕ Ajoyib! Odat qo'shish uchun:\n1. Odatlar bo'limiga o'ting\n2. Odat nomini yozing\n3. Vaqt va toifani tanlang\n4. Jadvalni belgilang\n\nAniq odat g'oyasi kerakmi?`,
+        `🎯 Maslahat: Yangi odatlarni kichik va aniq qiling. "Mashq qilish" o'rniga "Tish yuvgandan keyin 5 ta push-up". Boshlash osonroq!`
+      ],
+      addLesson: [
+        `📚 Dars qo'shish uchun:\n1. O'qish bo'limiga o'ting\n2. Dars sarlavhasini yozing\n3. Faoliyat/vazifalar qo'shing\n4. Har kuni progressni kuzating\n\nQaysi fanga e'tibor beryapsiz?`,
+        `💡 O'qish usuli: Darslarni 25 daqiqalik qismlarga bo'ling (Pomodoro). Miya qisqa, fokuslangan sessiyalarda 30% ko'proq eslab qoladi!`
+      ],
+      diary: [
+        `🧠 Kundalik yozish maslahati: Har kuni 3 narsa yozing:\n1. Kunning g'alabasi\n2. O'rganilgan dars\n3. Ertangi fokus\n\nBu o'zini anglashni tezlashtiradi!`,
+        `✨ Pro usul: Kundalik yozuvlariga rasm yoki ovozli eslatma qo'shing. Xotiralar boyroq bo'ladi, aks ettirish chuqurroq bo'ladi.`
+      ],
+      default: [
+        `🤔 Qiziqarli savol! Shaxsiy maslahat uchun, hozirgi rutiningiz yoki maqsadlaringiz haqida ko'proq ayting.`,
+        `💭 Produktivlik tadqiqotlariga ko'ra: Barqarorlik intensivlikdan ustun. Kichik kundalik harakatlar vaqt o'tishi bilan katta natijalar beradi.`,
+        `✨ Ajoyib savol! Bir maslahat: Yangi odatni mavjud odat bilan birlashtiring (masalan, "Tish yuvgandan keyin 2 daqiqa meditatsiya"). Bu odatlarni qo'shish deb ataladi!`
+      ]
+    },
+    ru: {
+      analyze: [
+        `📊 Анализирую ваши привычки: Вы наиболее последовательны в задачах категории ${getTopCategory()}. Попробуйте планировать сложные привычки на часы пиковой энергии (обычно утро)!`,
+        `🔍 Анализ: Ваш процент выполнения на этой неделе — ${getAvgConsistency()}%. Совет: Сосредоточьтесь на 1-2 привычках за раз для лучших результатов.`,
+        `💡 Инсайт: Я замечаю, что сегодня у вас запланировано ${getScheduledToday()} привычек. Рассмотрите возможность распределить их по времени, чтобы избежать выгорания.`
+      ],
+      suggest: [
+        `🌱 Идея новой привычки: "5-минутная утренняя растяжка" — повышает энергию, занимает минимум времени. Хотите, помогу добавить?`,
+        `💡 Попробуйте "Цифровой закат": Никаких экранов за 1 час до сна. Исследования показывают, что это улучшает качество сна на 40%!`,
+        `🎯 Предложение: Добавьте "Еженедельный обзор" каждое воскресенье. Всего 10 минут на размышления и планирование. Отлично для долгосрочного роста!`
+      ],
+      plan: [
+        `🗓️ Оптимальная структура дня:\n• Утро (6-10): Привычки с высокой концентрацией\n• День (14-17): Обучение/учеба\n• Вечер: Рефлексия и лёгкие задачи\n\nПомочь вам это запланировать?`,
+        `⏰ Совет по тайм-блокингу: Группируйте похожие задачи. Пример: Все привычки "Учёба" в одном 90-минутном блоке = лучшая концентрация и поток.`,
+        `✨ Про-совет: Начните с максимум 3 основных привычек. Освойте их, прежде чем добавлять новые. Качество > количество всегда!`
+      ],
+      motivate: [
+        `🔥 Помните: Прогресс, а не совершенство. Вы выполнили ${getTodayDone()} привычек сегодня — это импульс! 🚀`,
+        `💪 Вы строите что-то потрясающее. Эти маленькие победы? Они накапливаются в жизненно меняющие результаты. Продолжайте!`,
+        `🌟 Мантра сегодня: "Я способен создать жизнь, которую хочу". Теперь идите и отметьте первую привычку! ✨`
+      ],
+      addHabit: [
+        `➕ Отлично! Чтобы добавить привычку:\n1. Перейдите во вкладку Привычки\n2. Введите название привычки\n3. Установите время и категорию\n4. Выберите расписание\n\nНужна помощь с конкретной идеей привычки?`,
+        `🎯 Про-совет: Делайте новые привычки маленькими и конкретными. Вместо "Заниматься спортом" попробуйте "5 отжиманий после чистки зубов". Легче начать!`
+      ],
+      addLesson: [
+        `📚 Чтобы добавить урок:\n1. Перейдите во вкладку Учёба\n2. Введите название урока\n3. Добавьте активности/задачи\n4. Отслеживайте прогресс ежедневно\n\nНа каком предмете вы сосредоточены?`,
+        `💡 Лайфхак для обучения: Разбивайте уроки на 25-минутные блоки (Помодоро). Мозг запоминает на 30% больше при коротких, сфокусированных сессиях!`
+      ],
+      diary: [
+        `🧠 Совет по ведению дневника: Пишите 3 вещи ежедневно:\n1. Победа дня\n2. Усвоенный урок\n3. Фокус на завтра\n\nЭто быстро развивает самосознание!`,
+        `✨ Про-приём: Добавляйте фото или голосовую заметку к записям в дневнике. Воспоминания становятся богаче, а рефлексия — глубже.`
+      ],
+      default: [
+        `🤔 Интересный вопрос! Для персонализированного совета расскажите больше о вашей текущей рутине или целях.`,
+        `💭 Согласно исследованиям продуктивности: Постоянство важнее интенсивности. Маленькие ежедневные действия создают огромные результаты со временем.`,
+        `✨ Отличный вопрос! Один совет: Сочетайте новую привычку с существующей (например, "После чистки зубов я медитирую 2 минуты"). Это называется наложение привычек!`
+      ]
+    }
+  };
+  
+  // Determine response category
+  let category = 'default';
+  if(lower.includes('analyze') || lower.includes('habit') || lower.includes('routine') || lower.includes('stat') || lower.includes('consist')) category = 'analyze';
+  else if(lower.includes('suggest') || lower.includes('new habit') || lower.includes('idea') || lower.includes('recommend')) category = 'suggest';
+  else if(lower.includes('plan') || lower.includes('schedule') || lower.includes('day') || lower.includes('time') || lower.includes('organize')) category = 'plan';
+  else if(lower.includes('motivate') || lower.includes('encourage') || lower.includes('inspire') || lower.includes('boost') || lower.includes('fire')) category = 'motivate';
+  else if(lower.includes('add habit') || lower.includes('create habit') || lower.includes('new habit')) category = 'addHabit';
+  else if(lower.includes('add lesson') || lower.includes('study') || lower.includes('learn')) category = 'addLesson';
+  else if(lower.includes('diary') || lower.includes('journal') || lower.includes('memory') || lower.includes('write')) category = 'diary';
+  
+  // Get response from category
+  const categoryResponses = responses[lang]?.[category] || responses.en[category] || responses.en.default;
+  let response = categoryResponses[Math.floor(Math.random() * categoryResponses.length)];
+  
+  // Add conversation memory effect (simple)
+  if(aiConversationHistory.length > 0){
+    const lastMsg = aiConversationHistory[aiConversationHistory.length - 1].toLowerCase();
+    if(lower.includes('yes') || lower.includes('да') || lower.includes('ha')){
+      if(lastMsg.includes('add')) response = (lang==='uz'?'✅ Ajoyib! Qaysi odatni qo\'shmoqchisiz?':lang==='ru'?'✅ Отлично! Какую привычку хотите добавить?':'✅ Great! Which habit would you like to add?');
+      else if(lastMsg.includes('plan')) response = (lang==='uz'?'✅ Keling, birgalikda reja tuzamiz. Qaysi vaqtda boshlaysiz?':lang==='ru'?'✅ Давайте составим план вместе. Во сколько начнём?':'✅ Let\'s build a plan together. What time works best for you?');
+    }
+  }
+  
+  // Save to conversation history
+  aiConversationHistory.push(userMessage);
+  if(aiConversationHistory.length > 5) aiConversationHistory.shift(); // Keep last 5
+  
+  return response;
+}
+
+// Helper functions for personalized AI responses
+function getTopCategory(){
+  if(tasks.length === 0) return (currentLang==='uz'?'odatlar':currentLang==='ru'?'привычки':'habits');
+  const categoryCounts = {};
+  tasks.forEach(t => {
+    const cat = t.category || 'Other';
+    categoryCounts[cat] = (categoryCounts[cat] || 0) + getConsistency30(t);
+  });
+  return Object.entries(categoryCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || (currentLang==='uz'?'odatlar':currentLang==='ru'?'привычки':'habits');
+}
+
+function getAvgConsistency(){
+  if(tasks.length === 0) return '0';
+  const avg = Math.round(tasks.reduce((sum, t) => sum + getConsistency30(t), 0) / tasks.length);
+  return avg;
+}
+
+function getScheduledToday(){
+  const todayStr = today();
+  return tasks.filter(t => isScheduledForDate(t, todayStr)).length;
+}
+
+function getTodayDone(){
+  const todayStr = today();
+  return tasks.filter(t => t.history[todayStr]).length;
+}
+
+function sendAiMessage(){
+  const input = document.getElementById('aiInput');
+  const message = input.value.trim();
+  if(!message) return;
+  
+  // Add user message
+  const chat = document.getElementById('aiChat');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'user-message';
+  userMsg.textContent = message;
+  chat.appendChild(userMsg);
+  
+  // Clear input
+  input.value = '';
+  
+  // Scroll to bottom
+  scrollAiChat();
+  
+  // Show typing indicator
+  const typing = document.createElement('div');
+  typing.className = 'ai-message';
+  typing.innerHTML = '<span style="animation:pulse 1.5s infinite">Thinking</span><span style="animation:pulse 1.5s infinite 0.2s">.</span><span style="animation:pulse 1.5s infinite 0.4s">.</span><span style="animation:pulse 1.5s infinite 0.6s">.</span>';
+  typing.id = 'ai-typing';
+  chat.appendChild(typing);
+  scrollAiChat();
+  
+  // Generate and show response after delay
+  setTimeout(() => {
+    // Remove typing indicator
+    const typingEl = document.getElementById('ai-typing');
+    if(typingEl) typingEl.remove();
+    
+    // Generate response
+    const response = generateAiResponse(message);
+    
+    // Add AI message
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'ai-message';
+    aiMsg.innerHTML = response.replace(/\n/g, '<br>');
+    chat.appendChild(aiMsg);
+    
+    // Update insights panel occasionally
+    if(Math.random() > 0.6 && tasks.length > 0){
+      const insights = document.getElementById('aiInsights');
+      const tips = {
+        en: [
+          "💡 Try the '2-minute rule': If a habit takes <2 min, do it immediately.",
+          "🎯 Pair new habits with existing ones for better consistency.",
+          "✨ Review your stats every Sunday to celebrate progress!",
+          "🧠 Your brain forms habits in ~66 days. Stay consistent!"
+        ],
+        uz: [
+          "💡 '2-daqiqa qoidasi': Agar odat 2 daqiqadan kam vaqt olsa, darhol bajaring.",
+          "🎯 Yangi odatlarni mavjudlar bilan birlashtiring, barqarorlik oshadi.",
+          "✨ Har yakshanba statistika ko'rib, progressni nishonlang!",
+          "🧠 Miya odatlarni ~66 kunda shakllantiradi. Barqaror bo'ling!"
+        ],
+        ru: [
+          "💡 Попробуйте 'правило 2 минут': Если привычка занимает <2 мин, сделайте её сразу.",
+          "🎯 Сочетайте новые привычки с существующими для лучшей последовательности.",
+          "✨ Проверяйте статистику каждое воскресенье, чтобы отмечать прогресс!",
+          "🧠 Мозг формирует привычки за ~66 дней. Будьте последовательны!"
+        ]
+      };
+      const tip = tips[currentLang][Math.floor(Math.random()*4)];
+      insights.innerHTML = `<p style="margin:0;color:#475569;font-size:13px;">${tip}</p>`;
+    }
+    
+    scrollAiChat();
+  }, 1000 + Math.random() * 800); // Random delay 1-1.8s for natural feel
+}
+
+function escapeHtml(str){if(!str)return"";return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]||m));}
 
 // ==================== DATA ====================
 let tasks=[],lessons=[],diaries={};
@@ -448,7 +977,6 @@ async function loadAll(){
 const categories=[{name:"Study",color:"#dbeafe"},{name:"Health",color:"#dcfce7"},{name:"Exercise",color:"#fef9c3"},{name:"Work",color:"#ffedd5"},{name:"Mind",color:"#f3e8ff"},{name:"Social",color:"#fce7f3"},{name:"Growth",color:"#d1fae5"}];
 const categoryInput=document.getElementById("categoryInput");
 categories.forEach(c=>{categoryInput.innerHTML+=`<option>${c.name}</option>`;});
-// Also populate modal select
 function populateModalCats(){
   const ms=document.getElementById('modalHabitCat');if(!ms)return;
   ms.innerHTML='';categories.forEach(c=>{ms.innerHTML+=`<option>${c.name}</option>`;});
@@ -517,17 +1045,23 @@ async function saveHabitModal(){
   await loadAll();
 }
 
-// ==================== SCHEDULE HELPERS ====================
+// ==================== SCHEDULE HELPERS (FIXED) ====================
 function isScheduledForDate(task,dateStr){
   const s=task.schedule||{type:'daily'};
-  if(s.type==='daily')return true;
+  const date = new Date(dateStr + 'T12:00:00');
+  const dayOfWeek = date.getDay();
+  const ourDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  
+  if(s.type==='daily') return true;
   if(s.type==='days'){
-    const d=new Date(dateStr+'T12:00:00');
-    const dow=d.getDay();// 0=Sun,1=Mon...
-    const mapped=dow===0?6:dow-1;// Convert to Mon=0...Sun=6
-    return s.days.includes(mapped);
+    return s.days && s.days.includes(ourDay);
   }
-  if(s.type==='freq')return true;// Show all days, track count
+  if(s.type==='freq'){
+    const targetCount = s.freq || 3;
+    const hash = (task.id || task.text).split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+    const dayHash = (hash + date.getDate() + date.getMonth()) % 7;
+    return dayHash < targetCount;
+  }
   return true;
 }
 
@@ -678,22 +1212,18 @@ function renderInsights(){
   const el=document.getElementById('insightsContainer');if(!el)return;
   const filtered=getFilteredTasks();if(!filtered.length){el.innerHTML='';return;}
   const insights=[];
-  // Most improved
   const improved=filtered.map(t=>({name:t.text,thisW:getWeeklyDone(t),lastW:getLastWeekDone(t)})).sort((a,b)=>(b.thisW-b.lastW)-(a.thisW-a.lastW));
   if(improved.length>0&&improved[0].thisW>improved[0].lastW){
     insights.push({icon:'📈',title:improved[0].name,desc:`+${improved[0].thisW-improved[0].lastW} more this week vs last week`});
   }
-  // Needs attention
   const struggling=filtered.filter(t=>getConsistency30(t)<50&&getTotalDone(t)>0).sort((a,b)=>getConsistency30(a)-getConsistency30(b));
   if(struggling.length>0){
     insights.push({icon:'⚠️',title:struggling[0].text,desc:`Only ${getConsistency30(struggling[0])}% consistency — needs attention`});
   }
-  // Best performer
   const best=filtered.map(t=>({t,c:getConsistency30(t)})).sort((a,b)=>b.c-a.c)[0];
   if(best&&best.c>=80){
     insights.push({icon:'⭐',title:best.t.text,desc:`${best.c}% consistency — excellent!`});
   }
-  // Today missed scheduled
   const todayStr=today();
   const missedToday=filtered.filter(t=>isScheduledForDate(t,todayStr)&&!t.history[todayStr]);
   if(missedToday.length>0){
@@ -974,8 +1504,6 @@ function renderDiary(){
   }).join('')||`<p style="color:#adb5bd;font-size:13px;">${t('selectDate')}</p>`;
 }
 
-function escapeHtml(str){if(!str)return"";return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]||m));}
-
 async function tryTelegramAutoLogin(){
   const tg=window.Telegram?.WebApp;if(!tg)return;
   tg.ready();await new Promise(r=>setTimeout(r,500));
@@ -990,7 +1518,7 @@ async function tryTelegramAutoLogin(){
 document.getElementById("diaryDate").addEventListener("change",()=>{renderCalendar();renderDiary();});
 
 // Global expose
-Object.assign(window,{showPage,setLanguage,toggleDark,closeHabitModal,saveHabitModal,openAddHabitModal,openEditHabitModal,setSchedType,toggleDay,buildDayPills,addLesson,deleteLesson,addLessonTask,deleteLessonTask,toggleLessonTask,saveComment,previewActivityImage,addDiary,deleteDiary,editDiary,toggleDiaryEntry,previewDiaryImage,clearDiaryImage,clearVoice,toggleRecording,exportCSV,requestNotifications,setFilter,calPrev,calNext,selectCalDay,changeWeek,toggle,deleteTask});
+Object.assign(window,{showPage,setLanguage,toggleDark,closeHabitModal,saveHabitModal,openAddHabitModal,openEditHabitModal,setSchedType,toggleDay,buildDayPills,addLesson,deleteLesson,addLessonTask,deleteLessonTask,toggleLessonTask,saveComment,previewActivityImage,addDiary,deleteDiary,editDiary,toggleDiaryEntry,previewDiaryImage,clearDiaryImage,clearVoice,toggleRecording,exportCSV,requestNotifications,setFilter,calPrev,calNext,selectCalDay,changeWeek,toggle,deleteTask,refreshQuote,screenshotQuote,sendAiMessage,sendAiSuggestion});
 
 document.body.classList.toggle('dark',darkMode);
 tryTelegramAutoLogin().then(()=>loadAll());
