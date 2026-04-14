@@ -44,6 +44,7 @@ body.dark .user-msg{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#ff
 body.dark .ai-input-el{background:#334155;color:#e2e8f0;border-color:#475569;}
 body.dark .ai-wrap{background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(37,99,235,0.06));border-color:rgba(124,58,237,0.2);}
 body.dark .studio-card{background:#1e293b;border-color:#334155;}
+body.dark .ai-action-bar{background:#1e293b;border-color:#334155;}
 .app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e9ecef;}
 .header-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 h2{background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.8rem;letter-spacing:-0.5px;}
@@ -148,11 +149,12 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 .quote-card:hover{border-color:rgba(102,126,234,0.35);box-shadow:0 4px 14px rgba(102,126,234,0.12);}
 .quote-inner{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
 .quote-text-el{font-size:13px;font-weight:500;color:#1e293b;line-height:1.4;flex:1;}
-.quote-author-el{font-size:11px;color:#64748b;white-space:nowrap;font-weight:600;}
+.quote-author-el{font-size:11px;color:#64748b;white-space:nowrap;font-weight:600;margin-left:8px;}
 .quote-actions{display:flex;gap:5px;}
 .qbtn{padding:5px 10px;border-radius:14px;border:none;cursor:pointer;font-size:11px;font-weight:600;transition:all 0.2s;}
 .qbtn-studio{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
 .qbtn-refresh{background:#f1f5f9;color:#475569;}
+.quote-counter{font-size:10px;color:#94a3b8;font-weight:600;white-space:nowrap;}
 
 /* STUDIO */
 .studio-card{background:#fff;border:1px solid #e9ecef;border-radius:20px;padding:20px;margin-top:16px;}
@@ -191,6 +193,10 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 .ai-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;}
 .ai-chip{background:#f1f5f9;color:#475569;padding:5px 11px;border-radius:16px;font-size:11px;cursor:pointer;transition:all 0.2s;border:1px solid #e2e8f0;font-weight:500;}
 .ai-chip:hover{background:#e2e8f0;color:#1e293b;}
+.ai-action-bar{background:#f0f4ff;border:1px solid #c7d2fe;border-radius:12px;padding:10px 14px;margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.ai-action-bar p{font-size:12px;color:#4338ca;font-weight:600;width:100%;}
+.ai-action-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;margin:0;}
+.ai-action-cancel{background:#f1f5f9;color:#475569;}
 
 #storyOverlay{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background 0.5s;}
 .story-content{text-align:center;padding:40px 24px;max-width:88%;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.4);}
@@ -203,6 +209,12 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 .story-btn:hover{background:rgba(255,255,255,0.35);}
 .story-close{position:fixed;top:20px;right:20px;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.3);border:none;color:#fff;font-size:18px;cursor:pointer;z-index:10003;}
 .story-hint{position:fixed;top:22px;left:20px;font-size:11px;color:rgba(255,255,255,0.65);z-index:10003;}
+
+/* DRAG HANDLE */
+.drag-handle{cursor:grab;color:#adb5bd;font-size:18px;user-select:none;padding:0 4px;touch-action:none;}
+.drag-handle:active{cursor:grabbing;}
+tr.dragging{opacity:0.4;}
+tr.drag-over{border-top:3px solid #667eea!important;}
 
 @media(max-width:768px){body{padding:6px;}.app{padding:14px;border-radius:20px;}th,td{padding:6px 3px;font-size:10px;}td:first-child{max-width:100px;}.nav-btn{padding:7px 9px;font-size:11px;}h2{font-size:1.3rem;}.streak-num{font-size:1.5rem;}.ai-chat-box{height:260px;}}
 @media(max-width:480px){body{padding:0;}.app{border-radius:0;padding:12px 10px;min-height:100vh;box-shadow:none;}.nav-buttons{gap:3px;}.nav-btn{flex:1;padding:7px 3px;font-size:10px;text-align:center;}th,td{padding:4px 1px;font-size:9px;}td:first-child{max-width:75px;font-size:10px;}}
@@ -229,15 +241,16 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 </div>
 
 <!-- QUOTE BAR -->
-<div class="quote-card" id="quoteCard" onclick="refreshQuote()">
+<div class="quote-card" id="quoteCard">
   <div class="quote-inner">
     <span style="font-size:1.1rem;flex-shrink:0;">✨</span>
     <span class="quote-text-el" id="quoteText"></span>
     <span class="quote-author-el" id="quoteAuthor"></span>
   </div>
   <div class="quote-actions" onclick="event.stopPropagation()">
+    <span class="quote-counter" id="quoteCounter"></span>
     <button class="qbtn qbtn-refresh" onclick="refreshQuote()">🔄</button>
-    <button class="qbtn qbtn-studio" onclick="openStory()">📸 Story</button>
+    <button class="qbtn qbtn-studio" onclick="openStoryOverlay()">📸 Story</button>
   </div>
 </div>
 
@@ -248,12 +261,7 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
     <button onclick="changeWeek(-7)" id="btn-prev-week" style="background:#e9ecef;font-weight:700;">◀ Prev</button>
     <button onclick="changeWeek(7)" id="btn-next-week" style="background:#e9ecef;font-weight:700;">Next ▶</button>
     <span id="weekTitle" style="font-size:13px;color:#6c757d;font-weight:600;"></span>
-  </div>
-  <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:16px;background:#f8f9fa;padding:12px;border-radius:16px;">
-    <input id="taskInput" placeholder="Habit name" style="flex:1;min-width:120px;margin:0;"/>
-    <input type="time" id="taskTime" style="margin:0;"/>
-    <select id="categoryInput" style="width:100px;padding:8px 10px;font-size:13px;margin:0;border-radius:12px;"></select>
-    <button class="btn-primary" onclick="openAddHabitModal()" id="btn-add-habit">➕ Add Habit</button>
+    <button class="btn-primary" onclick="openAddHabitModal()" id="btn-add-habit" style="margin-left:auto;">➕ Add Habit</button>
   </div>
   <div style="overflow-x:auto;"><table><thead><tr id="weekHeader"></tr></thead><tbody id="taskBody"></tbody></table></div>
 </div>
@@ -321,21 +329,29 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
   <div class="ai-wrap">
     <div class="ai-header-row">
       <div class="ai-avatar-el">AI</div>
-      <div><div class="ai-title-el">FIKRCHA Assistant</div><div class="ai-status" id="aiStatus">● Online — Powered by Claude</div></div>
+      <div>
+        <div class="ai-title-el" id="ai-title-el">FIKRCHA AI</div>
+        <div class="ai-status" id="ai-status-el">● Online — Ask me anything</div>
+      </div>
     </div>
     <div class="ai-chat-box" id="aiChat">
-      <div class="ai-msg">👋 Salom! Men FIKRCHA AI yordamchingizman.<br><br>Menga istalgan savolingizni bering:<br>• Odatlaringizni tahlil qilish 📊<br>• Yangi odatlar tavsiya qilish 💡<br>• Kun rejasini tuzish 🗓️<br>• Motivatsiya 🔥<br>• Hayot maslahatlari ✨<br><br>Yoki ingliz/rus tilida ham yozishingiz mumkin!</div>
+      <div class="ai-msg">Hi! I'm your FIKRCHA AI assistant. I can help you with habits, studying, and staying productive — and I can add new habits, lessons, or diary entries for you. Just ask!</div>
     </div>
-    <div class="ai-chips">
-      <div class="ai-chip" onclick="sendChip('Odatlarimni tahlil qil')">📊 Tahlil</div>
-      <div class="ai-chip" onclick="sendChip('Yangi odat tavsiya qil')">💡 Tavsiya</div>
-      <div class="ai-chip" onclick="sendChip('Bugun uchun reja tuz')">🗓️ Reja</div>
-      <div class="ai-chip" onclick="sendChip('Meni motivatsiya qil')">🔥 Motivatsiya</div>
-      <div class="ai-chip" onclick="sendChip('Analyze my habits and give detailed feedback')">🔍 Deep Analysis</div>
-      <div class="ai-chip" onclick="sendChip('What should I focus on this week?')">🎯 Focus</div>
+    <div id="aiActionBar" class="ai-action-bar" style="display:none;">
+      <p id="aiActionTitle">AI found something to add:</p>
+      <div id="aiActionBtns"></div>
+      <button class="ai-action-btn ai-action-cancel" onclick="dismissAiAction()">Dismiss</button>
+    </div>
+    <div class="ai-chips" id="aiChips">
+      <div class="ai-chip" onclick="sendChip('Analyze my habits')">📊 Analyze</div>
+      <div class="ai-chip" onclick="sendChip('Suggest 3 new habits for me')">💡 Suggest habits</div>
+      <div class="ai-chip" onclick="sendChip('Plan my day')">🗓️ Day plan</div>
+      <div class="ai-chip" onclick="sendChip('Motivate me')">🔥 Motivate</div>
+      <div class="ai-chip" onclick="sendChip('Add a morning run habit at 7:00 AM')">➕ Add habit</div>
+      <div class="ai-chip" onclick="sendChip('Open a new study lesson for Python')">📚 Add lesson</div>
     </div>
     <div class="ai-input-row" style="margin-top:10px;">
-      <input type="text" class="ai-input-el" id="aiInput" placeholder="Savolingizni yozing..." onkeypress="if(event.key==='Enter')sendAiMessage()">
+      <input type="text" class="ai-input-el" id="aiInput" placeholder="Ask me anything or say 'add habit...' / 'add lesson...'" onkeypress="if(event.key==='Enter')sendAiMessage()">
       <button class="ai-send-btn" onclick="sendAiMessage()">➤</button>
     </div>
   </div>
@@ -348,7 +364,6 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
       <h3 style="font-size:16px;font-weight:800;color:#2c3e50;">📸 Story Studio</h3>
       <button onclick="closeStudio()" style="background:#ffe0e0;color:#c0392b;padding:4px 12px;font-size:12px;">✕ Close</button>
     </div>
-    <!-- PREVIEW -->
     <div class="studio-preview" id="studioPreview">
       <div class="studio-preview-inner" id="studioInner">
         <div class="studio-quote-text" id="studioQuoteText"></div>
@@ -357,84 +372,86 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
         <div class="studio-app-badge">✨ FIKRCHA</div>
       </div>
     </div>
-    <!-- GRADIENT PICKER -->
     <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;">Background</div>
     <div class="studio-controls" id="gradientPicker"></div>
-    <!-- FONT STYLE -->
     <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;margin-top:10px;">Text Style</div>
     <div class="studio-controls" id="fontPicker"></div>
-    <!-- TEXT SIZE -->
     <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;margin-top:10px;">Size</div>
     <div style="display:flex;gap:8px;">
       <button class="studio-font-btn active" id="size-sm" onclick="setSize('sm')">Small</button>
       <button class="studio-font-btn" id="size-md" onclick="setSize('md')">Medium</button>
       <button class="studio-font-btn" id="size-lg" onclick="setSize('lg')">Large</button>
     </div>
-    <!-- EDIT QUOTE -->
     <div style="font-size:12px;font-weight:700;color:#6c757d;margin:10px 0 6px;">Edit Quote</div>
     <textarea id="studioEditText" style="width:100%;border-radius:12px;height:60px;font-size:13px;" oninput="updateStudioText()"></textarea>
     <div style="display:flex;gap:8px;margin-top:14px;">
       <button onclick="refreshStudioQuote()" style="background:#f1f5f9;color:#475569;flex:1;">🔄 New Quote</button>
-      <button onclick="downloadStory()" class="btn-primary" style="flex:1;">⬇️ Save Image</button>
+      <button onclick="downloadStory()" class="btn-primary" style="flex:1;">⬇️ Save to Gallery</button>
     </div>
-    <p style="font-size:11px;color:#adb5bd;margin-top:8px;text-align:center;">Take a screenshot or save → share to Instagram Story</p>
+    <p style="font-size:11px;color:#adb5bd;margin-top:8px;text-align:center;">Save → share to Instagram Story or anywhere</p>
   </div>
 </div>
 
-
 <!-- STORY OVERLAY -->
 <div id="storyOverlay" style="display:none;background:linear-gradient(135deg,#667eea,#764ba2);">
-  <button class="story-close" onclick="closeStory()">x</button>
+  <button class="story-close" onclick="closeStory()">✕</button>
   <div class="story-hint">Tap text to edit</div>
   <div class="story-content">
     <div class="story-quote" id="storyQuote" style="font-size:1.6rem;"></div>
     <div class="story-author" id="storyAuthor"></div>
     <div class="story-tg" id="storyTg"></div>
-    <div class="story-brand">FIKRCHA</div>
+    <div class="story-brand">✨ FIKRCHA</div>
   </div>
   <div class="story-controls">
     <button class="story-btn" onclick="cycleBg()" title="Background">BG</button>
     <button class="story-btn" onclick="cycleFont()" title="Font">Ff</button>
     <button class="story-btn" onclick="cycleSize()" title="Size">Aa</button>
-    <button class="story-btn" onclick="saveStoryToGallery()" title="Save">DL</button>
+    <button class="story-btn" onclick="saveStoryToGallery()" title="Save">💾</button>
   </div>
 </div>
+
 <!-- HABIT MODAL -->
 <div id="habitModal" class="modal-overlay" style="display:none;">
   <div class="sched-modal">
     <h3 id="habitModalTitle">➕ New Habit</h3>
     <input type="text" id="modalHabitName" placeholder="Habit name" style="width:100%;margin-bottom:8px;"/>
-    <div style="display:flex;gap:8px;margin-bottom:8px;">
-      <input type="time" id="modalHabitTime" style="flex:1;width:auto!important;"/>
-      <select id="modalHabitCat" style="flex:1;border-radius:12px;padding:8px;"></select>
+    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:130px;">
+        <label style="font-size:12px;color:#6c757d;font-weight:600;display:block;margin-bottom:4px;">⏰ Time (optional)</label>
+        <input type="time" id="modalHabitTime" style="width:100%!important;"/>
+      </div>
+      <div style="flex:1;min-width:130px;">
+        <label style="font-size:12px;color:#6c757d;font-weight:600;display:block;margin-bottom:4px;">🏷️ Category</label>
+        <select id="modalHabitCat" style="width:100%;border-radius:12px;padding:8px;margin:0;"></select>
+      </div>
     </div>
     <div class="sched-section">
       <label>📅 Schedule Type</label>
       <div class="sched-type-row">
-        <button class="sched-type-btn active" onclick="setSchedType('daily')" id="stype-daily">Daily</button>
-        <button class="sched-type-btn" onclick="setSchedType('days')" id="stype-days">Specific Days</button>
-        <button class="sched-type-btn" onclick="setSchedType('once')" id="stype-once">One-time</button>
+        <button class="sched-type-btn active" onclick="setSchedType('daily')" id="stype-daily">📆 Daily</button>
+        <button class="sched-type-btn" onclick="setSchedType('days')" id="stype-days">📌 Specific Days</button>
+        <button class="sched-type-btn" onclick="setSchedType('once')" id="stype-once">🗓️ One-time</button>
       </div>
     </div>
     <div class="sched-section" id="sched-days-section" style="display:none;">
-      <label>Select days</label>
+      <label>Select days (habit only appears on these days)</label>
       <div class="days-row" id="dayPillsRow"></div>
     </div>
     <div class="sched-section" id="sched-once-section" style="display:none;">
-      <label>Add specific dates (habit only appears these days)</label>
+      <label>Add exact dates (habit only appears on these dates, only shown in those weeks)</label>
       <div id="onceDatesContainer" style="min-height:24px;margin-bottom:6px;"></div>
-      <div style="display:flex;gap:6px;margin-top:6px;"><input type="date" id="onceDatePicker" style="flex:1;border-radius:12px;margin:0;font-size:13px;"/><button onclick="addOnceDate()" style="background:#667eea;color:#fff;padding:6px 12px;margin:0;border-radius:20px;font-size:13px;">+ Add</button></div>
-      <div style="font-size:11px;color:#6c757d;margin-top:4px;">Habit only appears on these exact dates.</div>
+      <div style="display:flex;gap:6px;margin-top:6px;"><input type="date" id="onceDatePicker" style="flex:1;border-radius:12px;margin:0;font-size:13px;"/><button onclick="addOnceDate()" style="background:#667eea;color:#fff;padding:6px 12px;margin:0;border-radius:20px;font-size:13px;">+ Add Date</button></div>
+      <div style="font-size:11px;color:#6c757d;margin-top:4px;">This habit only appears in the week of those exact dates.</div>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
       <button onclick="closeHabitModal()">Cancel</button>
-      <button class="btn-primary" onclick="saveHabitModal()">Save</button>
+      <button class="btn-primary" onclick="saveHabitModal()">💾 Save Habit</button>
     </div>
   </div>
 </div>
 
 <script>
-// ========== QUOTES (75+ per language) ==========
+// ========== QUOTES ==========
 const QUOTES = {
 en:[
 {t:"The secret of getting ahead is getting started.",a:"Mark Twain"},
@@ -473,7 +490,6 @@ en:[
 {t:"Do not go where the path may lead, go instead where there is no path and leave a trail.",a:"Ralph Waldo Emerson"},
 {t:"You only live once, but if you do it right, once is enough.",a:"Mae West"},
 {t:"Be yourself; everyone else is already taken.",a:"Oscar Wilde"},
-{t:"Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",a:"Albert Einstein"},
 {t:"Life is what happens when you're busy making other plans.",a:"John Lennon"},
 {t:"The future belongs to those who believe in the beauty of their dreams.",a:"Eleanor Roosevelt"},
 {t:"Tell me and I forget. Teach me and I remember. Involve me and I learn.",a:"Benjamin Franklin"},
@@ -482,37 +498,24 @@ en:[
 {t:"I have not failed. I've just found 10,000 ways that won't work.",a:"Thomas A. Edison"},
 {t:"A person who never made a mistake never tried anything new.",a:"Albert Einstein"},
 {t:"The only impossible journey is the one you never begin.",a:"Tony Robbins"},
-{t:"In this life we cannot do great things. We can only do small things with great love.",a:"Mother Teresa"},
 {t:"No matter what people tell you, words and ideas can change the world.",a:"Robin Williams"},
 {t:"Whether you think you can or you think you can't, you're right.",a:"Henry Ford"},
-{t:"The two most important days in your life are the day you are born and the day you find out why.",a:"Mark Twain"},
-{t:"Whatever you are, be a good one.",a:"Abraham Lincoln"},
 {t:"Your time is limited, so don't waste it living someone else's life.",a:"Steve Jobs"},
 {t:"If you look at what you have in life, you'll always have more.",a:"Oprah Winfrey"},
-{t:"If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success.",a:"James Cameron"},
 {t:"Life is not measured by the number of breaths we take, but by the moments that take our breath away.",a:"Maya Angelou"},
-{t:"If you want to lift yourself up, lift up someone else.",a:"Booker T. Washington"},
 {t:"I am not a product of my circumstances. I am a product of my decisions.",a:"Stephen Covey"},
-{t:"When I let go of what I am, I become what I might be.",a:"Lao Tzu"},
 {t:"Life is not about finding yourself. Life is about creating yourself.",a:"Lolly Daskal"},
-{t:"Not how long, but how well you have lived is the main thing.",a:"Seneca"},
-{t:"If life were predictable it would cease to be life, and be without flavor.",a:"Eleanor Roosevelt"},
 {t:"Happiness is not something readymade. It comes from your own actions.",a:"Dalai Lama"},
 {t:"It is during our darkest moments that we must focus to see the light.",a:"Aristotle"},
-{t:"Whoever is happy will make others happy too.",a:"Anne Frank"},
-{t:"You cannot protect yourself from sadness without protecting yourself from happiness.",a:"Jonathan Safran Foer"},
-{t:"The only person you are destined to become is the person you decide to be.",a:"Ralph Waldo Emerson"},
-{t:"No one can make you feel inferior without your consent.",a:"Eleanor Roosevelt"},
-{t:"Spread love everywhere you go. Let no one ever come to you without leaving happier.",a:"Mother Teresa"},
 {t:"Act as if what you do makes a difference. It does.",a:"William James"},
-{t:"Success usually comes to those who are too busy to be looking for it.",a:"Henry David Thoreau"},
-{t:"I would rather die of passion than of boredom.",a:"Vincent van Gogh"},
-{t:"Challenges are what make life interesting and overcoming them is what makes life meaningful.",a:"Joshua J. Marine"},
 {t:"If you can dream it, you can achieve it.",a:"Zig Ziglar"},
-{t:"When you have a dream, you've got to grab it and never let go.",a:"Carol Burnett"},
 {t:"Nothing is impossible. The word itself says 'I'm possible!'",a:"Audrey Hepburn"},
+{t:"Keep your eyes on the stars, and your feet on the ground.",a:"Theodore Roosevelt"},
+{t:"Challenges are what make life interesting and overcoming them is what makes life meaningful.",a:"Joshua J. Marine"},
+{t:"When you have a dream, you've got to grab it and never let go.",a:"Carol Burnett"},
 {t:"There is nothing impossible to they who will try.",a:"Alexander the Great"},
-{t:"Keep your eyes on the stars, and your feet on the ground.",a:"Theodore Roosevelt"}
+{t:"Success usually comes to those who are too busy to be looking for it.",a:"Henry David Thoreau"},
+{t:"I would rather die of passion than of boredom.",a:"Vincent van Gogh"}
 ],
 uz:[
 {t:"Oldinga yurish siri — boshlab yuborishda.",a:"Mark Twain"},
@@ -523,7 +526,7 @@ uz:[
 {t:"Qila olaman deb ishonsangiz — yo'lni yarmigacha bosib o'tgansiz.",a:"Theodore Roosevelt"},
 {t:"Qanchalik sekin borsangiz ham muhim emas, asosiysi to'xtamang.",a:"Konfutsiy"},
 {t:"Orzulab yashagan hamma narsa qo'rquvning narigi tomonida.",a:"George Addair"},
-{t:"Muvaffaqiyat yakuniy emas, muvaffaqiyatsizlik halokatli emas — muhimi davom etish jasorati.",a:"Uinston Cherchill"},
+{t:"Muvaffaqiyat yakuniy emas, muvaffaqiyatsizlik halokatli emas.",a:"Uinston Cherchill"},
 {t:"Qanchalik ko'p mehnat qilsangiz, natijaga erishganda shunchalik baxtli bo'lasiz.",a:"Noma'lum"},
 {t:"Kattaroq orzu qiling. Kattaroq qiling.",a:"Noma'lum"},
 {t:"Charchaganda emas, ishingiz tugaganda to'xtang.",a:"Noma'lum"},
@@ -532,64 +535,26 @@ uz:[
 {t:"Kichik narsalar katta kunlarni yaratadi.",a:"Noma'lum"},
 {t:"Qiyin bo'ladi, lekin qiyin — imkonsiz degani emas.",a:"Noma'lum"},
 {t:"Imkoniyatni kutmang. Uni yarating.",a:"Noma'lum"},
-{t:"Ba'zida bizni zaifligimizni emas, kuchimizni kashf qilish uchun sinashadi.",a:"Noma'lum"},
 {t:"Muvaffaqiyat kaliti — to'siqlarga emas, maqsadlarga fokus.",a:"Noma'lum"},
 {t:"Orzu qiling. Istang. Bajaring.",a:"Noma'lum"},
 {t:"Muvaffaqiyat sizni topmaydi. Siz chiqib, uni olishingiz kerak.",a:"Noma'lum"},
 {t:"Jang qanchalik og'ir bo'lsa, g'alaba shunchalik shirin.",a:"Les Brown"},
 {t:"Qo'rquvingiz kelajagingizni belgilashiga yo'l qo'ymang.",a:"Noma'lum"},
-{t:"Hech olmagan narsangizni olmoqchi bo'lsangiz, hech qilmagan narsangizni qilishga tayyor bo'ling.",a:"Tomas Jefferson"},
 {t:"Aql hamma narsa. Nima o'ylasangiz — shun bo'lasiz.",a:"Budda"},
 {t:"O'rganilmagan hayot yashashga loyiq emas.",a:"Sokrat"},
 {t:"Hamma joyda mehr tarqating.",a:"Ona Tereza"},
-{t:"Arqon oxiriga yetsangiz, tugun bog'lab osilib turing.",a:"Franklin D. Ruzvelt"},
-{t:"Siz mutlaqo noyobsiz — xuddi boshqalar kabi.",a:"Margaret Mid"},
 {t:"Dunyo ko'rmoqchi bo'lgan o'zgarish o'zingiz bo'ling.",a:"Mahatma Gandi"},
 {t:"Har qiyinchilik ichida imkoniyat yashaydi.",a:"Albert Eynshteyn"},
-{t:"Muvaffaqiyatli bo'lishga emas, foydali bo'lishga intiling.",a:"Albert Eynshteyn"},
-{t:"Intellektning o'lchovi — o'zgarish qobiliyati.",a:"Albert Eynshteyn"},
 {t:"Yo'l borga emas, yo'l yo'qqa boring va iz qoldiring.",a:"Ralf Uoldo Emerson"},
-{t:"Bir marta yashaysiz, lekin to'g'ri yashab, bir marta yetarli.",a:"May Uest"},
 {t:"O'zingiz bo'ling — boshqalarning hammasi allaqachon band.",a:"Oskar Uayld"},
 {t:"Hayot — boshqa rejalar tuzayotganda sodir bo'lgan narsa.",a:"Jon Lennon"},
-{t:"Kelajak o'z orzularining go'zalligiga ishonadigan odamlarniki.",a:"Eleonor Ruzvelt"},
-{t:"Eng yaxshi daraxt ekish vaqti — 20 yil oldin edi. Ikkinchi eng yaxshisi — hozir.",a:"Xitoy maqoli"},
 {t:"Bilimlarga sarmoya eng yaxshi foiz beradi.",a:"Benjamin Franklin"},
-{t:"Men muvaffaqiyatsiz bo'lmadim. Shunchaki ishlamaydigan 10,000 usulni topdim.",a:"Tomas Edison"},
-{t:"Hech qachon xato qilmagan odam hech qachon yangi narsa sinab ko'rmagan.",a:"Albert Eynshteyn"},
 {t:"Yagona imkonsiz sayohat — boshlamagan sayohatingiz.",a:"Tony Robbins"},
 {t:"Orzu qilsangiz — uni mahkam ushlab olishingiz kerak.",a:"Kerol Bernett"},
-{t:"Hech narsa imkonsiz emas. So'zning o'zi aytadi: 'Men mumkin!'",a:"Odri Xepbern"},
-{t:"Ko'zlaringizni yulduzlarga tikib, oyoqlaringizni yerda saqlang.",a:"Teodor Ruzvelt"},
 {t:"Harakatingiz farq qiladi deb harakat qiling. Farq qiladi.",a:"Uilyam Jeyms"},
-{t:"Muvaffaqiyat odatda uni qidirishga vaqt topolmaydiganlarga keladi.",a:"Genri Devid Toro"},
-{t:"Zerikishdan ko'ra ehtiros bilan o'lishni afzal ko'raman.",a:"Vinsent van Gog"},
-{t:"Qiyinchiliklar hayotni qiziqarli qiladi, ularni yengish esa hayotni mazmunli.",a:"Joshya J. Marin"},
-{t:"Orzu qilsangiz — erishishingiz mumkin.",a:"Zig Ziglar"},
-{t:"Hayot nafaslarimiz soni bilan emas, bizni hayratga soladigan lahzalar bilan o'lchanadi.",a:"Maya Anjelo"},
-{t:"O'zingizni ko'tarmоqchi bo'lsangiz — boshqasini ko'taring.",a:"Booker T. Uoshington"},
-{t:"Men holatlarimning mahsuli emasman. Men qarorlarimning mahsuliman.",a:"Stiven Kovi"},
-{t:"O'zimni qo'yib yuborganimda, bo'lishim mumkin bo'lganga aylanaman.",a:"Lao-tszy"},
-{t:"Hayot o'zingizni topish haqida emas. Hayot o'zingizni yaratish haqida.",a:"Lolly Dasdal"},
-{t:"Qancha yashagandek emas, qanchalik yaxshi yashagandek — asosiy narsa.",a:"Seneka"},
-{t:"Baxt tayyor holda berilmaydi. U o'z harakatlaringizdan kelib chiqadi.",a:"Dalay Lama"},
-{t:"Eng qorong'u lahzalarda ham nurni ko'rish uchun diqqatimizni jamlashimiz kerak.",a:"Aristotel"},
-{t:"Baxtiyor bo'lgan odam boshqalarni ham baxtli qiladi.",a:"Anna Frank"},
-{t:"Taqdirda bo'ladigan yagona odam — o'zingiz bo'lishga qaror qilgan kishi.",a:"Ralf Uoldo Emerson"},
-{t:"Sizga past qaramoqchi bo'lgan odam, faqat roziligingiz bilan buni amalga oshira oladi.",a:"Eleonor Ruzvelt"},
-{t:"Muvaffaqiyat odatda uni izlashga juda band bo'lgan odamlarga keladi.",a:"Genri Devid Toro"},
-{t:"Qiyinchiliklar hayotni mazmunli qiladi.",a:"Joshya J. Marin"},
-{t:"Agar orzu qila olsangiz — erishishingiz ham mumkin.",a:"Zig Ziglar"},
-{t:"Hech narsa imkonsiz emas, faqat harakat qilish kerak.",a:"Aleksandr Buyuk"},
-{t:"Yulduzlarga qarang, oyoqlaringizni yerda saqlang.",a:"Teodor Ruzvelt"},
 {t:"Bugun qilgan kichik qadamingiz — ertangi ulug' o'zgarishning asosi.",a:"Noma'lum"},
-{t:"Harakat qilib ko'rmasdan muvaffaqiyatsizlik deb bo'lmaydi.",a:"Noma'lum"},
 {t:"O'z kuchingga ishonadigan odam — allaqachon g'olib.",a:"Noma'lum"},
-{t:"Eng qiyin yo'l — eng katta g'alabaga olib boradi.",a:"Noma'lum"},
 {t:"Har bir yangi kun — yangi imkoniyat.",a:"Noma'lum"},
-{t:"Mehnating samarasi — hayotingizning quvonchi.",a:"Noma'lum"},
-{t:"O'zingga bo'lgan ishonch — muvaffaqiyatning birinchi qadami.",a:"Noma'lum"},
-{t:"Kichik g'alabalar — katta muvaffaqiyatning asosi.",a:"Noma'lum"},
 {t:"Bugungi sa'y-harakat — ertangi natija.",a:"Noma'lum"}
 ],
 ru:[
@@ -610,589 +575,723 @@ ru:[
 {t:"Маленькие дела создают большие дни.",a:"Неизвестно"},
 {t:"Это будет тяжело, но тяжело — не значит невозможно.",a:"Неизвестно"},
 {t:"Не жди возможности. Создавай её.",a:"Неизвестно"},
-{t:"Иногда нас испытывают не чтобы показать нашу слабость, а чтобы открыть нашу силу.",a:"Неизвестно"},
 {t:"Ключ к успеху — фокус на целях, а не на препятствиях.",a:"Неизвестно"},
 {t:"Мечтай. Желай. Делай.",a:"Неизвестно"},
 {t:"Успех не найдёт тебя сам. Выйди и возьми его.",a:"Неизвестно"},
 {t:"Чем труднее битва, тем слаще победа.",a:"Лес Браун"},
 {t:"Никогда не позволяй страху решать своё будущее.",a:"Неизвестно"},
-{t:"Хочешь того, чего никогда не имел — делай то, чего никогда не делал.",a:"Томас Джефферсон"},
 {t:"Разум — это всё. Чем думаешь — тем становишься.",a:"Будда"},
 {t:"Неисследованная жизнь не стоит того, чтобы её жить.",a:"Сократ"},
 {t:"Несите любовь повсюду, куда идёте.",a:"Мать Тереза"},
-{t:"Когда достигнешь конца верёвки — завяжи узел и держись.",a:"Франклин Д. Рузвельт"},
-{t:"Помни, ты абсолютно уникален — как и все остальные.",a:"Маргарет Мид"},
 {t:"Стань сам тем изменением, которое хочешь видеть в мире.",a:"Махатма Ганди"},
 {t:"В центре каждой трудности лежит возможность.",a:"Альберт Эйнштейн"},
-{t:"Стремись не к успеху, а к тому, чтобы быть ценным.",a:"Альберт Эйнштейн"},
-{t:"Мерило интеллекта — способность меняться.",a:"Альберт Эйнштейн"},
 {t:"Иди не туда, где есть путь, а туда, где пути нет, и оставь след.",a:"Ральф Уолдо Эмерсон"},
-{t:"Живёшь один раз, но если правильно — одного раза достаточно.",a:"Мэй Уэст"},
 {t:"Будь собой; все остальные уже заняты.",a:"Оскар Уайльд"},
 {t:"Жизнь — это то, что происходит, пока ты строишь другие планы.",a:"Джон Леннон"},
-{t:"Будущее принадлежит тем, кто верит в красоту своих мечтаний.",a:"Элеонора Рузвельт"},
-{t:"Скажи — забуду. Покажи — запомню. Вовлеки — пойму.",a:"Бенджамин Франклин"},
-{t:"Лучшее время посадить дерево было 20 лет назад. Второе лучшее — сейчас.",a:"Китайская пословица"},
 {t:"Инвестиции в знания приносят наибольший процент.",a:"Бенджамин Франклин"},
-{t:"Я не потерпел неудачу. Я просто нашёл 10 000 способов, которые не работают.",a:"Томас Эдисон"},
-{t:"Человек, никогда не ошибавшийся, никогда не пробовал ничего нового.",a:"Альберт Эйнштейн"},
 {t:"Единственное невозможное путешествие — то, которое ты так и не начал.",a:"Тони Роббинс"},
 {t:"Мечтаешь — хватай и не отпускай.",a:"Кэрол Бёрнетт"},
-{t:"Ничто не невозможно. Само слово говорит: «Я возможен!»",a:"Одри Хепбёрн"},
-{t:"Держи глаза на звёздах, а ноги — на земле.",a:"Теодор Рузвельт"},
-{t:"Действуй так, будто то, что ты делаешь, имеет значение. Так и есть.",a:"Уильям Джеймс"},
-{t:"Успех приходит обычно к тем, кто слишком занят, чтобы его искать.",a:"Генри Дэвид Торо"},
-{t:"Я предпочту умереть от страсти, чем от скуки.",a:"Винсент ван Гог"},
-{t:"Трудности делают жизнь интересной, а их преодоление — осмысленной.",a:"Джошуа Дж. Марин"},
-{t:"Если можешь мечтать — можешь достичь.",a:"Зиг Зиглар"},
-{t:"Жизнь измеряется не вдохами, а моментами, захватывающими дух.",a:"Майя Анджелу"},
-{t:"Хочешь поднять себя — подними кого-то другого.",a:"Букер Т. Вашингтон"},
-{t:"Я не продукт своих обстоятельств. Я продукт своих решений.",a:"Стивен Кови"},
-{t:"Когда я отпускаю то, что я есть, я становлюсь тем, кем могу быть.",a:"Лао-цзы"},
-{t:"Жизнь — не поиск себя. Жизнь — создание себя.",a:"Лолли Даздал"},
-{t:"Счастье не готовое блюдо. Оно рождается из твоих собственных действий.",a:"Далай-лама"},
-{t:"В самые тёмные моменты нужно сосредоточиться, чтобы увидеть свет.",a:"Аристотель"},
-{t:"Счастливый человек делает счастливыми и других.",a:"Анна Франк"},
-{t:"Единственный человек, которым ты должен стать — тот, кем ты решил быть.",a:"Ральф Уолдо Эмерсон"},
-{t:"Никто не может заставить тебя чувствовать себя хуже без твоего согласия.",a:"Элеонора Рузвельт"},
-{t:"Небольшой шаг сегодня — основа великого завтра.",a:"Неизвестно"},
-{t:"Без попытки нет и поражения.",a:"Неизвестно"},
-{t:"Верящий в себя человек уже наполовину победитель.",a:"Неизвестно"},
-{t:"Самый трудный путь ведёт к самой великой победе.",a:"Неизвестно"},
-{t:"Каждый новый день — новая возможность.",a:"Неизвестно"},
-{t:"Плоды твоего труда — радость твоей жизни.",a:"Неизвестно"},
-{t:"Вера в себя — первый шаг к успеху.",a:"Неизвестно"},
-{t:"Маленькие победы — фундамент большого успеха.",a:"Неизвестно"},
-{t:"Сегодняшние усилия — завтрашние результаты.",a:"Неизвестно"}
+{t:"Действуй так, будто твои действия важны. Они важны.",a:"Уильям Джеймс"},
+{t:"Мечтаешь — достигнешь.",a:"Зиг Зиглар"},
+{t:"Трудности делают жизнь интересной, а их преодоление — значимой.",a:"Джошуа Дж. Марин"},
+{t:"Мерило интеллекта — способность меняться.",a:"Альберт Эйнштейн"},
+{t:"Успех приходит к тем, кто слишком занят, чтобы его искать.",a:"Генри Дэвид Торо"}
 ]
 };
 
-let currentLang=localStorage.getItem('fikrcha_lang')||(navigator.language.startsWith('uz')?'uz':navigator.language.startsWith('ru')?'ru':'en');
-let darkMode=localStorage.getItem('fikrcha_dark')==='1';
-let activeFilter='All';
-let editingHabitIdx=null;
-let schedType='daily';
-let selectedDays=[];
-let currentQuoteIdx={en:0,uz:0,ru:0};
-let studioGrad=0,studioFont=0,studioSize='sm';
-let aiMessages=[];
+// ========== STATE ==========
+let currentLang = localStorage.getItem('fikrcha_lang') || 'uz';
+let darkMode = localStorage.getItem('fikrcha_dark') === '1';
+let activeFilter = 'All';
+let aiMessages = [];
+let studioGrad = 0, studioFont = 0, studioSize = 'sm';
+let editingHabitIdx = null, schedType = 'daily', selectedDays = [];
+let quoteIndices = { en: 0, uz: 0, ru: 0 };
+let currentQuoteIdx = { en: 0, uz: 0, ru: 0 };
+let _recordingTimer = null, _mediaRecorder = null, _audioChunks = [], _voiceBlob = null;
+let _diaryImageData = null;
+let _calYear, _calMonth;
+let _pendingAiActions = null;
 
-function t(key){return ({
-  subtitle:{en:"think · grow · achieve",uz:"o'yla · o's · erish",ru:"думай · расти · достигай"},
-  habitsTab:{en:"📅 Habits",uz:"📅 Odatlar",ru:"📅 Привычки"},
-  studyTab:{en:"📚 Study",uz:"📚 O'qish",ru:"📚 Учеба"},
-  diaryTab:{en:"🧠 Diary",uz:"🧠 Kundalik",ru:"🧠 Дневник"},
-  statsTab:{en:"📊 Stats",uz:"📊 Statistika",ru:"📊 Статистика"},
-  aiTab:{en:"🤖 AI",uz:"🤖 AI",ru:"🤖 ИИ"},
-  habitsTitle:{en:"✨ Daily Habits Tracker",uz:"✨ Kunlik Odatlar",ru:"✨ Трекер Привычек"},
-  studyTitle:{en:"📖 Study Journal",uz:"📖 O'qish Jurnali",ru:"📖 Учебный Журнал"},
-  diaryTitle:{en:"🧠 Life Diary",uz:"🧠 Hayot Kundaligi",ru:"🧠 Жизненный Дневник"},
-  statsTitle:{en:"📊 Statistics",uz:"📊 Statistika",ru:"📊 Статистика"},
-  prevWeek:{en:"◀ Prev",uz:"◀ Oldingi",ru:"◀ Пред."},
-  nextWeek:{en:"Next ▶",uz:"Keyingi ▶",ru:"След. ▶"},
-  addHabit:{en:"➕ Add",uz:"➕ Qo'shish",ru:"➕ Добавить"},
-  addLesson:{en:"➕ Add Lesson",uz:"➕ Dars Qo'shish",ru:"➕ Добавить урок"},
-  saveEntry:{en:"💾 Save",uz:"💾 Saqlash",ru:"💾 Сохранить"},
-  recordVoice:{en:"🎤 Voice",uz:"🎤 Yozish",ru:"🎤 Записать"},
-  stopRecording:{en:"⏹ Stop",uz:"⏹ To'xtatish",ru:"⏹ Стоп"},
-  selectDate:{en:"Select a date",uz:"Sana tanlang",ru:"Выберите дату"},
-  entriesFor:{en:"📔 Entries for ",uz:"📔 Kirishlar: ",ru:"📔 Записи за "},
-  deleteHabit:{en:"Delete habit?",uz:"Odatni o'chirilsinmi?",ru:"Удалить привычку?"},
-  deleteLesson:{en:"Delete lesson?",uz:"Darsni o'chirilsinmi?",ru:"Удалить урок?"},
-  cancel:{en:"Cancel",uz:"Bekor",ru:"Отмена"},
-  save:{en:"Save",uz:"Saqlash",ru:"Сохранить"},
-  anytime:{en:"—",uz:"—",ru:"—"},
-  weekTitlePrefix:{en:"Week of ",uz:"Hafta: ",ru:"Неделя: "},
-  edit:{en:"✏️",uz:"✏️",ru:"✏️"},
-  delete:{en:"🗑️",uz:"🗑️",ru:"🗑️"},
-  streakLabel:{en:"day streak",uz:"kunlik ketma-ketlik",ru:"дней подряд"},
-  allFilter:{en:"All",uz:"Barchasi",ru:"Все"},
-  notifEnable:{en:"Enable notifications for habit reminders",uz:"Odat eslatmalari uchun bildirishnomalarni yoqing",ru:"Включить уведомления для напоминаний"},
-  chartTitle:{en:"📊 Last 7 Days",uz:"📊 So'nggi 7 kun",ru:"📊 Последние 7 дней"},
-  schedDaily:{en:"Daily",uz:"Har kuni",ru:"Каждый день"},
-  schedDays:{en:"Specific Days",uz:"Muayyan kunlar",ru:"Определённые дни"},
-  schedFreq:{en:"X times/week",uz:"Haftada X marta",ru:"X раз в неделю"},
-  habitPlaceholder:{en:"Habit name",uz:"Odat nomi",ru:"Привычка"},
-  lessonPlaceholder:{en:"New lesson/module",uz:"Yangi dars/modul",ru:"Новый урок/модуль"},
-  diaryPlaceholder:{en:"Write your day, feelings, memories...",uz:"Kuningiz, his-tuyg'ularingiz...",ru:"Пишите о своём дне..."},
-  searchPlaceholder:{en:"🔍 Search diary...",uz:"🔍 Qidirish...",ru:"🔍 Поиск..."},
-  days:{en:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],uz:["Du","Se","Ch","Pa","Ju","Sh","Ya"],ru:["Пн","Вт","Ср","Чт","Пт","Сб","Вс"]}
-}[key]?.[currentLang] || key);}
+// Apply dark mode on load
+if (darkMode) document.body.classList.add('dark');
 
-function setLanguage(lang){currentLang=lang;localStorage.setItem('fikrcha_lang',lang);applyLanguage();}
-function toggleDark(){darkMode=!darkMode;localStorage.setItem('fikrcha_dark',darkMode?'1':'0');document.body.classList.toggle('dark',darkMode);}
+function t(key) {
+  return ({
+    subtitle: { en: "think · grow · achieve", uz: "o'yla · o'sa · erish", ru: "думай · расти · достигай" },
+    habitsTitle: { en: "✨ Daily Habits Tracker", uz: "✨ Kunlik odatlar", ru: "✨ Ежедневные привычки" },
+    studyTitle: { en: "📖 Study Journal", uz: "📖 O'quv kundaligi", ru: "📖 Учебный дневник" },
+    diaryTitle: { en: "🧠 Life Diary", uz: "🧠 Hayot kundaligi", ru: "🧠 Дневник жизни" },
+    statsTitle: { en: "📊 Statistics", uz: "📊 Statistika", ru: "📊 Статистика" },
+    habitsTab: { en: "📅 Habits", uz: "📅 Odatlar", ru: "📅 Привычки" },
+    studyTab: { en: "📚 Study", uz: "📚 O'qish", ru: "📚 Учёба" },
+    diaryTab: { en: "🧠 Diary", uz: "🧠 Kundalik", ru: "🧠 Дневник" },
+    statsTab: { en: "📊 Stats", uz: "📊 Statistika", ru: "📊 Статистика" },
+    aiTab: { en: "🤖 AI", uz: "🤖 AI", ru: "🤖 ИИ" },
+    prevWeek: { en: "◀ Prev", uz: "◀ Oldingi", ru: "◀ Назад" },
+    nextWeek: { en: "Next ▶", uz: "Keyingi ▶", ru: "Вперёд ▶" },
+    addHabit: { en: "➕ Add Habit", uz: "➕ Odat qo'shish", ru: "➕ Добавить" },
+    addLesson: { en: "➕ Add Lesson", uz: "➕ Dars qo'shish", ru: "➕ Добавить урок" },
+    saveEntry: { en: "💾 Save", uz: "💾 Saqlash", ru: "💾 Сохранить" },
+    recordVoice: { en: "🎤 Voice", uz: "🎤 Ovoz", ru: "🎤 Голос" },
+    deleteHabit: { en: "Delete habit?", uz: "Odatni o'chirilsinmi?", ru: "Удалить привычку?" },
+    deleteLesson: { en: "Delete lesson?", uz: "Darsni o'chirilsinmi?", ru: "Удалить урок?" },
+    weekTitlePrefix: { en: "Week: ", uz: "Hafta: ", ru: "Неделя: " },
+    streakLabel: { en: "day streak", uz: "kunlik ketma-ketlik", ru: "дней подряд" },
+    allFilter: { en: "All", uz: "Barchasi", ru: "Все" },
+    notifEnable: { en: "Enable notifications for habit reminders", uz: "Odat eslatmalari uchun bildirishnomalarni yoqing", ru: "Включить уведомления" },
+    chartTitle: { en: "📊 Last 7 Days", uz: "📊 So'nggi 7 kun", ru: "📊 Последние 7 дней" },
+    schedDaily: { en: "Daily", uz: "Har kuni", ru: "Ежедневно" },
+    habitPlaceholder: { en: "Habit name", uz: "Odat nomi", ru: "Привычка" },
+    lessonPlaceholder: { en: "New lesson/module", uz: "Yangi dars/modul", ru: "Новый урок" },
+    diaryPlaceholder: { en: "Write your day, feelings, memories...", uz: "Kuningiz, his-tuyg'ularingiz...", ru: "Пишите о своём дне..." },
+    searchPlaceholder: { en: "🔍 Search diary...", uz: "🔍 Qidirish...", ru: "🔍 Поиск..." },
+    days: { en: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], uz: ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"], ru: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"] }
+  }[key]?.[currentLang] || key);
+}
 
-function applyLanguage(){
-  const s=(id,key)=>{const e=document.getElementById(id);if(e)e.textContent=t(key);};
-  const p=(id,key)=>{const e=document.getElementById(id);if(e)e.placeholder=t(key);};
-  s('appSubtitle','subtitle');s('habitsTitle','habitsTitle');s('studyTitle','studyTitle');
-  s('diaryTitleHeader','diaryTitle');s('statsTitle','statsTitle');
-  p('taskInput','habitPlaceholder');p('lessonInput','lessonPlaceholder');
-  p('diaryInput','diaryPlaceholder');p('diarySearch','searchPlaceholder');
-  s('nav-habits','habitsTab');s('nav-study','studyTab');s('nav-diary','diaryTab');
-  s('nav-stats','statsTab');s('nav-ai','aiTab');
-  s('btn-prev-week','prevWeek');s('btn-next-week','nextWeek');
-  s('btn-add-habit','addHabit');s('btn-add-lesson','addLesson');s('btn-save-diary','saveEntry');
-  s('chartTitle','chartTitle');
-  const vb=document.getElementById('voiceBtn');if(vb&&!vb.classList.contains('recording'))vb.textContent=t('recordVoice');
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-  const lb=document.getElementById('lang-'+currentLang);if(lb)lb.classList.add('active');
+function setLanguage(lang) { currentLang = lang; localStorage.setItem('fikrcha_lang', lang); applyLanguage(); }
+function toggleDark() { darkMode = !darkMode; localStorage.setItem('fikrcha_dark', darkMode ? '1' : '0'); document.body.classList.toggle('dark', darkMode); }
+
+function applyLanguage() {
+  const s = (id, key) => { const e = document.getElementById(id); if (e) e.textContent = t(key); };
+  const p = (id, key) => { const e = document.getElementById(id); if (e) e.placeholder = t(key); };
+  s('appSubtitle', 'subtitle'); s('habitsTitle', 'habitsTitle'); s('studyTitle', 'studyTitle');
+  s('diaryTitleHeader', 'diaryTitle'); s('statsTitle', 'statsTitle');
+  p('lessonInput', 'lessonPlaceholder'); p('diaryInput', 'diaryPlaceholder'); p('diarySearch', 'searchPlaceholder');
+  s('nav-habits', 'habitsTab'); s('nav-study', 'studyTab'); s('nav-diary', 'diaryTab');
+  s('nav-stats', 'statsTab'); s('nav-ai', 'aiTab');
+  s('btn-prev-week', 'prevWeek'); s('btn-next-week', 'nextWeek');
+  s('btn-add-habit', 'addHabit'); s('btn-add-lesson', 'addLesson'); s('btn-save-diary', 'saveEntry');
+  s('chartTitle', 'chartTitle');
+  const vb = document.getElementById('voiceBtn'); if (vb && !vb.classList.contains('recording')) vb.textContent = t('recordVoice');
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const lb = document.getElementById('lang-' + currentLang); if (lb) lb.classList.add('active');
   refreshQuote();
   renderFilterRow();
-  if(document.getElementById('habitPage')?.style.display!=='none')render();
-  if(document.getElementById('diaryPage')?.style.display!=='none'){renderCalendar();renderDiary();}
-  if(document.getElementById('statsPage')?.style.display!=='none')renderStats();
+  if (document.getElementById('habitPage')?.style.display !== 'none') render();
+  if (document.getElementById('diaryPage')?.style.display !== 'none') { renderCalendar(); renderDiary(); }
+  if (document.getElementById('statsPage')?.style.display !== 'none') renderStats();
 }
 
-function showPage(id){
-  ["habitPage","studyPage","diaryPage","statsPage","aiPage"].forEach(p=>document.getElementById(p).style.display="none");
-  document.getElementById(id).style.display="block";
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  const m={habitPage:"nav-habits",studyPage:"nav-study",diaryPage:"nav-diary",statsPage:"nav-stats",aiPage:"nav-ai"};
-  const n=document.getElementById(m[id]);if(n)n.classList.add("active");
+function showPage(id) {
+  ["habitPage", "studyPage", "diaryPage", "statsPage", "aiPage"].forEach(p => document.getElementById(p).style.display = "none");
+  document.getElementById(id).style.display = "block";
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  const m = { habitPage: "nav-habits", studyPage: "nav-study", diaryPage: "nav-diary", statsPage: "nav-stats", aiPage: "nav-ai" };
+  const n = document.getElementById(m[id]); if (n) n.classList.add("active");
   applyLanguage();
-  if(id==='diaryPage'){renderCalendar();renderDiary();}
-  if(id==='statsPage')renderStats();
+  if (id === 'diaryPage') { renderCalendar(); renderDiary(); }
+  if (id === 'statsPage') renderStats();
 }
 
-// ========== QUOTES ==========
-function refreshQuote(){
-  const qs=QUOTES[currentLang]||QUOTES.en;
-  const idx=Math.floor(Math.random()*qs.length);
-  currentQuoteIdx[currentLang]=idx;
-  const q=qs[idx];
-  document.getElementById('quoteText').textContent=`"${q.t}"`;
-  document.getElementById('quoteAuthor').textContent=`— ${q.a}`;
-  const card=document.getElementById('quoteCard');
-  card.style.opacity='0.6';setTimeout(()=>{card.style.opacity='1';},200);
+// ========== QUOTES — SEQUENTIAL ==========
+function refreshQuote() {
+  const qs = QUOTES[currentLang] || QUOTES.en;
+  quoteIndices[currentLang] = ((quoteIndices[currentLang] || 0) + 1) % qs.length;
+  const idx = quoteIndices[currentLang];
+  currentQuoteIdx[currentLang] = idx;
+  const q = qs[idx];
+  document.getElementById('quoteText').textContent = `"${q.t}"`;
+  document.getElementById('quoteAuthor').textContent = `— ${q.a}`;
+  const counter = document.getElementById('quoteCounter');
+  if (counter) counter.textContent = `${idx + 1}/${qs.length}`;
+  const card = document.getElementById('quoteCard');
+  card.style.opacity = '0.6'; setTimeout(() => { card.style.opacity = '1'; }, 200);
+  updateStudioFromCurrent();
+}
+
+function initQuote() {
+  const qs = QUOTES[currentLang] || QUOTES.en;
+  const idx = quoteIndices[currentLang] || 0;
+  const q = qs[idx];
+  document.getElementById('quoteText').textContent = `"${q.t}"`;
+  document.getElementById('quoteAuthor').textContent = `— ${q.a}`;
+  const counter = document.getElementById('quoteCounter');
+  if (counter) counter.textContent = `${idx + 1}/${qs.length}`;
   updateStudioFromCurrent();
 }
 
 // ========== STUDIO ==========
-const GRADIENTS=[
-  {bg:'linear-gradient(135deg,#667eea,#764ba2)',tc:'#fff',label:'Purple'},
-  {bg:'linear-gradient(135deg,#f093fb,#f5576c)',tc:'#fff',label:'Pink'},
-  {bg:'linear-gradient(135deg,#4facfe,#00f2fe)',tc:'#fff',label:'Sky'},
-  {bg:'linear-gradient(135deg,#43e97b,#38f9d7)',tc:'#fff',label:'Mint'},
-  {bg:'linear-gradient(135deg,#fa709a,#fee140)',tc:'#fff',label:'Sunset'},
-  {bg:'linear-gradient(135deg,#30cfd0,#330867)',tc:'#fff',label:'Deep'},
-  {bg:'linear-gradient(135deg,#a18cd1,#fbc2eb)',tc:'#333',label:'Lavender'},
-  {bg:'linear-gradient(135deg,#ffecd2,#fcb69f)',tc:'#333',label:'Peach'},
-  {bg:'linear-gradient(135deg,#2d3748,#1a202c)',tc:'#fff',label:'Dark'},
-  {bg:'linear-gradient(135deg,#fff,#f0f4ff)',tc:'#333',label:'White'}
+const GRADIENTS = [
+  { bg: 'linear-gradient(135deg,#667eea,#764ba2)', tc: '#fff', label: 'Purple' },
+  { bg: 'linear-gradient(135deg,#f093fb,#f5576c)', tc: '#fff', label: 'Pink' },
+  { bg: 'linear-gradient(135deg,#4facfe,#00f2fe)', tc: '#fff', label: 'Sky' },
+  { bg: 'linear-gradient(135deg,#43e97b,#38f9d7)', tc: '#fff', label: 'Mint' },
+  { bg: 'linear-gradient(135deg,#fa709a,#fee140)', tc: '#fff', label: 'Sunset' },
+  { bg: 'linear-gradient(135deg,#30cfd0,#330867)', tc: '#fff', label: 'Deep' },
+  { bg: 'linear-gradient(135deg,#a18cd1,#fbc2eb)', tc: '#333', label: 'Lavender' },
+  { bg: 'linear-gradient(135deg,#ffecd2,#fcb69f)', tc: '#333', label: 'Peach' },
+  { bg: 'linear-gradient(135deg,#2d3748,#1a202c)', tc: '#fff', label: 'Dark' },
+  { bg: 'linear-gradient(135deg,#fff,#f0f4ff)', tc: '#333', label: 'White' }
 ];
-const FONTS=[
-  {family:'"Segoe UI",sans-serif',label:'Modern'},
-  {family:'Georgia,serif',label:'Classic'},
-  {family:'"Courier New",monospace',label:'Mono'},
-  {family:'Impact,sans-serif',label:'Bold'},
-  {family:'"Times New Roman",serif',label:'Elegant'}
+const FONTS = [
+  { family: '"Segoe UI",sans-serif', label: 'Modern' },
+  { family: 'Georgia,serif', label: 'Classic' },
+  { family: '"Courier New",monospace', label: 'Mono' },
+  { family: 'Impact,sans-serif', label: 'Bold' },
+  { family: '"Times New Roman",serif', label: 'Elegant' }
 ];
 
-function openStudio(){
-  buildStudioControls();
-  updateStudioFromCurrent();
-  document.getElementById('studioModal').style.display='flex';
-}
-function closeStudio(){document.getElementById('studioModal').style.display='none';}
+function openStudio() { buildStudioControls(); updateStudioFromCurrent(); document.getElementById('studioModal').style.display = 'flex'; }
+function closeStudio() { document.getElementById('studioModal').style.display = 'none'; }
 
-function buildStudioControls(){
-  const gp=document.getElementById('gradientPicker');
-  gp.innerHTML=GRADIENTS.map((g,i)=>`<div class="studio-swatch ${i===studioGrad?'active':''}" style="background:${g.bg};" onclick="setGrad(${i})" title="${g.label}"></div>`).join('');
-  const fp=document.getElementById('fontPicker');
-  fp.innerHTML=FONTS.map((f,i)=>`<button class="studio-font-btn ${i===studioFont?'active':''}" style="font-family:${f.family}" onclick="setFont(${i})">${f.label}</button>`).join('');
+function buildStudioControls() {
+  const gp = document.getElementById('gradientPicker');
+  gp.innerHTML = GRADIENTS.map((g, i) => `<div class="studio-swatch ${i === studioGrad ? 'active' : ''}" style="background:${g.bg};" onclick="setGrad(${i})" title="${g.label}"></div>`).join('');
+  const fp = document.getElementById('fontPicker');
+  fp.innerHTML = FONTS.map((f, i) => `<button class="studio-font-btn ${i === studioFont ? 'active' : ''}" style="font-family:${f.family}" onclick="setFont(${i})">${f.label}</button>`).join('');
 }
-function setGrad(i){studioGrad=i;buildStudioControls();applyStudio();}
-function setFont(i){studioFont=i;buildStudioControls();applyStudio();}
-function setSize(s){
-  studioSize=s;
-  ['sm','md','lg'].forEach(x=>{document.getElementById('size-'+x)?.classList.remove('active');});
-  document.getElementById('size-'+s)?.classList.add('active');
+function setGrad(i) { studioGrad = i; buildStudioControls(); applyStudio(); }
+function setFont(i) { studioFont = i; buildStudioControls(); applyStudio(); }
+function setSize(s) {
+  studioSize = s;
+  ['sm', 'md', 'lg'].forEach(x => { document.getElementById('size-' + x)?.classList.remove('active'); });
+  document.getElementById('size-' + s)?.classList.add('active');
   applyStudio();
 }
-function applyStudio(){
-  const g=GRADIENTS[studioGrad];const f=FONTS[studioFont];
-  const sizes={sm:'1rem',md:'1.2rem',lg:'1.5rem'};
-  const inner=document.getElementById('studioInner');
-  const preview=document.getElementById('studioPreview');
-  preview.style.background=g.bg;
-  inner.style.fontFamily=f.family;
-  inner.style.color=g.tc;
-  document.getElementById('studioQuoteText').style.fontSize=sizes[studioSize];
+function applyStudio() {
+  const g = GRADIENTS[studioGrad]; const f = FONTS[studioFont];
+  const sizes = { sm: '1rem', md: '1.2rem', lg: '1.5rem' };
+  const inner = document.getElementById('studioInner');
+  const preview = document.getElementById('studioPreview');
+  preview.style.background = g.bg;
+  inner.style.fontFamily = f.family;
+  inner.style.color = g.tc;
+  document.getElementById('studioQuoteText').style.fontSize = sizes[studioSize];
 }
-function updateStudioFromCurrent(){
-  const qs=QUOTES[currentLang]||QUOTES.en;
-  const q=qs[currentQuoteIdx[currentLang]||0];
-  if(!q)return;
-  const qEl=document.getElementById('studioQuoteText');
-  const aEl=document.getElementById('studioQuoteAuthor');
-  const uEl=document.getElementById('studioUserName');
-  if(qEl)qEl.textContent=`"${q.t}"`;
-  if(aEl)aEl.textContent=`— ${q.a}`;
-  if(uEl){
-    const name=window._profileName||'';
-    uEl.textContent=name?`👤 ${name}`:'';
-    uEl.style.display=name?'block':'none';
+function updateStudioFromCurrent() {
+  const qs = QUOTES[currentLang] || QUOTES.en;
+  const q = qs[currentQuoteIdx[currentLang] || 0];
+  if (!q) return;
+  const qEl = document.getElementById('studioQuoteText');
+  const aEl = document.getElementById('studioQuoteAuthor');
+  const uEl = document.getElementById('studioUserName');
+  if (qEl) qEl.textContent = `"${q.t}"`;
+  if (aEl) aEl.textContent = `— ${q.a}`;
+  if (uEl) {
+    const name = window._profileName || '';
+    uEl.textContent = name ? `👤 ${name}` : '';
+    uEl.style.display = name ? 'block' : 'none';
   }
-  const editEl=document.getElementById('studioEditText');
-  if(editEl)editEl.value=q.t;
+  const editEl = document.getElementById('studioEditText');
+  if (editEl) editEl.value = q.t;
   applyStudio();
 }
-function updateStudioText(){
-  const v=document.getElementById('studioEditText').value;
-  document.getElementById('studioQuoteText').textContent=`"${v}"`;
+function updateStudioText() {
+  const v = document.getElementById('studioEditText').value;
+  document.getElementById('studioQuoteText').textContent = `"${v}"`;
 }
-function refreshStudioQuote(){
-  refreshQuote();
-  updateStudioFromCurrent();
-}
-function downloadStory(){
-  const preview=document.getElementById('studioInner');
-  alert('📸 Screenshot your screen now!\n\nTip: On iPhone press Side+Volume Up. On Android press Power+Volume Down.\n\nThe story card is displayed. Take a screenshot now, then press OK.');
-}
-// Load profile name for studio
-async function loadProfileName(){
-  try{const u=await fetch('/api/user').then(r=>r.json());if(u&&u.name)window._profileName=u.name;}catch(e){}
+function refreshStudioQuote() { refreshQuote(); updateStudioFromCurrent(); }
+async function downloadStory() {
+  const preview = document.getElementById('studioPreview');
+  if (typeof html2canvas === "undefined") {
+    alert('📸 Take a screenshot!\niPhone: Side+Volume Up\nAndroid: Power+Volume Down');
+    return;
+  }
+  try {
+    const canvas = await html2canvas(preview, { scale: 2, useCORS: true });
+    const link = document.createElement("a");
+    link.download = "fikrcha_story.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch (err) {
+    alert('📸 Please take a screenshot to save!');
+  }
 }
 
-// ========== REAL AI CHAT ==========
-async function sendAiMessage(){
-  const input=document.getElementById('aiInput');
-  const msg=input.value.trim();
-  if(!msg)return;
-  input.value='';
-  appendChat('user',msg);
-  const typingId='typing-'+Date.now();
+// ========== STORY OVERLAY ==========
+let storyBgIdx = 0, storyFontIdx = 0, storySizeIdx = 0;
+const storyBgs = ['linear-gradient(135deg,#667eea 0%,#764ba2 100%)', 'linear-gradient(135deg,#0f0c29,#302b63,#24243e)', 'linear-gradient(135deg,#ff9a9e,#fad0c4)', 'linear-gradient(135deg,#a18cd1,#fbc2eb)', 'linear-gradient(135deg,#84fab0,#8fd3f4)', 'linear-gradient(135deg,#fccb90,#d57eeb)', 'linear-gradient(135deg,#2c3e50,#4ca1af)', 'linear-gradient(135deg,#c94b4b,#4b134f)'];
+const storyFonts = ['"Segoe UI",sans-serif', 'Georgia,serif', '"Courier New",monospace'];
+const storySizes = ['1.6rem', '2rem', '2.4rem', '2.8rem'];
+
+function openStoryOverlay() {
+  const q = document.getElementById("quoteText").textContent;
+  const a = document.getElementById("quoteAuthor").textContent;
+  // Show real user name (telegram name)
+  const name = window._profileName || '';
+  const sq = document.getElementById("storyQuote");
+  const sa = document.getElementById("storyAuthor");
+  if (!sq || !sa) return;
+  sq.textContent = q; sq.contentEditable = "true";
+  sa.textContent = a; sa.contentEditable = "true";
+  const tg = document.getElementById("storyTg");
+  if (tg) { tg.textContent = name ? `— ${name}` : ''; tg.style.display = name ? 'block' : 'none'; }
+  storyBgIdx = 0; storyFontIdx = 0; storySizeIdx = 0; applyStoryStyles();
+  document.getElementById("storyOverlay").style.display = "flex";
+}
+function closeStory() {
+  document.getElementById("storyOverlay").style.display = "none";
+  const sq = document.getElementById("storyQuote"); const sa = document.getElementById("storyAuthor");
+  if (sq) sq.contentEditable = "false"; if (sa) sa.contentEditable = "false";
+}
+function applyStoryStyles() {
+  const ol = document.getElementById("storyOverlay"); if (!ol) return;
+  ol.style.background = storyBgs[storyBgIdx];
+  const sq = document.getElementById("storyQuote");
+  if (sq) { sq.style.fontFamily = storyFonts[storyFontIdx]; sq.style.fontSize = storySizes[storySizeIdx]; }
+}
+function cycleBg() { storyBgIdx = (storyBgIdx + 1) % storyBgs.length; applyStoryStyles(); }
+function cycleFont() { storyFontIdx = (storyFontIdx + 1) % storyFonts.length; applyStoryStyles(); }
+function cycleSize() { storySizeIdx = (storySizeIdx + 1) % storySizes.length; applyStoryStyles(); }
+async function saveStoryToGallery() {
+  if (typeof html2canvas === "undefined") { alert("Take a screenshot!\niPhone: Side+Volume Up\nAndroid: Power+Volume Down"); return; }
+  const sq = document.getElementById("storyQuote"), sa = document.getElementById("storyAuthor");
+  const qe = sq.contentEditable, ae = sa.contentEditable;
+  sq.contentEditable = "false"; sa.contentEditable = "false";
+  try {
+    const canvas = await html2canvas(document.getElementById("storyOverlay"), { scale: 2, useCORS: true });
+    const link = document.createElement("a"); link.download = "fikrcha_story.png"; link.href = canvas.toDataURL("image/png"); link.click();
+  } catch (err) { alert("Screenshot to save!"); }
+  sq.contentEditable = qe; sa.contentEditable = ae;
+}
+
+// ========== AI CHAT ==========
+function buildUserContext() {
+  const todayStr = today();
+  const todayDone = tasks.filter(t => t.history[todayStr]).length;
+  const todayScheduled = tasks.filter(t => isScheduledForDate(t, todayStr)).length;
+  const avgC = tasks.length ? Math.round(tasks.reduce((s, t) => s + getConsistency30(t), 0) / tasks.length) : 0;
+  const topHabits = tasks.slice(0, 5).map(t => `${t.text}(${getConsistency30(t)}%)`).join(', ');
+  const missedToday = tasks.filter(t => isScheduledForDate(t, todayStr) && !t.history[todayStr]).map(t => t.text).join(', ');
+  return `Habits: ${tasks.length} total, ${todayDone}/${todayScheduled} done today, missed: ${missedToday || 'none'}, avg consistency: ${avgC}%. Top: ${topHabits || 'none'}. Lessons: ${lessons.length}. Diary entries: ${Object.values(diaries).flat().length}. Language: ${currentLang}.`;
+}
+
+async function sendAiMessage() {
+  const input = document.getElementById('aiInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  appendChat('user', msg);
+  const typingId = 'typing-' + Date.now();
   appendTyping(typingId);
-  // Build context string from user's data
-  const ctx=buildUserContext();
-  const systemPrompt=`You are FIKRCHA AI, a smart personal productivity assistant built into the FIKRCHA app. You help users with habits, study, diary, motivation, and productivity.
 
-The user's current data:
-${ctx}
+  // Detect intent for adding habits/study/diary
+  const lmsg = msg.toLowerCase();
+  const isAddHabit = /add.*(habit|routine|practice)|new habit|odat qo'sh|добав.*привычк/i.test(msg);
+  const isAddLesson = /add.*(lesson|study|module|topic)|new lesson|dars qo'sh|добав.*урок/i.test(msg);
+  const isAddDiary = /add.*(diary|note|journal)|write.*diary|kundalik|добав.*дневник/i.test(msg);
 
-Respond naturally, warmly and helpfully. Be concise but thorough. Use emojis occasionally to make responses engaging. Support Uzbek, English, and Russian — respond in the same language the user writes in. If the user asks about their data, reference the specific numbers above. Keep responses under 300 words unless detailed analysis is requested.`;
-  try{
-    const res=await fetch('/api/ai-chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:msg,system:systemPrompt,history:aiMessages.slice(-10)})
+  const ctx = buildUserContext();
+  let systemPrompt = `You are FIKRCHA AI, a productivity assistant. Be concise — max 60 words. Give direct, specific answers. No filler phrases. Support Uzbek, English, Russian — respond in user's language.
+
+User data: ${ctx}`;
+
+  if (isAddHabit) {
+    systemPrompt += `\n\nThe user wants to add a habit. Extract the habit name and suggested time from their message. Reply confirming what you'll add. Format your response ending with: [ADD_HABIT: name="<name>", time="<HH:MM or empty>", category="<Health/Study/Exercise/Work/Mind/Social/Growth>"]`;
+  } else if (isAddLesson) {
+    systemPrompt += `\n\nThe user wants to add a study lesson. Extract the lesson title. Reply confirming. Format: [ADD_LESSON: title="<title>"]`;
+  } else if (isAddDiary) {
+    systemPrompt += `\n\nThe user wants to add a diary entry. Format: [ADD_DIARY: text="<text>"]`;
+  }
+
+  try {
+    const res = await fetch('/api/ai-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, system: systemPrompt, history: aiMessages.slice(-6) })
     });
     removeTyping(typingId);
-    if(res.ok){
-      const data=await res.json();
-      const reply=data.reply||"Sorry, I couldn't respond right now.";
-      appendChat('ai',reply);
-      aiMessages.push({role:'user',content:msg},{role:'assistant',content:reply});
-      if(aiMessages.length>20)aiMessages=aiMessages.slice(-20);
+    if (res.ok) {
+      const data = await res.json();
+      let reply = data.reply || "Sorry, I couldn't respond right now.";
+
+      // Check for action tags
+      const habitMatch = reply.match(/\[ADD_HABIT:\s*name="([^"]+)",\s*time="([^"]*)",\s*category="([^"]*)"\]/);
+      const lessonMatch = reply.match(/\[ADD_LESSON:\s*title="([^"]+)"\]/);
+      const diaryMatch = reply.match(/\[ADD_DIARY:\s*text="([^"]+)"\]/);
+
+      // Remove tag from display
+      const displayReply = reply.replace(/\[ADD_HABIT:[^\]]+\]/, '').replace(/\[ADD_LESSON:[^\]]+\]/, '').replace(/\[ADD_DIARY:[^\]]+\]/, '').trim();
+      appendChat('ai', displayReply);
+      aiMessages.push({ role: 'user', content: msg }, { role: 'assistant', content: displayReply });
+      if (aiMessages.length > 20) aiMessages = aiMessages.slice(-20);
+
+      // Show action bar if detected
+      if (habitMatch) {
+        showAiAction('habit', { name: habitMatch[1], time: habitMatch[2], category: habitMatch[3] || 'Health' });
+      } else if (lessonMatch) {
+        showAiAction('lesson', { title: lessonMatch[1] });
+      } else if (diaryMatch) {
+        showAiAction('diary', { text: diaryMatch[1] });
+      }
     } else {
-      appendChat('ai','⚠️ Server error. Please try again.');
+      removeTyping(typingId);
+      appendChat('ai', '⚠️ Server error. Please try again.');
     }
-  }catch(e){
+  } catch (e) {
     removeTyping(typingId);
-    appendChat('ai','⚠️ Connection error. Check your internet and try again.');
+    appendChat('ai', '⚠️ Connection error. Check your internet.');
   }
 }
-function sendChip(text){document.getElementById('aiInput').value=text;sendAiMessage();}
-function appendChat(role,text){
-  const chat=document.getElementById('aiChat');
-  const div=document.createElement('div');
-  div.className=role==='user'?'user-msg':'ai-msg';
-  div.innerHTML=text.replace(/\n/g,'<br>');
+
+function showAiAction(type, data) {
+  _pendingAiActions = { type, data };
+  const bar = document.getElementById('aiActionBar');
+  const title = document.getElementById('aiActionTitle');
+  const btns = document.getElementById('aiActionBtns');
+  bar.style.display = 'flex';
+
+  if (type === 'habit') {
+    title.textContent = `Add habit to your tracker?`;
+    btns.innerHTML = `<button class="ai-action-btn" onclick="confirmAiAction()">✅ Add "${escapeHtml(data.name)}"${data.time ? ' at ' + data.time : ''}</button>`;
+  } else if (type === 'lesson') {
+    title.textContent = `Add lesson to Study Journal?`;
+    btns.innerHTML = `<button class="ai-action-btn" onclick="confirmAiAction()">📚 Add lesson "${escapeHtml(data.title)}"</button>`;
+  } else if (type === 'diary') {
+    title.textContent = `Save to Diary?`;
+    btns.innerHTML = `<button class="ai-action-btn" onclick="confirmAiAction()">📔 Save entry</button>`;
+  }
+}
+
+async function confirmAiAction() {
+  if (!_pendingAiActions) return;
+  const { type, data } = _pendingAiActions;
+  dismissAiAction();
+  if (type === 'habit') {
+    await api("POST", "/api/habits", { name: data.name, time: data.time || '', category: data.category || 'Health', schedule: { type: 'daily', days: [], onceDates: [] } });
+    await loadAll();
+    appendChat('ai', `✅ Habit "${data.name}" added to your tracker!`);
+  } else if (type === 'lesson') {
+    await api("POST", "/api/studies", { title: data.title });
+    await loadAll();
+    appendChat('ai', `📚 Lesson "${data.title}" added to your Study Journal!`);
+  } else if (type === 'diary') {
+    await api("POST", "/api/diaries", { date: today(), entry: data.text });
+    await loadAll();
+    appendChat('ai', `📔 Diary entry saved!`);
+  }
+}
+
+function dismissAiAction() {
+  _pendingAiActions = null;
+  const bar = document.getElementById('aiActionBar');
+  if (bar) bar.style.display = 'none';
+}
+
+function sendChip(text) { document.getElementById('aiInput').value = text; sendAiMessage(); }
+function appendChat(role, text) {
+  const chat = document.getElementById('aiChat');
+  const div = document.createElement('div');
+  div.className = role === 'user' ? 'user-msg' : 'ai-msg';
+  div.innerHTML = text.replace(/\n/g, '<br>');
   chat.appendChild(div);
-  chat.scrollTop=chat.scrollHeight;
+  chat.scrollTop = chat.scrollHeight;
 }
-function appendTyping(id){
-  const chat=document.getElementById('aiChat');
-  const div=document.createElement('div');
-  div.className='ai-msg';div.id=id;
-  div.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
+function appendTyping(id) {
+  const chat = document.getElementById('aiChat');
+  const div = document.createElement('div');
+  div.className = 'ai-msg'; div.id = id;
+  div.innerHTML = '<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  chat.appendChild(div); chat.scrollTop = chat.scrollHeight;
 }
-function removeTyping(id){document.getElementById(id)?.remove();}
-function buildUserContext(){
-  const todayStr=today();
-  const todayDone=tasks.filter(t=>t.history[todayStr]).length;
-  const todayScheduled=tasks.filter(t=>isScheduledForDate(t,todayStr)).length;
-  const avgC=tasks.length?Math.round(tasks.reduce((s,t)=>s+getConsistency30(t),0)/tasks.length):0;
-  const topHabits=tasks.slice(0,5).map(t=>`${t.text}(${getConsistency30(t)}%)`).join(', ');
-  const missedToday=tasks.filter(t=>isScheduledForDate(t,todayStr)&&!t.history[todayStr]).map(t=>t.text).join(', ');
-  return `- Total habits: ${tasks.length}
-- Today done: ${todayDone}/${todayScheduled}
-- Missed today: ${missedToday||'none'}
-- 30-day avg consistency: ${avgC}%
-- Top habits: ${topHabits||'none yet'}
-- Lessons/modules: ${lessons.length}
-- Diary entries: ${Object.values(diaries).flat().length}
-- Language: ${currentLang}`;
-}
-
-// ========== AI BACKEND ROUTE (add to index.js) ==========
-// PUT THIS IN YOUR index.js:
-// const Anthropic = require('@anthropic-ai/sdk');
-// const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-// app.post('/api/ai-chat', async (req, res) => {
-//   const { message, system, history } = req.body;
-//   const messages = [...(history||[]), { role: 'user', content: message }];
-//   const response = await anthropic.messages.create({ model: 'claude-sonnet-4-20250514', max_tokens: 1024, system, messages });
-//   res.json({ reply: response.content[0].text });
-// });
-
-
-// ========== STORY ==========
-let storyBgIdx=0,storyFontIdx=0,storySizeIdx=0;
-const storyBgs=['linear-gradient(135deg,#667eea 0%,#764ba2 100%)','linear-gradient(135deg,#0f0c29,#302b63,#24243e)','linear-gradient(135deg,#ff9a9e,#fad0c4)','linear-gradient(135deg,#a18cd1,#fbc2eb)','linear-gradient(135deg,#84fab0,#8fd3f4)','linear-gradient(135deg,#fccb90,#d57eeb)','linear-gradient(135deg,#2c3e50,#4ca1af)','linear-gradient(135deg,#c94b4b,#4b134f)'];
-const storyFonts=['"Segoe UI",sans-serif','Georgia,serif','"Courier New",monospace'];
-const storySizes=['1.6rem','2rem','2.4rem','2.8rem'];
-function openStory(){
-  var q=document.getElementById("quoteText").textContent;
-  var a=document.getElementById("quoteAuthor").textContent;
-  var rn=window._profileName||"";
-  var sq=document.getElementById("storyQuote");
-  var sa=document.getElementById("storyAuthor");
-  if(!sq||!sa)return;
-  sq.textContent=q;sq.contentEditable="true";
-  sa.textContent=a;sa.contentEditable="true";
-  var tg=document.getElementById("storyTg");
-  if(tg){tg.textContent=rn;tg.style.display=rn?"block":"none";}
-  storyBgIdx=0;storyFontIdx=0;storySizeIdx=0;applyStoryStyles();
-  document.getElementById("storyOverlay").style.display="flex";
-}
-function closeStory(){
-  document.getElementById("storyOverlay").style.display="none";
-  var sq=document.getElementById("storyQuote");
-  var sa=document.getElementById("storyAuthor");
-  if(sq)sq.contentEditable="false";
-  if(sa)sa.contentEditable="false";
-}
-function applyStoryStyles(){
-  var ol=document.getElementById("storyOverlay");
-  if(!ol)return;
-  ol.style.background=storyBgs[storyBgIdx];
-  var sq=document.getElementById("storyQuote");
-  if(sq){sq.style.fontFamily=storyFonts[storyFontIdx];sq.style.fontSize=storySizes[storySizeIdx];}
-}
-function cycleBg(){storyBgIdx=(storyBgIdx+1)%storyBgs.length;applyStoryStyles();}
-function cycleFont(){storyFontIdx=(storyFontIdx+1)%storyFonts.length;applyStoryStyles();}
-function cycleSize(){storySizeIdx=(storySizeIdx+1)%storySizes.length;applyStoryStyles();}
-async function saveStoryToGallery(){
-  if(typeof html2canvas==="undefined"){alert("Take a screenshot!\niPhone: Side+Volume Up\nAndroid: Power+Volume Down");return;}
-  var sq=document.getElementById("storyQuote"),sa=document.getElementById("storyAuthor");
-  var qe=sq.contentEditable,ae=sa.contentEditable;
-  sq.contentEditable="false";sa.contentEditable="false";
-  try{
-    var canvas=await html2canvas(document.getElementById("storyOverlay"),{scale:2,useCORS:true});
-    var link=document.createElement("a");link.download="fikrcha_story.png";link.href=canvas.toDataURL("image/png");link.click();
-  }catch(err){alert("Screenshot to save!");}
-  sq.contentEditable=qe;sa.contentEditable=ae;
-}
-
-let dragSrcIdx2=null;
-function dragStart(e,i){dragSrcIdx2=i;e.target.style.opacity="0.4";}
-function dragOver(e){e.preventDefault();e.currentTarget.style.borderTop="2px solid #667eea";}
-function dragLeave(e){e.currentTarget.style.borderTop="";}
-async function dropHabit(e,targetIdx){
-  e.preventDefault();
-  document.querySelectorAll("tr").forEach(r=>{r.style.borderTop="";r.style.opacity="";});
-  if(dragSrcIdx2===null||dragSrcIdx2===targetIdx){dragSrcIdx2=null;return;}
-  var moved=tasks.splice(dragSrcIdx2,1)[0];
-  tasks.splice(targetIdx,0,moved);
-  dragSrcIdx2=null;render();
-  for(var k=0;k<tasks.length;k++)await api("PUT","/api/habits/"+tasks[k].id,{name:tasks[k].text,time:tasks[k].time,category:tasks[k].category,history:tasks[k].history,schedule:tasks[k].schedule});
-}
+function removeTyping(id) { document.getElementById(id)?.remove(); }
 
 // ========== DATA ==========
-let tasks=[],lessons=[],diaries={};
-async function api(method,url,body){
-  const opts={method,headers:{"Content-Type":"application/json"}};
-  if(body)opts.body=JSON.stringify(body);
-  try{const res=await fetch(url,opts);return res.json();}catch(e){return null;}
+let tasks = [], lessons = [], diaries = {};
+async function api(method, url, body) {
+  const opts = { method, headers: { "Content-Type": "application/json" } };
+  if (body) opts.body = JSON.stringify(body);
+  try { const res = await fetch(url, opts); return res.json(); } catch (e) { return null; }
 }
-async function loadAll(){
-  const user=await api("GET","/api/user");
-  if(!user||user.error){console.warn("Not logged in");return;}
-  window._profileName=user.name||'';
-  window._profileName=user.name||'';const [hd,sd,dd]=await Promise.all([api("GET","/api/habits"),api("GET","/api/studies"),api("GET","/api/diaries")]);
-  if(Array.isArray(hd))tasks=hd.map(h=>({id:h.id,text:h.name,time:h.time||"",category:h.category||"",history:h.history||{},schedule:h.schedule||{type:'daily',days:[],freq:7}}));
-  if(Array.isArray(sd))lessons=sd;
-  if(Array.isArray(dd)){diaries={};dd.forEach(d=>{if(!diaries[d.date])diaries[d.date]=[];diaries[d.date].push({id:d.id,text:d.entry,time:d.time,image:d.image||null,voice:d.voice||null});});}
-  render();renderLessons();applyLanguage();
-  if(window.Telegram?.WebApp?.initDataUnsafe?.user?.id)api("POST","/api/link-telegram",{telegramId:window.Telegram.WebApp.initDataUnsafe.user.id}).catch(()=>{});
+async function loadAll() {
+  const user = await api("GET", "/api/user");
+  if (!user || user.error) { console.warn("Not logged in"); return; }
+  window._profileName = user.name || '';
+  window._telegramName = user.name || '';
+  const [hd, sd, dd] = await Promise.all([api("GET", "/api/habits"), api("GET", "/api/studies"), api("GET", "/api/diaries")]);
+  if (Array.isArray(hd)) tasks = hd.map(h => ({ id: h.id, text: h.name, time: h.time || "", category: h.category || "", history: h.history || {}, schedule: h.schedule || { type: 'daily', days: [], onceDates: [] } }));
+  if (Array.isArray(sd)) lessons = sd;
+  if (Array.isArray(dd)) { diaries = {}; dd.forEach(d => { if (!diaries[d.date]) diaries[d.date] = []; diaries[d.date].push({ id: d.id, text: d.entry, time: d.time, image: d.image || null, voice: d.voice || null }); }); }
+  render(); renderLessons(); applyLanguage();
+  if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+    const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
+    api("POST", "/api/link-telegram", { telegramId: tgUser.id, telegramUsername: tgUser.username || '' }).catch(() => {});
+  }
   checkNotificationPrompt();
 }
-const categories=[{name:"Study",color:"#dbeafe"},{name:"Health",color:"#dcfce7"},{name:"Exercise",color:"#fef9c3"},{name:"Work",color:"#ffedd5"},{name:"Mind",color:"#f3e8ff"},{name:"Social",color:"#fce7f3"},{name:"Growth",color:"#d1fae5"}];
-const categoryInput=document.getElementById("categoryInput");
-categories.forEach(c=>{categoryInput.innerHTML+=`<option>${c.name}</option>`;});
-function populateModalCats(){const ms=document.getElementById('modalHabitCat');if(!ms)return;ms.innerHTML='';categories.forEach(c=>{ms.innerHTML+=`<option>${c.name}</option>`;});}
+
+const categories = [{ name: "Study", color: "#dbeafe" }, { name: "Health", color: "#dcfce7" }, { name: "Exercise", color: "#fef9c3" }, { name: "Work", color: "#ffedd5" }, { name: "Mind", color: "#f3e8ff" }, { name: "Social", color: "#fce7f3" }, { name: "Growth", color: "#d1fae5" }];
+function populateModalCats() {
+  const ms = document.getElementById('modalHabitCat'); if (!ms) return; ms.innerHTML = '';
+  categories.forEach(c => { ms.innerHTML += `<option>${c.name}</option>`; });
+}
 populateModalCats();
 
 // ========== SCHEDULE MODAL ==========
-const DAY_ORDER=[1,2,3,4,5,6,0];
-function buildDayPills(){
-  const row=document.getElementById('dayPillsRow');if(!row)return;
-  const days=t('days');
-  const dArr=Array.isArray(days)?days:['Mo','Tu','We','Th','Fr','Sa','Su'];
-  row.innerHTML=dArr.map((d,i)=>`<div class="day-pill ${selectedDays.includes(DAY_ORDER[i])?'sel':''}" onclick="toggleDay(${i})">${d}</div>`).join('');
+const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
+function buildDayPills() {
+  const row = document.getElementById('dayPillsRow'); if (!row) return;
+  const days = t('days');
+  const dArr = Array.isArray(days) ? days : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+  row.innerHTML = dArr.map((d, i) => `<div class="day-pill ${selectedDays.includes(DAY_ORDER[i]) ? 'sel' : ''}" onclick="toggleDay(${i})">${d}</div>`).join('');
 }
-function toggleDay(i){
-  const dow=DAY_ORDER[i];
-  if(selectedDays.includes(dow))selectedDays=selectedDays.filter(d=>d!==dow);
+function toggleDay(i) {
+  const dow = DAY_ORDER[i];
+  if (selectedDays.includes(dow)) selectedDays = selectedDays.filter(d => d !== dow);
   else selectedDays.push(dow);
   buildDayPills();
 }
-function setSchedType(type){
-  schedType=type;
-  ['daily','days','once'].forEach(x=>{document.getElementById('stype-'+x)?.classList.remove('active');});
-  document.getElementById('stype-'+type)?.classList.add('active');
-  document.getElementById('sched-days-section').style.display=type==='days'?'block':'none';
-  const onceEl=document.getElementById('sched-once-section');if(onceEl)onceEl.style.display=type==='once'?'block':'none';
+function setSchedType(type) {
+  schedType = type;
+  ['daily', 'days', 'once'].forEach(x => { document.getElementById('stype-' + x)?.classList.remove('active'); });
+  document.getElementById('stype-' + type)?.classList.add('active');
+  document.getElementById('sched-days-section').style.display = type === 'days' ? 'block' : 'none';
+  const onceEl = document.getElementById('sched-once-section'); if (onceEl) onceEl.style.display = type === 'once' ? 'block' : 'none';
 }
-function openAddHabitModal(){
-  editingHabitIdx=null;schedType='daily';selectedDays=[];
-  document.getElementById('habitModalTitle').textContent='➕ New Habit';
-  document.getElementById('modalHabitName').value=document.getElementById('taskInput').value||'';
-  document.getElementById('modalHabitTime').value=document.getElementById('taskTime').value||'';
-  document.getElementById('modalHabitCat').value=document.getElementById('categoryInput').value;
-  setSchedType('daily');buildDayPills();
-  onceDates=[];renderOnceDates();
-  const odp=document.getElementById('onceDatePicker');if(odp)odp.value=today();
-  document.getElementById('habitModal').style.display='flex';
+function openAddHabitModal() {
+  editingHabitIdx = null; schedType = 'daily'; selectedDays = [];
+  document.getElementById('habitModalTitle').textContent = '➕ New Habit';
+  document.getElementById('modalHabitName').value = '';
+  document.getElementById('modalHabitTime').value = '';
+  populateModalCats();
+  setSchedType('daily'); buildDayPills();
+  onceDates = []; renderOnceDates();
+  const odp = document.getElementById('onceDatePicker'); if (odp) odp.value = today();
+  document.getElementById('habitModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('modalHabitName').focus(), 100);
 }
-function openEditHabitModal(i){
-  editingHabitIdx=i;const task=tasks[i];
-  schedType=task.schedule?.type||'daily';selectedDays=[...(task.schedule?.days||[])];
-  document.getElementById('habitModalTitle').textContent='✏️ Edit Habit';
-  document.getElementById('modalHabitName').value=task.text;
-  document.getElementById('modalHabitTime').value=task.time||'';
-  document.getElementById('modalHabitCat').value=task.category||'Study';
-  setSchedType(schedType);buildDayPills();
-  onceDates=Array.isArray(task.schedule?.onceDates)?[...task.schedule.onceDates]:(task.schedule?.onceDate?[task.schedule.onceDate]:[]);
+function openEditHabitModal(i) {
+  editingHabitIdx = i; const task = tasks[i];
+  schedType = task.schedule?.type || 'daily'; selectedDays = [...(task.schedule?.days || [])];
+  document.getElementById('habitModalTitle').textContent = '✏️ Edit Habit';
+  document.getElementById('modalHabitName').value = task.text;
+  document.getElementById('modalHabitTime').value = task.time || '';
+  populateModalCats();
+  document.getElementById('modalHabitCat').value = task.category || 'Study';
+  setSchedType(schedType); buildDayPills();
+  onceDates = Array.isArray(task.schedule?.onceDates) ? [...task.schedule.onceDates] : (task.schedule?.onceDate ? [task.schedule.onceDate] : []);
   renderOnceDates();
-  const odp=document.getElementById('onceDatePicker');if(odp)odp.value=today();
-  document.getElementById('habitModal').style.display='flex';
+  const odp = document.getElementById('onceDatePicker'); if (odp) odp.value = today();
+  document.getElementById('habitModal').style.display = 'flex';
 }
-function closeHabitModal(){document.getElementById('habitModal').style.display='none';}
-let onceDates=[];
-function addOnceDate(){const p=document.getElementById('onceDatePicker');if(!p||!p.value||onceDates.includes(p.value))return;onceDates.push(p.value);onceDates.sort();renderOnceDates();}
-function removeOnceDate(d){onceDates=onceDates.filter(x=>x!==d);renderOnceDates();}
-function renderOnceDates(){const c=document.getElementById('onceDatesContainer');if(!c)return;c.innerHTML=onceDates.length?onceDates.map(d=>`<span style="display:inline-flex;align-items:center;gap:3px;background:#eef0ff;color:#667eea;padding:2px 9px;border-radius:20px;font-size:12px;margin:2px;">${d}<span onclick="removeOnceDate('${d}')" style="cursor:pointer;color:#c0392b;font-weight:700;">x</span></span>`).join(''):'<span style="font-size:12px;color:#adb5bd;">No dates yet</span>';}
-async function saveHabitModal(){
-  const name=document.getElementById('modalHabitName').value.trim();if(!name)return;
-  const time=document.getElementById('modalHabitTime').value;
-  const cat=document.getElementById('modalHabitCat').value;
-  const schedule={type:schedType,days:schedType==='days'?[...selectedDays]:[],onceDates:schedType==='once'?[...onceDates]:[]};
-  if(editingHabitIdx!==null){
-    const task=tasks[editingHabitIdx];
-    await api("PUT",`/api/habits/${task.id}`,{name,time,category:cat,schedule});
+function closeHabitModal() { document.getElementById('habitModal').style.display = 'none'; }
+let onceDates = [];
+function addOnceDate() { const p = document.getElementById('onceDatePicker'); if (!p || !p.value || onceDates.includes(p.value)) return; onceDates.push(p.value); onceDates.sort(); renderOnceDates(); }
+function removeOnceDate(d) { onceDates = onceDates.filter(x => x !== d); renderOnceDates(); }
+function renderOnceDates() {
+  const c = document.getElementById('onceDatesContainer'); if (!c) return;
+  c.innerHTML = onceDates.length ? onceDates.map(d => `<span style="display:inline-flex;align-items:center;gap:3px;background:#eef0ff;color:#667eea;padding:2px 9px;border-radius:20px;font-size:12px;margin:2px;">${d}<span onclick="removeOnceDate('${d}')" style="cursor:pointer;color:#c0392b;font-weight:700;margin-left:2px;">×</span></span>`).join('') : '<span style="font-size:12px;color:#adb5bd;">No dates added yet</span>';
+}
+async function saveHabitModal() {
+  const name = document.getElementById('modalHabitName').value.trim(); if (!name) return;
+  const time = document.getElementById('modalHabitTime').value;
+  const cat = document.getElementById('modalHabitCat').value;
+  const schedule = { type: schedType, days: schedType === 'days' ? [...selectedDays] : [], onceDates: schedType === 'once' ? [...onceDates] : [] };
+  if (editingHabitIdx !== null) {
+    const task = tasks[editingHabitIdx];
+    await api("PUT", `/api/habits/${task.id}`, { name, time, category: cat, schedule });
   } else {
-    await api("POST","/api/habits",{name,time,category:cat,schedule});
+    await api("POST", "/api/habits", { name, time, category: cat, schedule });
   }
   closeHabitModal();
-  document.getElementById('taskInput').value='';document.getElementById('taskTime').value='';
   await loadAll();
 }
 
 // ========== SCHEDULE HELPERS ==========
-function isScheduledForDate(task,dateStr){
-  const s=task.schedule||{type:'daily'};
-  if(!s.type||s.type==='daily')return true;
-  if(s.type==='once'){
-    if(Array.isArray(s.onceDates))return s.onceDates.includes(dateStr);
-    return s.onceDate===dateStr;
+function isScheduledForDate(task, dateStr) {
+  const s = task.schedule || { type: 'daily' };
+  if (!s.type || s.type === 'daily') return true;
+  if (s.type === 'once') {
+    const dates = Array.isArray(s.onceDates) ? s.onceDates : (s.onceDate ? [s.onceDate] : []);
+    return dates.includes(dateStr);
   }
-  if(s.type==='days'){
-    if(!s.days||s.days.length===0)return true;
-    const dow=new Date(dateStr+'T12:00:00').getDay();
+  if (s.type === 'days') {
+    if (!s.days || s.days.length === 0) return true;
+    const dow = new Date(dateStr + 'T12:00:00').getDay();
     return s.days.includes(dow);
   }
   return true;
 }
-function getScheduledLabel(task){
-  const s=task.schedule||{type:'daily'};
-  if(!s.type||s.type==='daily')return t('schedDaily');
-  if(s.type==='days'){
-    if(!s.days||s.days.length===0)return t('schedDaily');
-    const days=t('days');
-    const dArr=Array.isArray(days)?days:['Mo','Tu','We','Th','Fr','Sa','Su'];
-    const dowToDisplay={1:0,2:1,3:2,4:3,5:4,6:5,0:6};
-    return s.days.slice().sort((a,b)=>(dowToDisplay[a]||0)-(dowToDisplay[b]||0)).map(d=>dArr[dowToDisplay[d]]).join('/');
+
+function isHabitVisibleThisWeek(task, week) {
+  const s = task.schedule || { type: 'daily' };
+  if (!s.type || s.type === 'daily') return true;
+  if (s.type === 'days') return true;
+  if (s.type === 'once') {
+    const dates = Array.isArray(s.onceDates) ? s.onceDates : (s.onceDate ? [s.onceDate] : []);
+    if (dates.length === 0) return false;
+    const weekDates = week.map(d => d.date);
+    return dates.some(d => weekDates.includes(d));
   }
-  if(s.type==='freq')return `${s.freq||3}×/wk`;
+  return true;
+}
+
+function getScheduledLabel(task) {
+  const s = task.schedule || { type: 'daily' };
+  if (!s.type || s.type === 'daily') return t('schedDaily');
+  if (s.type === 'days') {
+    if (!s.days || s.days.length === 0) return t('schedDaily');
+    const days = t('days');
+    const dArr = Array.isArray(days) ? days : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    const dowToDisplay = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 0: 6 };
+    return s.days.slice().sort((a, b) => (dowToDisplay[a] || 0) - (dowToDisplay[b] || 0)).map(d => dArr[dowToDisplay[d]]).join('/');
+  }
+  if (s.type === 'once') {
+    const dates = Array.isArray(s.onceDates) ? s.onceDates : (s.onceDate ? [s.onceDate] : []);
+    if (dates.length === 0) return 'One-time';
+    if (dates.length === 1) return `📌 ${dates[0]}`;
+    return `📌 ${dates.length} dates`;
+  }
   return t('schedDaily');
 }
 
 // ========== WEEK ==========
-function getMonday(d){const day=d.getDay(),diff=day===0?-6:1-day;return new Date(new Date(d).setDate(d.getDate()+diff));}
-let currentMonday=getMonday(new Date());
-function changeWeek(days){currentMonday.setDate(currentMonday.getDate()+days);render();}
-function getWeek(){const arr=[];for(let i=0;i<7;i++){const d=new Date(currentMonday);d.setDate(d.getDate()+i);arr.push({date:d.toISOString().split("T")[0],label:d.toLocaleDateString("en-US",{month:"short",day:"numeric"}),dow:d.getDay()});}return arr;}
-const today=()=>new Date().toISOString().split("T")[0];
+function getMonday(d) { const day = d.getDay(), diff = day === 0 ? -6 : 1 - day; return new Date(new Date(d).setDate(d.getDate() + diff)); }
+let currentMonday = getMonday(new Date());
+function changeWeek(days) { currentMonday.setDate(currentMonday.getDate() + days); render(); }
+function getWeek() {
+  const arr = [];
+  for (let i = 0; i < 7; i++) { const d = new Date(currentMonday); d.setDate(d.getDate() + i); arr.push({ date: d.toISOString().split("T")[0], label: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }), dow: d.getDay() }); }
+  return arr;
+}
+const today = () => new Date().toISOString().split("T")[0];
 
 // ========== STATS HELPERS ==========
-function getStreak(task){let streak=0,d=new Date();for(let n=0;n<365;n++){const ds=d.toISOString().split("T")[0];if(!isScheduledForDate(task,ds)){d.setDate(d.getDate()-1);continue;}if(task.history[ds]){streak++;d.setDate(d.getDate()-1);}else break;}return streak;}
-function getTotalDone(task){return Object.values(task.history).filter(Boolean).length;}
-function getConsistency30(task){let sc=0,dn=0;for(let i=0;i<30;i++){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];if(isScheduledForDate(task,ds)){sc++;if(task.history[ds])dn++;}}return sc===0?0:Math.round((dn/sc)*100);}
-function getWeeklyDone(task){let done=0;for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);if(task.history[d.toISOString().split("T")[0]])done++;}return done;}
-function getLastWeekDone(task){let done=0;for(let i=7;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);if(task.history[d.toISOString().split("T")[0]])done++;}return done;}
-function getPercent(task,week){const sc=week.filter(d=>isScheduledForDate(task,d.date));if(!sc.length)return 0;return Math.round(sc.filter(d=>task.history[d.date]).length/sc.length*100);}
+function getStreak(task) { let streak = 0, d = new Date(); for (let n = 0; n < 365; n++) { const ds = d.toISOString().split("T")[0]; if (!isScheduledForDate(task, ds)) { d.setDate(d.getDate() - 1); continue; } if (task.history[ds]) { streak++; d.setDate(d.getDate() - 1); } else break; } return streak; }
+function getTotalDone(task) { return Object.values(task.history).filter(Boolean).length; }
+function getConsistency30(task) { let sc = 0, dn = 0; for (let i = 0; i < 30; i++) { const d = new Date(); d.setDate(d.getDate() - i); const ds = d.toISOString().split("T")[0]; if (isScheduledForDate(task, ds)) { sc++; if (task.history[ds]) dn++; } } return sc === 0 ? 0 : Math.round((dn / sc) * 100); }
+function getWeeklyDone(task) { let done = 0; for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); if (task.history[d.toISOString().split("T")[0]]) done++; } return done; }
+function getLastWeekDone(task) { let done = 0; for (let i = 7; i < 14; i++) { const d = new Date(); d.setDate(d.getDate() - i); if (task.history[d.toISOString().split("T")[0]]) done++; } return done; }
+function getPercent(task, week) { const sc = week.filter(d => isScheduledForDate(task, d.date)); if (!sc.length) return 0; return Math.round(sc.filter(d => task.history[d.date]).length / sc.length * 100); }
 
 // ========== RENDER HABITS ==========
-function render(){
-  const week=getWeek(),todayStr=today();
-  document.getElementById("weekTitle").textContent=t('weekTitlePrefix')+week[0].label+' – '+week[6].label;
-  let header=`<th>Habit</th>`;
-  week.forEach(d=>{const iT=d.date===todayStr;header+=`<th class="${iT?'today-col':''}" style="font-size:11px;">${d.label}${iT?'<br>⭐':''}</th>`;});
-  header+=`<th>%</th><th></th>`;
-  document.getElementById("weekHeader").innerHTML=header;
-  let body="";
-  tasks.forEach((task,i)=>{
-    const color=categories.find(c=>c.name===task.category)?.color||"#f8f9fa";
-    const streak=getStreak(task);
-    const sl=getScheduledLabel(task);
-    const td=task.time?`<span class="habit-time-badge">⏰ ${task.time}</span>`:'';
-    let row=`<tr draggable="true" ondragstart="dragStart(event,${i})" ondragover="dragOver(event)" ondrop="dropHabit(event,${i})" ondragleave="dragLeave(event)" style="background:${color}"><td style="text-align:left;padding-left:8px;">
+function render() {
+  const week = getWeek(), todayStr = today();
+  document.getElementById("weekTitle").textContent = t('weekTitlePrefix') + week[0].label + ' – ' + week[6].label;
+  let header = `<th>Habit</th>`;
+  week.forEach(d => { const iT = d.date === todayStr; header += `<th class="${iT ? 'today-col' : ''}" style="font-size:11px;">${d.label}${iT ? '<br>⭐' : ''}</th>`; });
+  header += `<th>%</th><th></th>`;
+  document.getElementById("weekHeader").innerHTML = header;
+
+  // Only show "once" habits if they have dates in THIS week
+  const visibleTasks = tasks.filter(task => isHabitVisibleThisWeek(task, week));
+
+  let body = "";
+  visibleTasks.forEach((task, i) => {
+    // Find real index in tasks array for edit/delete
+    const realIdx = tasks.indexOf(task);
+    const color = categories.find(c => c.name === task.category)?.color || "#f8f9fa";
+    const streak = getStreak(task);
+    const sl = getScheduledLabel(task);
+    const td = task.time ? `<span class="habit-time-badge">⏰ ${task.time}</span>` : '';
+    let row = `<tr id="habitRow-${realIdx}" draggable="true" ondragstart="dragStart(event,${realIdx})" ondragover="dragOver(event,${realIdx})" ondrop="dropHabit(event,${realIdx})" ondragleave="dragLeave(event)" style="background:${color}"><td style="text-align:left;padding-left:8px;">
       <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
-        <span style="cursor:grab;color:#adb5bd;font-size:15px;user-select:none;padding:0 2px;" title="Hold to reorder">::</span><strong style="cursor:pointer;font-size:13px;" onclick="openEditHabitModal(${i})">${escapeHtml(task.text)}</strong>
-        ${streak>1?`<span style="font-size:10px;color:#e67700;">🔥${streak}</span>`:''}
+        <span class="drag-handle" title="Hold to reorder" onmousedown="this.parentElement.parentElement.parentElement.draggable=true" ontouchstart="touchDragStart(event,${realIdx})">⠿</span>
+        <strong style="cursor:pointer;font-size:13px;" onclick="openEditHabitModal(${realIdx})">${escapeHtml(task.text)}</strong>
+        ${streak > 1 ? `<span style="font-size:10px;color:#e67700;">🔥${streak}</span>` : ''}
       </div>${td}<span class="cat-badge">${task.category}</span><span class="sched-badge">${sl}</span>
     </td>`;
-    week.forEach(d=>{
-      const sc=isScheduledForDate(task,d.date);
-      const ck=task.history[d.date]?"checked":"";
-      const iT=d.date===todayStr;
-      if(sc)row+=`<td class="${iT?'today-col':''}"><input type="checkbox" ${ck} onchange="toggle(${i},'${d.date}')" style="transform:scale(1.3);cursor:pointer;"></td>`;
-      else row+=`<td class="${iT?'today-col':''}" style="background:rgba(0,0,0,0.03);color:#ccc;font-size:12px;">—</td>`;
+    week.forEach(d => {
+      const sc = isScheduledForDate(task, d.date);
+      const ck = task.history[d.date] ? "checked" : "";
+      const iT = d.date === todayStr;
+      if (sc) row += `<td class="${iT ? 'today-col' : ''}"><input type="checkbox" ${ck} onchange="toggle(${realIdx},'${d.date}')" style="transform:scale(1.3);cursor:pointer;"></td>`;
+      else row += `<td class="${iT ? 'today-col' : ''}" style="background:rgba(0,0,0,0.03);color:#ccc;font-size:12px;">—</td>`;
     });
-    row+=`<td style="font-weight:800;color:#667eea;font-size:13px;">${getPercent(task,week)}%</td>
-      <td><button onclick="openEditHabitModal(${i})" style="background:#e9ecef;padding:3px 8px;font-size:11px;">✏️</button><button onclick="deleteTask(${i})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button></td></tr>`;
-    body+=row;
+    row += `<td style="font-weight:800;color:#667eea;font-size:13px;">${getPercent(task, week)}%</td>
+      <td><button onclick="openEditHabitModal(${realIdx})" style="background:#e9ecef;padding:3px 8px;font-size:11px;">✏️</button><button onclick="deleteTask(${realIdx})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button></td></tr>`;
+    body += row;
   });
-  document.getElementById("taskBody").innerHTML=body;
+  if (visibleTasks.length === 0) {
+    const colspan = 7 + 3;
+    body = `<tr><td colspan="${colspan}" style="text-align:center;padding:24px;color:#adb5bd;font-size:13px;">No habits for this week. Add one or go to a different week!</td></tr>`;
+  }
+  document.getElementById("taskBody").innerHTML = body;
 }
-async function deleteTask(i){if(confirm(t('deleteHabit'))){await api("DELETE",`/api/habits/${tasks[i].id}`);await loadAll();}}
-async function toggle(i,date){tasks[i].history[date]=!tasks[i].history[date];await api("PUT",`/api/habits/${tasks[i].id}`,{history:tasks[i].history});render();}
+
+async function deleteTask(i) { if (confirm(t('deleteHabit'))) { await api("DELETE", `/api/habits/${tasks[i].id}`); await loadAll(); } }
+async function toggle(i, date) { tasks[i].history[date] = !tasks[i].history[date]; await api("PUT", `/api/habits/${tasks[i].id}`, { history: tasks[i].history }); render(); }
+
+// ========== DRAG & DROP (Desktop + Touch) ==========
+let dragSrcIdx2 = null;
+function dragStart(e, i) { dragSrcIdx2 = i; const row = document.getElementById('habitRow-' + i); if (row) row.classList.add('dragging'); }
+function dragOver(e, targetIdx) { e.preventDefault(); const row = document.getElementById('habitRow-' + targetIdx); if (row) row.classList.add('drag-over'); }
+function dragLeave(e) { document.querySelectorAll('tr.drag-over').forEach(r => r.classList.remove('drag-over')); }
+async function dropHabit(e, targetIdx) {
+  e.preventDefault();
+  document.querySelectorAll('tr').forEach(r => { r.classList.remove('dragging', 'drag-over'); });
+  if (dragSrcIdx2 === null || dragSrcIdx2 === targetIdx) { dragSrcIdx2 = null; return; }
+  const moved = tasks.splice(dragSrcIdx2, 1)[0];
+  tasks.splice(targetIdx, 0, moved);
+  dragSrcIdx2 = null;
+  render();
+  // Save new order
+  try {
+    await api("POST", "/api/habits/reorder", { orderedIds: tasks.map(t => t.id) });
+  } catch (e) {
+    // Fallback: save each habit to preserve order
+    for (let k = 0; k < tasks.length; k++) {
+      await api("PUT", "/api/habits/" + tasks[k].id, { name: tasks[k].text, time: tasks[k].time, category: tasks[k].category, history: tasks[k].history, schedule: tasks[k].schedule });
+    }
+  }
+}
+
+// Touch drag support
+let touchDragIdx = null, touchDragEl = null, touchClone = null;
+function touchDragStart(e, i) {
+  touchDragIdx = i;
+  const row = document.getElementById('habitRow-' + i);
+  touchClone = row.cloneNode(true);
+  touchClone.style.cssText = `position:fixed;opacity:0.7;pointer-events:none;z-index:9999;width:${row.offsetWidth}px;background:${row.style.background};`;
+  document.body.appendChild(touchClone);
+  document.addEventListener('touchmove', touchDragMove, { passive: false });
+  document.addEventListener('touchend', touchDragEnd);
+}
+function touchDragMove(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  if (touchClone) { touchClone.style.left = (touch.clientX - 50) + 'px'; touchClone.style.top = (touch.clientY - 20) + 'px'; }
+  // Find target row
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  const targetRow = el?.closest('tr[id^="habitRow-"]');
+  document.querySelectorAll('tr.drag-over').forEach(r => r.classList.remove('drag-over'));
+  if (targetRow) targetRow.classList.add('drag-over');
+}
+async function touchDragEnd(e) {
+  document.removeEventListener('touchmove', touchDragMove);
+  document.removeEventListener('touchend', touchDragEnd);
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  document.querySelectorAll('tr.drag-over').forEach(r => r.classList.remove('drag-over'));
+  const touch = e.changedTouches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  const targetRow = el?.closest('tr[id^="habitRow-"]');
+  if (targetRow && touchDragIdx !== null) {
+    const targetIdx = parseInt(targetRow.id.replace('habitRow-', ''));
+    if (targetIdx !== touchDragIdx) {
+      const moved = tasks.splice(touchDragIdx, 1)[0];
+      tasks.splice(targetIdx, 0, moved);
+      render();
+      try {
+        await api("POST", "/api/habits/reorder", { orderedIds: tasks.map(t => t.id) });
+      } catch (e) {}
+    }
+  }
+  touchDragIdx = null;
+}
 
 // ========== FILTER ==========
-function renderFilterRow(){
-  const row=document.getElementById('filterRow');if(!row)return;
-  const cats=[t('allFilter'),...categories.map(c=>c.name)];
-  row.innerHTML=cats.map(c=>`<button class="filter-btn ${(activeFilter==='All'&&c===t('allFilter'))||activeFilter===c?'active':''}" onclick="setFilter('${c}')">${c}</button>`).join('');
+function renderFilterRow() {
+  const row = document.getElementById('filterRow'); if (!row) return;
+  const cats = [t('allFilter'), ...categories.map(c => c.name)];
+  row.innerHTML = cats.map(c => `<button class="filter-btn ${(activeFilter === 'All' && c === t('allFilter')) || activeFilter === c ? 'active' : ''}" onclick="setFilter('${c}')">${c}</button>`).join('');
 }
-function setFilter(cat){activeFilter=cat===t('allFilter')?'All':cat;renderFilterRow();renderStats();}
-function getFilteredTasks(){return activeFilter==='All'?tasks:tasks.filter(x=>x.category===activeFilter);}
+function setFilter(cat) { activeFilter = cat === t('allFilter') ? 'All' : cat; renderFilterRow(); renderStats(); }
+function getFilteredTasks() { return activeFilter === 'All' ? tasks : tasks.filter(x => x.category === activeFilter); }
 
 // ========== STATS ==========
-function renderStats(){renderStreaks();renderInsights();renderMomentum();renderChart();renderConsistencyList();renderFilterRow();renderLongChart();checkNotificationPrompt();}
+function renderStats() { renderStreaks(); renderInsights(); renderMomentum(); renderChart(); renderConsistencyList(); renderFilterRow(); renderLongChart(); checkNotificationPrompt(); }
 
-function renderStreaks(){
-  const banner=document.getElementById('streakBanner');if(!banner)return;
-  const filtered=getFilteredTasks();if(!filtered.length){banner.innerHTML='';return;}
-  const best=filtered.map(t=>({name:t.text,streak:getStreak(t)})).sort((a,b)=>b.streak-a.streak)[0];
-  const ts=today();
-  const tDone=filtered.filter(t=>t.history[ts]).length;
-  const tSched=filtered.filter(t=>isScheduledForDate(t,ts)).length;
-  const avgC=Math.round(filtered.reduce((a,t)=>a+getConsistency30(t),0)/filtered.length);
-  banner.innerHTML=`
+function renderStreaks() {
+  const banner = document.getElementById('streakBanner'); if (!banner) return;
+  const filtered = getFilteredTasks(); if (!filtered.length) { banner.innerHTML = ''; return; }
+  const best = filtered.map(t => ({ name: t.text, streak: getStreak(t) })).sort((a, b) => b.streak - a.streak)[0];
+  const ts = today();
+  const tDone = filtered.filter(t => t.history[ts]).length;
+  const tSched = filtered.filter(t => isScheduledForDate(t, ts)).length;
+  const avgC = Math.round(filtered.reduce((a, t) => a + getConsistency30(t), 0) / filtered.length);
+  banner.innerHTML = `
     <div class="streak-card" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
       <div><div class="streak-num" style="color:#d97706;">🔥 ${best.streak}</div><div class="streak-label" style="color:#92400e;">${t('streakLabel')}<br><span style="font-weight:400;font-size:10px;">${escapeHtml(best.name)}</span></div></div>
     </div>
@@ -1204,40 +1303,34 @@ function renderStreaks(){
     </div>`;
 }
 
-function renderInsights(){
-  const el=document.getElementById('insightsContainer');if(!el)return;
-  const filtered=getFilteredTasks();if(!filtered.length){el.innerHTML='';return;}
-  const insights=[];
-  const ts=today();
-  // Only show "missed today" once — not duplicate
-  const missedToday=filtered.filter(t=>isScheduledForDate(t,ts)&&!t.history[ts]);
-  if(missedToday.length>0){
-    insights.push({icon:'🎯',title:`${missedToday.length} habit${missedToday.length>1?'s':''} still to do today`,desc:missedToday.slice(0,3).map(t=>t.text).join(', ')+(missedToday.length>3?'...':'')});
-  }
-  // Most improved this week
-  const improved=filtered.map(t=>({name:t.text,delta:getWeeklyDone(t)-getLastWeekDone(t)})).sort((a,b)=>b.delta-a.delta)[0];
-  if(improved&&improved.delta>0)insights.push({icon:'📈',title:`"${improved.name}" improving`,desc:`+${improved.delta} more completions this week vs last`});
-  // Needs attention (low consistency, has history)
-  const struggling=filtered.filter(t=>getConsistency30(t)<50&&getTotalDone(t)>0).sort((a,b)=>getConsistency30(a)-getConsistency30(b))[0];
-  if(struggling)insights.push({icon:'⚠️',title:`"${struggling.text}" needs attention`,desc:`Only ${getConsistency30(struggling)}% consistency over 30 days`});
-  // Champion
-  const champ=filtered.map(t=>({t,c:getConsistency30(t)})).sort((a,b)=>b.c-a.c)[0];
-  if(champ&&champ.c>=70)insights.push({icon:'⭐',title:`"${champ.t.text}" is your best habit`,desc:`${champ.c}% consistency — keep it up!`});
-  el.innerHTML=insights.length?insights.map(ins=>`<div class="insight-card"><div class="insight-icon">${ins.icon}</div><div class="insight-text"><strong>${escapeHtml(ins.title)}</strong><span>${escapeHtml(ins.desc)}</span></div></div>`).join(''):`<p style="color:#adb5bd;font-size:13px;">Add habits and check back for insights.</p>`;
+function renderInsights() {
+  const el = document.getElementById('insightsContainer'); if (!el) return;
+  const filtered = getFilteredTasks(); if (!filtered.length) { el.innerHTML = ''; return; }
+  const insights = [];
+  const ts = today();
+  const missedToday = filtered.filter(t => isScheduledForDate(t, ts) && !t.history[ts]);
+  if (missedToday.length > 0) insights.push({ icon: '🎯', title: `${missedToday.length} habit${missedToday.length > 1 ? 's' : ''} still to do today`, desc: missedToday.slice(0, 3).map(t => t.text).join(', ') + (missedToday.length > 3 ? '...' : '') });
+  const improved = filtered.map(t => ({ name: t.text, delta: getWeeklyDone(t) - getLastWeekDone(t) })).sort((a, b) => b.delta - a.delta)[0];
+  if (improved && improved.delta > 0) insights.push({ icon: '📈', title: `"${improved.name}" improving`, desc: `+${improved.delta} more completions this week vs last` });
+  const struggling = filtered.filter(t => getConsistency30(t) < 50 && getTotalDone(t) > 0).sort((a, b) => getConsistency30(a) - getConsistency30(b))[0];
+  if (struggling) insights.push({ icon: '⚠️', title: `"${struggling.text}" needs attention`, desc: `Only ${getConsistency30(struggling)}% consistency over 30 days` });
+  const champ = filtered.map(t => ({ t, c: getConsistency30(t) })).sort((a, b) => b.c - a.c)[0];
+  if (champ && champ.c >= 70) insights.push({ icon: '⭐', title: `"${champ.t.text}" is your best habit`, desc: `${champ.c}% consistency — keep it up!` });
+  el.innerHTML = insights.length ? insights.map(ins => `<div class="insight-card"><div class="insight-icon">${ins.icon}</div><div class="insight-text"><strong>${escapeHtml(ins.title)}</strong><span>${escapeHtml(ins.desc)}</span></div></div>`).join('') : `<p style="color:#adb5bd;font-size:13px;">Add habits and check back for insights.</p>`;
 }
 
-function renderMomentum(){
-  const el=document.getElementById('momentumContainer');if(!el)return;
-  const filtered=getFilteredTasks();if(!filtered.length){el.innerHTML='';return;}
-  let tw=0,lw=0,sc=0;
-  for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];filtered.forEach(t=>{if(isScheduledForDate(t,ds)){sc++;if(t.history[ds])tw++;}});}
-  for(let i=7;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];filtered.forEach(t=>{if(isScheduledForDate(t,ds)&&t.history[ds])lw++;});}
-  const tp=sc>0?Math.round((tw/sc)*100):0;
-  const delta=tw-lw;
-  const arrow=delta>0?'↑':delta<0?'↓':'→';
-  const ac=delta>0?'#16a34a':delta<0?'#dc2626':'#6c757d';
-  const bc=tp>=70?'#16a34a':tp>=40?'#f59e0b':'#ef4444';
-  el.innerHTML=`<div style="background:#f8f9fa;border-radius:16px;padding:16px;">
+function renderMomentum() {
+  const el = document.getElementById('momentumContainer'); if (!el) return;
+  const filtered = getFilteredTasks(); if (!filtered.length) { el.innerHTML = ''; return; }
+  let tw = 0, lw = 0, sc = 0;
+  for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); const ds = d.toISOString().split("T")[0]; filtered.forEach(t => { if (isScheduledForDate(t, ds)) { sc++; if (t.history[ds]) tw++; } }); }
+  for (let i = 7; i < 14; i++) { const d = new Date(); d.setDate(d.getDate() - i); const ds = d.toISOString().split("T")[0]; filtered.forEach(t => { if (isScheduledForDate(t, ds) && t.history[ds]) lw++; }); }
+  const tp = sc > 0 ? Math.round((tw / sc) * 100) : 0;
+  const delta = tw - lw;
+  const arrow = delta > 0 ? '↑' : delta < 0 ? '↓' : '→';
+  const ac = delta > 0 ? '#16a34a' : delta < 0 ? '#dc2626' : '#6c757d';
+  const bc = tp >= 70 ? '#16a34a' : tp >= 40 ? '#f59e0b' : '#ef4444';
+  el.innerHTML = `<div style="background:#f8f9fa;border-radius:16px;padding:16px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
       <span style="font-size:13px;font-weight:700;color:#2c3e50;">This week: <span style="color:${bc}">${tp}%</span></span>
       <span style="font-size:13px;font-weight:700;color:${ac};">${arrow} ${Math.abs(delta)} vs last week</span>
@@ -1247,121 +1340,219 @@ function renderMomentum(){
   </div>`;
 }
 
-function renderChart(){
-  const bars=document.getElementById('chartBars');if(!bars)return;
-  const filtered=getFilteredTasks();if(!filtered.length){bars.innerHTML='';return;}
-  let html='';
-  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];const sc=filtered.filter(t=>isScheduledForDate(t,ds));const dn=sc.filter(t=>t.history[ds]).length;const pct=sc.length>0?Math.round((dn/sc.length)*100):0;const h=Math.max(4,pct*0.85);const color=pct>=70?'#22c55e':pct>=40?'#f59e0b':'#9ca3af';const label=d.toLocaleDateString('en-US',{weekday:'short'});const iT=ds===today();html+=`<div class="chart-bar-wrap"><div class="chart-bar-pct" style="${iT?'font-weight:700;color:#667eea':''}">${pct}%</div><div class="chart-bar" style="height:${h}px;background:${color};${iT?'box-shadow:0 0 0 2px #667eea':''}"></div><div class="chart-bar-label" style="${iT?'font-weight:700;color:#667eea':''}">${label}</div></div>`;}
-  bars.innerHTML=html;
+function renderChart() {
+  const bars = document.getElementById('chartBars'); if (!bars) return;
+  const filtered = getFilteredTasks(); if (!filtered.length) { bars.innerHTML = ''; return; }
+  let html = '';
+  for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const ds = d.toISOString().split("T")[0]; const sc = filtered.filter(t => isScheduledForDate(t, ds)); const dn = sc.filter(t => t.history[ds]).length; const pct = sc.length > 0 ? Math.round((dn / sc.length) * 100) : 0; const h = Math.max(4, pct * 0.85); const color = pct >= 70 ? '#22c55e' : pct >= 40 ? '#f59e0b' : '#9ca3af'; const label = d.toLocaleDateString('en-US', { weekday: 'short' }); const iT = ds === today(); html += `<div class="chart-bar-wrap"><div class="chart-bar-pct" style="${iT ? 'font-weight:700;color:#667eea' : ''}">${pct}%</div><div class="chart-bar" style="height:${h}px;background:${color};${iT ? 'box-shadow:0 0 0 2px #667eea' : ''}"></div><div class="chart-bar-label" style="${iT ? 'font-weight:700;color:#667eea' : ''}">${label}</div></div>`; }
+  bars.innerHTML = html;
 }
 
-function renderConsistencyList(){
-  const el=document.getElementById('consistencyList');if(!el)return;
-  const filtered=getFilteredTasks();if(!filtered.length){el.innerHTML='<p style="color:#adb5bd;font-size:13px;">No habits yet.</p>';return;}
-  const ranked=[...filtered].map(t=>({t,c:getConsistency30(t),s:getStreak(t)})).sort((a,b)=>b.c-a.c);
-  el.innerHTML=ranked.map((r,i)=>{const bc=r.c>=70?'#22c55e':r.c>=40?'#f59e0b':'#ef4444';const medals=['🥇','🥈','🥉'];const medal=i<3?medals[i]:`${i+1}.`;const sl=getScheduledLabel(r.t);return`<div class="habit-row-card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.1rem;">${medal}</span><div><div class="habit-name">${escapeHtml(r.t.text)}</div><div style="font-size:11px;color:#6c757d;">${sl} · ${r.t.category}</div></div></div><div style="text-align:right;"><div style="font-size:1.2rem;font-weight:800;color:${bc};">${r.c}%</div>${r.s>0?`<div style="font-size:11px;color:#e67700;">🔥 ${r.s}d</div>`:''}</div></div><div class="progress-bg"><div class="progress-fill" style="width:${r.c}%;background:${bc};"></div></div></div>`;}).join('');}
-
-function renderLongChart(){
-  const el=document.getElementById('longChart');if(!el||!tasks.length){if(el)el.innerHTML='';return;}
-  let html='';
-  for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().split("T")[0];const sc=tasks.filter(t=>isScheduledForDate(t,ds));const dn=sc.filter(t=>t.history[ds]).length;const pct=sc.length>0?Math.round((dn/sc.length)*100):0;const h=Math.max(2,pct*0.96);const color=pct>=70?'#22c55e':pct>=40?'#f59e0b':'#e5e7eb';html+=`<div class="chart-bar-wrap" style="gap:2px;"><div class="chart-bar" style="height:${h}px;background:${color};border-radius:3px 3px 0 0;" title="${ds}: ${pct}%"></div></div>`;}
-  el.innerHTML=html;
+function renderConsistencyList() {
+  const el = document.getElementById('consistencyList'); if (!el) return;
+  const filtered = getFilteredTasks(); if (!filtered.length) { el.innerHTML = '<p style="color:#adb5bd;font-size:13px;">No habits yet.</p>'; return; }
+  const ranked = [...filtered].map(t => ({ t, c: getConsistency30(t), s: getStreak(t) })).sort((a, b) => b.c - a.c);
+  el.innerHTML = ranked.map((r, i) => { const bc = r.c >= 70 ? '#22c55e' : r.c >= 40 ? '#f59e0b' : '#ef4444'; const medals = ['🥇', '🥈', '🥉']; const medal = i < 3 ? medals[i] : `${i + 1}.`; const sl = getScheduledLabel(r.t); return `<div class="habit-row-card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.1rem;">${medal}</span><div><div class="habit-name">${escapeHtml(r.t.text)}</div><div style="font-size:11px;color:#6c757d;">${sl} · ${r.t.category}</div></div></div><div style="text-align:right;"><div style="font-size:1.2rem;font-weight:800;color:${bc};">${r.c}%</div>${r.s > 0 ? `<div style="font-size:11px;color:#e67700;">🔥 ${r.s}d</div>` : ''}</div></div><div class="progress-bg"><div class="progress-fill" style="width:${r.c}%;background:${bc};"></div></div></div>`; }).join('');
 }
 
-function exportCSV(){
-  const week=getWeek();let csv="Habit,Category,Schedule,Time,"+week.map(d=>d.date).join(",")+",Week%\n";
-  tasks.forEach(task=>{let row=`"${task.text}","${task.category}","${getScheduledLabel(task)}","${task.time||''}"`;week.forEach(d=>row+=","+(task.history[d.date]?"1":"0"));row+=","+getPercent(task,week)+"%";csv+=row+"\n";});
-  const blob=new Blob([csv],{type:"text/csv"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`fikrcha_${today()}.csv`;a.click();URL.revokeObjectURL(url);
+function renderLongChart() {
+  const el = document.getElementById('longChart'); if (!el || !tasks.length) { if (el) el.innerHTML = ''; return; }
+  let html = '';
+  for (let i = 29; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const ds = d.toISOString().split("T")[0]; const sc = tasks.filter(t => isScheduledForDate(t, ds)); const dn = sc.filter(t => t.history[ds]).length; const pct = sc.length > 0 ? Math.round((dn / sc.length) * 100) : 0; const h = Math.max(2, pct * 0.96); const color = pct >= 70 ? '#22c55e' : pct >= 40 ? '#f59e0b' : '#e5e7eb'; html += `<div class="chart-bar-wrap" style="gap:2px;"><div class="chart-bar" style="height:${h}px;background:${color};border-radius:3px 3px 0 0;" title="${ds}: ${pct}%"></div></div>`; }
+  el.innerHTML = html;
 }
-function checkNotificationPrompt(){if('Notification' in window&&Notification.permission==='default'){const b=document.getElementById('notifBanner');const m=document.getElementById('notifMsg');if(b&&m){m.textContent=t('notifEnable');b.style.display='flex';}}else{const b=document.getElementById('notifBanner');if(b)b.style.display='none';}}
-async function requestNotifications(){const p=await Notification.requestPermission();if(p==='granted'){const b=document.getElementById('notifBanner');if(b)b.style.display='none';scheduleNotifications();new Notification('FIKRCHA 🌟',{body:'Notifications enabled!'});}}
-function scheduleNotifications(){setInterval(()=>{if(Notification.permission!=='granted')return;const now=new Date();const hh=String(now.getHours()).padStart(2,'0');const mm=String(now.getMinutes()).padStart(2,'0');const ds=today();tasks.forEach(task=>{if(!task.time||task.history[ds]||!isScheduledForDate(task,ds))return;if(task.time===`${hh}:${mm}`)new Notification(`⏰ FIKRCHA: ${task.text}`,{body:'Time for your habit!'});});},60000);}
+
+function exportCSV() {
+  const week = getWeek(); let csv = "Habit,Category,Schedule,Time," + week.map(d => d.date).join(",") + ",Week%\n";
+  tasks.forEach(task => { let row = `"${task.text}","${task.category}","${getScheduledLabel(task)}","${task.time || ''}"`;week.forEach(d => row += "," + (task.history[d.date] ? "1" : "0")); row += "," + getPercent(task, week) + "%"; csv += row + "\n"; });
+  const blob = new Blob([csv], { type: "text/csv" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `fikrcha_${today()}.csv`; a.click(); URL.revokeObjectURL(url);
+}
+function checkNotificationPrompt() { if ('Notification' in window && Notification.permission === 'default') { const b = document.getElementById('notifBanner'); const m = document.getElementById('notifMsg'); if (b && m) { m.textContent = t('notifEnable'); b.style.display = 'flex'; } } else { const b = document.getElementById('notifBanner'); if (b) b.style.display = 'none'; } }
+async function requestNotifications() { const p = await Notification.requestPermission(); if (p === 'granted') { const b = document.getElementById('notifBanner'); if (b) b.style.display = 'none'; scheduleNotifications(); new Notification('FIKRCHA 🌟', { body: 'Notifications enabled!' }); } }
+function scheduleNotifications() { setInterval(() => { if (Notification.permission !== 'granted') return; const now = new Date(); const hh = String(now.getHours()).padStart(2, '0'); const mm = String(now.getMinutes()).padStart(2, '0'); const ds = today(); tasks.forEach(task => { if (!task.time || task.history[ds] || !isScheduledForDate(task, ds)) return; if (task.time === `${hh}:${mm}`) new Notification(`⏰ FIKRCHA: ${task.text}`, { body: 'Time for your habit!' }); }); }, 60000); }
 
 // ========== STUDY ==========
-async function addLesson(){const input=document.getElementById("lessonInput");if(!input.value.trim())return;await api("POST","/api/studies",{title:input.value});input.value="";await loadAll();setTimeout(()=>{const all=document.querySelectorAll('details.lesson');if(all.length)all[all.length-1].open=true;},100);}
-async function deleteLesson(i){if(confirm(t('deleteLesson'))){await api("DELETE",`/api/studies/${lessons[i].id}`);await loadAll();}}
-let activityImageData={};
-function previewActivityImage(i,inp){if(!inp.files||!inp.files[0])return;const r=new FileReader();r.onload=e=>{activityImageData[i]=e.target.result;const el=document.getElementById(`activity-img-name-${i}`);if(el)el.textContent="✅ Ready";};r.readAsDataURL(inp.files[0]);}
-function saveOS(){const s={};document.querySelectorAll('details.lesson').forEach((el,idx)=>{s[idx]=el.open;});return s;}
-function restoreOS(s){document.querySelectorAll('details.lesson').forEach((el,idx)=>{if(s[idx]){el.open=true;const a=el.querySelector('.lesson-toggle');if(a)a.style.transform='rotate(90deg)';}});}
-async function addLessonTask(i){const inp=document.getElementById(`activity-${i}`);if(!inp.value.trim())return;lessons[i].tasks.push({text:inp.value,history:{},comment:"",image:activityImageData[i]||null});inp.value="";activityImageData[i]=null;await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOS();renderLessons();restoreOS(s);}
-async function deleteLessonTask(i,j){lessons[i].tasks.splice(j,1);await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOS();renderLessons();restoreOS(s);}
-async function toggleLessonTask(i,j){const td=today();lessons[i].tasks[j].history[td]=!lessons[i].tasks[j].history[td];await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});const s=saveOS();renderLessons();restoreOS(s);}
-async function saveComment(i,j,value){lessons[i].tasks[j].comment=value;await api("PUT",`/api/studies/${lessons[i].id}`,{tasks:lessons[i].tasks});}
-function renderLessons(){
-  let html="";
-  lessons.forEach((l,i)=>{
-    const td=today(),dn=l.tasks.filter(t=>t.history[td]).length,tot=l.tasks.length,pct=tot>0?Math.round((dn/tot)*100):0;
-    html+=`<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;"><summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>${tot>0?`<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${dn}/${tot} · ${pct}%</span>`:''}</div><span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span></summary><div style="padding:0 18px 18px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;"><div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:140px;"><label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:12px;">🖼️<input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i},this)"></label><span id="activity-img-name-${i}" style="font-size:11px;color:#888;"></span><button onclick="addLessonTask(${i})" style="background:#667eea;color:#fff;">➕ Add Habit</button></div><ul style="list-style:none;padding-left:0;">`;
-    l.tasks.forEach((task,j)=>{const ck=task.history[td]?"checked":"";html+=`<li style="background:#f8f9fa;margin:8px 0;padding:10px;border-radius:12px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><input type="checkbox" ${ck} onclick="toggleLessonTask(${i},${j})" style="transform:scale(1.1);"><strong style="flex:1;font-size:13px;">${escapeHtml(task.text)}</strong><button onclick="deleteLessonTask(${i},${j})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button></div>${task.image?`<img src="${task.image}" style="max-width:100%;max-height:200px;border-radius:10px;margin:6px 0;display:block;object-fit:cover;">`:""}
-        <textarea placeholder="Notes..." oninput="saveComment(${i},${j},this.value)" style="width:100%;margin-top:6px;font-size:13px;">${escapeHtml(task.comment)}</textarea></li>`;});
-    html+=`</ul><div style="text-align:right;margin-top:10px;"><button onclick="deleteLesson(${i})" class="btn-danger">🗑️ Delete Module</button></div></div></details>`;
+async function addLesson() { const input = document.getElementById("lessonInput"); if (!input.value.trim()) return; await api("POST", "/api/studies", { title: input.value }); input.value = ""; await loadAll(); setTimeout(() => { const all = document.querySelectorAll('details.lesson'); if (all.length) all[all.length - 1].open = true; }, 100); }
+async function deleteLesson(i) { if (confirm(t('deleteLesson'))) { await api("DELETE", `/api/studies/${lessons[i].id}`); await loadAll(); } }
+let activityImageData = {};
+function previewActivityImage(i, inp) { if (!inp.files || !inp.files[0]) return; const r = new FileReader(); r.onload = e => { activityImageData[i] = e.target.result; const el = document.getElementById(`activity-img-name-${i}`); if (el) el.textContent = "✅ Ready"; }; r.readAsDataURL(inp.files[0]); }
+function saveOS() { const s = {}; document.querySelectorAll('details.lesson').forEach((el, idx) => { s[idx] = el.open; }); return s; }
+function restoreOS(s) { document.querySelectorAll('details.lesson').forEach((el, idx) => { if (s[idx]) { el.open = true; const a = el.querySelector('.lesson-toggle'); if (a) a.style.transform = 'rotate(90deg)'; } }); }
+async function addLessonTask(i) { const inp = document.getElementById(`activity-${i}`); if (!inp.value.trim()) return; lessons[i].tasks.push({ text: inp.value, history: {}, comment: "", image: activityImageData[i] || null }); inp.value = ""; activityImageData[i] = null; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); const s = saveOS(); renderLessons(); restoreOS(s); }
+async function deleteLessonTask(i, j) { lessons[i].tasks.splice(j, 1); await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); const s = saveOS(); renderLessons(); restoreOS(s); }
+async function toggleLessonTask(i, j) { const td = today(); lessons[i].tasks[j].history[td] = !lessons[i].tasks[j].history[td]; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); const s = saveOS(); renderLessons(); restoreOS(s); }
+async function saveComment(i, j, value) { lessons[i].tasks[j].comment = value; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); }
+function renderLessons() {
+  let html = "";
+  lessons.forEach((l, i) => {
+    const td = today(), dn = l.tasks.filter(t => t.history[td]).length, tot = l.tasks.length, pct = tot > 0 ? Math.round((dn / tot) * 100) : 0;
+    html += `<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;"><summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>${tot > 0 ? `<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${dn}/${tot} · ${pct}%</span>` : ''}</div><div style="display:flex;align-items:center;gap:8px;"><button onclick="event.preventDefault();deleteLesson(${i})" style="background:#ffe0e0;color:#c0392b;padding:3px 8px;font-size:11px;" title="Delete">🗑️</button><span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span></div></summary><div style="padding:0 18px 18px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;"><div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:140px;"><label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:12px;">🖼️<input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i},this)"></label><span id="activity-img-name-${i}" style="font-size:11px;color:#888;"></span><button onclick="addLessonTask(${i})" style="background:#667eea;color:#fff;">➕ Add</button></div><ul style="list-style:none;padding-left:0;">`;
+    l.tasks.forEach((task, j) => {
+      const done = task.history[td];
+      html += `<li style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px;padding:8px 0;border-bottom:1px solid #f1f3f5;">
+        <input type="checkbox" ${done ? 'checked' : ''} onchange="toggleLessonTask(${i},${j})" style="margin-top:4px;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:${done ? '400' : '600'};color:${done ? '#adb5bd' : '#2c3e50'};text-decoration:${done ? 'line-through' : 'none'};">${escapeHtml(task.text)}</div>
+          ${task.image ? `<img src="${task.image}" style="max-width:120px;border-radius:8px;margin-top:4px;object-fit:cover;">` : ''}
+          <textarea style="width:100%;height:36px;font-size:11px;margin-top:4px;border-radius:8px;padding:4px 8px;" placeholder="Notes..." onchange="saveComment(${i},${j},this.value)">${escapeHtml(task.comment || '')}</textarea>
+        </div>
+        <button onclick="deleteLessonTask(${i},${j})" class="btn-danger btn-sm" style="flex-shrink:0;">🗑️</button>
+      </li>`;
+    });
+    html += `</ul></div></details>`;
   });
-  document.getElementById("lessonContainer").innerHTML=html;
-  document.querySelectorAll('details.lesson').forEach(d=>{d.addEventListener('toggle',function(){const a=this.querySelector('.lesson-toggle');if(a)a.style.transform=this.open?'rotate(90deg)':'rotate(0deg)';});});
+  document.getElementById("lessonContainer").innerHTML = html || `<p style="color:#adb5bd;font-size:13px;text-align:center;padding:20px;">No lessons yet. Add your first lesson above!</p>`;
 }
 
 // ========== DIARY ==========
-let calViewYear=new Date().getFullYear(),calViewMonth=new Date().getMonth();
-function calPrev(){calViewMonth--;if(calViewMonth<0){calViewMonth=11;calViewYear--;}renderCalendar();}
-function calNext(){calViewMonth++;if(calViewMonth>11){calViewMonth=0;calViewYear++;}renderCalendar();}
-function renderCalendar(){
-  const label=document.getElementById('calMonthLabel'),grid=document.getElementById('calGrid'),hdrs=document.getElementById('calDayHeaders');
-  if(!label||!grid||!hdrs)return;
-  const days=t('days');
-  hdrs.innerHTML=(Array.isArray(days)?days:['Mo','Tu','We','Th','Fr','Sa','Su']).map(d=>`<div class="cal-day-header">${d}</div>`).join('');
-  label.textContent=new Date(calViewYear,calViewMonth,1).toLocaleDateString(currentLang==='uz'?'uz-UZ':currentLang==='ru'?'ru-RU':'en-US',{month:'long',year:'numeric'});
-  const firstDay=new Date(calViewYear,calViewMonth,1).getDay();
-  const offset=firstDay===0?6:firstDay-1;
-  const dim=new Date(calViewYear,calViewMonth+1,0).getDate();
-  const sel=document.getElementById('diaryDate').value;
-  let html='';
-  for(let i=0;i<offset;i++)html+=`<div class="cal-day empty"></div>`;
-  for(let d=1;d<=dim;d++){const ds=`${calViewYear}-${String(calViewMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const has=diaries[ds]&&diaries[ds].length>0;const isSel=ds===sel;html+=`<div class="cal-day ${has?'has-entry':''} ${isSel?'selected':''}" onclick="selectCalDay('${ds}')">${d}</div>`;}
-  grid.innerHTML=html;
-}
-function selectCalDay(ds){document.getElementById('diaryDate').value=ds;renderCalendar();renderDiary();}
-let diaryImageData=null;
-function previewDiaryImage(inp){if(!inp.files||!inp.files[0])return;const r=new FileReader();r.onload=e=>{diaryImageData=e.target.result;document.getElementById("diaryPreviewImg").src=diaryImageData;document.getElementById("diaryImagePreview").style.display="flex";};r.readAsDataURL(inp.files[0]);}
-function clearDiaryImage(){diaryImageData=null;document.getElementById("diaryImage").value="";document.getElementById("diaryImagePreview").style.display="none";}
-let mediaRecorder=null,audioChunks=[],voiceData=null,recordingTimer=null,recordingSeconds=0;
-async function toggleRecording(){
-  const btn=document.getElementById("voiceBtn"),timerEl=document.getElementById("voiceTimer");
-  if(mediaRecorder&&mediaRecorder.state==="recording"){mediaRecorder.stop();clearInterval(recordingTimer);btn.textContent=t('recordVoice');btn.classList.remove("recording");timerEl.style.display="none";}
-  else{try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});audioChunks=[];const mimeType=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":MediaRecorder.isTypeSupported("audio/webm")?"audio/webm":"audio/ogg";mediaRecorder=new MediaRecorder(stream,{mimeType});mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};mediaRecorder.onstop=()=>{const blob=new Blob(audioChunks,{type:mimeType});const r=new FileReader();r.onload=e=>{voiceData=e.target.result;document.getElementById("voiceAudio").src=voiceData;document.getElementById("voicePreview").style.display="flex";};r.readAsDataURL(blob);stream.getTracks().forEach(t=>t.stop());};mediaRecorder.start();btn.textContent=t('stopRecording');btn.classList.add("recording");recordingSeconds=0;timerEl.style.display="block";timerEl.textContent="⏺ 0s";recordingTimer=setInterval(()=>{recordingSeconds++;timerEl.textContent=`⏺ ${recordingSeconds}s`;if(recordingSeconds>=120)toggleRecording();},1000);}catch(e){alert("❌ Microphone access denied.");}}
-}
-function clearVoice(){voiceData=null;document.getElementById("voiceAudio").src="";document.getElementById("voicePreview").style.display="none";}
-async function addDiary(){const date=document.getElementById("diaryDate").value,text=document.getElementById("diaryInput").value;if(!date||!text.trim())return;await api("POST","/api/diaries",{date,entry:text,image:diaryImageData||null,voice:voiceData||null});if(!diaries[date])diaries[date]=[];diaries[date].push({text,time:new Date().toLocaleTimeString(),image:diaryImageData||null,voice:voiceData||null});document.getElementById("diaryInput").value="";clearDiaryImage();clearVoice();await loadAll();renderCalendar();renderDiary();}
-async function deleteDiary(date,i){const entry=diaries[date][i];if(entry?.id)await api("DELETE",`/api/diaries/${entry.id}`);diaries[date].splice(i,1);renderDiary();renderCalendar();}
-async function editDiary(date,i){const newText=prompt("Edit entry:",diaries[date][i].text);if(newText){diaries[date][i].text=newText;if(diaries[date][i].id)await api("PUT",`/api/diaries/${diaries[date][i].id}`,{entry:newText});renderDiary();}}
-function toggleDiaryEntry(id){const body=document.getElementById('diary-body-'+id);const tog=document.getElementById('diary-toggle-'+id);if(body&&tog){body.classList.toggle('open');tog.classList.toggle('open');}}
-function renderDiary(){
-  const date=document.getElementById("diaryDate").value,container=document.getElementById("diaryContainer"),title=document.getElementById("diaryTitle");
-  const searchVal=(document.getElementById("diarySearch")?.value||"").toLowerCase().trim();
-  if(searchVal){
-    let results=[];Object.entries(diaries).forEach(([d,entries])=>{entries.forEach((entry,i)=>{if(entry.text.toLowerCase().includes(searchVal))results.push({date:d,entry,i});});});
-    if(title)title.innerText=`🔍 ${results.length} result(s)`;
-    if(container)container.innerHTML=results.map((r,idx)=>{const id=`search-${idx}`;const preview=r.entry.text.length>80?r.entry.text.substring(0,80)+'...':r.entry.text;return`<div class="diary-accordion"><div class="diary-acc-header" onclick="toggleDiaryEntry('${id}')"><div><span style="font-size:12px;font-weight:700;color:#667eea;">📅 ${r.date}</span><span style="font-size:11px;color:#6c757d;margin-left:6px;">🕐 ${r.entry.time}</span><p style="margin:3px 0 0;font-size:12px;color:#495057;">${escapeHtml(preview)}</p></div><span class="diary-acc-toggle" id="diary-toggle-${id}">▶</span></div><div class="diary-acc-body" id="diary-body-${id}"><p style="margin:8px 0;">${escapeHtml(r.entry.text)}</p>${r.entry.image?`<img src="${r.entry.image}" style="max-width:100%;max-height:200px;border-radius:12px;margin:8px 0;display:block;">`:""} ${r.entry.voice?`<div class="voice-preview"><audio controls src="${r.entry.voice}" style="flex:1;height:34px;"></audio></div>`:""}<button onclick="editDiary('${r.date}',${r.i})" style="background:#e9ecef;margin-top:8px;">✏️</button><button onclick="deleteDiary('${r.date}',${r.i})" class="btn-danger" style="margin-top:8px;">🗑️</button></div></div>`;}).join('')||`<p style="color:#adb5bd;font-size:13px;">No results.</p>`;
-    return;
+let _calYear = new Date().getFullYear(), _calMonth = new Date().getMonth();
+function calPrev() { _calMonth--; if (_calMonth < 0) { _calMonth = 11; _calYear--; } renderCalendar(); }
+function calNext() { _calMonth++; if (_calMonth > 11) { _calMonth = 0; _calYear++; } renderCalendar(); }
+
+function renderCalendar() {
+  const days = t('days'); const dArr = Array.isArray(days) ? days : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+  const hdr = document.getElementById('calDayHeaders'); if (hdr) hdr.innerHTML = dArr.map(d => `<div class="cal-day-header">${d}</div>`).join('');
+  const lbl = document.getElementById('calMonthLabel');
+  if (lbl) lbl.textContent = new Date(_calYear, _calMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const grid = document.getElementById('calGrid'); if (!grid) return;
+  const first = new Date(_calYear, _calMonth, 1);
+  let startDow = first.getDay(); startDow = startDow === 0 ? 6 : startDow - 1;
+  const daysInMonth = new Date(_calYear, _calMonth + 1, 0).getDate();
+  let html = '';
+  for (let i = 0; i < startDow; i++) html += `<div class="cal-day empty"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = `${_calYear}-${String(_calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const hasEntry = diaries[ds] && diaries[ds].length > 0;
+    html += `<div class="cal-day ${hasEntry ? 'has-entry' : ''}" onclick="selectCalDay('${ds}')" title="${ds}">${d}</div>`;
   }
-  if(!date){if(container)container.innerHTML=`<p style="color:#adb5bd;font-size:13px;">${t('selectDate')}</p>`;if(title)title.innerText='';return;}
-  if(title)title.innerText=t('entriesFor')+date;
-  const entries=diaries[date]||[];
-  if(container)container.innerHTML=entries.map((d,i)=>{const id=`entry-${date.replace(/-/g,'')}-${i}`;const preview=d.text.length>80?d.text.substring(0,80)+'...':d.text;return`<div class="diary-accordion"><div class="diary-acc-header" onclick="toggleDiaryEntry('${id}')"><div><span style="font-size:11px;color:#b45309;font-weight:700;">🕐 ${d.time}</span><p style="margin:3px 0 0;font-size:13px;color:#2c3e50;font-weight:500;">${escapeHtml(preview)}</p></div><span class="diary-acc-toggle" id="diary-toggle-${id}">▶</span></div><div class="diary-acc-body" id="diary-body-${id}"><p style="margin:8px 0 12px;">${escapeHtml(d.text)}</p>${d.image?`<img src="${d.image}" style="max-width:100%;max-height:300px;border-radius:12px;margin:8px 0;display:block;object-fit:cover;">`:""} ${d.voice?`<div class="voice-preview" style="margin:8px 0;">🎤 <audio controls src="${d.voice}" style="flex:1;height:34px;"></audio></div>`:""}<button onclick="editDiary('${date}',${i})" style="background:#e9ecef;">✏️</button><button onclick="deleteDiary('${date}',${i})" class="btn-danger">🗑️</button></div></div>`;}).join('')||`<p style="color:#adb5bd;font-size:13px;">${t('selectDate')}</p>`;
+  grid.innerHTML = html;
 }
 
-function escapeHtml(str){if(!str)return"";return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]||m));}
+function selectCalDay(ds) {
+  document.querySelectorAll('.cal-day.selected').forEach(e => e.classList.remove('selected'));
+  document.getElementById('diaryDate').value = ds;
+  renderDiary();
+}
 
-async function tryTelegramAutoLogin(){const tg=window.Telegram?.WebApp;if(!tg)return;tg.ready();await new Promise(r=>setTimeout(r,500));const user=tg.initDataUnsafe?.user;if(user?.id){await fetch('/auth/telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user})});await fetch('/api/link-telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({telegramId:user.id})});}}
+function renderDiary() {
+  const search = document.getElementById('diarySearch')?.value.toLowerCase() || '';
+  const filterDate = document.getElementById('diaryDate')?.value || '';
+  const titleEl = document.getElementById('diaryTitle');
+  const container = document.getElementById('diaryContainer');
+  if (!container) return;
+  let allEntries = [];
+  Object.entries(diaries).forEach(([date, entries]) => {
+    entries.forEach(e => allEntries.push({ ...e, date }));
+  });
+  allEntries.sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
+  if (filterDate) allEntries = allEntries.filter(e => e.date === filterDate);
+  if (search) allEntries = allEntries.filter(e => e.text?.toLowerCase().includes(search) || e.date.includes(search));
+  if (titleEl) titleEl.textContent = filterDate ? `Entries for ${filterDate}` : 'All Entries';
+  if (!allEntries.length) { container.innerHTML = `<p style="color:#adb5bd;font-size:13px;padding:16px 0;">No diary entries${filterDate ? ' for ' + filterDate : ''}. Start writing!</p>`; return; }
+  const grouped = {};
+  allEntries.forEach(e => { if (!grouped[e.date]) grouped[e.date] = []; grouped[e.date].push(e); });
+  let html = '';
+  Object.entries(grouped).sort((a, b) => b[0].localeCompare(a[0])).forEach(([date, entries]) => {
+    html += `<div class="diary-accordion"><div class="diary-acc-header" onclick="toggleAcc(this)"><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;font-size:13px;">📅 ${date}</span><span style="font-size:11px;background:#eef0ff;color:#667eea;padding:1px 7px;border-radius:8px;">${entries.length} entr${entries.length > 1 ? 'ies' : 'y'}</span></div><span class="diary-acc-toggle">▶</span></div><div class="diary-acc-body">`;
+    entries.forEach(e => {
+      html += `<div style="padding:10px 0;border-bottom:1px solid #f1f3f5;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+          <span style="font-size:11px;color:#adb5bd;">${e.time || ''}</span>
+          <button onclick="deleteDiary('${e.date}',${e.id})" class="btn-danger btn-sm">🗑️</button>
+        </div>
+        <p style="font-size:13px;line-height:1.6;white-space:pre-wrap;">${escapeHtml(e.text || '')}</p>
+        ${e.image ? `<img src="${e.image}" style="max-width:100%;border-radius:10px;margin-top:8px;object-fit:cover;">` : ''}
+        ${e.voice ? `<div class="voice-preview" style="margin-top:8px;"><audio src="${e.voice}" controls style="flex:1;height:36px;"></audio></div>` : ''}
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  container.innerHTML = html;
+}
 
-document.getElementById("diaryDate").addEventListener("change",()=>{renderCalendar();renderDiary();});
-Object.assign(window,{showPage,setLanguage,toggleDark,closeHabitModal,saveHabitModal,openAddHabitModal,openEditHabitModal,setSchedType,toggleDay,buildDayPills,addLesson,deleteLesson,addLessonTask,deleteLessonTask,toggleLessonTask,saveComment,previewActivityImage,addDiary,deleteDiary,editDiary,toggleDiaryEntry,previewDiaryImage,clearDiaryImage,clearVoice,toggleRecording,exportCSV,requestNotifications,setFilter,calPrev,calNext,selectCalDay,changeWeek,toggle,deleteTask,refreshQuote,openStory,closeStory,cycleBg,cycleFont,cycleSize,saveStoryToGallery,addOnceDate,removeOnceDate,renderOnceDates,dragStart,dragOver,dragLeave,dropHabit,sendAiMessage,sendChip,openStory,closeStory,cycleBg,cycleFont,cycleSize,saveStoryToGallery,addOnceDate,removeOnceDate,renderOnceDates,dragStart,dragOver,dragLeave,dropHabit});
+function toggleAcc(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.diary-acc-toggle');
+  body.classList.toggle('open');
+  if (toggle) toggle.classList.toggle('open');
+}
 
-document.body.classList.toggle('dark',darkMode);
-tryTelegramAutoLogin().then(()=>loadAll().then(()=>{refreshQuote();updateStudioFromCurrent();}));
-loadProfileName();
-if(Notification.permission==='granted')scheduleNotifications();
-setTimeout(applyLanguage,300);
+function previewDiaryImage(inp) {
+  if (!inp.files || !inp.files[0]) return;
+  const r = new FileReader();
+  r.onload = e => {
+    _diaryImageData = e.target.result;
+    document.getElementById('diaryPreviewImg').src = _diaryImageData;
+    document.getElementById('diaryImagePreview').style.display = 'flex';
+  };
+  r.readAsDataURL(inp.files[0]);
+}
+function clearDiaryImage() { _diaryImageData = null; document.getElementById('diaryImagePreview').style.display = 'none'; document.getElementById('diaryImage').value = ''; }
+
+let _recordingTimer = null; let _mediaRecorder = null; let _audioChunks = []; let _voiceBlob = null;
+async function toggleRecording() {
+  const btn = document.getElementById('voiceBtn');
+  if (_mediaRecorder && _mediaRecorder.state === 'recording') {
+    _mediaRecorder.stop(); btn.classList.remove('recording'); btn.textContent = t('recordVoice');
+    clearInterval(_recordingTimer); document.getElementById('voiceTimer').style.display = 'none';
+  } else {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      _audioChunks = []; _mediaRecorder = new MediaRecorder(stream);
+      _mediaRecorder.ondataavailable = e => _audioChunks.push(e.data);
+      _mediaRecorder.onstop = () => {
+        _voiceBlob = new Blob(_audioChunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(_voiceBlob);
+        document.getElementById('voiceAudio').src = url;
+        document.getElementById('voicePreview').style.display = 'flex';
+        stream.getTracks().forEach(t => t.stop());
+      };
+      _mediaRecorder.start(); btn.classList.add('recording'); btn.textContent = '⏹ Stop';
+      let secs = 0;
+      const timerEl = document.getElementById('voiceTimer'); timerEl.style.display = 'block';
+      _recordingTimer = setInterval(() => { secs++; timerEl.textContent = `🔴 ${secs}s`; }, 1000);
+    } catch (e) { alert('Microphone access denied.'); }
+  }
+}
+function clearVoice() { _voiceBlob = null; document.getElementById('voicePreview').style.display = 'none'; document.getElementById('voiceAudio').src = ''; }
+
+async function addDiary() {
+  const dateEl = document.getElementById('diaryDate');
+  const textEl = document.getElementById('diaryInput');
+  const date = dateEl.value || today();
+  const text = textEl.value.trim();
+  if (!text && !_voiceBlob && !_diaryImageData) { alert('Please write something or add a photo/voice!'); return; }
+  let voiceData = null;
+  if (_voiceBlob) {
+    const r = new FileReader();
+    voiceData = await new Promise(res => { r.onload = e => res(e.target.result); r.readAsDataURL(_voiceBlob); });
+  }
+  await api("POST", "/api/diaries", { date, entry: text, image: _diaryImageData || null, voice: voiceData });
+  textEl.value = ''; clearDiaryImage(); clearVoice();
+  await loadAll(); renderCalendar(); renderDiary();
+}
+
+async function deleteDiary(date, id) {
+  if (!confirm('Delete this diary entry?')) return;
+  await api("DELETE", `/api/diaries/${id}`);
+  await loadAll(); renderCalendar(); renderDiary();
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('diaryDate').value = today();
+  applyLanguage();
+  initQuote();
+  loadAll();
+});
+
+// Handle Telegram Web App
+if (window.Telegram?.WebApp) { window.Telegram.WebApp.ready(); window.Telegram.WebApp.expand(); }
 </script>
 </body>
 </html>
