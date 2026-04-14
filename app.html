@@ -45,6 +45,8 @@ body.dark .ai-input-el{background:#334155;color:#e2e8f0;border-color:#475569;}
 body.dark .ai-wrap{background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(37,99,235,0.06));border-color:rgba(124,58,237,0.2);}
 body.dark .studio-card{background:#1e293b;border-color:#334155;}
 body.dark .ai-action-bar{background:#1e293b;border-color:#334155;}
+body.dark .quote-library-modal{background:#1a1b2e;color:#e2e8f0;}
+body.dark .quote-lib-item{background:#2d3748;border-color:#4a5568;}
 .app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e9ecef;}
 .header-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 h2{background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.8rem;letter-spacing:-0.5px;}
@@ -144,17 +146,28 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 .lesson:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px;}
 
-/* QUOTE */
-.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border:1px solid rgba(102,126,234,0.18);border-radius:14px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;cursor:pointer;transition:all 0.2s;}
+/* ===== FIX #7: QUOTE — straight clean lines ===== */
+.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border:1px solid rgba(102,126,234,0.18);border-radius:14px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;cursor:pointer;transition:all 0.2s;}
 .quote-card:hover{border-color:rgba(102,126,234,0.35);box-shadow:0 4px 14px rgba(102,126,234,0.12);}
-.quote-inner{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
-.quote-text-el{font-size:13px;font-weight:500;color:#1e293b;line-height:1.4;flex:1;}
-.quote-author-el{font-size:11px;color:#64748b;white-space:nowrap;font-weight:600;margin-left:8px;}
-.quote-actions{display:flex;gap:5px;}
+.quote-inner{flex:1;min-width:0;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
+.quote-icon{font-size:1rem;flex-shrink:0;line-height:1.6;}
+.quote-text-el{font-size:13px;font-weight:500;color:#1e293b;line-height:1.6;display:inline;}
+.quote-author-el{font-size:11px;color:#64748b;font-weight:600;white-space:nowrap;display:inline;}
+.quote-actions{display:flex;gap:5px;flex-shrink:0;align-items:center;flex-wrap:nowrap;}
 .qbtn{padding:5px 10px;border-radius:14px;border:none;cursor:pointer;font-size:11px;font-weight:600;transition:all 0.2s;}
 .qbtn-studio{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
 .qbtn-refresh{background:#f1f5f9;color:#475569;}
+/* FIX #2: Quote save to library */
+.qbtn-save{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;}
+.qbtn-lib{background:#fef3c7;color:#d97706;}
 .quote-counter{font-size:10px;color:#94a3b8;font-weight:600;white-space:nowrap;}
+
+/* ===== FIX #2: QUOTE LIBRARY ===== */
+.quote-library-modal{background:#fff;border-radius:24px;padding:24px;width:95%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,0.25);max-height:85vh;overflow-y:auto;}
+.quote-lib-item{background:#f8f9fa;border:1px solid #e9ecef;border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;}
+.quote-lib-text{flex:1;font-size:13px;font-weight:500;color:#1e293b;line-height:1.5;}
+.quote-lib-author{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;}
+.quote-lib-date{font-size:10px;color:#94a3b8;margin-top:2px;}
 
 /* STUDIO */
 .studio-card{background:#fff;border:1px solid #e9ecef;border-radius:20px;padding:20px;margin-top:16px;}
@@ -216,8 +229,14 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 tr.dragging{opacity:0.4;}
 tr.drag-over{border-top:3px solid #667eea!important;}
 
+/* FIX #1: Study voice recording mini */
+.study-voice-btn{background:#eef0ff;color:#667eea;border-radius:10px;padding:6px 10px;font-size:12px;cursor:pointer;border:none;transition:all 0.2s;margin:0;font-weight:600;}
+.study-voice-btn.recording{background:#ffe0e0;color:#c0392b;animation:pulse 1s infinite;}
+.study-voice-preview{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#f0f4ff;border-radius:10px;margin-top:4px;}
+.study-voice-preview audio{flex:1;height:30px;}
+
 @media(max-width:768px){body{padding:6px;}.app{padding:14px;border-radius:20px;}th,td{padding:6px 3px;font-size:10px;}td:first-child{max-width:100px;}.nav-btn{padding:7px 9px;font-size:11px;}h2{font-size:1.3rem;}.streak-num{font-size:1.5rem;}.ai-chat-box{height:260px;}}
-@media(max-width:480px){body{padding:0;}.app{border-radius:0;padding:12px 10px;min-height:100vh;box-shadow:none;}.nav-buttons{gap:3px;}.nav-btn{flex:1;padding:7px 3px;font-size:10px;text-align:center;}th,td{padding:4px 1px;font-size:9px;}td:first-child{max-width:75px;font-size:10px;}}
+@media(max-width:480px){body{padding:0;}.app{border-radius:0;padding:12px 10px;min-height:100vh;box-shadow:none;}.nav-buttons{gap:3px;}.nav-btn{flex:1;padding:7px 3px;font-size:10px;text-align:center;}th,td{padding:4px 1px;font-size:9px;}td:first-child{max-width:75px;font-size:10px;}.quote-actions{gap:3px;}.qbtn{padding:4px 7px;font-size:10px;}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -240,17 +259,20 @@ tr.drag-over{border-top:3px solid #667eea!important;}
   <button class="nav-btn" onclick="showPage('aiPage')" id="nav-ai">🤖 AI</button>
 </div>
 
-<!-- QUOTE BAR -->
-<div class="quote-card" id="quoteCard">
+<!-- FIX #7: QUOTE BAR — clean inline layout -->
+<div class="quote-card" id="quoteCard" onclick="refreshQuote()">
   <div class="quote-inner">
-    <span style="font-size:1.1rem;flex-shrink:0;">✨</span>
+    <span class="quote-icon">✨</span>
     <span class="quote-text-el" id="quoteText"></span>
     <span class="quote-author-el" id="quoteAuthor"></span>
   </div>
   <div class="quote-actions" onclick="event.stopPropagation()">
     <span class="quote-counter" id="quoteCounter"></span>
-    <button class="qbtn qbtn-refresh" onclick="refreshQuote()">🔄</button>
-    <button class="qbtn qbtn-studio" onclick="openStoryOverlay()">📸 Story</button>
+    <button class="qbtn qbtn-refresh" onclick="refreshQuote()" title="Next quote">🔄</button>
+    <!-- FIX #2: Save to library button -->
+    <button class="qbtn qbtn-save" onclick="saveQuoteToLibrary()" title="Save to library">💾</button>
+    <button class="qbtn qbtn-lib" onclick="openQuoteLibrary()" title="My quote library">📚</button>
+    <button class="qbtn qbtn-studio" onclick="openStoryOverlay()">📸</button>
   </div>
 </div>
 
@@ -319,83 +341,48 @@ tr.drag-over{border-top:3px solid #667eea!important;}
   <div id="consistencyList"></div>
   <div class="section-title">🔍 Filter</div>
   <div class="filter-row" id="filterRow"></div>
-  <div style="margin:12px 0;"><button class="export-btn" onclick="exportCSV()">⬇️ Export CSV</button></div>
-  <div class="chart-container"><div class="chart-title">📈 30-Day Trend</div><div class="chart-bars" id="longChart" style="height:100px;"></div></div>
-</div>
-
-<!-- AI -->
-<div id="aiPage" style="display:none;">
-  <h3 style="margin-bottom:16px;">🤖 AI Assistant</h3>
-  <div class="ai-wrap">
-    <div class="ai-header-row">
-      <div class="ai-avatar-el">AI</div>
-      <div>
-        <div class="ai-title-el" id="ai-title-el">FIKRCHA AI</div>
-        <div class="ai-status" id="ai-status-el">● Online — Ask me anything</div>
-      </div>
-    </div>
-    <div class="ai-chat-box" id="aiChat">
-      <div class="ai-msg">Hi! I'm your FIKRCHA AI assistant. I can help you with habits, studying, and staying productive — and I can add new habits, lessons, or diary entries for you. Just ask!</div>
-    </div>
-    <div id="aiActionBar" class="ai-action-bar" style="display:none;">
-      <p id="aiActionTitle">AI found something to add:</p>
-      <div id="aiActionBtns"></div>
-      <button class="ai-action-btn ai-action-cancel" onclick="dismissAiAction()">Dismiss</button>
-    </div>
-    <div class="ai-chips" id="aiChips">
-      <div class="ai-chip" onclick="sendChip('Analyze my habits')">📊 Analyze</div>
-      <div class="ai-chip" onclick="sendChip('Suggest 3 new habits for me')">💡 Suggest habits</div>
-      <div class="ai-chip" onclick="sendChip('Plan my day')">🗓️ Day plan</div>
-      <div class="ai-chip" onclick="sendChip('Motivate me')">🔥 Motivate</div>
-      <div class="ai-chip" onclick="sendChip('Add a morning run habit at 7:00 AM')">➕ Add habit</div>
-      <div class="ai-chip" onclick="sendChip('Open a new study lesson for Python')">📚 Add lesson</div>
-    </div>
-    <div class="ai-input-row" style="margin-top:10px;">
-      <input type="text" class="ai-input-el" id="aiInput" placeholder="Ask me anything or say 'add habit...' / 'add lesson...'" onkeypress="if(event.key==='Enter')sendAiMessage()">
-      <button class="ai-send-btn" onclick="sendAiMessage()">➤</button>
-    </div>
+  <div class="chart-container" style="margin-top:16px;">
+    <div class="chart-title">📅 30-Day Overview</div>
+    <div class="chart-bars" id="longChart" style="height:80px;align-items:flex-end;"></div>
+  </div>
+  <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+    <button class="export-btn" onclick="exportCSV()">📥 Export CSV</button>
   </div>
 </div>
 
-<!-- STUDIO MODAL -->
-<div id="studioModal" class="modal-overlay" style="display:none;">
-  <div class="studio-card" style="width:95%;max-width:500px;max-height:92vh;overflow-y:auto;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <h3 style="font-size:16px;font-weight:800;color:#2c3e50;">📸 Story Studio</h3>
-      <button onclick="closeStudio()" style="background:#ffe0e0;color:#c0392b;padding:4px 12px;font-size:12px;">✕ Close</button>
+<!-- AI PAGE -->
+<div id="aiPage" style="display:none;">
+  <div class="ai-wrap">
+    <div class="ai-header-row">
+      <div class="ai-avatar-el">F</div>
+      <div><div class="ai-title-el" id="aiTitle">FIKRCHA AI</div><div class="ai-status" id="aiStatusEl">● Online</div></div>
     </div>
-    <div class="studio-preview" id="studioPreview">
-      <div class="studio-preview-inner" id="studioInner">
-        <div class="studio-quote-text" id="studioQuoteText"></div>
-        <div class="studio-quote-author" id="studioQuoteAuthor"></div>
-        <div class="studio-user-name" id="studioUserName"></div>
-        <div class="studio-app-badge">✨ FIKRCHA</div>
-      </div>
+    <div class="ai-chat-box" id="aiChat">
+      <div class="ai-msg" id="aiWelcomeMsg">Hi! I'm your FIKRCHA assistant. You can say things like:<br>• "Add swimming to my habits"<br>• "How am I doing today?"<br>• "Add a lesson about Math"<br>I understand English, Uzbek, and Russian! 🌟</div>
     </div>
-    <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;">Background</div>
-    <div class="studio-controls" id="gradientPicker"></div>
-    <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;margin-top:10px;">Text Style</div>
-    <div class="studio-controls" id="fontPicker"></div>
-    <div style="font-size:12px;font-weight:700;color:#6c757d;margin-bottom:8px;margin-top:10px;">Size</div>
-    <div style="display:flex;gap:8px;">
-      <button class="studio-font-btn active" id="size-sm" onclick="setSize('sm')">Small</button>
-      <button class="studio-font-btn" id="size-md" onclick="setSize('md')">Medium</button>
-      <button class="studio-font-btn" id="size-lg" onclick="setSize('lg')">Large</button>
+    <div class="ai-action-bar" id="aiActionBar" style="display:none;">
+      <p id="aiActionTitle"></p>
+      <div id="aiActionBtns"></div>
+      <button class="ai-action-btn ai-action-cancel" onclick="dismissAiAction()">✕ Cancel</button>
     </div>
-    <div style="font-size:12px;font-weight:700;color:#6c757d;margin:10px 0 6px;">Edit Quote</div>
-    <textarea id="studioEditText" style="width:100%;border-radius:12px;height:60px;font-size:13px;" oninput="updateStudioText()"></textarea>
-    <div style="display:flex;gap:8px;margin-top:14px;">
-      <button onclick="refreshStudioQuote()" style="background:#f1f5f9;color:#475569;flex:1;">🔄 New Quote</button>
-      <button onclick="downloadStory()" class="btn-primary" style="flex:1;">⬇️ Save to Gallery</button>
+    <div class="ai-input-row" style="margin-top:10px;">
+      <input class="ai-input-el" id="aiInput" placeholder="Type anything..." onkeydown="if(event.key==='Enter')sendAiMessage()"/>
+      <button class="ai-send-btn" onclick="sendAiMessage()">➤</button>
     </div>
-    <p style="font-size:11px;color:#adb5bd;margin-top:8px;text-align:center;">Save → share to Instagram Story or anywhere</p>
+    <div class="ai-chips" id="aiChips">
+      <span class="ai-chip" onclick="sendChip('How am I doing today?')">📊 Today's progress</span>
+      <span class="ai-chip" onclick="sendChip('Add swimming to my habits')">🏊 Add habit</span>
+      <span class="ai-chip" onclick="sendChip('Which habit needs more attention?')">🎯 Weak habit</span>
+      <span class="ai-chip" onclick="sendChip('Give me motivation')">💪 Motivate me</span>
+      <span class="ai-chip" onclick="sendChip('Add a lesson about English')">📚 Add lesson</span>
+    </div>
   </div>
 </div>
 
 <!-- STORY OVERLAY -->
-<div id="storyOverlay" style="display:none;background:linear-gradient(135deg,#667eea,#764ba2);">
+<div id="storyOverlay" style="display:none;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
   <button class="story-close" onclick="closeStory()">✕</button>
-  <div class="story-hint">Tap text to edit</div>
+  <div class="story-hint">Tap BG / Ff / Aa to style · Edit text directly</div>
   <div class="story-content">
     <div class="story-quote" id="storyQuote" style="font-size:1.6rem;"></div>
     <div class="story-author" id="storyAuthor"></div>
@@ -438,15 +425,25 @@ tr.drag-over{border-top:3px solid #667eea!important;}
       <div class="days-row" id="dayPillsRow"></div>
     </div>
     <div class="sched-section" id="sched-once-section" style="display:none;">
-      <label>Add exact dates (habit only appears on these dates, only shown in those weeks)</label>
+      <label>Add exact dates (habit only appears on these dates)</label>
       <div id="onceDatesContainer" style="min-height:24px;margin-bottom:6px;"></div>
       <div style="display:flex;gap:6px;margin-top:6px;"><input type="date" id="onceDatePicker" style="flex:1;border-radius:12px;margin:0;font-size:13px;"/><button onclick="addOnceDate()" style="background:#667eea;color:#fff;padding:6px 12px;margin:0;border-radius:20px;font-size:13px;">+ Add Date</button></div>
-      <div style="font-size:11px;color:#6c757d;margin-top:4px;">This habit only appears in the week of those exact dates.</div>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
       <button onclick="closeHabitModal()">Cancel</button>
       <button class="btn-primary" onclick="saveHabitModal()">💾 Save Habit</button>
     </div>
+  </div>
+</div>
+
+<!-- FIX #2: QUOTE LIBRARY MODAL -->
+<div id="quoteLibraryModal" class="modal-overlay" style="display:none;">
+  <div class="quote-library-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="font-size:1.1rem;color:#2c3e50;">📚 My Quote Library</h3>
+      <button onclick="closeQuoteLibrary()" style="background:#f1f3f5;padding:6px 12px;">✕ Close</button>
+    </div>
+    <div id="quoteLibraryList"></div>
   </div>
 </div>
 
@@ -613,7 +610,13 @@ let _diaryImageData = null;
 let _calYear = new Date().getFullYear(), _calMonth = new Date().getMonth();
 let _pendingAiActions = null;
 
-// Apply dark mode on load
+// FIX #1: Study voice state per lesson
+let _studyRecorders = {}; // keyed by lessonIdx
+let _studyVoiceBlobs = {}; // stored voice blobs
+
+// FIX #2: Quote library
+let quoteLibrary = JSON.parse(localStorage.getItem('fikrcha_quote_lib') || '[]');
+
 if (darkMode) document.body.classList.add('dark');
 
 function t(key) {
@@ -692,7 +695,7 @@ function refreshQuote() {
   const idx = quoteIndices[currentLang];
   currentQuoteIdx[currentLang] = idx;
   const q = qs[idx];
-  document.getElementById('quoteText').textContent = `"${q.t}"`;
+  document.getElementById('quoteText').textContent = `"${q.t}" `;
   document.getElementById('quoteAuthor').textContent = `— ${q.a}`;
   const counter = document.getElementById('quoteCounter');
   if (counter) counter.textContent = `${idx + 1}/${qs.length}`;
@@ -705,11 +708,61 @@ function initQuote() {
   const qs = QUOTES[currentLang] || QUOTES.en;
   const idx = quoteIndices[currentLang] || 0;
   const q = qs[idx];
-  document.getElementById('quoteText').textContent = `"${q.t}"`;
+  document.getElementById('quoteText').textContent = `"${q.t}" `;
   document.getElementById('quoteAuthor').textContent = `— ${q.a}`;
   const counter = document.getElementById('quoteCounter');
   if (counter) counter.textContent = `${idx + 1}/${qs.length}`;
   updateStudioFromCurrent();
+}
+
+// ========== FIX #2: QUOTE LIBRARY ==========
+function saveQuoteToLibrary() {
+  const textEl = document.getElementById('quoteText');
+  const authorEl = document.getElementById('quoteAuthor');
+  if (!textEl || !authorEl) return;
+  const text = textEl.textContent.replace(/^"|"?\s*$/g, '').trim();
+  const author = authorEl.textContent.replace(/^—\s*/, '').trim();
+  // Avoid duplicates
+  const alreadySaved = quoteLibrary.some(q => q.text === text);
+  if (alreadySaved) {
+    const btn = document.querySelector('.qbtn-save');
+    if (btn) { btn.textContent = '✅'; setTimeout(() => { btn.textContent = '💾'; }, 1500); }
+    return;
+  }
+  quoteLibrary.unshift({ text, author, lang: currentLang, date: new Date().toLocaleDateString() });
+  localStorage.setItem('fikrcha_quote_lib', JSON.stringify(quoteLibrary));
+  const btn = document.querySelector('.qbtn-save');
+  if (btn) { btn.textContent = '✅ Saved!'; btn.style.background = '#16a34a'; setTimeout(() => { btn.textContent = '💾'; btn.style.background = ''; }, 1800); }
+}
+
+function openQuoteLibrary() {
+  const modal = document.getElementById('quoteLibraryModal');
+  const list = document.getElementById('quoteLibraryList');
+  if (!quoteLibrary.length) {
+    list.innerHTML = '<p style="text-align:center;color:#adb5bd;padding:20px;">No saved quotes yet. Click 💾 to save quotes you like!</p>';
+  } else {
+    list.innerHTML = quoteLibrary.map((q, i) => `
+      <div class="quote-lib-item">
+        <div style="font-size:1.2rem;flex-shrink:0;">✨</div>
+        <div style="flex:1;">
+          <div class="quote-lib-text">"${escapeHtml(q.text)}"</div>
+          <div class="quote-lib-author">— ${escapeHtml(q.author)}</div>
+          <div class="quote-lib-date">Saved on ${escapeHtml(q.date || '')}</div>
+        </div>
+        <button onclick="deleteQuoteFromLibrary(${i})" class="btn-danger btn-sm" style="flex-shrink:0;">🗑️</button>
+      </div>`).join('');
+  }
+  modal.style.display = 'flex';
+}
+
+function deleteQuoteFromLibrary(i) {
+  quoteLibrary.splice(i, 1);
+  localStorage.setItem('fikrcha_quote_lib', JSON.stringify(quoteLibrary));
+  openQuoteLibrary();
+}
+
+function closeQuoteLibrary() {
+  document.getElementById('quoteLibraryModal').style.display = 'none';
 }
 
 // ========== STUDIO ==========
@@ -733,71 +786,49 @@ const FONTS = [
   { family: '"Times New Roman",serif', label: 'Elegant' }
 ];
 
-function openStudio() { buildStudioControls(); updateStudioFromCurrent(); document.getElementById('studioModal').style.display = 'flex'; }
-function closeStudio() { document.getElementById('studioModal').style.display = 'none'; }
+function openStudio() { buildStudioControls(); updateStudioFromCurrent(); document.getElementById('studioModal')?.style && (document.getElementById('studioModal').style.display = 'flex'); }
+function closeStudio() { const m = document.getElementById('studioModal'); if (m) m.style.display = 'none'; }
 
 function buildStudioControls() {
-  const gp = document.getElementById('gradientPicker');
+  const gp = document.getElementById('gradientPicker'); if (!gp) return;
   gp.innerHTML = GRADIENTS.map((g, i) => `<div class="studio-swatch ${i === studioGrad ? 'active' : ''}" style="background:${g.bg};" onclick="setGrad(${i})" title="${g.label}"></div>`).join('');
-  const fp = document.getElementById('fontPicker');
+  const fp = document.getElementById('fontPicker'); if (!fp) return;
   fp.innerHTML = FONTS.map((f, i) => `<button class="studio-font-btn ${i === studioFont ? 'active' : ''}" style="font-family:${f.family}" onclick="setFont(${i})">${f.label}</button>`).join('');
 }
-function setGrad(i) { studioGrad = i; buildStudioControls(); applyStudio(); }
-function setFont(i) { studioFont = i; buildStudioControls(); applyStudio(); }
-function setSize(s) {
-  studioSize = s;
-  ['sm', 'md', 'lg'].forEach(x => { document.getElementById('size-' + x)?.classList.remove('active'); });
-  document.getElementById('size-' + s)?.classList.add('active');
-  applyStudio();
-}
-function applyStudio() {
-  const g = GRADIENTS[studioGrad]; const f = FONTS[studioFont];
-  const sizes = { sm: '1rem', md: '1.2rem', lg: '1.5rem' };
-  const inner = document.getElementById('studioInner');
-  const preview = document.getElementById('studioPreview');
-  preview.style.background = g.bg;
-  inner.style.fontFamily = f.family;
-  inner.style.color = g.tc;
-  document.getElementById('studioQuoteText').style.fontSize = sizes[studioSize];
-}
+
 function updateStudioFromCurrent() {
+  const sp = document.getElementById('studioPreview'); if (!sp) return;
   const qs = QUOTES[currentLang] || QUOTES.en;
-  const q = qs[currentQuoteIdx[currentLang] || 0];
-  if (!q) return;
-  const qEl = document.getElementById('studioQuoteText');
-  const aEl = document.getElementById('studioQuoteAuthor');
-  const uEl = document.getElementById('studioUserName');
-  if (qEl) qEl.textContent = `"${q.t}"`;
-  if (aEl) aEl.textContent = `— ${q.a}`;
-  if (uEl) {
-    const name = window._profileName || '';
-    uEl.textContent = name ? `👤 ${name}` : '';
-    uEl.style.display = name ? 'block' : 'none';
-  }
-  const editEl = document.getElementById('studioEditText');
-  if (editEl) editEl.value = q.t;
-  applyStudio();
+  const idx = currentQuoteIdx[currentLang] || 0;
+  const q = qs[idx] || qs[0];
+  const g = GRADIENTS[studioGrad];
+  sp.style.background = g.bg;
+  const qt = document.getElementById('studioQuoteText'); if (qt) { qt.textContent = `"${q.t}"`; qt.style.color = g.tc; qt.style.fontFamily = FONTS[studioFont].family; }
+  const qa = document.getElementById('studioAuthor'); if (qa) { qa.textContent = `— ${q.a}`; qa.style.color = g.tc; }
 }
-function updateStudioText() {
-  const v = document.getElementById('studioEditText').value;
-  document.getElementById('studioQuoteText').textContent = `"${v}"`;
+
+function setGrad(i) {
+  studioGrad = i;
+  document.querySelectorAll('.studio-swatch').forEach((s, j) => s.classList.toggle('active', j === i));
+  updateStudioFromCurrent();
 }
-function refreshStudioQuote() { refreshQuote(); updateStudioFromCurrent(); }
-async function downloadStory() {
-  const preview = document.getElementById('studioPreview');
-  if (typeof html2canvas === "undefined") {
-    alert('📸 Take a screenshot!\niPhone: Side+Volume Up\nAndroid: Power+Volume Down');
-    return;
-  }
-  try {
-    const canvas = await html2canvas(preview, { scale: 2, useCORS: true });
-    const link = document.createElement("a");
-    link.download = "fikrcha_story.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  } catch (err) {
-    alert('📸 Please take a screenshot to save!');
-  }
+
+function setFont(i) {
+  studioFont = i;
+  document.querySelectorAll('.studio-font-btn').forEach((b, j) => b.classList.toggle('active', j === i));
+  updateStudioFromCurrent();
+}
+
+function saveStoryToGallery() {
+  if (typeof html2canvas === "undefined") { alert("Take a screenshot!\niPhone: Side+Volume Up\nAndroid: Power+Volume Down"); return; }
+  const sq = document.getElementById("storyQuote"), sa = document.getElementById("storyAuthor");
+  if (!sq || !sa) return;
+  const qe = sq.contentEditable, ae = sa.contentEditable;
+  sq.contentEditable = "false"; sa.contentEditable = "false";
+  html2canvas(document.getElementById("storyOverlay"), { scale: 2, useCORS: true }).then(canvas => {
+    const link = document.createElement("a"); link.download = "fikrcha_story.png"; link.href = canvas.toDataURL("image/png"); link.click();
+    sq.contentEditable = qe; sa.contentEditable = ae;
+  }).catch(() => { alert("Screenshot to save!"); sq.contentEditable = qe; sa.contentEditable = ae; });
 }
 
 // ========== STORY OVERLAY ==========
@@ -809,7 +840,6 @@ const storySizes = ['1.6rem', '2rem', '2.4rem', '2.8rem'];
 function openStoryOverlay() {
   const q = document.getElementById("quoteText").textContent;
   const a = document.getElementById("quoteAuthor").textContent;
-  // Show real user name (telegram name)
   const name = window._profileName || '';
   const sq = document.getElementById("storyQuote");
   const sa = document.getElementById("storyAuthor");
@@ -835,19 +865,8 @@ function applyStoryStyles() {
 function cycleBg() { storyBgIdx = (storyBgIdx + 1) % storyBgs.length; applyStoryStyles(); }
 function cycleFont() { storyFontIdx = (storyFontIdx + 1) % storyFonts.length; applyStoryStyles(); }
 function cycleSize() { storySizeIdx = (storySizeIdx + 1) % storySizes.length; applyStoryStyles(); }
-async function saveStoryToGallery() {
-  if (typeof html2canvas === "undefined") { alert("Take a screenshot!\niPhone: Side+Volume Up\nAndroid: Power+Volume Down"); return; }
-  const sq = document.getElementById("storyQuote"), sa = document.getElementById("storyAuthor");
-  const qe = sq.contentEditable, ae = sa.contentEditable;
-  sq.contentEditable = "false"; sa.contentEditable = "false";
-  try {
-    const canvas = await html2canvas(document.getElementById("storyOverlay"), { scale: 2, useCORS: true });
-    const link = document.createElement("a"); link.download = "fikrcha_story.png"; link.href = canvas.toDataURL("image/png"); link.click();
-  } catch (err) { alert("Screenshot to save!"); }
-  sq.contentEditable = qe; sa.contentEditable = ae;
-}
 
-// ========== AI CHAT ==========
+// ========== FIX #4 & #5: AI CHAT — Better multilingual + smarter intent ==========
 function buildUserContext() {
   const todayStr = today();
   const todayDone = tasks.filter(t => t.history[todayStr]).length;
@@ -855,7 +874,58 @@ function buildUserContext() {
   const avgC = tasks.length ? Math.round(tasks.reduce((s, t) => s + getConsistency30(t), 0) / tasks.length) : 0;
   const topHabits = tasks.slice(0, 5).map(t => `${t.text}(${getConsistency30(t)}%)`).join(', ');
   const missedToday = tasks.filter(t => isScheduledForDate(t, todayStr) && !t.history[todayStr]).map(t => t.text).join(', ');
-  return `Habits: ${tasks.length} total, ${todayDone}/${todayScheduled} done today, missed: ${missedToday || 'none'}, avg consistency: ${avgC}%. Top: ${topHabits || 'none'}. Lessons: ${lessons.length}. Diary entries: ${Object.values(diaries).flat().length}. Language: ${currentLang}.`;
+  return `Habits: ${tasks.length} total, ${todayDone}/${todayScheduled} done today, missed: ${missedToday || 'none'}, avg consistency: ${avgC}%. Top: ${topHabits || 'none'}. Lessons: ${lessons.length}. Diary entries: ${Object.values(diaries).flat().length}. App language: ${currentLang}.`;
+}
+
+// FIX #5: Much broader intent detection — catches "add swimming", "add yoga", any activity
+function detectAddHabitIntent(msg) {
+  const patterns = [
+    // English broad patterns
+    /\b(add|create|start|make|begin|track|set|include|put)\b.{0,50}\b(habit|routine|practice|activity|task|daily|workout|exercise)/i,
+    // "add [anything] to my habit/routine/tracker"
+    /\b(add|put|include)\b.{0,40}\bto\b.{0,20}\b(habit|routine|tracker|list)/i,
+    // "add [sport/activity name]" - common activities
+    /\b(add|start|track|begin|create)\b\s+(swimming|running|walking|jogging|reading|writing|yoga|meditation|gym|workout|exercise|cycling|coding|studying|prayer|namaz|sleep|water|sport|football|basketball|chess|drawing|music|piano|guitar|dancing|stretching|pushup|situp|pullup|breathing|journaling|gratitude|learning|practice)/i,
+    // Uzbek patterns
+    /\b(qo['`]sh|qoshish|kiritish|boshlash|yaratish)\b.{0,40}(odat|mashq|vazifa|sport|suzish|yugurish|yurish)/i,
+    /odat.*qo['`]sh|qo['`]sh.*odat/i,
+    // Any "add X" where X is likely an activity (2-30 chars after add)
+    /^(add|qo['`]sh|dobav[iy])\s+\w[\w\s]{1,30}$/i,
+    // Russian patterns
+    /\b(добав|внес|запис|созда|начн|отслеж)\b.{0,40}(привычк|занятие|упражнение|плавание|бег|ходьба|чтение)/i,
+    // "new habit" patterns
+    /new (habit|routine|practice|odat|privychka)/i,
+    /yangi odat/i,
+    /новая привычка/i,
+  ];
+  return patterns.some(p => p.test(msg));
+}
+
+function detectAddLessonIntent(msg) {
+  return /add.*(lesson|study|module|topic|course|subject)|new lesson|dars qo['`]sh|добав.*урок|yangi dars|добавить урок/i.test(msg);
+}
+
+function detectAddDiaryIntent(msg) {
+  return /add.*(diary|note|journal|entry)|write.*diary|kundalik.*yoz|добав.*дневник|записать в дневник/i.test(msg);
+}
+
+// FIX #5: Extract habit name from message intelligently
+function extractHabitName(msg) {
+  // Try to extract the actual habit name from the message
+  const patterns = [
+    /(?:add|create|start|track|begin)\s+["']?([^"'\n]{2,40})["']?\s*(?:to|as|habit|routine|odat|привычк)?/i,
+    /(?:qo['`]sh|qoshish)\s+["']?([^"'\n]{2,40})["']?\s*(?:odat)?/i,
+    /(?:добавить?|добавь)\s+["']?([^"'\n]{2,40})["']?\s*(?:привычку|занятие)?/i,
+  ];
+  for (const p of patterns) {
+    const m = msg.match(p);
+    if (m && m[1]) {
+      let name = m[1].trim().replace(/\b(to my|to the|as a|as my|habit|routine|odat|привычку|занятие)\b/gi, '').trim();
+      if (name.length > 1 && name.length < 50) return name;
+    }
+  }
+  // Fallback: take the whole message minus trigger words
+  return msg.replace(/^(add|create|start|qo['`]sh|добавь?|track)\s*/i, '').replace(/\s*(to my habit|habit|routine|odat|привычку)$/i, '').trim() || msg;
 }
 
 async function sendAiMessage() {
@@ -867,23 +937,34 @@ async function sendAiMessage() {
   const typingId = 'typing-' + Date.now();
   appendTyping(typingId);
 
-  // Detect intent for adding habits/study/diary
-  const lmsg = msg.toLowerCase();
-  const isAddHabit = /add.*(habit|routine|practice)|new habit|odat qo'sh|добав.*привычк/i.test(msg);
-  const isAddLesson = /add.*(lesson|study|module|topic)|new lesson|dars qo'sh|добав.*урок/i.test(msg);
-  const isAddDiary = /add.*(diary|note|journal)|write.*diary|kundalik|добав.*дневник/i.test(msg);
+  const isAddHabit = detectAddHabitIntent(msg);
+  const isAddLesson = detectAddLessonIntent(msg);
+  const isAddDiary = detectAddDiaryIntent(msg);
 
   const ctx = buildUserContext();
-  let systemPrompt = `You are FIKRCHA AI, a productivity assistant. Be concise — max 60 words. Give direct, specific answers. No filler phrases. Support Uzbek, English, Russian — respond in user's language.
+
+  // FIX #4: Much better multilingual system prompt
+  let systemPrompt = `You are FIKRCHA AI, a friendly and helpful productivity assistant for people of all ages, including children as young as 10 years old.
+
+CRITICAL LANGUAGE RULES — FOLLOW STRICTLY:
+- Detect the language of the user's message carefully.
+- If the user writes in UZBEK (uses words like: odat, qo'sh, qil, ber, bo'l, men, siz, bu, va, bilan, uchun, etc.): You MUST respond ENTIRELY in Uzbek. Use simple, clear, everyday Uzbek.
+- If the user writes in RUSSIAN (uses Cyrillic script like: добавь, привет, помоги, мне, как, что, etc.): You MUST respond ENTIRELY in Russian. Use simple, clear Russian.
+- If the user writes in ENGLISH: Respond in English.
+- NEVER mix languages. NEVER respond in English when the user wrote in Uzbek or Russian.
+- Use simple words. Short sentences. A child should understand your answer.
+- Maximum 50 words in your response.
+- Be warm, encouraging, and direct. No long explanations.
 
 User data: ${ctx}`;
 
   if (isAddHabit) {
-    systemPrompt += `\n\nThe user wants to add a habit. Extract the habit name and suggested time from their message. Reply confirming what you'll add. Format your response ending with: [ADD_HABIT: name="<name>", time="<HH:MM or empty>", category="<Health/Study/Exercise/Work/Mind/Social/Growth>"]`;
+    const suggestedName = extractHabitName(msg);
+    systemPrompt += `\n\nThe user wants to ADD A HABIT. Extract the habit name from their message. The most likely habit name is: "${suggestedName}". Confirm what you will add in 1-2 sentences in the user's language. End your response with exactly: [ADD_HABIT: name="${suggestedName}", time="", category="Health"]`;
   } else if (isAddLesson) {
-    systemPrompt += `\n\nThe user wants to add a study lesson. Extract the lesson title. Reply confirming. Format: [ADD_LESSON: title="<title>"]`;
+    systemPrompt += `\n\nThe user wants to add a study lesson. Extract the lesson title. Reply confirming in user's language. End with: [ADD_LESSON: title="<extracted title>"]`;
   } else if (isAddDiary) {
-    systemPrompt += `\n\nThe user wants to add a diary entry. Format: [ADD_DIARY: text="<text>"]`;
+    systemPrompt += `\n\nThe user wants to save a diary entry. Extract the text. End with: [ADD_DIARY: text="<text>"]`;
   }
 
   try {
@@ -897,18 +978,15 @@ User data: ${ctx}`;
       const data = await res.json();
       let reply = data.reply || "Sorry, I couldn't respond right now.";
 
-      // Check for action tags
       const habitMatch = reply.match(/\[ADD_HABIT:\s*name="([^"]+)",\s*time="([^"]*)",\s*category="([^"]*)"\]/);
       const lessonMatch = reply.match(/\[ADD_LESSON:\s*title="([^"]+)"\]/);
       const diaryMatch = reply.match(/\[ADD_DIARY:\s*text="([^"]+)"\]/);
 
-      // Remove tag from display
       const displayReply = reply.replace(/\[ADD_HABIT:[^\]]+\]/, '').replace(/\[ADD_LESSON:[^\]]+\]/, '').replace(/\[ADD_DIARY:[^\]]+\]/, '').trim();
       appendChat('ai', displayReply);
       aiMessages.push({ role: 'user', content: msg }, { role: 'assistant', content: displayReply });
       if (aiMessages.length > 20) aiMessages = aiMessages.slice(-20);
 
-      // Show action bar if detected
       if (habitMatch) {
         showAiAction('habit', { name: habitMatch[1], time: habitMatch[2], category: habitMatch[3] || 'Health' });
       } else if (lessonMatch) {
@@ -1165,12 +1243,10 @@ function render() {
   header += `<th>%</th><th></th>`;
   document.getElementById("weekHeader").innerHTML = header;
 
-  // Only show "once" habits if they have dates in THIS week
   const visibleTasks = tasks.filter(task => isHabitVisibleThisWeek(task, week));
 
   let body = "";
   visibleTasks.forEach((task, i) => {
-    // Find real index in tasks array for edit/delete
     const realIdx = tasks.indexOf(task);
     const color = categories.find(c => c.name === task.category)?.color || "#f8f9fa";
     const streak = getStreak(task);
@@ -1196,7 +1272,7 @@ function render() {
   });
   if (visibleTasks.length === 0) {
     const colspan = 7 + 3;
-    body = `<tr><td colspan="${colspan}" style="text-align:center;padding:24px;color:#adb5bd;font-size:13px;">No habits for this week. Add one or go to a different week!</td></tr>`;
+    body = `<tr><td colspan="${colspan}" style="text-align:center;padding:24px;color:#adb5bd;font-size:13px;">No habits for this week. Add one!</td></tr>`;
   }
   document.getElementById("taskBody").innerHTML = body;
 }
@@ -1217,18 +1293,15 @@ async function dropHabit(e, targetIdx) {
   tasks.splice(targetIdx, 0, moved);
   dragSrcIdx2 = null;
   render();
-  // Save new order
   try {
     await api("POST", "/api/habits/reorder", { orderedIds: tasks.map(t => t.id) });
   } catch (e) {
-    // Fallback: save each habit to preserve order
     for (let k = 0; k < tasks.length; k++) {
       await api("PUT", "/api/habits/" + tasks[k].id, { name: tasks[k].text, time: tasks[k].time, category: tasks[k].category, history: tasks[k].history, schedule: tasks[k].schedule });
     }
   }
 }
 
-// Touch drag support
 let touchDragIdx = null, touchDragEl = null, touchClone = null;
 function touchDragStart(e, i) {
   touchDragIdx = i;
@@ -1243,7 +1316,6 @@ function touchDragMove(e) {
   e.preventDefault();
   const touch = e.touches[0];
   if (touchClone) { touchClone.style.left = (touch.clientX - 50) + 'px'; touchClone.style.top = (touch.clientY - 20) + 'px'; }
-  // Find target row
   const el = document.elementFromPoint(touch.clientX, touch.clientY);
   const targetRow = el?.closest('tr[id^="habitRow-"]');
   document.querySelectorAll('tr.drag-over').forEach(r => r.classList.remove('drag-over'));
@@ -1263,9 +1335,7 @@ async function touchDragEnd(e) {
       const moved = tasks.splice(touchDragIdx, 1)[0];
       tasks.splice(targetIdx, 0, moved);
       render();
-      try {
-        await api("POST", "/api/habits/reorder", { orderedIds: tasks.map(t => t.id) });
-      } catch (e) {}
+      try { await api("POST", "/api/habits/reorder", { orderedIds: tasks.map(t => t.id) }); } catch (e) {}
     }
   }
   touchDragIdx = null;
@@ -1367,9 +1437,50 @@ function exportCSV() {
   tasks.forEach(task => { let row = `"${task.text}","${task.category}","${getScheduledLabel(task)}","${task.time || ''}"`;week.forEach(d => row += "," + (task.history[d.date] ? "1" : "0")); row += "," + getPercent(task, week) + "%"; csv += row + "\n"; });
   const blob = new Blob([csv], { type: "text/csv" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `fikrcha_${today()}.csv`; a.click(); URL.revokeObjectURL(url);
 }
-function checkNotificationPrompt() { if ('Notification' in window && Notification.permission === 'default') { const b = document.getElementById('notifBanner'); const m = document.getElementById('notifMsg'); if (b && m) { m.textContent = t('notifEnable'); b.style.display = 'flex'; } } else { const b = document.getElementById('notifBanner'); if (b) b.style.display = 'none'; } }
-async function requestNotifications() { const p = await Notification.requestPermission(); if (p === 'granted') { const b = document.getElementById('notifBanner'); if (b) b.style.display = 'none'; scheduleNotifications(); new Notification('FIKRCHA 🌟', { body: 'Notifications enabled!' }); } }
-function scheduleNotifications() { setInterval(() => { if (Notification.permission !== 'granted') return; const now = new Date(); const hh = String(now.getHours()).padStart(2, '0'); const mm = String(now.getMinutes()).padStart(2, '0'); const ds = today(); tasks.forEach(task => { if (!task.time || task.history[ds] || !isScheduledForDate(task, ds)) return; if (task.time === `${hh}:${mm}`) new Notification(`⏰ FIKRCHA: ${task.text}`, { body: 'Time for your habit!' }); }); }, 60000); }
+
+function checkNotificationPrompt() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    const b = document.getElementById('notifBanner'); const m = document.getElementById('notifMsg');
+    if (b && m) { m.textContent = t('notifEnable'); b.style.display = 'flex'; }
+  } else { const b = document.getElementById('notifBanner'); if (b) b.style.display = 'none'; }
+}
+
+async function requestNotifications() {
+  const p = await Notification.requestPermission();
+  if (p === 'granted') {
+    const b = document.getElementById('notifBanner'); if (b) b.style.display = 'none';
+    scheduleNotifications();
+    new Notification('FIKRCHA 🌟', { body: 'Notifications enabled! You will get a reminder 1 minute before each habit.' });
+  }
+}
+
+// ========== FIX #3: NOTIFICATION 1 MINUTE BEFORE ==========
+function scheduleNotifications() {
+  setInterval(() => {
+    if (Notification.permission !== 'granted') return;
+    const now = new Date();
+    const ds = today();
+    // Check 1 minute ahead (notify 1 min before habit time)
+    const oneMinLater = new Date(now.getTime() + 60 * 1000);
+    const targetH = String(oneMinLater.getHours()).padStart(2, '0');
+    const targetM = String(oneMinLater.getMinutes()).padStart(2, '0');
+    const targetTime = `${targetH}:${targetM}`;
+    tasks.forEach(task => {
+      if (!task.time || task.history[ds] || !isScheduledForDate(task, ds)) return;
+      if (task.time === targetTime) {
+        // Use session key to avoid duplicate notifications
+        const notifKey = `notif_${ds}_${task.id || task.text}`;
+        if (!sessionStorage.getItem(notifKey)) {
+          sessionStorage.setItem(notifKey, '1');
+          new Notification(`⏰ FIKRCHA — 1 minute!`, {
+            body: `"${task.text}" starts in 1 minute. Get ready! 💪`,
+            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">✨</text></svg>'
+          });
+        }
+      }
+    });
+  }, 30000); // check every 30 seconds for precision
+}
 
 // ========== STUDY ==========
 async function addLesson() { const input = document.getElementById("lessonInput"); if (!input.value.trim()) return; await api("POST", "/api/studies", { title: input.value }); input.value = ""; await loadAll(); setTimeout(() => { const all = document.querySelectorAll('details.lesson'); if (all.length) all[all.length - 1].open = true; }, 100); }
@@ -1378,15 +1489,88 @@ let activityImageData = {};
 function previewActivityImage(i, inp) { if (!inp.files || !inp.files[0]) return; const r = new FileReader(); r.onload = e => { activityImageData[i] = e.target.result; const el = document.getElementById(`activity-img-name-${i}`); if (el) el.textContent = "✅ Ready"; }; r.readAsDataURL(inp.files[0]); }
 function saveOS() { const s = {}; document.querySelectorAll('details.lesson').forEach((el, idx) => { s[idx] = el.open; }); return s; }
 function restoreOS(s) { document.querySelectorAll('details.lesson').forEach((el, idx) => { if (s[idx]) { el.open = true; const a = el.querySelector('.lesson-toggle'); if (a) a.style.transform = 'rotate(90deg)'; } }); }
-async function addLessonTask(i) { const inp = document.getElementById(`activity-${i}`); if (!inp.value.trim()) return; lessons[i].tasks.push({ text: inp.value, history: {}, comment: "", image: activityImageData[i] || null }); inp.value = ""; activityImageData[i] = null; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); const s = saveOS(); renderLessons(); restoreOS(s); }
+async function addLessonTask(i) {
+  const inp = document.getElementById(`activity-${i}`); if (!inp.value.trim() && !_studyVoiceBlobs[i]) return;
+  let voiceData = null;
+  if (_studyVoiceBlobs[i]) {
+    const r = new FileReader();
+    voiceData = await new Promise(res => { r.onload = e => res(e.target.result); r.readAsDataURL(_studyVoiceBlobs[i]); });
+  }
+  lessons[i].tasks.push({ text: inp.value || '🎤 Voice note', history: {}, comment: "", image: activityImageData[i] || null, voice: voiceData || null });
+  inp.value = ""; activityImageData[i] = null; _studyVoiceBlobs[i] = null;
+  await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
+  const s = saveOS(); renderLessons(); restoreOS(s);
+}
 async function deleteLessonTask(i, j) { lessons[i].tasks.splice(j, 1); await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); const s = saveOS(); renderLessons(); restoreOS(s); }
 async function toggleLessonTask(i, j) { const td = today(); lessons[i].tasks[j].history[td] = !lessons[i].tasks[j].history[td]; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); const s = saveOS(); renderLessons(); restoreOS(s); }
 async function saveComment(i, j, value) { lessons[i].tasks[j].comment = value; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); }
+
+// ========== FIX #1: Study voice recording per lesson ==========
+async function toggleStudyRecording(i) {
+  const btn = document.getElementById(`study-voice-btn-${i}`);
+  const timerEl = document.getElementById(`study-voice-timer-${i}`);
+  const previewEl = document.getElementById(`study-voice-preview-${i}`);
+  const audioEl = document.getElementById(`study-voice-audio-${i}`);
+  if (!btn) return;
+
+  if (_studyRecorders[i] && _studyRecorders[i].state === 'recording') {
+    _studyRecorders[i].stop();
+    btn.classList.remove('recording');
+    btn.textContent = '🎤 Voice';
+    if (timerEl) { clearInterval(_studyRecorders[`timer_${i}`]); timerEl.style.display = 'none'; }
+  } else {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      let chunks = [];
+      const recorder = new MediaRecorder(stream);
+      _studyRecorders[i] = recorder;
+      recorder.ondataavailable = e => chunks.push(e.data);
+      recorder.onstop = () => {
+        _studyVoiceBlobs[i] = new Blob(chunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(_studyVoiceBlobs[i]);
+        if (audioEl) audioEl.src = url;
+        if (previewEl) previewEl.style.display = 'flex';
+        stream.getTracks().forEach(t => t.stop());
+      };
+      recorder.start();
+      btn.classList.add('recording');
+      btn.textContent = '⏹ Stop';
+      if (timerEl) {
+        let secs = 0; timerEl.style.display = 'block'; timerEl.textContent = '🔴 0s';
+        _studyRecorders[`timer_${i}`] = setInterval(() => { secs++; timerEl.textContent = `🔴 ${secs}s`; }, 1000);
+      }
+    } catch (e) { alert('Microphone access denied.'); }
+  }
+}
+
+function clearStudyVoice(i) {
+  _studyVoiceBlobs[i] = null;
+  const previewEl = document.getElementById(`study-voice-preview-${i}`);
+  const audioEl = document.getElementById(`study-voice-audio-${i}`);
+  if (previewEl) previewEl.style.display = 'none';
+  if (audioEl) audioEl.src = '';
+}
+
 function renderLessons() {
   let html = "";
   lessons.forEach((l, i) => {
     const td = today(), dn = l.tasks.filter(t => t.history[td]).length, tot = l.tasks.length, pct = tot > 0 ? Math.round((dn / tot) * 100) : 0;
-    html += `<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;"><summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>${tot > 0 ? `<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${dn}/${tot} · ${pct}%</span>` : ''}</div><div style="display:flex;align-items:center;gap:8px;"><button onclick="event.preventDefault();deleteLesson(${i})" style="background:#ffe0e0;color:#c0392b;padding:3px 8px;font-size:11px;" title="Delete">🗑️</button><span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span></div></summary><div style="padding:0 18px 18px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;"><div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:140px;"><label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:12px;">🖼️<input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i},this)"></label><span id="activity-img-name-${i}" style="font-size:11px;color:#888;"></span><button onclick="addLessonTask(${i})" style="background:#667eea;color:#fff;">➕ Add</button></div><ul style="list-style:none;padding-left:0;">`;
+    html += `<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;"><summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>${tot > 0 ? `<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${dn}/${tot} · ${pct}%</span>` : ''}</div><div style="display:flex;align-items:center;gap:8px;"><button onclick="event.preventDefault();deleteLesson(${i})" style="background:#ffe0e0;color:#c0392b;padding:3px 8px;font-size:11px;" title="Delete">🗑️</button><span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span></div></summary>
+    <div style="padding:0 18px 18px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;">
+      <div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+        <input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:120px;">
+        <label style="cursor:pointer;background:#f1f3f5;border-radius:10px;padding:6px 10px;font-size:12px;">🖼️<input type="file" id="activity-img-${i}" accept="image/*" style="display:none;" onchange="previewActivityImage(${i},this)"></label>
+        <span id="activity-img-name-${i}" style="font-size:11px;color:#888;"></span>
+        <!-- FIX #1: Voice recording button for study notes -->
+        <button id="study-voice-btn-${i}" class="study-voice-btn" onclick="toggleStudyRecording(${i})">🎤 Voice</button>
+        <button onclick="addLessonTask(${i})" style="background:#667eea;color:#fff;">➕ Add</button>
+      </div>
+      <div id="study-voice-timer-${i}" style="display:none;font-size:11px;color:#c0392b;font-weight:700;margin-bottom:4px;"></div>
+      <div id="study-voice-preview-${i}" class="study-voice-preview" style="display:none;margin-bottom:8px;">
+        <audio id="study-voice-audio-${i}" controls></audio>
+        <button onclick="clearStudyVoice(${i})" style="background:#ffe0e0;font-size:10px;padding:2px 5px;margin:0;border-radius:8px;">✕</button>
+      </div>
+      <ul style="list-style:none;padding-left:0;">`;
     l.tasks.forEach((task, j) => {
       const done = task.history[td];
       html += `<li style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px;padding:8px 0;border-bottom:1px solid #f1f3f5;">
@@ -1394,6 +1578,7 @@ function renderLessons() {
         <div style="flex:1;min-width:0;">
           <div style="font-size:13px;font-weight:${done ? '400' : '600'};color:${done ? '#adb5bd' : '#2c3e50'};text-decoration:${done ? 'line-through' : 'none'};">${escapeHtml(task.text)}</div>
           ${task.image ? `<img src="${task.image}" style="max-width:120px;border-radius:8px;margin-top:4px;object-fit:cover;">` : ''}
+          ${task.voice ? `<div class="study-voice-preview" style="margin-top:6px;"><audio src="${task.voice}" controls style="flex:1;height:28px;"></audio></div>` : ''}
           <textarea style="width:100%;height:36px;font-size:11px;margin-top:4px;border-radius:8px;padding:4px 8px;" placeholder="Notes..." onchange="saveComment(${i},${j},this.value)">${escapeHtml(task.comment || '')}</textarea>
         </div>
         <button onclick="deleteLessonTask(${i},${j})" class="btn-danger btn-sm" style="flex-shrink:0;">🗑️</button>
@@ -1549,7 +1734,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAll();
 });
 
-// Handle Telegram Web App
 if (window.Telegram?.WebApp) { window.Telegram.WebApp.ready(); window.Telegram.WebApp.expand(); }
 </script>
 </body>
