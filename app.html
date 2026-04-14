@@ -610,7 +610,7 @@ let quoteIndices = { en: 0, uz: 0, ru: 0 };
 let currentQuoteIdx = { en: 0, uz: 0, ru: 0 };
 let _recordingTimer = null, _mediaRecorder = null, _audioChunks = [], _voiceBlob = null;
 let _diaryImageData = null;
-let _calYear, _calMonth;
+let _calYear = new Date().getFullYear(), _calMonth = new Date().getMonth();
 let _pendingAiActions = null;
 
 // Apply dark mode on load
@@ -1405,7 +1405,6 @@ function renderLessons() {
 }
 
 // ========== DIARY ==========
-let _calYear = new Date().getFullYear(), _calMonth = new Date().getMonth();
 function calPrev() { _calMonth--; if (_calMonth < 0) { _calMonth = 11; _calYear--; } renderCalendar(); }
 function calNext() { _calMonth++; if (_calMonth > 11) { _calMonth = 0; _calYear++; } renderCalendar(); }
 
@@ -1489,7 +1488,6 @@ function previewDiaryImage(inp) {
 }
 function clearDiaryImage() { _diaryImageData = null; document.getElementById('diaryImagePreview').style.display = 'none'; document.getElementById('diaryImage').value = ''; }
 
-let _recordingTimer = null; let _mediaRecorder = null; let _audioChunks = []; let _voiceBlob = null;
 async function toggleRecording() {
   const btn = document.getElementById('voiceBtn');
   if (_mediaRecorder && _mediaRecorder.state === 'recording') {
