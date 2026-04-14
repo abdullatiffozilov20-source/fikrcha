@@ -407,9 +407,16 @@ app.post('/api/ai-chat', async (req, res) => {
   }
 });
 
-// TELEGRAM BOT
+// ============================================================
+// TELEGRAM BOT — IMPROVED VERSION
+// Replace everything from line 410 to end of your index.js
+// with this code
+// ============================================================
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const webAppUrl = DOMAIN;
+
+// ── helpers ──────────────────────────────────────────────────
 
 function getTodayStr() {
   return new Date().toISOString().split("T")[0];
@@ -424,83 +431,302 @@ function getRealUserId(userId) {
   return userId;
 }
 
+function getStreak(habit) {
+  let streak = 0;
+  const d = new Date();
+  for (let n = 0; n < 365; n++) {
+    const ds = d.toISOString().split("T")[0];
+    if (habit.history[ds]) { streak++; d.setDate(d.getDate() - 1); }
+    else break;
+  }
+  return streak;
+}
+
+function getConsistency30(habit) {
+  let scheduled = 0, done = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const ds = d.toISOString().split("T")[0];
+    scheduled++;
+    if (habit.history[ds]) done++;
+  }
+  return scheduled === 0 ? 0 : Math.round((done / scheduled) * 100);
+}
+
+// ── keyboard builders ─────────────────────────────────────────
+
 function buildHabitKeyboard(userId) {
-  const realId = getRealUserId(userId);
   const today = getTodayStr();
-  const userHabits = habits[realId] || [];
-  const keyboard = userHabits.map((h) => [
-    {
-      text: `${h.history[today] ? "✅" : "⬜"} ${h.name}${h.time ? " (" + h.time + ")" : ""}`,
-      callback_data: `tog_${realId}_${h.id}`,
-    },
-  ]);
-  keyboard.push([{ text: "📊 Today's Progress", callback_data: `prog_${realId}` }]);
+  const userHabits = habits[userId] || [];
+  const keyboard = userHabits.map((h) => [{
+    text: `${h.history[today] ? "✅" : "⬜"} ${h.name}${h.time ? " (" + h.time + ")" : ""}`,
+    callback_data: `tog_${userId}_${h.id}`,
+  }]);
+  keyboard.push([{ text: "📊 Progress", callback_data: `prog_${userId}` }]);
   keyboard.push([{ text: "🚀 Open App", web_app: { url: webAppUrl } }]);
   return keyboard;
 }
 
+function buildMainMenu() {
+  return {
+    inline_keyboard: [
+      [{ text: "📅 Today's Habits", callback_data: "cmd_habits" }],
+      [{ text: "📊 My Progress", callback_data: "cmd_progress" }],
+      [{ text: "📔 Write Diary", callback_data: "cmd_diary_prompt" }],
+      [{ text: "🚀 Open Full App", web_app: { url: webAppUrl } }],
+    ]
+  };
+}
+
+// ── /start ───────────────────────────────────────────────────
+
 bot.start((ctx) => {
-  ctx.reply(
-    "✨ Welcome to FIKRCHA!\n\nOpen the app to set up your habits, then use these commands:\n\n📅 /habits — See & check today's habits\n📔 /diary <text> — Save a diary entry\n📊 /progress — See your weekly stats",
+  const name = ctx.from.first_name || "there";
+  ctx.replyWithPhoto(
+    // A simple gradient placeholder via a public URL — replace with your own image if you want
+    { url: "https://via.placeholder.com/800x400/667eea/ffffff?text=FIKRCHA+%E2%9C%A8" },
     {
+      caption:
+        `✨ *Welcome to FIKRCHA, ${name}!*\n\n` +
+        `_think · grow · achieve_\n\n` +
+        `I'm your personal productivity assistant 🤖\n\n` +
+        `Here's what I can do for you:\n` +
+        `📅 Track your daily habits\n` +
+        `📔 Save diary entries\n` +
+        `📊 Show your weekly progress\n` +
+        `⏰ Send you reminders automatically\n` +
+        `🌅 Morning check-in every day\n` +
+        `🌙 Evening summary at night\n\n` +
+        `👇 *Open the app first* to set up your habits, then come back here!`,
+      parse_mode: "Markdown",
       reply_markup: {
-        inline_keyboard: [[{ text: "🚀 Open FIKRCHA App", web_app: { url: webAppUrl } }]],
-      },
-    },
-  );
+        inline_keyboard: [
+          [{ text: "🚀 Open FIKRCHA App", web_app: { url: webAppUrl } }],
+          [{ text: "📅 My Habits", callback_data: "cmd_habits" }, { text: "📊 Progress", callback_data: "cmd_progress" }],
+        ]
+      }
+    }
+  ).catch(() => {
+    // fallback if photo fails
+    ctx.reply(
+      `✨ *Welcome to FIKRCHA, ${name}!*\n\n` +
+      `_think · grow · achieve_\n\n` +
+      `I'm your personal productivity assistant 🤖\n\n` +
+      `📅 Track habits · 📔 Write diary · 📊 See progress\n` +
+      `⏰ I'll send you automatic reminders!\n\n` +
+      `👇 Open the app first to set up your habits:`,
+      { parse_mode: "Markdown", reply_markup: buildMainMenu() }
+    );
+  });
 });
+
+// ── /habits ──────────────────────────────────────────────────
 
 bot.command("habits", (ctx) => {
   const telegramId = String(ctx.from.id);
   let userId = telegramUsers[telegramId];
-
   if (!userId) {
-    return ctx.reply("👋 First, open the app to link your account. After signing in, come back and try again!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
-    });
+    return ctx.reply(
+      "👋 *First, open the app to link your account.*\nAfter signing in, come back and try again!",
+      { parse_mode: "Markdown", reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] } }
+    );
   }
-
   userId = getRealUserId(userId);
   const userHabits = habits[userId] || [];
   if (userHabits.length === 0) {
     return ctx.reply("You have no habits yet. Open the app to add some!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
+      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
     });
   }
-
   const today = getTodayStr();
   const done = userHabits.filter((h) => h.history[today]).length;
+  const pct = Math.round((done / userHabits.length) * 100);
+  const emoji = pct === 100 ? "🏆" : pct >= 70 ? "🔥" : pct >= 40 ? "💪" : "⚡";
   ctx.reply(
-    `📅 Your habits for today (${today})\n✅ ${done}/${userHabits.length} completed\n\nTap a habit to check/uncheck it:`,
-    { reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } },
+    `${emoji} *Your Habits — ${today}*\n✅ ${done}/${userHabits.length} completed (${pct}%)\n\nTap a habit to check/uncheck it:`,
+    { parse_mode: "Markdown", reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } }
   );
 });
+
+// ── /progress ────────────────────────────────────────────────
+
+bot.command("progress", async (ctx) => {
+  const telegramId = String(ctx.from.id);
+  const userId = getRealUserId(telegramUsers[telegramId]);
+  if (!userId) {
+    return ctx.reply("👋 Open the app first to link your account!", {
+      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
+    });
+  }
+  const userHabits = habits[userId] || [];
+  if (userHabits.length === 0) {
+    return ctx.reply("No habits found. Add some in the app first!");
+  }
+  const today = getTodayStr();
+  const todayDone = userHabits.filter((h) => h.history[today]).length;
+  const total = userHabits.length;
+
+  let weekStats = "";
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const ds = d.toISOString().split("T")[0];
+    const done = userHabits.filter((h) => h.history[ds]).length;
+    const pct = Math.round((done / total) * 100);
+    const bar = pct >= 80 ? "🟢" : pct >= 50 ? "🟡" : "🔴";
+    const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
+    weekStats += `${bar} ${label}: ${done}/${total} (${pct}%)\n`;
+  }
+
+  // Streaks
+  const streaks = userHabits.map(h => ({ name: h.name, streak: getStreak(h) })).sort((a, b) => b.streak - a.streak);
+  const topStreak = streaks[0];
+  const avgC = Math.round(userHabits.reduce((s, h) => s + getConsistency30(h), 0) / total);
+
+  await ctx.reply(
+    `📊 *Your Weekly Progress*\n\n${weekStats}\n` +
+    `💪 Today: ${todayDone}/${total} completed\n` +
+    `📈 30-day avg: ${avgC}%\n` +
+    (topStreak && topStreak.streak > 0 ? `🔥 Best streak: "${topStreak.name}" — ${topStreak.streak} days` : ''),
+    { parse_mode: "Markdown", reply_markup: { inline_keyboard: [[{ text: "🚀 Open Full App", web_app: { url: webAppUrl } }]] } }
+  );
+});
+
+// ── /diary ───────────────────────────────────────────────────
+
+bot.command("diary", async (ctx) => {
+  const telegramId = String(ctx.from.id);
+  const userId = getRealUserId(telegramUsers[telegramId]);
+  if (!userId) {
+    return ctx.reply("👋 Open the app first to link your account!", {
+      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
+    });
+  }
+  const text = ctx.message.text.replace(/^\/diary\s*/, "").trim();
+  if (!text) {
+    return ctx.reply(
+      "📔 *How to save a diary entry:*\n\nJust type after the command:\n`/diary Today was a great day!`",
+      { parse_mode: "Markdown" }
+    );
+  }
+  const today = getTodayStr();
+  if (!diaries[userId]) diaries[userId] = [];
+  diaries[userId].push({ id: Date.now(), date: today, entry: text, image: null, time: new Date().toLocaleTimeString() });
+  saveData();
+  await ctx.reply(
+    `📔 *Diary saved!* ✨\n\n_"${text.slice(0, 100)}${text.length > 100 ? '...' : ''}"_\n\n📅 ${today}`,
+    { parse_mode: "Markdown" }
+  );
+});
+
+// ── /menu ────────────────────────────────────────────────────
+
+bot.command("menu", (ctx) => {
+  ctx.reply("👇 What would you like to do?", { reply_markup: buildMainMenu() });
+});
+
+// ── /streak ──────────────────────────────────────────────────
+
+bot.command("streak", async (ctx) => {
+  const telegramId = String(ctx.from.id);
+  const userId = getRealUserId(telegramUsers[telegramId]);
+  if (!userId) return ctx.reply("Open the app first!");
+  const userHabits = habits[userId] || [];
+  if (!userHabits.length) return ctx.reply("No habits yet. Add some in the app!");
+
+  const lines = userHabits.map(h => {
+    const s = getStreak(h);
+    const c = getConsistency30(h);
+    const fire = s >= 7 ? "🔥" : s >= 3 ? "⭐" : "💧";
+    return `${fire} *${h.name}*: ${s} day streak · ${c}% (30d)`;
+  }).join("\n");
+
+  await ctx.reply(`🏆 *Your Streaks*\n\n${lines}`, { parse_mode: "Markdown" });
+});
+
+// ── callback_query handler ────────────────────────────────────
 
 bot.on("callback_query", async (ctx) => {
   const data = ctx.callbackQuery.data;
 
+  // ── cmd shortcuts ──
+  if (data === "cmd_habits") {
+    const telegramId = String(ctx.from.id);
+    let userId = telegramUsers[telegramId];
+    if (!userId) return ctx.answerCbQuery("Open the app first to link your account!");
+    userId = getRealUserId(userId);
+    const userHabits = habits[userId] || [];
+    if (!userHabits.length) return ctx.answerCbQuery("No habits yet. Add in the app!");
+    const today = getTodayStr();
+    const done = userHabits.filter(h => h.history[today]).length;
+    await ctx.answerCbQuery();
+    return ctx.reply(
+      `📅 *Habits — ${today}*\n✅ ${done}/${userHabits.length} done\n\nTap to check:`,
+      { parse_mode: "Markdown", reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } }
+    );
+  }
+
+  if (data === "cmd_progress") {
+    await ctx.answerCbQuery();
+    ctx.message = { text: "/progress" };
+    const telegramId = String(ctx.from.id);
+    const userId = getRealUserId(telegramUsers[telegramId]);
+    if (!userId) return ctx.reply("Open the app first!");
+    const userHabits = habits[userId] || [];
+    const today = getTodayStr();
+    const total = userHabits.length;
+    const todayDone = userHabits.filter(h => h.history[today]).length;
+    let weekStats = "";
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const ds = d.toISOString().split("T")[0];
+      const done = userHabits.filter(h => h.history[ds]).length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+      const bar = pct >= 80 ? "🟢" : pct >= 50 ? "🟡" : "🔴";
+      const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
+      weekStats += `${bar} ${label}: ${done}/${total} (${pct}%)\n`;
+    }
+    return ctx.reply(
+      `📊 *Weekly Progress*\n\n${weekStats}\n💪 Today: ${todayDone}/${total}`,
+      { parse_mode: "Markdown", reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] } }
+    );
+  }
+
+  if (data === "cmd_diary_prompt") {
+    await ctx.answerCbQuery();
+    return ctx.reply("📔 Send me your diary entry like this:\n\n`/diary Your text here...`", { parse_mode: "Markdown" });
+  }
+
+  // ── habit toggle ──
   if (data.startsWith("tog_")) {
     const parts = data.split("_");
     const habitId = parseInt(parts[parts.length - 1]);
     const userId = parts.slice(1, parts.length - 1).join("_");
     const today = getTodayStr();
-
     const userHabits = habits[userId] || [];
     const habit = userHabits.find((h) => h.id === habitId);
     if (!habit) return ctx.answerCbQuery("Habit not found");
-
     habit.history[today] = !habit.history[today];
     saveData();
-    const status = habit.history[today] ? "✅ Checked" : "⬜ Unchecked";
+    const status = habit.history[today] ? "✅ Done" : "⬜ Unchecked";
     const done = userHabits.filter((h) => h.history[today]).length;
-
+    const pct = Math.round((done / userHabits.length) * 100);
+    const emoji = pct === 100 ? "🏆" : pct >= 70 ? "🔥" : pct >= 40 ? "💪" : "⚡";
     await ctx.editMessageText(
-      `📅 Your habits for today (${today})\n✅ ${done}/${userHabits.length} completed\n\nTap a habit to check/uncheck it:`,
-      { reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } },
+      `${emoji} *Your Habits — ${today}*\n✅ ${done}/${userHabits.length} completed (${pct}%)\n\nTap a habit to check/uncheck it:`,
+      { parse_mode: "Markdown", reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } }
     );
-    await ctx.answerCbQuery(`${status}: ${habit.name}`);
+    // If all done — celebrate!
+    if (done === userHabits.length) {
+      await ctx.answerCbQuery("🏆 ALL DONE! Amazing work today!", { show_alert: true });
+    } else {
+      await ctx.answerCbQuery(`${status}: ${habit.name}`);
+    }
+    return;
   }
 
+  // ── progress popup ──
   if (data.startsWith("prog_")) {
     const userId = data.slice(5);
     const userHabits = habits[userId] || [];
@@ -508,141 +734,146 @@ bot.on("callback_query", async (ctx) => {
     const done = userHabits.filter((h) => h.history[today]).length;
     const total = userHabits.length;
     const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-    const emoji = pct >= 80 ? "🔥" : pct >= 50 ? "💪" : "⚡";
-
+    const emoji = pct === 100 ? "🏆" : pct >= 80 ? "🔥" : pct >= 50 ? "💪" : "⚡";
     let weekStats = "";
     for (let i = 6; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split("T")[0];
-      const dayDone = userHabits.filter((h) => h.history[dateStr]).length;
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const ds = d.toISOString().split("T")[0];
+      const dayDone = userHabits.filter(h => h.history[ds]).length;
       const dayPct = total > 0 ? Math.round((dayDone / total) * 100) : 0;
       const bar = dayPct >= 80 ? "🟢" : dayPct >= 50 ? "🟡" : "🔴";
       const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
       weekStats += `${bar} ${label}: ${dayDone}/${total} (${dayPct}%)\n`;
     }
-
-    await ctx.answerCbQuery(`${emoji} Today: ${done}/${total} (${pct}%) — Keep going!`, { show_alert: true });
-    await ctx.reply(`📊 Progress for today & this week:\n\n${weekStats}`);
+    await ctx.answerCbQuery(`${emoji} Today: ${done}/${total} (${pct}%)`, { show_alert: true });
+    await ctx.reply(`📊 *This week:*\n\n${weekStats}`, { parse_mode: "Markdown" });
+    return;
   }
 });
 
-bot.command("diary", async (ctx) => {
-  const telegramId = String(ctx.from.id);
-  const userId = getRealUserId(telegramUsers[telegramId]);
-  if (!userId) {
-    return ctx.reply("👋 Open the app first to link your account!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
-    });
-  }
+// ── SCHEDULED NOTIFICATIONS ───────────────────────────────────
+// Runs every 60 seconds and handles:
+//   1. Morning reminder at 08:00
+//   2. Evening summary at 21:00
+//   3. 1-minute-before habit reminders
+//   4. Streak milestone alerts (sent once per day)
 
-  const text = ctx.message.text.replace(/^\/diary\s*/, "").trim();
-  if (!text) {
-    return ctx.reply("📔 Write your diary entry after the command.\n\nExample:\n/diary Today was a great day!");
-  }
-
-  const today = getTodayStr();
-  if (!diaries[userId]) diaries[userId] = [];
-  diaries[userId].push({ id: Date.now(), date: today, entry: text, image: null, time: new Date().toLocaleTimeString() });
-  saveData();
-  await ctx.reply(`📔 Diary entry saved for ${today}! ✨`);
-});
-
-bot.command("progress", async (ctx) => {
-  const telegramId = String(ctx.from.id);
-  const userId = getRealUserId(telegramUsers[telegramId]);
-  if (!userId) {
-    return ctx.reply("👋 Open the app first to link your account!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
-    });
-  }
-
-  const userHabits = habits[userId] || [];
-  if (userHabits.length === 0) {
-    return ctx.reply("No habits found. Add some in the app first!");
-  }
-
-  let weekStats = "";
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
-    const done = userHabits.filter((h) => h.history[dateStr]).length;
-    const pct = Math.round((done / userHabits.length) * 100);
-    const bar = pct >= 80 ? "🟢" : pct >= 50 ? "🟡" : "🔴";
-    const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
-    weekStats += `${bar} ${label}: ${done}/${userHabits.length} (${pct}%)\n`;
-  }
-
-  const today = getTodayStr();
-  const todayDone = userHabits.filter((h) => h.history[today]).length;
-  await ctx.reply(`📊 Your Weekly Progress\n\n${weekStats}\n💪 Today: ${todayDone}/${userHabits.length} completed`);
-});
+const sentMorning = new Set();    // track who got morning msg today
+const sentEvening = new Set();    // track who got evening msg today
+const sentStreaks  = new Set();   // track streak alerts sent today
 
 setInterval(() => {
-  const now = new Date();
-  const currentHour = now.getHours();
-  const currentMin = now.getMinutes();
+  const now     = new Date();
+  const hour    = now.getHours();
+  const minute  = now.getMinutes();
+  const todayStr = getTodayStr();
 
-  if (currentHour === 8 && currentMin === 0) {
-    Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
-      const realId = getRealUserId(userId);
-      const userHabits = habits[realId] || [];
-      if (userHabits.length === 0) return;
-      const name = users[realId]?.name?.split(" ")[0] || "there";
-      bot.telegram.sendMessage(
-        telegramId,
-        `🌅 Good morning, ${name}! Time to check your habits for today:`,
-        { reply_markup: { inline_keyboard: buildHabitKeyboard(realId) } },
-      ).catch(() => {});
-    });
+  // Reset sets at midnight
+  if (hour === 0 && minute === 0) {
+    sentMorning.clear();
+    sentEvening.clear();
+    sentStreaks.clear();
   }
 
-  const reminderHour = currentMin === 59 ? (currentHour + 1) % 24 : currentHour;
-  const reminderMin = (currentMin + 1) % 60;
-  const reminderTimeStr = `${String(reminderHour).padStart(2, '0')}:${String(reminderMin).padStart(2, '0')}`;
-  const today = getTodayStr();
-
   Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
-    const realId = getRealUserId(userId);
+    const realId    = getRealUserId(userId);
     const userHabits = habits[realId] || [];
+    if (!userHabits.length) return;
 
-    userHabits.forEach((habit) => {
-      if (!habit.time) return;
-      if (habit.time !== reminderTimeStr) return;
-      if (habit.history[today]) return;
+    const name = users[realId]?.name?.split(" ")[0] || "there";
+    const total = userHabits.length;
+    const done  = userHabits.filter(h => h.history[todayStr]).length;
 
-      const name = users[realId]?.name?.split(" ")[0] || "there";
+    // ── 1. Morning reminder at 08:00 ──────────────────────────
+    if (hour === 8 && minute === 0 && !sentMorning.has(telegramId)) {
+      sentMorning.add(telegramId);
       bot.telegram.sendMessage(
         telegramId,
-        `⏰ Hey ${name}! Your habit is starting in 1 minute:\n\n` +
-        `📌 *${habit.name}* at ${habit.time}\n\n` +
-        `Get ready! You can check it off below when done:`,
+        `🌅 *Good morning, ${name}!*\n\n` +
+        `You have *${total} habit${total > 1 ? 's' : ''}* today.\n` +
+        `Let's start strong 💪\n\nTap to check them off:`,
         {
           parse_mode: "Markdown",
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: `⬜ ${habit.name}`, callback_data: `tog_${realId}_${habit.id}` }],
-              [{ text: "🚀 Open App", web_app: { url: webAppUrl } }],
-            ],
-          },
+          reply_markup: { inline_keyboard: buildHabitKeyboard(realId) }
+        }
+      ).catch(() => {});
+    }
+
+    // ── 2. Evening summary at 21:00 ───────────────────────────
+    if (hour === 21 && minute === 0 && !sentEvening.has(telegramId)) {
+      sentEvening.add(telegramId);
+      const pct   = Math.round((done / total) * 100);
+      const emoji = pct === 100 ? "🏆" : pct >= 70 ? "🔥" : pct >= 40 ? "😊" : "💪";
+      const msg =
+        pct === 100
+          ? `${emoji} *Perfect day, ${name}!*\n\nYou completed ALL ${total} habits today! 🎉\nKeep this energy tomorrow!`
+          : pct >= 70
+          ? `${emoji} *Great job, ${name}!*\n\n${done}/${total} habits done (${pct}%) — almost there!\nDon't forget the remaining ${total - done}.`
+          : `${emoji} *Evening check-in, ${name}*\n\n${done}/${total} habits done today (${pct}%).\nTomorrow is a new chance — you've got this! 💪`;
+
+      bot.telegram.sendMessage(telegramId, msg, {
+        parse_mode: "Markdown",
+        reply_markup: { inline_keyboard: [
+          [{ text: "✅ Check remaining habits", callback_data: `cmd_habits` }],
+          [{ text: "🚀 Open App", web_app: { url: webAppUrl } }]
+        ]}
+      }).catch(() => {});
+    }
+
+    // ── 3. 1-minute-before habit reminders ───────────────────
+    const oneMinLater = new Date(now.getTime() + 60 * 1000);
+    const targetTime  = `${String(oneMinLater.getHours()).padStart(2,'0')}:${String(oneMinLater.getMinutes()).padStart(2,'0')}`;
+
+    userHabits.forEach(habit => {
+      if (!habit.time || habit.history[todayStr]) return;
+      if (habit.time !== targetTime) return;
+      const notifKey = `${todayStr}_${telegramId}_${habit.id}`;
+      if (sentStreaks.has(notifKey)) return; // reuse set to avoid duplicates
+      sentStreaks.add(notifKey);
+      bot.telegram.sendMessage(
+        telegramId,
+        `⏰ *1 minute reminder!*\n\n📌 *${habit.name}* starts at ${habit.time}\n\nGet ready, ${name}! 💪`,
+        {
+          parse_mode: "Markdown",
+          reply_markup: { inline_keyboard: [
+            [{ text: `⬜ ${habit.name} — Mark done`, callback_data: `tog_${realId}_${habit.id}` }],
+            [{ text: "🚀 Open App", web_app: { url: webAppUrl } }]
+          ]}
         }
       ).catch(() => {});
     });
+
+    // ── 4. Streak milestone alert (once per day at 20:00) ────
+    if (hour === 20 && minute === 0) {
+      userHabits.forEach(habit => {
+        const streak = getStreak(habit);
+        const milestones = [3, 7, 14, 21, 30, 60, 100];
+        if (!milestones.includes(streak)) return;
+        const key = `streak_${todayStr}_${telegramId}_${habit.id}`;
+        if (sentStreaks.has(key)) return;
+        sentStreaks.add(key);
+        bot.telegram.sendMessage(
+          telegramId,
+          `🔥 *${streak}-Day Streak!*\n\n` +
+          `You've done "*${habit.name}*" for ${streak} days in a row, ${name}!\n\n` +
+          `${streak >= 30 ? "🏆 Incredible dedication!" : streak >= 14 ? "⭐ You're building a real habit!" : "💪 Keep it going!"}`,
+          { parse_mode: "Markdown" }
+        ).catch(() => {});
+      });
+    }
   });
 
-}, 60000);
+}, 60000); // every 60 seconds
 
-bot.launch({
-  allowedUpdates: [],
-  dropPendingUpdates: true,
-});
+// ── launch ────────────────────────────────────────────────────
+
+bot.launch({ allowedUpdates: [], dropPendingUpdates: true });
 console.log("🤖 Bot is running!");
 
 const PORT = process.env.PORT || 10000;
 const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🌐 Web app running on port ${PORT}`);
-    console.log(`🔗 URL: https://fikrcha.onrender.com`);
+  console.log(`🌐 Web app running on port ${PORT}`);
+  console.log(`🔗 URL: https://fikrcha.onrender.com`);
 });
 server.keepAliveTimeout = 120000;
 server.headersTimeout = 120000;
