@@ -802,6 +802,55 @@ setInterval(async () => {
   }
 }, 60000);
 
+// ─────────────────────────────────────────────────────────
+// ── ADMIN FUNKSIYALARI ───────────────────────────────────
+// ─────────────────────────────────────────────────────────
+
+// JWT import (agar fayl tepasida bo'lmasa, shu yerga ham qo'shishingiz mumkin)
+const jwt = require('jsonwebtoken');
+
+// ── Yordamchi: Foydalanuvchini token orqali topish ───────
+async function getUser(req) {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return null;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return await User.findById(decoded.userId).select('-password');
+  } catch {
+    return null;
+  }
+}
+
+// ── Admin: Barcha foydalanuvchilarni ko'rish ─────────────
+app.get("/api/admin/users", async (req, res) => {
+  const user = await getUser(req);
+  if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
+  
+  const allUsers = await User.find().lean();
+  const result = await Promise.all(allUsers.map(async u => ({
+    id: u._id,
+    name: u.name,
+    email: u.email,
+    habits: await Habit.find({ userId: u._id }).lean(),
+    studies: await Study.find({ userId: u._id }).lean(),
+    diaries: await Diary.find({ userId: u._id }).lean(),
+  })));
+  res.json(result);
+});
+
+// ── Admin: Foydalanuvchini o'chirish (ixtiyoriy) ─────────
+app.delete("/api/admin/users/:id", async (req, res) => {
+  const user = await getUser(req);
+  if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
+  
+  await User.findByIdAndDelete(req.params.id);
+  await Habit.deleteMany({ userId: req.params.id });
+  await Study.deleteMany({ userId: req.params.id });
+  await Diary.deleteMany({ userId: req.params.id });
+  
+  res.json({ message: "Foydalanuvchi o'chirildi" });
+});
+
 // ── Launch ────────────────────────────────────────────────────
 bot.launch({ allowedUpdates: [], dropPendingUpdates: true });
 console.log("🤖 Bot is running!");
