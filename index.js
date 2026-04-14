@@ -78,6 +78,7 @@ app.post('/auth/telegram', (req, res) => {
   if (req.user && req.user.id) {
     telegramUsers[telegramId] = req.user.id;
     users[req.user.id].telegramId = telegramId;
+    if (user.username) users[req.user.id].telegramUsername = user.username;
     req.session.telegramUserId = req.user.id;
     saveData();
     return res.json({ success: true });
@@ -94,12 +95,19 @@ app.post('/auth/telegram', (req, res) => {
       avatar: user.photo_url || '',
       isAdmin: false,
       telegramId,
+      telegramUsername: user.username || '',
     };
     habits[userId] = [];
     studies[userId] = [];
     diaries[userId] = [];
     telegramUsers[telegramId] = userId;
     saveData();
+  } else {
+    // Update username if changed
+    if (users[userId] && user.username) {
+      users[userId].telegramUsername = user.username;
+      saveData();
+    }
   }
 
   req.session.telegramUserId = userId;
@@ -159,16 +167,25 @@ app.get(
 app.get("/api/user", (req, res) => {
   const user = getUser(req);
   if (!user) return res.json({ error: "Not logged in" });
-  res.json({ id: user.id, name: user.name, email: user.email, avatar: user.avatar, isAdmin: user.isAdmin });
+  res.json({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    isAdmin: user.isAdmin,
+    telegramUsername: user.telegramUsername || '',
+    telegramId: user.telegramId || ''
+  });
 });
 
 app.post("/api/link-telegram", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const { telegramId } = req.body;
+  const { telegramId, telegramUsername } = req.body;
   if (telegramId) {
     telegramUsers[String(telegramId)] = user.id;
     users[user.id].telegramId = String(telegramId);
+    if (telegramUsername) users[user.id].telegramUsername = telegramUsername;
     saveData();
   }
   res.json({ success: true });
@@ -190,27 +207,37 @@ app.get("/api/habits", (req, res) => {
   res.json(habits[user.id] || []);
 });
 
+// *** FIX: Save schedule field when creating habit ***
 app.post("/api/habits", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const { name, time, category } = req.body;
-  const newHabit = { id: Date.now(), name, time: time || "", category: category || "", history: {} };
+  const { name, time, category, schedule } = req.body;
+  const newHabit = {
+    id: Date.now(),
+    name,
+    time: time || "",
+    category: category || "",
+    history: {},
+    schedule: schedule || { type: 'daily', days: [], onceDates: [] }
+  };
   if (!habits[user.id]) habits[user.id] = [];
   habits[user.id].push(newHabit);
   saveData();
   res.json({ success: true });
 });
 
+// *** FIX: Save schedule field when updating habit ***
 app.put("/api/habits/:id", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const { name, time, category, history } = req.body;
+  const { name, time, category, history, schedule, order } = req.body;
   const habit = (habits[user.id] || []).find((h) => h.id == req.params.id);
   if (habit) {
     if (name !== undefined) habit.name = name;
     if (time !== undefined) habit.time = time;
     if (category !== undefined) habit.category = category;
     if (history !== undefined) habit.history = history;
+    if (schedule !== undefined) habit.schedule = schedule;
   }
   saveData();
   res.json({ success: true });
@@ -220,6 +247,25 @@ app.delete("/api/habits/:id", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
   habits[user.id] = (habits[user.id] || []).filter((h) => h.id != req.params.id);
+  saveData();
+  res.json({ success: true });
+});
+
+// *** NEW: Reorder habits endpoint ***
+app.post("/api/habits/reorder", (req, res) => {
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: "Not logged in" });
+  const { orderedIds } = req.body;
+  if (!Array.isArray(orderedIds)) return res.status(400).json({ error: "orderedIds required" });
+  const current = habits[user.id] || [];
+  const reordered = [];
+  orderedIds.forEach(id => {
+    const h = current.find(x => x.id == id);
+    if (h) reordered.push(h);
+  });
+  // Add any habits not in orderedIds at the end
+  current.forEach(h => { if (!orderedIds.includes(h.id)) reordered.push(h); });
+  habits[user.id] = reordered;
   saveData();
   res.json({ success: true });
 });
@@ -317,8 +363,7 @@ app.get("/admin.html", (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
-
- // ===== GROQ AI ROUTE (FREE) =====
+// ===== GROQ AI ROUTE (FREE) =====
 app.post('/api/ai-chat', async (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: 'Not logged in' });
@@ -342,9 +387,9 @@ app.post('/api/ai-chat', async (req, res) => {
       },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',
-        max_tokens: 512,
+        max_tokens: 400,
         messages: [
-          { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant.' },
+          { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant. Be concise and direct. Max 80 words per response.' },
           ...messages
         ]
       })
@@ -361,6 +406,7 @@ app.post('/api/ai-chat', async (req, res) => {
     res.json({ reply: '⚠️ AI temporarily unavailable.' });
   }
 });
+
 // TELEGRAM BOT
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const webAppUrl = DOMAIN;
@@ -407,6 +453,7 @@ bot.start((ctx) => {
 bot.command("habits", (ctx) => {
   const telegramId = String(ctx.from.id);
   let userId = telegramUsers[telegramId];
+
   if (!userId) {
     return ctx.reply("👋 First, open the app to link your account. After signing in, come back and try again!", {
       reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
@@ -537,7 +584,6 @@ setInterval(() => {
   const currentHour = now.getHours();
   const currentMin = now.getMinutes();
 
-  // 🌅 8am morning reminder
   if (currentHour === 8 && currentMin === 0) {
     Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
       const realId = getRealUserId(userId);
@@ -552,12 +598,9 @@ setInterval(() => {
     });
   }
 
-  // ⏰ 1-minute-before habit reminders
-  // Calculate what time is 1 minute from now
   const reminderHour = currentMin === 59 ? (currentHour + 1) % 24 : currentHour;
   const reminderMin = (currentMin + 1) % 60;
   const reminderTimeStr = `${String(reminderHour).padStart(2, '0')}:${String(reminderMin).padStart(2, '0')}`;
-
   const today = getTodayStr();
 
   Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
@@ -565,9 +608,9 @@ setInterval(() => {
     const userHabits = habits[realId] || [];
 
     userHabits.forEach((habit) => {
-      if (!habit.time) return; // skip habits with no time set
-      if (habit.time !== reminderTimeStr) return; // not time yet
-      if (habit.history[today]) return; // already done today, skip reminder
+      if (!habit.time) return;
+      if (habit.time !== reminderTimeStr) return;
+      if (habit.history[today]) return;
 
       const name = users[realId]?.name?.split(" ")[0] || "there";
       bot.telegram.sendMessage(
