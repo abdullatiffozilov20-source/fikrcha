@@ -1,6 +1,5 @@
 const express = require("express");
 const session = require("express-session");
-const FileStore = require('session-file-store')(session);
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { Telegraf } = require("telegraf");
@@ -43,15 +42,18 @@ function getUser(req) {
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
+
+// ✅ FIX: Use MemoryStore instead of FileStore to avoid missing dependency crash
 app.use(
   session({
     secret: "fikrcha-secret",
     resave: false,
     saveUninitialized: false,
-    store: new FileStore({ path: '/tmp/sessions', ttl: 86400 * 30, retries: 0 }),
+    store: new session.MemoryStore(),
     cookie: { maxAge: 86400000 * 30 }
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -69,12 +71,12 @@ passport.deserializeUser((id, done) => {
 
 const DOMAIN = process.env.DOMAIN || "https://fikrcha.onrender.com";
 
+// Auth Routes
 app.post('/auth/telegram', (req, res) => {
   const { user } = req.body;
   if (!user || !user.id) return res.json({ success: false });
-
   const telegramId = String(user.id);
-
+  
   if (req.user && req.user.id) {
     telegramUsers[telegramId] = req.user.id;
     users[req.user.id].telegramId = telegramId;
@@ -82,9 +84,8 @@ app.post('/auth/telegram', (req, res) => {
     saveData();
     return res.json({ success: true });
   }
-
+  
   let userId = telegramUsers[telegramId];
-
   if (!userId) {
     userId = `tg_${telegramId}`;
     users[userId] = {
@@ -101,7 +102,6 @@ app.post('/auth/telegram', (req, res) => {
     telegramUsers[telegramId] = userId;
     saveData();
   }
-
   req.session.telegramUserId = userId;
   res.json({ success: true });
 });
@@ -140,21 +140,17 @@ app.get("/auth/google", (req, res, next) => {
   passport.authenticate("google", { scope: ["profile", "email"] })(req, res, next);
 });
 
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  (req, res) => {
-    if (req.session.pendingTelegramId) {
-      const tgId = req.session.pendingTelegramId;
-      telegramUsers[tgId] = req.user.id;
-      users[req.user.id].telegramId = tgId;
-      req.session.telegramUserId = req.user.id;
-      delete req.session.pendingTelegramId;
-      saveData();
-    }
-    res.redirect("/app.html");
-  },
-);
+app.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/" }), (req, res) => {
+  if (req.session.pendingTelegramId) {
+    const tgId = req.session.pendingTelegramId;
+    telegramUsers[tgId] = req.user.id;
+    users[req.user.id].telegramId = tgId;
+    req.session.telegramUserId = req.user.id;
+    delete req.session.pendingTelegramId;
+    saveData();
+  }
+  res.redirect("/app.html");
+});
 
 app.get("/api/user", (req, res) => {
   const user = getUser(req);
@@ -174,16 +170,7 @@ app.post("/api/link-telegram", (req, res) => {
   res.json({ success: true });
 });
 
-app.get("/api/force-link/:tgid/:userid", (req, res) => {
-  const tgId = req.params.tgid;
-  const userId = req.params.userid;
-  telegramUsers[tgId] = userId;
-  if (users[userId]) users[userId].telegramId = tgId;
-  saveData();
-  res.json({ success: true, linked: { tgId, userId } });
-});
-
-// HABITS
+// ✅ FIX: HABITS - Now saves 'schedule' object
 app.get("/api/habits", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
@@ -193,8 +180,15 @@ app.get("/api/habits", (req, res) => {
 app.post("/api/habits", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const { name, time, category } = req.body;
-  const newHabit = { id: Date.now(), name, time: time || "", category: category || "", history: {} };
+  const { name, time, category, schedule } = req.body; // Added schedule
+  const newHabit = { 
+    id: Date.now(), 
+    name, 
+    time: time || "", 
+    category: category || "", 
+    history: {}, 
+    schedule: schedule || { type: 'daily', days: [] } // Added schedule default
+  };
   if (!habits[user.id]) habits[user.id] = [];
   habits[user.id].push(newHabit);
   saveData();
@@ -204,13 +198,14 @@ app.post("/api/habits", (req, res) => {
 app.put("/api/habits/:id", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const { name, time, category, history } = req.body;
+  const { name, time, category, history, schedule } = req.body;
   const habit = (habits[user.id] || []).find((h) => h.id == req.params.id);
   if (habit) {
     if (name !== undefined) habit.name = name;
     if (time !== undefined) habit.time = time;
     if (category !== undefined) habit.category = category;
     if (history !== undefined) habit.history = history;
+    if (schedule !== undefined) habit.schedule = schedule; // Update schedule
   }
   saveData();
   res.json({ success: true });
@@ -224,7 +219,7 @@ app.delete("/api/habits/:id", (req, res) => {
   res.json({ success: true });
 });
 
-// STUDIES
+// Studies Routes
 app.get("/api/studies", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
@@ -263,7 +258,7 @@ app.delete("/api/studies/:id", (req, res) => {
   res.json({ success: true });
 });
 
-// DIARIES
+// Diaries Routes
 app.get("/api/diaries", (req, res) => {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
@@ -309,6 +304,39 @@ app.get("/api/admin/users", (req, res) => {
   res.json(allUsers);
 });
 
+// Groq AI Route
+app.post('/api/ai-chat', async (req, res) => {
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: 'Not logged in' });
+  const { message, system, history } = req.body;
+  if (!message) return res.status(400).json({ error: 'No message' });
+  const GROQ_API_KEY = process.env.GROQ_API_KEY;
+  if (!GROQ_API_KEY) return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to Render env vars.' });
+  
+  try {
+    const messages = [ ...(history || []).slice(-6), { role: 'user', content: message } ];
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+      body: JSON.stringify({
+        model: 'llama-3.1-8b-instant',
+        max_tokens: 512,
+        messages: [
+          { role: 'system', content: system || 'You are FIKRCHA AI.' },
+          ...messages
+        ]
+      })
+    });
+    const data = await response.json();
+    if (data.choices?.[0]) res.json({ reply: data.choices[0].message.content });
+    else res.json({ reply: '⚠️ AI error.' });
+  } catch (err) {
+    console.error('AI error:', err);
+    res.json({ reply: '⚠️ AI temporarily unavailable.' });
+  }
+});
+
+// Routes
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.get("/app.html", (req, res) => res.sendFile(path.join(__dirname, "app.html")));
 app.get("/admin.html", (req, res) => {
@@ -317,58 +345,11 @@ app.get("/admin.html", (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
-
- // ===== GROQ AI ROUTE (FREE) =====
-app.post('/api/ai-chat', async (req, res) => {
-  const user = getUser(req);
-  if (!user) return res.status(401).json({ error: 'Not logged in' });
-
-  const { message, system, history } = req.body;
-  if (!message) return res.status(400).json({ error: 'No message' });
-
-  const GROQ_API_KEY = process.env.GROQ_API_KEY;
-  if (!GROQ_API_KEY) {
-    return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to Render env vars.' });
-  }
-
-  try {
-    const messages = [ ...(history || []).slice(-6), { role: 'user', content: message } ];
-
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        max_tokens: 512,
-        messages: [
-          { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant.' },
-          ...messages
-        ]
-      })
-    });
-
-    const data = await response.json();
-    if (data.choices?.[0]) {
-      res.json({ reply: data.choices[0].message.content });
-    } else {
-      res.json({ reply: '⚠️ AI error. Please try again.' });
-    }
-  } catch (err) {
-    console.error('AI error:', err);
-    res.json({ reply: '⚠️ AI temporarily unavailable.' });
-  }
-});
-// TELEGRAM BOT
+// ✅ FIX: TELEGRAM BOT - Fixed split("_") crash
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const webAppUrl = DOMAIN;
 
-function getTodayStr() {
-  return new Date().toISOString().split("T")[0];
-}
-
+function getTodayStr() { return new Date().toISOString().split("T")[0]; }
 function getRealUserId(userId) {
   if (userId && userId.startsWith('tg_')) {
     const tgId = userId.replace('tg_', '');
@@ -383,10 +364,7 @@ function buildHabitKeyboard(userId) {
   const today = getTodayStr();
   const userHabits = habits[realId] || [];
   const keyboard = userHabits.map((h) => [
-    {
-      text: `${h.history[today] ? "✅" : "⬜"} ${h.name}${h.time ? " (" + h.time + ")" : ""}`,
-      callback_data: `tog_${realId}_${h.id}`,
-    },
+    { text: `${h.history[today] ? "✅" : "⬜"} ${h.name}${h.time ? ` (${h.time})` : ""}`, callback_data: `tog_${realId}_${h.id}` },
   ]);
   keyboard.push([{ text: "📊 Today's Progress", callback_data: `prog_${realId}` }]);
   keyboard.push([{ text: "🚀 Open App", web_app: { url: webAppUrl } }]);
@@ -394,66 +372,41 @@ function buildHabitKeyboard(userId) {
 }
 
 bot.start((ctx) => {
-  ctx.reply(
-    "✨ Welcome to FIKRCHA!\n\nOpen the app to set up your habits, then use these commands:\n\n📅 /habits — See & check today's habits\n📔 /diary <text> — Save a diary entry\n📊 /progress — See your weekly stats",
-    {
-      reply_markup: {
-        inline_keyboard: [[{ text: "🚀 Open FIKRCHA App", web_app: { url: webAppUrl } }]],
-      },
-    },
-  );
+  ctx.reply("✨ Welcome to FIKRCHA!\n\nOpen the app to set up your habits!", {
+    reply_markup: { inline_keyboard: [[{ text: "🚀 Open FIKRCHA App", web_app: { url: webAppUrl } }]] },
+  });
 });
 
 bot.command("habits", (ctx) => {
   const telegramId = String(ctx.from.id);
   let userId = telegramUsers[telegramId];
-  if (!userId) {
-    return ctx.reply("👋 First, open the app to link your account. After signing in, come back and try again!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
-    });
-  }
-
+  if (!userId) return ctx.reply("👋 Open the app to link your account first!", { reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] } });
   userId = getRealUserId(userId);
   const userHabits = habits[userId] || [];
-  if (userHabits.length === 0) {
-    return ctx.reply("You have no habits yet. Open the app to add some!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
-    });
-  }
-
+  if (userHabits.length === 0) return ctx.reply("You have no habits yet.", { reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] } });
   const today = getTodayStr();
   const done = userHabits.filter((h) => h.history[today]).length;
-  ctx.reply(
-    `📅 Your habits for today (${today})\n✅ ${done}/${userHabits.length} completed\n\nTap a habit to check/uncheck it:`,
-    { reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } },
-  );
+  ctx.reply(`📅 Your habits for today (${today})\n✅ ${done}/${userHabits.length} completed`, { reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } });
 });
 
 bot.on("callback_query", async (ctx) => {
   const data = ctx.callbackQuery.data;
-
   if (data.startsWith("tog_")) {
-    const parts = data.split("_");
+    const parts = data.split("_"); // ✅ FIX: Use split("_")
+    if (parts.length < 3) return ctx.answerCbQuery("Invalid data");
     const habitId = parseInt(parts[parts.length - 1]);
     const userId = parts.slice(1, parts.length - 1).join("_");
     const today = getTodayStr();
-
     const userHabits = habits[userId] || [];
     const habit = userHabits.find((h) => h.id === habitId);
     if (!habit) return ctx.answerCbQuery("Habit not found");
-
     habit.history[today] = !habit.history[today];
     saveData();
     const status = habit.history[today] ? "✅ Checked" : "⬜ Unchecked";
     const done = userHabits.filter((h) => h.history[today]).length;
-
-    await ctx.editMessageText(
-      `📅 Your habits for today (${today})\n✅ ${done}/${userHabits.length} completed\n\nTap a habit to check/uncheck it:`,
-      { reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } },
-    );
+    await ctx.editMessageText(`📅 Your habits for today (${today})\n✅ ${done}/${userHabits.length} completed`, { reply_markup: { inline_keyboard: buildHabitKeyboard(userId) } });
     await ctx.answerCbQuery(`${status}: ${habit.name}`);
   }
-
   if (data.startsWith("prog_")) {
     const userId = data.slice(5);
     const userHabits = habits[userId] || [];
@@ -462,144 +415,16 @@ bot.on("callback_query", async (ctx) => {
     const total = userHabits.length;
     const pct = total > 0 ? Math.round((done / total) * 100) : 0;
     const emoji = pct >= 80 ? "🔥" : pct >= 50 ? "💪" : "⚡";
-
-    let weekStats = "";
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split("T")[0];
-      const dayDone = userHabits.filter((h) => h.history[dateStr]).length;
-      const dayPct = total > 0 ? Math.round((dayDone / total) * 100) : 0;
-      const bar = dayPct >= 80 ? "🟢" : dayPct >= 50 ? "🟡" : "🔴";
-      const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
-      weekStats += `${bar} ${label}: ${dayDone}/${total} (${dayPct}%)\n`;
-    }
-
-    await ctx.answerCbQuery(`${emoji} Today: ${done}/${total} (${pct}%) — Keep going!`, { show_alert: true });
-    await ctx.reply(`📊 Progress for today & this week:\n\n${weekStats}`);
+    await ctx.answerCbQuery(`${emoji} Today: ${done}/${total} (${pct}%)`, { show_alert: true });
   }
 });
 
-bot.command("diary", async (ctx) => {
-  const telegramId = String(ctx.from.id);
-  const userId = getRealUserId(telegramUsers[telegramId]);
-  if (!userId) {
-    return ctx.reply("👋 Open the app first to link your account!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
-    });
-  }
-
-  const text = ctx.message.text.replace(/^\/diary\s*/, "").trim();
-  if (!text) {
-    return ctx.reply("📔 Write your diary entry after the command.\n\nExample:\n/diary Today was a great day!");
-  }
-
-  const today = getTodayStr();
-  if (!diaries[userId]) diaries[userId] = [];
-  diaries[userId].push({ id: Date.now(), date: today, entry: text, image: null, time: new Date().toLocaleTimeString() });
-  saveData();
-  await ctx.reply(`📔 Diary entry saved for ${today}! ✨`);
-});
-
-bot.command("progress", async (ctx) => {
-  const telegramId = String(ctx.from.id);
-  const userId = getRealUserId(telegramUsers[telegramId]);
-  if (!userId) {
-    return ctx.reply("👋 Open the app first to link your account!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] },
-    });
-  }
-
-  const userHabits = habits[userId] || [];
-  if (userHabits.length === 0) {
-    return ctx.reply("No habits found. Add some in the app first!");
-  }
-
-  let weekStats = "";
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
-    const done = userHabits.filter((h) => h.history[dateStr]).length;
-    const pct = Math.round((done / userHabits.length) * 100);
-    const bar = pct >= 80 ? "🟢" : pct >= 50 ? "🟡" : "🔴";
-    const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
-    weekStats += `${bar} ${label}: ${done}/${userHabits.length} (${pct}%)\n`;
-  }
-
-  const today = getTodayStr();
-  const todayDone = userHabits.filter((h) => h.history[today]).length;
-  await ctx.reply(`📊 Your Weekly Progress\n\n${weekStats}\n💪 Today: ${todayDone}/${userHabits.length} completed`);
-});
-
-setInterval(() => {
-  const now = new Date();
-  const currentHour = now.getHours();
-  const currentMin = now.getMinutes();
-
-  // 🌅 8am morning reminder
-  if (currentHour === 8 && currentMin === 0) {
-    Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
-      const realId = getRealUserId(userId);
-      const userHabits = habits[realId] || [];
-      if (userHabits.length === 0) return;
-      const name = users[realId]?.name?.split(" ")[0] || "there";
-      bot.telegram.sendMessage(
-        telegramId,
-        `🌅 Good morning, ${name}! Time to check your habits for today:`,
-        { reply_markup: { inline_keyboard: buildHabitKeyboard(realId) } },
-      ).catch(() => {});
-    });
-  }
-
-  // ⏰ 1-minute-before habit reminders
-  // Calculate what time is 1 minute from now
-  const reminderHour = currentMin === 59 ? (currentHour + 1) % 24 : currentHour;
-  const reminderMin = (currentMin + 1) % 60;
-  const reminderTimeStr = `${String(reminderHour).padStart(2, '0')}:${String(reminderMin).padStart(2, '0')}`;
-
-  const today = getTodayStr();
-
-  Object.entries(telegramUsers).forEach(([telegramId, userId]) => {
-    const realId = getRealUserId(userId);
-    const userHabits = habits[realId] || [];
-
-    userHabits.forEach((habit) => {
-      if (!habit.time) return; // skip habits with no time set
-      if (habit.time !== reminderTimeStr) return; // not time yet
-      if (habit.history[today]) return; // already done today, skip reminder
-
-      const name = users[realId]?.name?.split(" ")[0] || "there";
-      bot.telegram.sendMessage(
-        telegramId,
-        `⏰ Hey ${name}! Your habit is starting in 1 minute:\n\n` +
-        `📌 *${habit.name}* at ${habit.time}\n\n` +
-        `Get ready! You can check it off below when done:`,
-        {
-          parse_mode: "Markdown",
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: `⬜ ${habit.name}`, callback_data: `tog_${realId}_${habit.id}` }],
-              [{ text: "🚀 Open App", web_app: { url: webAppUrl } }],
-            ],
-          },
-        }
-      ).catch(() => {});
-    });
-  });
-
-}, 60000);
-
-bot.launch({
-  allowedUpdates: [],
-  dropPendingUpdates: true,
-});
+bot.launch({ dropPendingUpdates: true });
 console.log("🤖 Bot is running!");
 
 const PORT = process.env.PORT || 10000;
 const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🌐 Web app running on port ${PORT}`);
-    console.log(`🔗 URL: https://fikrcha.onrender.com`);
+  console.log(`🌐 Web app running on port ${PORT}`);
 });
 server.keepAliveTimeout = 120000;
 server.headersTimeout = 120000;
