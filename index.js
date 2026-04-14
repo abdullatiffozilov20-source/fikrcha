@@ -851,9 +851,32 @@ app.delete("/api/admin/users/:id", async (req, res) => {
   res.json({ message: "Foydalanuvchi o'chirildi" });
 });
 
-// ── Launch ────────────────────────────────────────────────────
-bot.launch({ allowedUpdates: [], dropPendingUpdates: true });
-console.log("🤖 Bot is running!");
+// ── Botni ishga tushirish (Webhook + Polling) ──────────────
+if (process.env.RENDER_EXTERNAL_HOSTNAME) {
+  // Render serverida - Webhook mode
+  const webhookUrl = `https://${process.env.RENDER_EXTERNAL_HOSTNAME}/telegram-webhook`;
+  
+  bot.launch({
+    webhook: {
+      domain: process.env.RENDER_EXTERNAL_HOSTNAME,
+      path: '/telegram-webhook',
+    },
+  }).then(() => {
+    console.log('✅ Telegram bot webhook mode ishga tushdi');
+    console.log(`🔗 Webhook URL: ${webhookUrl}`);
+  }).catch(err => {
+    console.error('❌ Bot webhook xatosi:', err);
+  });
+
+  // Webhook uchun endpoint
+  app.post('/telegram-webhook', (req, res) => {
+    bot.handleUpdate(req.body, res);
+  });
+} else {
+  // Lokal kompyuterda - Polling mode
+  bot.launch({ dropPendingUpdates: true });
+  console.log('🤖 Telegram bot polling mode ishga tushdi');
+}
 
 const PORT = process.env.PORT || 10000;
 const server = app.listen(PORT, '0.0.0.0', () => {
