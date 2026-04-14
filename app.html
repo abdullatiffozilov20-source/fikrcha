@@ -147,20 +147,20 @@ details.lesson[open] .lesson-toggle{transform:rotate(90deg);}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px;}
 
 /* ===== FIX #7: QUOTE — straight clean lines ===== */
-.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border:1px solid rgba(102,126,234,0.18);border-radius:14px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;cursor:pointer;transition:all 0.2s;}
+.quote-card{background:linear-gradient(135deg,rgba(102,126,234,0.06),rgba(118,75,162,0.06));border:1px solid rgba(102,126,234,0.18);border-radius:14px;padding:12px 16px;margin-bottom:18px;display:flex;flex-direction:column;align-items:stretch;gap:8px;cursor:pointer;transition:all 0.2s;}
 .quote-card:hover{border-color:rgba(102,126,234,0.35);box-shadow:0 4px 14px rgba(102,126,234,0.12);}
-.quote-inner{flex:1;min-width:0;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
-.quote-icon{font-size:1rem;flex-shrink:0;line-height:1.6;}
-.quote-text-el{font-size:13px;font-weight:500;color:#1e293b;line-height:1.6;display:inline;}
-.quote-author-el{font-size:11px;color:#64748b;font-weight:600;white-space:nowrap;display:inline;}
-.quote-actions{display:flex;gap:5px;flex-shrink:0;align-items:center;flex-wrap:nowrap;}
+.quote-inner{min-width:0;display:flex;align-items:flex-start;gap:6px;}
+.quote-icon{font-size:1rem;flex-shrink:0;line-height:1.5;}
+.quote-text-el{font-size:13px;font-weight:500;color:#1e293b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.quote-author-el{font-size:11px;color:#64748b;font-weight:600;white-space:nowrap;display:inline;align-self:flex-end;}
+.quote-actions{display:flex;gap:5px;flex-shrink:0;align-items:center;justify-content:flex-end;flex-wrap:nowrap;align-self:flex-end;}
 .qbtn{padding:5px 10px;border-radius:14px;border:none;cursor:pointer;font-size:11px;font-weight:600;transition:all 0.2s;}
 .qbtn-studio{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
 .qbtn-refresh{background:#f1f5f9;color:#475569;}
 /* FIX #2: Quote save to library */
 .qbtn-save{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;}
 .qbtn-lib{background:#fef3c7;color:#d97706;}
-.quote-counter{font-size:10px;color:#94a3b8;font-weight:600;white-space:nowrap;}
+.quote-counter{display:none;}
 
 /* ===== FIX #2: QUOTE LIBRARY ===== */
 .quote-library-modal{background:#fff;border-radius:24px;padding:24px;width:95%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,0.25);max-height:85vh;overflow-y:auto;}
@@ -236,7 +236,7 @@ tr.drag-over{border-top:3px solid #667eea!important;}
 .study-voice-preview audio{flex:1;height:30px;}
 
 @media(max-width:768px){body{padding:6px;}.app{padding:14px;border-radius:20px;}th,td{padding:6px 3px;font-size:10px;}td:first-child{max-width:100px;}.nav-btn{padding:7px 9px;font-size:11px;}h2{font-size:1.3rem;}.streak-num{font-size:1.5rem;}.ai-chat-box{height:260px;}}
-@media(max-width:480px){body{padding:0;}.app{border-radius:0;padding:12px 10px;min-height:100vh;box-shadow:none;}.nav-buttons{gap:3px;}.nav-btn{flex:1;padding:7px 3px;font-size:10px;text-align:center;}th,td{padding:4px 1px;font-size:9px;}td:first-child{max-width:75px;font-size:10px;}.quote-actions{gap:3px;}.qbtn{padding:4px 7px;font-size:10px;}}
+@media(max-width:480px){body{padding:0;}.app{border-radius:0;padding:12px 10px;min-height:100vh;box-shadow:none;}.nav-buttons{gap:3px;}.nav-btn{flex:1;padding:7px 3px;font-size:10px;text-align:center;}th,td{padding:4px 1px;font-size:9px;}td:first-child{max-width:75px;font-size:10px;}.quote-actions{gap:3px;}.qbtn{padding:4px 7px;font-size:10px;}.quote-author-el{white-space:normal;}.story-controls{bottom:18px;right:14px;gap:8px;}.story-btn{width:42px;height:42px;font-size:13px;}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -390,10 +390,10 @@ tr.drag-over{border-top:3px solid #667eea!important;}
     <div class="story-brand">✨ FIKRCHA</div>
   </div>
   <div class="story-controls">
-    <button class="story-btn" onclick="cycleBg()" title="Background">BG</button>
-    <button class="story-btn" onclick="cycleFont()" title="Font">Ff</button>
-    <button class="story-btn" onclick="cycleSize()" title="Size">Aa</button>
-    <button class="story-btn" onclick="saveStoryToGallery()" title="Save">💾</button>
+    <button class="story-btn" onclick="cycleBg()" onpointerdown="showStoryButtonLabel(this,'Background')" onpointerup="restoreStoryButtonLabel(this,'BG')" onpointerleave="restoreStoryButtonLabel(this,'BG')" title="Background">BG</button>
+    <button class="story-btn" onclick="cycleFont()" onpointerdown="showStoryButtonLabel(this,'Font')" onpointerup="restoreStoryButtonLabel(this,'Ff')" onpointerleave="restoreStoryButtonLabel(this,'Ff')" title="Font">Ff</button>
+    <button class="story-btn" onclick="cycleSize()" onpointerdown="showStoryButtonLabel(this,'Size')" onpointerup="restoreStoryButtonLabel(this,'Aa')" onpointerleave="restoreStoryButtonLabel(this,'Aa')" title="Size">Aa</button>
+    <button class="story-btn" onclick="saveStoryToGallery()" onpointerdown="showStoryButtonLabel(this,'Save')" onpointerup="restoreStoryButtonLabel(this,'💾')" onpointerleave="restoreStoryButtonLabel(this,'💾')" title="Save">💾</button>
   </div>
 </div>
 
@@ -402,14 +402,14 @@ tr.drag-over{border-top:3px solid #667eea!important;}
   <div class="sched-modal">
     <h3 id="habitModalTitle">➕ New Habit</h3>
     <input type="text" id="modalHabitName" placeholder="Habit name" style="width:100%;margin-bottom:8px;"/>
-    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:130px;">
+    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:flex-end;">
+      <div style="flex:1 1 150px;min-width:145px;">
         <label style="font-size:12px;color:#6c757d;font-weight:600;display:block;margin-bottom:4px;">⏰ Time (optional)</label>
         <input type="time" id="modalHabitTime" style="width:100%!important;"/>
       </div>
-      <div style="flex:1;min-width:130px;">
+      <div style="flex:0 0 112px;max-width:112px;">
         <label style="font-size:12px;color:#6c757d;font-weight:600;display:block;margin-bottom:4px;">🏷️ Category</label>
-        <select id="modalHabitCat" style="width:100%;border-radius:12px;padding:8px;margin:0;"></select>
+        <select id="modalHabitCat" style="width:100%;border-radius:12px;padding:8px 6px;margin:0;font-size:12px;"></select>
       </div>
     </div>
     <div class="sched-section">
@@ -609,6 +609,8 @@ let _recordingTimer = null, _mediaRecorder = null, _audioChunks = [], _voiceBlob
 let _diaryImageData = null;
 let _calYear = new Date().getFullYear(), _calMonth = new Date().getMonth();
 let _pendingAiActions = null;
+let _lastAiReply = '';
+let _lastOpenedLessonIndex = null;
 
 // FIX #1: Study voice state per lesson
 let _studyRecorders = {}; // keyed by lessonIdx
@@ -698,7 +700,7 @@ function refreshQuote() {
   document.getElementById('quoteText').textContent = `"${q.t}" `;
   document.getElementById('quoteAuthor').textContent = `— ${q.a}`;
   const counter = document.getElementById('quoteCounter');
-  if (counter) counter.textContent = `${idx + 1}/${qs.length}`;
+  if (counter) counter.textContent = '';
   const card = document.getElementById('quoteCard');
   card.style.opacity = '0.6'; setTimeout(() => { card.style.opacity = '1'; }, 200);
   updateStudioFromCurrent();
@@ -711,7 +713,7 @@ function initQuote() {
   document.getElementById('quoteText').textContent = `"${q.t}" `;
   document.getElementById('quoteAuthor').textContent = `— ${q.a}`;
   const counter = document.getElementById('quoteCounter');
-  if (counter) counter.textContent = `${idx + 1}/${qs.length}`;
+  if (counter) counter.textContent = '';
   updateStudioFromCurrent();
 }
 
@@ -822,13 +824,27 @@ function setFont(i) {
 function saveStoryToGallery() {
   if (typeof html2canvas === "undefined") { alert("Take a screenshot!\niPhone: Side+Volume Up\nAndroid: Power+Volume Down"); return; }
   const sq = document.getElementById("storyQuote"), sa = document.getElementById("storyAuthor");
-  if (!sq || !sa) return;
+  const overlay = document.getElementById("storyOverlay");
+  if (!sq || !sa || !overlay) return;
   const qe = sq.contentEditable, ae = sa.contentEditable;
+  const hiddenEls = [document.querySelector('.story-controls'), document.querySelector('.story-close'), document.querySelector('.story-hint')].filter(Boolean);
+  const oldDisplays = hiddenEls.map(el => el.style.display);
   sq.contentEditable = "false"; sa.contentEditable = "false";
-  html2canvas(document.getElementById("storyOverlay"), { scale: 2, useCORS: true }).then(canvas => {
-    const link = document.createElement("a"); link.download = "fikrcha_story.png"; link.href = canvas.toDataURL("image/png"); link.click();
+  hiddenEls.forEach(el => el.style.display = 'none');
+  html2canvas(overlay, { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "fikrcha_story.png";
+    link.href = canvas.toDataURL("image/png");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
     sq.contentEditable = qe; sa.contentEditable = ae;
-  }).catch(() => { alert("Screenshot to save!"); sq.contentEditable = qe; sa.contentEditable = ae; });
+    hiddenEls.forEach((el, i) => el.style.display = oldDisplays[i]);
+  }).catch(() => {
+    alert("Screenshot could not be saved automatically. Please use your phone screenshot buttons.");
+    sq.contentEditable = qe; sa.contentEditable = ae;
+    hiddenEls.forEach((el, i) => el.style.display = oldDisplays[i]);
+  });
 }
 
 // ========== STORY OVERLAY ==========
@@ -865,6 +881,8 @@ function applyStoryStyles() {
 function cycleBg() { storyBgIdx = (storyBgIdx + 1) % storyBgs.length; applyStoryStyles(); }
 function cycleFont() { storyFontIdx = (storyFontIdx + 1) % storyFonts.length; applyStoryStyles(); }
 function cycleSize() { storySizeIdx = (storySizeIdx + 1) % storySizes.length; applyStoryStyles(); }
+function showStoryButtonLabel(btn, label) { if (btn) btn.textContent = label; }
+function restoreStoryButtonLabel(btn, text) { if (btn) setTimeout(() => { btn.textContent = text; }, 80); }
 
 // ========== FIX #4 & #5: AI CHAT — Better multilingual + smarter intent ==========
 function buildUserContext() {
@@ -909,6 +927,39 @@ function detectAddDiaryIntent(msg) {
   return /add.*(diary|note|journal|entry)|write.*diary|kundalik.*yoz|добав.*дневник|записать в дневник/i.test(msg);
 }
 
+function detectAddToLessonContentIntent(msg) {
+  return /(add|save|put|insert|copy).{0,80}(this|that|essay|answer|sample|response|text|information).{0,80}(lesson|study|english|dars)|(?:lesson|study|english|dars).{0,80}(add|save|put|insert|copy)/i.test(msg);
+}
+
+function findLessonIndexFromText(msg) {
+  const low = msg.toLowerCase();
+  const found = lessons.findIndex(l => low.includes(String(l.title || '').toLowerCase()));
+  if (found >= 0) return found;
+  return getOpenLessonIndex();
+}
+
+function getOpenLessonIndex() {
+  const open = document.querySelector('details.lesson[open]');
+  if (open && open.dataset.lessonIndex !== undefined) return Number(open.dataset.lessonIndex);
+  if (_lastOpenedLessonIndex !== null && lessons[_lastOpenedLessonIndex]) return _lastOpenedLessonIndex;
+  return lessons.length ? 0 : -1;
+}
+
+function rememberOpenLesson(i, isOpen) {
+  if (isOpen) _lastOpenedLessonIndex = i;
+}
+
+async function addAiTextToLesson(i, text) {
+  if (i < 0 || !lessons[i] || !text.trim()) return false;
+  if (!Array.isArray(lessons[i].tasks)) lessons[i].tasks = [];
+  const firstLine = text.split('\n').map(x => x.trim()).find(Boolean) || 'AI note';
+  const shortTitle = firstLine.length > 90 ? firstLine.slice(0, 87) + '...' : firstLine;
+  lessons[i].tasks.push({ text: shortTitle, history: {}, comment: text.trim(), image: null, voice: null });
+  await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks });
+  const s = saveOS(); renderLessons(); restoreOS(s);
+  return true;
+}
+
 // FIX #5: Extract habit name from message intelligently
 function extractHabitName(msg) {
   // Try to extract the actual habit name from the message
@@ -934,6 +985,15 @@ async function sendAiMessage() {
   if (!msg) return;
   input.value = '';
   appendChat('user', msg);
+  if (detectAddToLessonContentIntent(msg) && _lastAiReply.trim()) {
+    const lessonIdx = findLessonIndexFromText(msg);
+    if (lessonIdx >= 0 && await addAiTextToLesson(lessonIdx, _lastAiReply)) {
+      appendChat('ai', `✅ Added the last AI answer to "${escapeHtml(lessons[lessonIdx].title)}".`);
+    } else {
+      appendChat('ai', 'Open a lesson first, then I can add the last AI answer into it.');
+    }
+    return;
+  }
   const typingId = 'typing-' + Date.now();
   appendTyping(typingId);
 
@@ -984,6 +1044,7 @@ User data: ${ctx}`;
 
       const displayReply = reply.replace(/\[ADD_HABIT:[^\]]+\]/, '').replace(/\[ADD_LESSON:[^\]]+\]/, '').replace(/\[ADD_DIARY:[^\]]+\]/, '').trim();
       appendChat('ai', displayReply);
+      _lastAiReply = displayReply;
       aiMessages.push({ role: 'user', content: msg }, { role: 'assistant', content: displayReply });
       if (aiMessages.length > 20) aiMessages = aiMessages.slice(-20);
 
@@ -993,6 +1054,9 @@ User data: ${ctx}`;
         showAiAction('lesson', { title: lessonMatch[1] });
       } else if (diaryMatch) {
         showAiAction('diary', { text: diaryMatch[1] });
+      } else if (displayReply && lessons.length) {
+        const lessonIdx = getOpenLessonIndex();
+        if (lessonIdx >= 0) showAiAction('lessonContent', { text: displayReply, lessonIndex: lessonIdx });
       }
     } else {
       removeTyping(typingId);
@@ -1020,6 +1084,10 @@ function showAiAction(type, data) {
   } else if (type === 'diary') {
     title.textContent = `Save to Diary?`;
     btns.innerHTML = `<button class="ai-action-btn" onclick="confirmAiAction()">📔 Save entry</button>`;
+  } else if (type === 'lessonContent') {
+    const lesson = lessons[data.lessonIndex];
+    title.textContent = lesson ? `Add this AI answer to "${lesson.title}"?` : 'Add this AI answer to the opened lesson?';
+    btns.innerHTML = `<button class="ai-action-btn" onclick="confirmAiAction()">📚 Add to lesson</button>`;
   }
 }
 
@@ -1039,6 +1107,8 @@ async function confirmAiAction() {
     await api("POST", "/api/diaries", { date: today(), entry: data.text });
     await loadAll();
     appendChat('ai', `📔 Diary entry saved!`);
+  } else if (type === 'lessonContent') {
+    if (await addAiTextToLesson(data.lessonIndex, data.text)) appendChat('ai', `📚 Added to "${escapeHtml(lessons[data.lessonIndex].title)}".`);
   }
 }
 
@@ -1068,10 +1138,50 @@ function removeTyping(id) { document.getElementById(id)?.remove(); }
 
 // ========== DATA ==========
 let tasks = [], lessons = [], diaries = {};
+function localRead(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); } catch (e) { return fallback; }
+}
+function localWrite(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+function localId(prefix) { return prefix + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7); }
+function mergeLocalRows(serverRows, key) {
+  const localRows = localRead(key, []);
+  const rows = Array.isArray(serverRows) ? [...serverRows] : [];
+  localRows.forEach(row => { if (!rows.some(x => String(x.id) === String(row.id))) rows.push(row); });
+  return rows;
+}
+function applySavedHabitOrder(rows) {
+  const order = localRead('fikrcha_habit_order', []);
+  if (!order.length || !Array.isArray(rows)) return rows;
+  return [...rows].sort((a, b) => {
+    const ai = order.indexOf(String(a.id)), bi = order.indexOf(String(b.id));
+    return (ai === -1 ? 99999 : ai) - (bi === -1 ? 99999 : bi);
+  });
+}
+function localApi(method, url, body) {
+  if (url === '/api/user') return { name: localStorage.getItem('fikrcha_name') || '' };
+  const map = [{ base: '/api/habits', key: 'fikrcha_local_habits' }, { base: '/api/studies', key: 'fikrcha_local_studies' }, { base: '/api/diaries', key: 'fikrcha_local_diaries' }];
+  const item = map.find(x => url === x.base || url.startsWith(x.base + '/'));
+  if (!item) return null;
+  let rows = localRead(item.key, []);
+  if (method === 'GET') return rows;
+  if (method === 'POST' && url.endsWith('/reorder')) { localWrite('fikrcha_habit_order', (body.orderedIds || []).map(String)); return { ok: true }; }
+  if (method === 'POST') { const row = { id: localId(item.key), ...(body || {}) }; rows.push(row); localWrite(item.key, rows); return row; }
+  const id = decodeURIComponent(url.split('/').pop());
+  if (method === 'PUT') { rows = rows.map(r => String(r.id) === id ? { ...r, ...(body || {}) } : r); localWrite(item.key, rows); return rows.find(r => String(r.id) === id) || null; }
+  if (method === 'DELETE') { rows = rows.filter(r => String(r.id) !== id); localWrite(item.key, rows); return { ok: true }; }
+  return null;
+}
 async function api(method, url, body) {
   const opts = { method, headers: { "Content-Type": "application/json" } };
   if (body) opts.body = JSON.stringify(body);
-  try { const res = await fetch(url, opts); return res.json(); } catch (e) { return null; }
+  try {
+    const res = await fetch(url, opts);
+    if (!res.ok) return localApi(method, url, body);
+    const text = await res.text();
+    return text ? JSON.parse(text) : { ok: true };
+  } catch (e) {
+    return localApi(method, url, body);
+  }
 }
 async function loadAll() {
   const user = await api("GET", "/api/user");
@@ -1079,9 +1189,12 @@ async function loadAll() {
   window._profileName = user.name || '';
   window._telegramName = user.name || '';
   const [hd, sd, dd] = await Promise.all([api("GET", "/api/habits"), api("GET", "/api/studies"), api("GET", "/api/diaries")]);
-  if (Array.isArray(hd)) tasks = hd.map(h => ({ id: h.id, text: h.name, time: h.time || "", category: h.category || "", history: h.history || {}, schedule: h.schedule || { type: 'daily', days: [], onceDates: [] } }));
-  if (Array.isArray(sd)) lessons = sd;
-  if (Array.isArray(dd)) { diaries = {}; dd.forEach(d => { if (!diaries[d.date]) diaries[d.date] = []; diaries[d.date].push({ id: d.id, text: d.entry, time: d.time, image: d.image || null, voice: d.voice || null }); }); }
+  const habitRows = applySavedHabitOrder(mergeLocalRows(hd, 'fikrcha_local_habits'));
+  const studyRows = mergeLocalRows(sd, 'fikrcha_local_studies');
+  const diaryRows = mergeLocalRows(dd, 'fikrcha_local_diaries');
+  if (Array.isArray(habitRows)) tasks = habitRows.map(h => ({ id: h.id, text: h.name, time: h.time || "", category: h.category || "", history: h.history || {}, schedule: h.schedule || { type: 'daily', days: [], onceDates: [] } }));
+  if (Array.isArray(studyRows)) lessons = studyRows.map(l => ({ ...l, tasks: Array.isArray(l.tasks) ? l.tasks : [] }));
+  if (Array.isArray(diaryRows)) { diaries = {}; diaryRows.forEach(d => { if (!diaries[d.date]) diaries[d.date] = []; diaries[d.date].push({ id: d.id, text: d.entry, time: d.time, image: d.image || null, voice: d.voice || null }); }); }
   render(); renderLessons(); applyLanguage();
   if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
     const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
@@ -1267,7 +1380,7 @@ function render() {
       else row += `<td class="${iT ? 'today-col' : ''}" style="background:rgba(0,0,0,0.03);color:#ccc;font-size:12px;">—</td>`;
     });
     row += `<td style="font-weight:800;color:#667eea;font-size:13px;">${getPercent(task, week)}%</td>
-      <td><button onclick="openEditHabitModal(${realIdx})" style="background:#e9ecef;padding:3px 8px;font-size:11px;">✏️</button><button onclick="deleteTask(${realIdx})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button></td></tr>`;
+      <td><div style="display:flex;gap:2px;justify-content:center;flex-wrap:wrap;"><button onclick="moveHabit(${realIdx},-1)" style="background:#eef0ff;color:#667eea;padding:3px 7px;font-size:11px;" title="Move up">↑</button><button onclick="moveHabit(${realIdx},1)" style="background:#eef0ff;color:#667eea;padding:3px 7px;font-size:11px;" title="Move down">↓</button><button onclick="openEditHabitModal(${realIdx})" style="background:#e9ecef;padding:3px 8px;font-size:11px;">✏️</button><button onclick="deleteTask(${realIdx})" class="btn-danger" style="padding:3px 8px;font-size:11px;">🗑️</button></div></td></tr>`;
     body += row;
   });
   if (visibleTasks.length === 0) {
@@ -1279,6 +1392,15 @@ function render() {
 
 async function deleteTask(i) { if (confirm(t('deleteHabit'))) { await api("DELETE", `/api/habits/${tasks[i].id}`); await loadAll(); } }
 async function toggle(i, date) { tasks[i].history[date] = !tasks[i].history[date]; await api("PUT", `/api/habits/${tasks[i].id}`, { history: tasks[i].history }); render(); }
+async function saveHabitOrder() { localWrite('fikrcha_habit_order', tasks.map(t => String(t.id))); await api("POST", "/api/habits/reorder", { orderedIds: tasks.map(t => t.id) }); }
+async function moveHabit(i, dir) {
+  const target = i + dir;
+  if (target < 0 || target >= tasks.length) return;
+  const moved = tasks.splice(i, 1)[0];
+  tasks.splice(target, 0, moved);
+  render();
+  await saveHabitOrder();
+}
 
 // ========== DRAG & DROP (Desktop + Touch) ==========
 let dragSrcIdx2 = null;
@@ -1293,6 +1415,7 @@ async function dropHabit(e, targetIdx) {
   tasks.splice(targetIdx, 0, moved);
   dragSrcIdx2 = null;
   render();
+  localWrite('fikrcha_habit_order', tasks.map(t => String(t.id)));
   try {
     await api("POST", "/api/habits/reorder", { orderedIds: tasks.map(t => t.id) });
   } catch (e) {
@@ -1335,6 +1458,7 @@ async function touchDragEnd(e) {
       const moved = tasks.splice(touchDragIdx, 1)[0];
       tasks.splice(targetIdx, 0, moved);
       render();
+      localWrite('fikrcha_habit_order', tasks.map(t => String(t.id)));
       try { await api("POST", "/api/habits/reorder", { orderedIds: tasks.map(t => t.id) }); } catch (e) {}
     }
   }
@@ -1505,6 +1629,12 @@ async function deleteLessonTask(i, j) { lessons[i].tasks.splice(j, 1); await api
 async function toggleLessonTask(i, j) { const td = today(); lessons[i].tasks[j].history[td] = !lessons[i].tasks[j].history[td]; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); const s = saveOS(); renderLessons(); restoreOS(s); }
 async function saveComment(i, j, value) { lessons[i].tasks[j].comment = value; await api("PUT", `/api/studies/${lessons[i].id}`, { tasks: lessons[i].tasks }); }
 
+function getSupportedAudioMime() {
+  if (typeof MediaRecorder === 'undefined') return '';
+  const types = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
+  return types.find(type => MediaRecorder.isTypeSupported(type)) || '';
+}
+
 // ========== FIX #1: Study voice recording per lesson ==========
 async function toggleStudyRecording(i) {
   const btn = document.getElementById(`study-voice-btn-${i}`);
@@ -1520,13 +1650,16 @@ async function toggleStudyRecording(i) {
     if (timerEl) { clearInterval(_studyRecorders[`timer_${i}`]); timerEl.style.display = 'none'; }
   } else {
     try {
+      if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') { alert('Voice recording is not supported in this browser.'); return; }
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       let chunks = [];
-      const recorder = new MediaRecorder(stream);
+      const mimeType = getSupportedAudioMime();
+      const recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
       _studyRecorders[i] = recorder;
       recorder.ondataavailable = e => chunks.push(e.data);
       recorder.onstop = () => {
-        _studyVoiceBlobs[i] = new Blob(chunks, { type: 'audio/webm' });
+        const type = recorder.mimeType || getSupportedAudioMime() || 'audio/webm';
+        _studyVoiceBlobs[i] = new Blob(chunks, { type });
         const url = URL.createObjectURL(_studyVoiceBlobs[i]);
         if (audioEl) audioEl.src = url;
         if (previewEl) previewEl.style.display = 'flex';
@@ -1539,7 +1672,7 @@ async function toggleStudyRecording(i) {
         let secs = 0; timerEl.style.display = 'block'; timerEl.textContent = '🔴 0s';
         _studyRecorders[`timer_${i}`] = setInterval(() => { secs++; timerEl.textContent = `🔴 ${secs}s`; }, 1000);
       }
-    } catch (e) { alert('Microphone access denied.'); }
+    } catch (e) { alert('Microphone access denied or unavailable. Please allow microphone permission and try again.'); }
   }
 }
 
@@ -1555,7 +1688,7 @@ function renderLessons() {
   let html = "";
   lessons.forEach((l, i) => {
     const td = today(), dn = l.tasks.filter(t => t.history[td]).length, tot = l.tasks.length, pct = tot > 0 ? Math.round((dn / tot) * 100) : 0;
-    html += `<details class="lesson" style="padding:0;border:none;background:transparent;box-shadow:none;"><summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>${tot > 0 ? `<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${dn}/${tot} · ${pct}%</span>` : ''}</div><div style="display:flex;align-items:center;gap:8px;"><button onclick="event.preventDefault();deleteLesson(${i})" style="background:#ffe0e0;color:#c0392b;padding:3px 8px;font-size:11px;" title="Delete">🗑️</button><span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span></div></summary>
+    html += `<details class="lesson" data-lesson-index="${i}" ontoggle="rememberOpenLesson(${i}, this.open)" style="padding:0;border:none;background:transparent;box-shadow:none;"><summary style="list-style:none;cursor:pointer;background:#fefefe;border:1px solid #e9ecef;border-radius:20px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1rem;font-weight:700;color:#2c3e50;">📘 ${escapeHtml(l.title)}</span>${tot > 0 ? `<span style="font-size:11px;background:#f1f3f5;padding:2px 8px;border-radius:20px;color:#495057;">${dn}/${tot} · ${pct}%</span>` : ''}</div><div style="display:flex;align-items:center;gap:8px;"><button onclick="event.preventDefault();deleteLesson(${i})" style="background:#ffe0e0;color:#c0392b;padding:3px 8px;font-size:11px;" title="Delete">🗑️</button><span style="font-size:1.1rem;color:#667eea;" class="lesson-toggle">▶</span></div></summary>
     <div style="padding:0 18px 18px;background:#fefefe;border:1px solid #e9ecef;border-top:none;border-radius:0 0 20px 20px;">
       <div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
         <input id="activity-${i}" placeholder="New activity" style="flex:1;min-width:120px;">
@@ -1680,11 +1813,14 @@ async function toggleRecording() {
     clearInterval(_recordingTimer); document.getElementById('voiceTimer').style.display = 'none';
   } else {
     try {
+      if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') { alert('Voice recording is not supported in this browser.'); return; }
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      _audioChunks = []; _mediaRecorder = new MediaRecorder(stream);
+      const mimeType = getSupportedAudioMime();
+      _audioChunks = []; _mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
       _mediaRecorder.ondataavailable = e => _audioChunks.push(e.data);
       _mediaRecorder.onstop = () => {
-        _voiceBlob = new Blob(_audioChunks, { type: 'audio/webm' });
+        const type = _mediaRecorder.mimeType || getSupportedAudioMime() || 'audio/webm';
+        _voiceBlob = new Blob(_audioChunks, { type });
         const url = URL.createObjectURL(_voiceBlob);
         document.getElementById('voiceAudio').src = url;
         document.getElementById('voicePreview').style.display = 'flex';
@@ -1694,7 +1830,7 @@ async function toggleRecording() {
       let secs = 0;
       const timerEl = document.getElementById('voiceTimer'); timerEl.style.display = 'block';
       _recordingTimer = setInterval(() => { secs++; timerEl.textContent = `🔴 ${secs}s`; }, 1000);
-    } catch (e) { alert('Microphone access denied.'); }
+    } catch (e) { alert('Microphone access denied or unavailable. Please allow microphone permission and try again.'); }
   }
 }
 function clearVoice() { _voiceBlob = null; document.getElementById('voicePreview').style.display = 'none'; document.getElementById('voiceAudio').src = ''; }
