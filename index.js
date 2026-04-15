@@ -637,7 +637,7 @@ bot.on("callback_query", async (ctx) => {
     habit.markModified('history');
     await habit.save();
     const userHabits = await Habit.find({ userId }).lean();
-    const done = userHabits.filter(h => h.history[today]).length;
+    const done = userHabits.filter(h => h?.history?.[todayStr]).length;
     const pct = Math.round((done / userHabits.length) * 100);
     const emoji = pct === 100 ? "🏆" : pct >= 70 ? "🔥" : pct >= 40 ? "💪" : "⚡";
     const status = habit.history[today] ? "✅ Done" : "⬜ Unchecked";
