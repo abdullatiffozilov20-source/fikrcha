@@ -404,8 +404,8 @@ app.delete("/api/admin/users/:id", async (req, res) => {
 });
 
 // ── Static pages ──────────────────────────────────────────────
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.get("/ping", (req, res) => {
+  res.status(200).end(); // 🔥 send("ok") ham kerak emas
 });
 
 app.get("/ping", (req, res) => {
