@@ -418,34 +418,58 @@ app.get("/admin.html", async (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
-// ── AI chat ───────────────────────────────────────────────────
 app.post('/api/ai-chat', async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: 'Not logged in' });
-  const { message, system, history } = req.body;
+
+  const { message, history } = req.body;
   if (!message) return res.status(400).json({ error: 'No message' });
+
   const GROQ_API_KEY = process.env.GROQ_API_KEY;
-  if (!GROQ_API_KEY) return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to Render env vars.' });
+  if (!GROQ_API_KEY) {
+    return res.json({ reply: '⚠️ AI not configured.' });
+  }
+
   try {
-    const messages = [...(history || []).slice(-6), { role: 'user', content: message }];
+    const systemPrompt = `
+You are FIKRCHA AI, a smart productivity assistant.
+
+Rules:
+- Reply in the SAME language as the user (Uzbek, Russian, or English)
+- Use simple, clear language
+- Be concise (max 2-3 sentences, max 60 words)
+- Be practical and relevant
+- Avoid nonsense or vague answers
+`;
+
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...(history || []).slice(-6),
+      { role: 'user', content: message }
+    ];
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',
-        max_tokens: 400,
-        messages: [
-          { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant. Be concise and direct. Max 80 words per response.' },
-          ...messages
-        ]
+        temperature: 0.4,
+        max_tokens: 200,
+        messages
       })
     });
+
     const data = await response.json();
-    if (data.choices?.[0]) {
-      res.json({ reply: data.choices[0].message.content });
+
+    if (data.choices?.[0]?.message?.content) {
+      res.json({ reply: data.choices[0].message.content.trim() });
     } else {
-      res.json({ reply: '⚠️ AI error. Please try again.' });
+      res.json({ reply: '⚠️ AI error. Try again.' });
     }
+
   } catch (err) {
     console.error('AI error:', err);
     res.json({ reply: '⚠️ AI temporarily unavailable.' });
