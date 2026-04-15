@@ -7,6 +7,12 @@ const { Telegraf } = require("telegraf");
 const path = require("path");
 const mongoose = require("mongoose");
 
+let isBusy = false;
+
+function getToday() {
+  return new Date().toISOString().split("T")[0];
+}
+
 // ── MongoDB connection ────────────────────────────────────────
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -404,7 +410,10 @@ app.delete("/api/admin/users/:id", async (req, res) => {
 });
 
 // ── Static pages ──────────────────────────────────────────────
-app.get("/ping", (req, res) => res.send("ok"));
+app.get("/ping", (req, res) => {
+  if (isBusy) return res.status(200).end();
+  res.status(200).end();
+});
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.get("/app.html", (req, res) => res.sendFile(path.join(__dirname, "app.html")));
 app.get("/admin.html", async (req, res) => {
@@ -415,38 +424,103 @@ app.get("/admin.html", async (req, res) => {
 
 // ── AI chat ───────────────────────────────────────────────────
 app.post('/api/ai-chat', async (req, res) => {
-  const user = await getUser(req);
-  if (!user) return res.status(401).json({ error: 'Not logged in' });
-  const { message, system, history } = req.body;
-  if (!message) return res.status(400).json({ error: 'No message' });
-  const GROQ_API_KEY = process.env.GROQ_API_KEY;
-  if (!GROQ_API_KEY) return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to Render env vars.' });
+
+  if (isBusy) {
+    return res.json({ reply: "⏳ Server busy, try again..." });
+  }
+
+  isBusy = true;
+
   try {
-    const messages = [...(history || []).slice(-6), { role: 'user', content: message }];
+    const user = await getUser(req);
+    if (!user) {
+      return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    const { message, history } = req.body;
+    if (!message) {
+      return res.status(400).json({ error: 'No message' });
+    }
+
+    const GROQ_API_KEY = process.env.GROQ_API_KEY;
+    if (!GROQ_API_KEY) {
+      return res.json({ reply: '⚠️ AI not configured.' });
+    }
+
+    // 🔥 HABIT DATA (PERSONAL COACH)
+    const today = getToday();
+
+    const userHabits = await Habit.find({ userId: user._id }).lean();
+
+    const total = userHabits.length;
+
+    const done = userHabits.filter(h => h?.history?.[today]).length;
+
+    const missed = total - done;
+
+    const bestStreak = Math.max(
+      ...userHabits.map(h => getStreak(h)),
+      0
+    );
+
+    const habitSummary = `
+User habits today:
+- Total: ${total}
+- Completed: ${done}
+- Missed: ${missed}
+- Best streak: ${bestStreak}
+`;
+
+    // 🔥 SMART PROMPT
+    const systemPrompt = `
+You are FIKRCHA AI, a personal productivity coach.
+
+${habitSummary}
+
+Rules:
+- Reply in SAME language as user (Uzbek/Russian/English)
+- Keep it short (2-3 sentences max)
+- Be practical and specific
+- If low progress → motivate
+- If good progress → praise + push next step
+`;
+
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...(history || []).slice(-6),
+      { role: 'user', content: message }
+    ];
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',
-        max_tokens: 400,
-        messages: [
-          { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant. Be concise and direct. Max 80 words per response.' },
-          ...messages
-        ]
+        temperature: 0.4,
+        max_tokens: 200,
+        messages
       })
     });
+
     const data = await response.json();
-    if (data.choices?.[0]) {
-      res.json({ reply: data.choices[0].message.content });
+
+    if (data.choices?.[0]?.message?.content) {
+      res.json({ reply: data.choices[0].message.content.trim() });
     } else {
-      res.json({ reply: '⚠️ AI error. Please try again.' });
+      res.json({ reply: '⚠️ AI error. Try again.' });
     }
+
   } catch (err) {
     console.error('AI error:', err);
     res.json({ reply: '⚠️ AI temporarily unavailable.' });
+
+  } finally {
+    isBusy = false;
   }
 });
-
 // ── Telegram Bot ──────────────────────────────────────────────
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const webAppUrl = DOMAIN;
