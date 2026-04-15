@@ -404,13 +404,7 @@ app.delete("/api/admin/users/:id", async (req, res) => {
 });
 
 // ── Static pages ──────────────────────────────────────────────
-app.get("/ping", (req, res) => {
-  res.status(200).end(); // 🔥 send("ok") ham kerak emas
-});
-
-app.get("/ping", (req, res) => {
-  res.send("ok");
-});
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.get("/app.html", (req, res) => res.sendFile(path.join(__dirname, "app.html")));
 app.get("/admin.html", async (req, res) => {
   const user = await getUser(req);
@@ -418,58 +412,34 @@ app.get("/admin.html", async (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
+// ── AI chat ───────────────────────────────────────────────────
 app.post('/api/ai-chat', async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: 'Not logged in' });
-
-  const { message, history } = req.body;
+  const { message, system, history } = req.body;
   if (!message) return res.status(400).json({ error: 'No message' });
-
   const GROQ_API_KEY = process.env.GROQ_API_KEY;
-  if (!GROQ_API_KEY) {
-    return res.json({ reply: '⚠️ AI not configured.' });
-  }
-
+  if (!GROQ_API_KEY) return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to Render env vars.' });
   try {
-    const systemPrompt = `
-You are FIKRCHA AI, a smart productivity assistant.
-
-Rules:
-- Reply in the SAME language as the user (Uzbek, Russian, or English)
-- Use simple, clear language
-- Be concise (max 2-3 sentences, max 60 words)
-- Be practical and relevant
-- Avoid nonsense or vague answers
-`;
-
-    const messages = [
-      { role: 'system', content: systemPrompt },
-      ...(history || []).slice(-6),
-      { role: 'user', content: message }
-    ];
-
+    const messages = [...(history || []).slice(-6), { role: 'user', content: message }];
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',
-        temperature: 0.4,
-        max_tokens: 200,
-        messages
+        max_tokens: 400,
+        messages: [
+          { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant. Be concise and direct. Max 80 words per response.' },
+          ...messages
+        ]
       })
     });
-
     const data = await response.json();
-
-    if (data.choices?.[0]?.message?.content) {
-      res.json({ reply: data.choices[0].message.content.trim() });
+    if (data.choices?.[0]) {
+      res.json({ reply: data.choices[0].message.content });
     } else {
-      res.json({ reply: '⚠️ AI error. Try again.' });
+      res.json({ reply: '⚠️ AI error. Please try again.' });
     }
-
   } catch (err) {
     console.error('AI error:', err);
     res.json({ reply: '⚠️ AI temporarily unavailable.' });
@@ -661,7 +631,7 @@ bot.on("callback_query", async (ctx) => {
     habit.markModified('history');
     await habit.save();
     const userHabits = await Habit.find({ userId }).lean();
-    const done = userHabits.filter(h => h?.history?.[todayStr]).length;
+    const done = userHabits.filter(h => h.history[today]).length;
     const pct = Math.round((done / userHabits.length) * 100);
     const emoji = pct === 100 ? "🏆" : pct >= 70 ? "🔥" : pct >= 40 ? "💪" : "⚡";
     const status = habit.history[today] ? "✅ Done" : "⬜ Unchecked";
