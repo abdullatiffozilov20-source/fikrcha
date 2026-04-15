@@ -404,7 +404,13 @@ app.delete("/api/admin/users/:id", async (req, res) => {
 });
 
 // ── Static pages ──────────────────────────────────────────────
-app.get("/ping", (req, res) => res.send("ok"));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.get("/ping", (req, res) => {
+  res.send("ok");
+});
 app.get("/app.html", (req, res) => res.sendFile(path.join(__dirname, "app.html")));
 app.get("/admin.html", async (req, res) => {
   const user = await getUser(req);
