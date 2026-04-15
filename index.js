@@ -51,7 +51,7 @@ const DiarySchema = new mongoose.Schema({
 });
 
 const TelegramLinkSchema = new mongoose.Schema({
-  _id: String,   // telegramId
+  _id: String,
   userId: String,
 });
 
@@ -79,7 +79,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ── Helpers ───────────────────────────────────────────────────
+// ── getUser — SINGLE definition used everywhere ───────────────
 async function getUser(req) {
   if (req.user) return req.user;
   if (req.session && req.session.telegramUserId) {
@@ -88,6 +88,7 @@ async function getUser(req) {
   return null;
 }
 
+// ── Helpers ───────────────────────────────────────────────────
 async function getRealUserId(userId) {
   if (userId && userId.startsWith('tg_')) {
     const tgId = userId.replace('tg_', '');
@@ -113,15 +114,14 @@ function getStreak(habit) {
 }
 
 function getConsistency30(habit) {
-  let scheduled = 0, done = 0;
+  let done = 0;
   for (let i = 0; i < 30; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const ds = d.toISOString().split("T")[0];
-    scheduled++;
     if (habit.history[ds]) done++;
   }
-  return scheduled === 0 ? 0 : Math.round((done / scheduled) * 100);
+  return Math.round((done / 30) * 100);
 }
 
 // ── Passport ──────────────────────────────────────────────────
@@ -172,7 +172,6 @@ app.use(async (req, res, next) => {
 app.post('/auth/telegram', async (req, res) => {
   const { user } = req.body;
   if (!user || !user.id) return res.json({ success: false });
-
   const telegramId = String(user.id);
 
   if (req.user && req.user._id) {
@@ -202,9 +201,7 @@ app.post('/auth/telegram', async (req, res) => {
     await TelegramLink.findByIdAndUpdate(telegramId, { userId }, { upsert: true });
   } else {
     userId = link.userId;
-    if (user.username) {
-      await User.findByIdAndUpdate(userId, { telegramUsername: user.username });
-    }
+    if (user.username) await User.findByIdAndUpdate(userId, { telegramUsername: user.username });
   }
 
   req.session.telegramUserId = userId;
@@ -216,8 +213,7 @@ app.get("/auth/google", (req, res, next) => {
   passport.authenticate("google", { scope: ["profile", "email"] })(req, res, next);
 });
 
-app.get(
-  "/auth/google/callback",
+app.get("/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   async (req, res) => {
     if (req.session.pendingTelegramId) {
@@ -272,8 +268,7 @@ app.get("/api/force-link/:tgid/:userid", async (req, res) => {
 app.get("/api/habits", async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const userHabits = await Habit.find({ userId: user._id }).lean();
-  res.json(userHabits);
+  res.json(await Habit.find({ userId: user._id }).lean());
 });
 
 app.post("/api/habits", async (req, res) => {
@@ -281,12 +276,8 @@ app.post("/api/habits", async (req, res) => {
   if (!user) return res.status(401).json({ error: "Not logged in" });
   const { name, time, category, schedule } = req.body;
   await Habit.create({
-    userId: user._id,
-    id: Date.now(),
-    name,
-    time: time || "",
-    category: category || "",
-    history: {},
+    userId: user._id, id: Date.now(), name,
+    time: time || "", category: category || "", history: {},
     schedule: schedule || { type: 'daily', days: [], onceDates: [] }
   });
   res.json({ success: true });
@@ -316,7 +307,6 @@ app.delete("/api/habits/:id", async (req, res) => {
 app.post("/api/habits/reorder", async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  // reorder is handled client-side; MongoDB doesn't need explicit reorder
   res.json({ success: true });
 });
 
@@ -324,15 +314,13 @@ app.post("/api/habits/reorder", async (req, res) => {
 app.get("/api/studies", async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const userStudies = await Study.find({ userId: user._id }).lean();
-  res.json(userStudies);
+  res.json(await Study.find({ userId: user._id }).lean());
 });
 
 app.post("/api/studies", async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const { title } = req.body;
-  await Study.create({ userId: user._id, id: Date.now(), title, tasks: [] });
+  await Study.create({ userId: user._id, id: Date.now(), title: req.body.title, tasks: [] });
   res.json({ success: true });
 });
 
@@ -358,8 +346,7 @@ app.delete("/api/studies/:id", async (req, res) => {
 app.get("/api/diaries", async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: "Not logged in" });
-  const userDiaries = await Diary.find({ userId: user._id }).lean();
-  res.json(userDiaries);
+  res.json(await Diary.find({ userId: user._id }).lean());
 });
 
 app.post("/api/diaries", async (req, res) => {
@@ -367,12 +354,8 @@ app.post("/api/diaries", async (req, res) => {
   if (!user) return res.status(401).json({ error: "Not logged in" });
   const { date, entry, image, voice } = req.body;
   await Diary.create({
-    userId: user._id,
-    id: Date.now(),
-    date,
-    entry,
-    image: image || null,
-    voice: voice || null,
+    userId: user._id, id: Date.now(), date, entry,
+    image: image || null, voice: voice || null,
     time: new Date().toLocaleTimeString()
   });
   res.json({ success: true });
@@ -401,14 +384,23 @@ app.get("/api/admin/users", async (req, res) => {
   if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
   const allUsers = await User.find().lean();
   const result = await Promise.all(allUsers.map(async u => ({
-    id: u._id,
-    name: u.name,
-    email: u.email,
+    id: u._id, name: u.name, email: u.email,
     habits: await Habit.find({ userId: u._id }).lean(),
     studies: await Study.find({ userId: u._id }).lean(),
     diaries: await Diary.find({ userId: u._id }).lean(),
   })));
   res.json(result);
+});
+
+app.delete("/api/admin/users/:id", async (req, res) => {
+  const user = await getUser(req);
+  if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
+  const id = req.params.id;
+  await User.findByIdAndDelete(id);
+  await Habit.deleteMany({ userId: id });
+  await Study.deleteMany({ userId: id });
+  await Diary.deleteMany({ userId: id });
+  res.json({ success: true });
 });
 
 // ── Static pages ──────────────────────────────────────────────
@@ -424,15 +416,10 @@ app.get("/admin.html", async (req, res) => {
 app.post('/api/ai-chat', async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: 'Not logged in' });
-
   const { message, system, history } = req.body;
   if (!message) return res.status(400).json({ error: 'No message' });
-
   const GROQ_API_KEY = process.env.GROQ_API_KEY;
-  if (!GROQ_API_KEY) {
-    return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to Render env vars.' });
-  }
-
+  if (!GROQ_API_KEY) return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to Render env vars.' });
   try {
     const messages = [...(history || []).slice(-6), { role: 'user', content: message }];
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -489,13 +476,9 @@ function buildMainMenu() {
 bot.start((ctx) => {
   const name = ctx.from.first_name || "there";
   ctx.reply(
-    `✨ *Welcome to FIKRCHA, ${name}!*\n\n` +
-    `_think · grow · achieve_\n\n` +
+    `✨ *Welcome to FIKRCHA, ${name}!*\n\n_think · grow · achieve_\n\n` +
     `I'm your personal productivity assistant 🤖\n\n` +
-    `📅 Track your daily habits\n` +
-    `📔 Save diary entries\n` +
-    `📊 Show your weekly progress\n` +
-    `⏰ Send you reminders automatically\n\n` +
+    `📅 Track your daily habits\n📔 Save diary entries\n📊 Show your weekly progress\n⏰ Send you reminders automatically\n\n` +
     `👇 *Open the app first* to set up your habits, then come back here!`,
     { parse_mode: "Markdown", reply_markup: buildMainMenu() }
   );
@@ -504,19 +487,15 @@ bot.start((ctx) => {
 bot.command("habits", async (ctx) => {
   const telegramId = String(ctx.from.id);
   const link = await TelegramLink.findById(telegramId).lean();
-  if (!link) {
-    return ctx.reply("👋 *First, open the app to link your account.*", {
-      parse_mode: "Markdown",
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
-    });
-  }
+  if (!link) return ctx.reply("👋 *First, open the app to link your account.*", {
+    parse_mode: "Markdown",
+    reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
+  });
   const userId = await getRealUserId(link.userId);
   const userHabits = await Habit.find({ userId }).lean();
-  if (!userHabits.length) {
-    return ctx.reply("You have no habits yet. Open the app to add some!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
-    });
-  }
+  if (!userHabits.length) return ctx.reply("You have no habits yet. Open the app to add some!", {
+    reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
+  });
   const today = getTodayStr();
   const done = userHabits.filter(h => h.history[today]).length;
   const pct = Math.round((done / userHabits.length) * 100);
@@ -530,11 +509,9 @@ bot.command("habits", async (ctx) => {
 bot.command("progress", async (ctx) => {
   const telegramId = String(ctx.from.id);
   const link = await TelegramLink.findById(telegramId).lean();
-  if (!link) {
-    return ctx.reply("👋 Open the app first to link your account!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
-    });
-  }
+  if (!link) return ctx.reply("👋 Open the app first to link your account!", {
+    reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
+  });
   const userId = await getRealUserId(link.userId);
   const userHabits = await Habit.find({ userId }).lean();
   if (!userHabits.length) return ctx.reply("No habits found. Add some in the app first!");
@@ -555,9 +532,7 @@ bot.command("progress", async (ctx) => {
   const topStreak = streaks[0];
   const avgC = Math.round(userHabits.reduce((s, h) => s + getConsistency30(h), 0) / total);
   await ctx.reply(
-    `📊 *Your Weekly Progress*\n\n${weekStats}\n` +
-    `💪 Today: ${todayDone}/${total} completed\n` +
-    `📈 30-day avg: ${avgC}%\n` +
+    `📊 *Your Weekly Progress*\n\n${weekStats}\n💪 Today: ${todayDone}/${total} completed\n📈 30-day avg: ${avgC}%\n` +
     (topStreak && topStreak.streak > 0 ? `🔥 Best streak: "${topStreak.name}" — ${topStreak.streak} days` : ''),
     { parse_mode: "Markdown", reply_markup: { inline_keyboard: [[{ text: "🚀 Open Full App", web_app: { url: webAppUrl } }]] } }
   );
@@ -566,27 +541,18 @@ bot.command("progress", async (ctx) => {
 bot.command("diary", async (ctx) => {
   const telegramId = String(ctx.from.id);
   const link = await TelegramLink.findById(telegramId).lean();
-  if (!link) {
-    return ctx.reply("👋 Open the app first to link your account!", {
-      reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
-    });
-  }
+  if (!link) return ctx.reply("👋 Open the app first to link your account!", {
+    reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
+  });
   const userId = await getRealUserId(link.userId);
   const text = ctx.message.text.replace(/^\/diary\s*/, "").trim();
-  if (!text) {
-    return ctx.reply("📔 *How to save a diary entry:*\n\nJust type after the command:\n`/diary Today was a great day!`", { parse_mode: "Markdown" });
-  }
+  if (!text) return ctx.reply("📔 *How to save a diary entry:*\n\nJust type after the command:\n`/diary Today was a great day!`", { parse_mode: "Markdown" });
   const today = getTodayStr();
   await Diary.create({ userId, id: Date.now(), date: today, entry: text, image: null, time: new Date().toLocaleTimeString() });
-  await ctx.reply(
-    `📔 *Diary saved!* ✨\n\n_"${text.slice(0, 100)}${text.length > 100 ? '...' : ''}"_\n\n📅 ${today}`,
-    { parse_mode: "Markdown" }
-  );
+  await ctx.reply(`📔 *Diary saved!* ✨\n\n_"${text.slice(0, 100)}${text.length > 100 ? '...' : ''}"_\n\n📅 ${today}`, { parse_mode: "Markdown" });
 });
 
-bot.command("menu", (ctx) => {
-  ctx.reply("👇 What would you like to do?", { reply_markup: buildMainMenu() });
-});
+bot.command("menu", (ctx) => ctx.reply("👇 What would you like to do?", { reply_markup: buildMainMenu() }));
 
 bot.command("streak", async (ctx) => {
   const telegramId = String(ctx.from.id);
@@ -716,36 +682,27 @@ setInterval(async () => {
   const minute = now.getMinutes();
   const todayStr = getTodayStr();
 
-  if (hour === 0 && minute === 0) {
-    sentMorning.clear();
-    sentEvening.clear();
-    sentStreaks.clear();
-  }
+  if (hour === 0 && minute === 0) { sentMorning.clear(); sentEvening.clear(); sentStreaks.clear(); }
 
   const allLinks = await TelegramLink.find().lean();
-
   for (const link of allLinks) {
     const telegramId = link._id;
     const userId = await getRealUserId(link.userId);
     const userHabits = await Habit.find({ userId }).lean();
     if (!userHabits.length) continue;
-
     const userDoc = await User.findById(userId).lean();
     const name = userDoc?.name?.split(" ")[0] || "there";
     const total = userHabits.length;
     const done = userHabits.filter(h => h.history[todayStr]).length;
 
-    // Morning reminder at 08:00
     if (hour === 8 && minute === 0 && !sentMorning.has(telegramId)) {
       sentMorning.add(telegramId);
-      bot.telegram.sendMessage(
-        telegramId,
+      bot.telegram.sendMessage(telegramId,
         `🌅 *Good morning, ${name}!*\n\nYou have *${total} habit${total > 1 ? 's' : ''}* today.\nLet's start strong 💪\n\nTap to check them off:`,
         { parse_mode: "Markdown", reply_markup: { inline_keyboard: await buildHabitKeyboard(userId) } }
       ).catch(() => {});
     }
 
-    // Evening summary at 21:00
     if (hour === 21 && minute === 0 && !sentEvening.has(telegramId)) {
       sentEvening.add(telegramId);
       const pct = Math.round((done / total) * 100);
@@ -764,17 +721,14 @@ setInterval(async () => {
       }).catch(() => {});
     }
 
-    // 1-minute-before habit reminders
     const oneMinLater = new Date(now.getTime() + 60 * 1000);
     const targetTime = `${String(oneMinLater.getHours()).padStart(2,'0')}:${String(oneMinLater.getMinutes()).padStart(2,'0')}`;
     for (const habit of userHabits) {
-      if (!habit.time || habit.history[todayStr]) continue;
-      if (habit.time !== targetTime) continue;
+      if (!habit.time || habit.history[todayStr] || habit.time !== targetTime) continue;
       const notifKey = `${todayStr}_${telegramId}_${habit.id}`;
       if (sentStreaks.has(notifKey)) continue;
       sentStreaks.add(notifKey);
-      bot.telegram.sendMessage(
-        telegramId,
+      bot.telegram.sendMessage(telegramId,
         `⏰ *1 minute reminder!*\n\n📌 *${habit.name}* starts at ${habit.time}\n\nGet ready, ${name}! 💪`,
         { parse_mode: "Markdown", reply_markup: { inline_keyboard: [
           [{ text: `⬜ ${habit.name} — Mark done`, callback_data: `tog_${userId}_${habit.id}` }],
@@ -783,17 +737,14 @@ setInterval(async () => {
       ).catch(() => {});
     }
 
-    // Streak milestone alerts at 20:00
     if (hour === 20 && minute === 0) {
       for (const habit of userHabits) {
         const streak = getStreak(habit);
-        const milestones = [3, 7, 14, 21, 30, 60, 100];
-        if (!milestones.includes(streak)) continue;
+        if (![3, 7, 14, 21, 30, 60, 100].includes(streak)) continue;
         const key = `streak_${todayStr}_${telegramId}_${habit.id}`;
         if (sentStreaks.has(key)) continue;
         sentStreaks.add(key);
-        bot.telegram.sendMessage(
-          telegramId,
+        bot.telegram.sendMessage(telegramId,
           `🔥 *${streak}-Day Streak!*\n\nYou've done "*${habit.name}*" for ${streak} days in a row, ${name}!\n\n${streak >= 30 ? "🏆 Incredible dedication!" : streak >= 14 ? "⭐ You're building a real habit!" : "💪 Keep it going!"}`,
           { parse_mode: "Markdown" }
         ).catch(() => {});
@@ -802,81 +753,9 @@ setInterval(async () => {
   }
 }, 60000);
 
-// ─────────────────────────────────────────────────────────
-// ── ADMIN FUNKSIYALARI ───────────────────────────────────
-// ─────────────────────────────────────────────────────────
-
-// JWT import (agar fayl tepasida bo'lmasa, shu yerga ham qo'shishingiz mumkin)
-const jwt = require('jsonwebtoken');
-
-// ── Yordamchi: Foydalanuvchini token orqali topish ───────
-async function getUser(req) {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return null;
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    return await User.findById(decoded.userId).select('-password');
-  } catch {
-    return null;
-  }
-}
-
-// ── Admin: Barcha foydalanuvchilarni ko'rish ─────────────
-app.get("/api/admin/users", async (req, res) => {
-  const user = await getUser(req);
-  if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
-  
-  const allUsers = await User.find().lean();
-  const result = await Promise.all(allUsers.map(async u => ({
-    id: u._id,
-    name: u.name,
-    email: u.email,
-    habits: await Habit.find({ userId: u._id }).lean(),
-    studies: await Study.find({ userId: u._id }).lean(),
-    diaries: await Diary.find({ userId: u._id }).lean(),
-  })));
-  res.json(result);
-});
-
-// ── Admin: Foydalanuvchini o'chirish (ixtiyoriy) ─────────
-app.delete("/api/admin/users/:id", async (req, res) => {
-  const user = await getUser(req);
-  if (!user || !user.isAdmin) return res.status(403).json({ error: "Unauthorized" });
-  
-  await User.findByIdAndDelete(req.params.id);
-  await Habit.deleteMany({ userId: req.params.id });
-  await Study.deleteMany({ userId: req.params.id });
-  await Diary.deleteMany({ userId: req.params.id });
-  
-  res.json({ message: "Foydalanuvchi o'chirildi" });
-});
-
-// ── Botni ishga tushirish (Webhook + Polling) ──────────────
-if (process.env.RENDER_EXTERNAL_HOSTNAME) {
-  // Render serverida - Webhook mode
-  const webhookUrl = `https://${process.env.RENDER_EXTERNAL_HOSTNAME}/telegram-webhook`;
-  
-  bot.launch({
-    webhook: {
-      domain: process.env.RENDER_EXTERNAL_HOSTNAME,
-      path: '/telegram-webhook',
-    },
-  }).then(() => {
-    console.log('✅ Telegram bot webhook mode ishga tushdi');
-    console.log(`🔗 Webhook URL: ${webhookUrl}`);
-  }).catch(err => {
-    console.error('❌ Bot webhook xatosi:', err);
-  });
-
-  // Webhook uchun endpoint
-  app.post('/telegram-webhook', (req, res) => {
-    bot.handleUpdate(req.body, res);
-  });
-} else {
-  // Lokal kompyuterda - Polling mode
-  bot.launch({ dropPendingUpdates: true });
-  console.log('🤖 Telegram bot polling mode ishga tushdi');
-}
+// ── Launch — ONE call only ────────────────────────────────────
+bot.launch({ allowedUpdates: [], dropPendingUpdates: true });
+console.log("🤖 Bot is running!");
 
 const PORT = process.env.PORT || 10000;
 const server = app.listen(PORT, '0.0.0.0', () => {
