@@ -63,6 +63,15 @@ const DOMAIN = process.env.DOMAIN || "https://fikrcha.onrender.com";
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
+
+// ── /ping — UptimeRobot uchun, barcha middleware'dan OLDIN ────
+// Session, passport va boshqa middleware'dan oldin joylashgan —
+// shuning uchun tez va ishonchli javob beradi.
+app.get("/ping", (req, res) => {
+  res.setHeader("Content-Type", "text/plain");
+  res.status(200).end("ok");
+});
+
 app.use(session({
   secret: "fikrcha-secret",
   resave: false,
@@ -117,10 +126,9 @@ function getConsistency30(habit) {
 }
 
 // ── AI helper — Groq bilan 8 sekund timeout ───────────────────
-// Agar Groq 8 sekund ichida javob bermasa, xato qaytaradi
 async function callGroq(messages, maxTokens = 200) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000); // 8 sekund
+  const timeout = setTimeout(() => controller.abort(), 8000);
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -139,7 +147,7 @@ async function callGroq(messages, maxTokens = 200) {
     const data = await response.json();
     return data.choices?.[0]?.message?.content?.trim() || null;
   } catch (err) {
-    if (err.name === 'AbortError') return null; // timeout
+    if (err.name === 'AbortError') return null;
     throw err;
   } finally {
     clearTimeout(timeout);
@@ -389,9 +397,6 @@ app.delete("/api/admin/users/:id", async (req, res) => {
 });
 
 // ── Pages ─────────────────────────────────────────────────────
-// /ping — cron-job.org uchun, kichkina javob qaytaradi
-app.get("/ping", (req, res) => res.send("ok"));
-
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.get("/app.html", (req, res) => res.sendFile(path.join(__dirname, "app.html")));
 app.get("/admin.html", async (req, res) => {
@@ -401,8 +406,6 @@ app.get("/admin.html", async (req, res) => {
 });
 
 // ── AI Chat ───────────────────────────────────────────────────
-// Muammo: Groq ba'zan 30-40 sekund kutardi. Endi 8 sekund timeout bor.
-// Agar javob kelmasa — darhol xato qaytaradi, foydalanuvchi kutmaydi.
 app.post('/api/ai-chat', async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: 'Not logged in' });
@@ -434,7 +437,6 @@ Rules: Reply in SAME language as the user. Max 3 sentences. Be direct and helpfu
     if (reply) {
       res.json({ reply });
     } else {
-      // Groq timeout — tez javob
       res.json({ reply: '⚠️ AI is slow right now. Please try again in a moment.' });
     }
   } catch (err) {
@@ -468,7 +470,6 @@ function buildMainMenu() {
   ]};
 }
 
-// AI coach xabar — bot ichida ishlatiladi, 5 sekund timeout
 async function generateCoachMessage(userId, timeOfDay) {
   if (!process.env.GROQ_API_KEY) return null;
   const habits = await Habit.find({ userId }).lean();
@@ -705,10 +706,8 @@ setInterval(async () => {
     const total   = userHabits.length;
     const done    = userHabits.filter(h => h.history[todayStr]).length;
 
-    // 08:00 — ertalab
     if (hour === 8 && minute === 0 && !sentMorning.has(telegramId)) {
       sentMorning.add(telegramId);
-      // AI coach xabar (agar GROQ_API_KEY bo'lsa)
       const aiMsg = await generateCoachMessage(userId, "morning").catch(() => null);
       bot.telegram.sendMessage(telegramId,
         `🌅 *Good morning, ${name}!*\n\nYou have *${total} habit${total>1?'s':''}* today.\n${aiMsg ? `\n💬 _${aiMsg}_\n` : ''}Let's start strong 💪`,
@@ -716,7 +715,6 @@ setInterval(async () => {
       ).catch(() => {});
     }
 
-    // 16:00 — kunduzi hech narsa qilinmagan bo'lsa
     if (hour === 16 && minute === 0 && done === 0) {
       const notifKey = `afternoon_${todayStr}_${telegramId}`;
       if (!sentStreaks.has(notifKey)) {
@@ -728,7 +726,6 @@ setInterval(async () => {
       }
     }
 
-    // 21:00 — kechqurun
     if (hour === 21 && minute === 0 && !sentEvening.has(telegramId)) {
       sentEvening.add(telegramId);
       const pct   = Math.round((done / total) * 100);
@@ -748,7 +745,6 @@ setInterval(async () => {
       }).catch(() => {});
     }
 
-    // 1 daqiqa oldin eslatma
     const oneMinLater = new Date(now.getTime() + 60000);
     const targetTime  = `${String(oneMinLater.getHours()).padStart(2,'0')}:${String(oneMinLater.getMinutes()).padStart(2,'0')}`;
     for (const habit of userHabits) {
@@ -765,7 +761,6 @@ setInterval(async () => {
       ).catch(() => {});
     }
 
-    // 20:00 — streak milestone
     if (hour === 20 && minute === 0) {
       for (const habit of userHabits) {
         const streak = getStreak(habit);
