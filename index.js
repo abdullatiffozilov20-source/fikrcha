@@ -6,7 +6,11 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { Telegraf } = require("telegraf");
 const path = require("path");
 const mongoose = require("mongoose");
+let isBusy = false;
 
+function getToday() {
+  return new Date().toISOString().split("T")[0];
+}
 // ── MongoDB connection ────────────────────────────────────────
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -412,7 +416,10 @@ app.get("/api/admin/users", async (req, res) => {
 });
 
 // ── Static pages ──────────────────────────────────────────────
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
+app.get("/ping", (req, res) => {
+  if (isBusy) return res.status(200).end();
+  res.status(200).end();
+});
 app.get("/app.html", (req, res) => res.sendFile(path.join(__dirname, "app.html")));
 app.get("/admin.html", async (req, res) => {
   const user = await getUser(req);
@@ -420,45 +427,134 @@ app.get("/admin.html", async (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
+
 // ── AI chat ───────────────────────────────────────────────────
 app.post('/api/ai-chat', async (req, res) => {
-  const user = await getUser(req);
-  if (!user) return res.status(401).json({ error: 'Not logged in' });
 
-  const { message, system, history } = req.body;
-  if (!message) return res.status(400).json({ error: 'No message' });
-
-  const GROQ_API_KEY = process.env.GROQ_API_KEY;
-  if (!GROQ_API_KEY) {
-    return res.json({ reply: '⚠️ AI not configured. Add GROQ_API_KEY to Render env vars.' });
+  if (isBusy) {
+    return res.json({ reply: "⏳ Server busy, try again..." });
   }
 
+  isBusy = true;
+
   try {
-    const messages = [...(history || []).slice(-6), { role: 'user', content: message }];
+    const user = await getUser(req);
+    if (!user) return res.status(401).json({ error: 'Not logged in' });
+
+    const { message, history } = req.body;
+    if (!message) return res.status(400).json({ error: 'No message' });
+
+    const GROQ_API_KEY = process.env.GROQ_API_KEY;
+    if (!GROQ_API_KEY) {
+      return res.json({ reply: '⚠️ AI not configured.' });
+    }
+
+    const today = getToday();
+    const habits = await Habit.find({ userId: user._id }).lean();
+
+    const total = habits.length;
+    const done = habits.filter(h => h?.history?.[today]).length;
+    const missed = total - done;
+
+    const systemPrompt = `
+You are FIKRCHA AI, a productivity coach.
+
+User stats:
+- Total: ${total}
+- Done: ${done}
+- Missed: ${missed}
+
+Rules:
+- Reply in SAME language as user
+- Max 2 sentences
+- Be direct and helpful
+`;
+
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...(history || []).slice(-6),
+      { role: 'user', content: message }
+    ];
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',
-        max_tokens: 400,
-        messages: [
-          { role: 'system', content: system || 'You are FIKRCHA AI, a helpful productivity assistant. Be concise and direct. Max 80 words per response.' },
-          ...messages
-        ]
+        temperature: 0.4,
+        max_tokens: 200,
+        messages
       })
     });
+
     const data = await response.json();
-    if (data.choices?.[0]) {
-      res.json({ reply: data.choices[0].message.content });
+
+    if (data.choices?.[0]?.message?.content) {
+      res.json({ reply: data.choices[0].message.content.trim() });
     } else {
-      res.json({ reply: '⚠️ AI error. Please try again.' });
+      res.json({ reply: '⚠️ AI error. Try again.' });
     }
+
   } catch (err) {
-    console.error('AI error:', err);
+    console.error(err);
     res.json({ reply: '⚠️ AI temporarily unavailable.' });
+
+  } finally {
+    isBusy = false;
   }
 });
 
+
+async function generateCoachMessage(userId, timeOfDay) {
+  const habits = await Habit.find({ userId }).lean();
+  if (!habits.length) return null;
+
+  const today = getTodayStr();
+  const total = habits.length;
+  const done = habits.filter(h => h?.history?.[today]).length;
+
+  const prompt = `
+You are a productivity coach.
+
+Done: ${done}/${total}
+Time: ${timeOfDay}
+
+Give short motivation (1-2 sentences)
+`;
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      max_tokens: 100,
+      messages: [{ role: 'system', content: prompt }]
+    })
+  });
+
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content || null;
+}
+
+const aiMsg = await generateCoachMessage(userId, "morning");
+if (aiMsg) {
+  bot.telegram.sendMessage(telegramId, `🌅 ${aiMsg}`).catch(() => {});
+}
+const aiMsg = await generateCoachMessage(userId, "evening");
+if (aiMsg) {
+  bot.telegram.sendMessage(telegramId, `🌙 ${aiMsg}`).catch(() => {});
+}
+if (hour === 16 && minute === 0 && done === 0) {
+  bot.telegram.sendMessage(telegramId,
+    "⚠️ You haven't done any habits today. Start now!"
+  ).catch(() => {});
+}
 // ── Telegram Bot ──────────────────────────────────────────────
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const webAppUrl = DOMAIN;
