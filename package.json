@@ -4,16 +4,15 @@
   "description": "Telegram bot with Express + MongoDB",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "npm install"
+    "start": "node index.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": "18.x"
   },
   "dependencies": {
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "mongoose": "^8.0.0",
+    "mongoose": "^8.3.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "session-file-store": "^1.5.0",
