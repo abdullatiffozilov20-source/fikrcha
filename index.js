@@ -63,15 +63,6 @@ const DOMAIN = process.env.DOMAIN || "https://fikrcha.onrender.com";
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
-
-// ── /ping — UptimeRobot uchun, barcha middleware'dan OLDIN ────
-// Session, passport va boshqa middleware'dan oldin joylashgan —
-// shuning uchun tez va ishonchli javob beradi.
-app.get("/ping", (req, res) => {
-  res.setHeader("Content-Type", "text/plain");
-  res.status(200).end("ok");
-});
-
 app.use(session({
   secret: "fikrcha-secret",
   resave: false,
@@ -109,7 +100,7 @@ function getStreak(habit) {
   const d = new Date();
   for (let n = 0; n < 365; n++) {
     const ds = d.toISOString().split("T")[0];
-    if (habit.history[ds]) { streak++; d.setDate(d.getDate() - 1); }
+    if (habit?.history?.[ds]) { streak++; d.setDate(d.getDate() - 1); }
     else break;
   }
   return streak;
@@ -120,15 +111,16 @@ function getConsistency30(habit) {
   for (let i = 0; i < 30; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    if (habit.history[d.toISOString().split("T")[0]]) done++;
+    if (habit?.history?.[d.toISOString().split("T")[0]]) done++;
   }
   return Math.round((done / 30) * 100);
 }
 
 // ── AI helper — Groq bilan 8 sekund timeout ───────────────────
+// Agar Groq 8 sekund ichida javob bermasa, xato qaytaradi
 async function callGroq(messages, maxTokens = 200) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  const timeout = setTimeout(() => controller.abort(), 8000); // 8 sekund
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -147,7 +139,7 @@ async function callGroq(messages, maxTokens = 200) {
     const data = await response.json();
     return data.choices?.[0]?.message?.content?.trim() || null;
   } catch (err) {
-    if (err.name === 'AbortError') return null;
+    if (err.name === 'AbortError') return null; // timeout
     throw err;
   } finally {
     clearTimeout(timeout);
@@ -397,6 +389,9 @@ app.delete("/api/admin/users/:id", async (req, res) => {
 });
 
 // ── Pages ─────────────────────────────────────────────────────
+// /ping — cron-job.org uchun, kichkina javob qaytaradi
+app.get("/ping", (req, res) => res.send("ok"));
+
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.get("/app.html", (req, res) => res.sendFile(path.join(__dirname, "app.html")));
 app.get("/admin.html", async (req, res) => {
@@ -406,6 +401,8 @@ app.get("/admin.html", async (req, res) => {
 });
 
 // ── AI Chat ───────────────────────────────────────────────────
+// Muammo: Groq ba'zan 30-40 sekund kutardi. Endi 8 sekund timeout bor.
+// Agar javob kelmasa — darhol xato qaytaradi, foydalanuvchi kutmaydi.
 app.post('/api/ai-chat', async (req, res) => {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: 'Not logged in' });
@@ -437,6 +434,7 @@ Rules: Reply in SAME language as the user. Max 3 sentences. Be direct and helpfu
     if (reply) {
       res.json({ reply });
     } else {
+      // Groq timeout — tez javob
       res.json({ reply: '⚠️ AI is slow right now. Please try again in a moment.' });
     }
   } catch (err) {
@@ -453,7 +451,7 @@ async function buildHabitKeyboard(userId) {
   const today    = getTodayStr();
   const userHabits = await Habit.find({ userId }).lean();
   const keyboard = userHabits.map(h => [{
-    text: `${h.history[today] ? "✅" : "⬜"} ${h.name}${h.time ? " (" + h.time + ")" : ""}`,
+    text: `${h?.history?.[today] ? "✅" : "⬜"} ${h.name}${h.time ? " (" + h.time + ")" : ""}`,
     callback_data: `tog_${userId}_${h.id}`,
   }]);
   keyboard.push([{ text: "📊 Progress", callback_data: `prog_${userId}` }]);
@@ -470,6 +468,7 @@ function buildMainMenu() {
   ]};
 }
 
+// AI coach xabar — bot ichida ishlatiladi, 5 sekund timeout
 async function generateCoachMessage(userId, timeOfDay) {
   if (!process.env.GROQ_API_KEY) return null;
   const habits = await Habit.find({ userId }).lean();
@@ -517,7 +516,7 @@ bot.command("habits", async (ctx) => {
     reply_markup: { inline_keyboard: [[{ text: "🚀 Open App", web_app: { url: webAppUrl } }]] }
   });
   const today = getTodayStr();
-  const done  = userHabits.filter(h => h.history[today]).length;
+  const done  = userHabits.filter(h => h?.history?.[today]).length;
   const pct   = Math.round((done / userHabits.length) * 100);
   const emoji = pct === 100 ? "🏆" : pct >= 70 ? "🔥" : pct >= 40 ? "💪" : "⚡";
   ctx.reply(`${emoji} *Your Habits — ${today}*\n✅ ${done}/${userHabits.length} completed (${pct}%)\n\nTap a habit to check/uncheck it:`,
@@ -535,12 +534,12 @@ bot.command("progress", async (ctx) => {
   if (!userHabits.length) return ctx.reply("No habits found. Add some in the app first!");
   const today = getTodayStr();
   const total = userHabits.length;
-  const todayDone = userHabits.filter(h => h.history[today]).length;
+  const todayDone = userHabits.filter(h => h?.history?.[today]).length;
   let weekStats = "";
   for (let i = 6; i >= 0; i--) {
     const d = new Date(); d.setDate(d.getDate() - i);
     const ds   = d.toISOString().split("T")[0];
-    const done = userHabits.filter(h => h.history[ds]).length;
+    const done = userHabits.filter(h => h?.history?.[ds]).length;
     const pct  = Math.round((done / total) * 100);
     const bar  = pct >= 80 ? "🟢" : pct >= 50 ? "🟡" : "🔴";
     const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
@@ -596,7 +595,7 @@ bot.on("callback_query", async (ctx) => {
     const userHabits = await Habit.find({ userId }).lean();
     if (!userHabits.length) return ctx.answerCbQuery("No habits yet. Add in the app!");
     const today = getTodayStr();
-    const done  = userHabits.filter(h => h.history[today]).length;
+    const done  = userHabits.filter(h => h?.history?.[today]).length;
     await ctx.answerCbQuery();
     return ctx.reply(`📅 *Habits — ${today}*\n✅ ${done}/${userHabits.length} done\n\nTap to check:`,
       { parse_mode: "Markdown", reply_markup: { inline_keyboard: await buildHabitKeyboard(userId) } });
@@ -611,12 +610,12 @@ bot.on("callback_query", async (ctx) => {
     const userHabits = await Habit.find({ userId }).lean();
     const today = getTodayStr();
     const total = userHabits.length;
-    const todayDone = userHabits.filter(h => h.history[today]).length;
+    const todayDone = userHabits.filter(h => h?.history?.[today]).length;
     let weekStats = "";
     for (let i = 6; i >= 0; i--) {
       const d = new Date(); d.setDate(d.getDate() - i);
       const ds   = d.toISOString().split("T")[0];
-      const done = userHabits.filter(h => h.history[ds]).length;
+      const done = userHabits.filter(h => h?.history?.[ds]).length;
       const pct  = total > 0 ? Math.round((done / total) * 100) : 0;
       const bar  = pct >= 80 ? "🟢" : pct >= 50 ? "🟡" : "🔴";
       const label = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
@@ -642,7 +641,7 @@ bot.on("callback_query", async (ctx) => {
     habit.markModified('history');
     await habit.save();
     const userHabits = await Habit.find({ userId }).lean();
-    const done  = userHabits.filter(h => h.history[today]).length;
+    const done  = userHabits.filter(h => h?.history?.[today]).length;
     const pct   = Math.round((done / userHabits.length) * 100);
     const emoji = pct === 100 ? "🏆" : pct >= 70 ? "🔥" : pct >= 40 ? "💪" : "⚡";
     await ctx.editMessageText(
@@ -658,7 +657,7 @@ bot.on("callback_query", async (ctx) => {
     const userId    = data.slice(5);
     const userHabits = await Habit.find({ userId }).lean();
     const today = getTodayStr();
-    const done  = userHabits.filter(h => h.history[today]).length;
+    const done  = userHabits.filter(h => h?.history?.[today]).length;
     const total = userHabits.length;
     const pct   = total > 0 ? Math.round((done / total) * 100) : 0;
     const emoji = pct === 100 ? "🏆" : pct >= 80 ? "🔥" : pct >= 50 ? "💪" : "⚡";
@@ -666,7 +665,7 @@ bot.on("callback_query", async (ctx) => {
     for (let i = 6; i >= 0; i--) {
       const d = new Date(); d.setDate(d.getDate() - i);
       const ds     = d.toISOString().split("T")[0];
-      const dayDone = userHabits.filter(h => h.history[ds]).length;
+      const dayDone = userHabits.filter(h => h?.history?.[ds]).length;
       const dayPct  = total > 0 ? Math.round((dayDone / total) * 100) : 0;
       const bar     = dayPct >= 80 ? "🟢" : dayPct >= 50 ? "🟡" : "🔴";
       const label   = i === 0 ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
@@ -704,10 +703,12 @@ setInterval(async () => {
     const userDoc = await User.findById(userId).lean();
     const name    = userDoc?.name?.split(" ")[0] || "there";
     const total   = userHabits.length;
-    const done    = userHabits.filter(h => h.history[todayStr]).length;
+    const done    = userHabits.filter(h => h?.history?.[todayStr]).length;
 
+    // 08:00 — ertalab
     if (hour === 8 && minute === 0 && !sentMorning.has(telegramId)) {
       sentMorning.add(telegramId);
+      // AI coach xabar (agar GROQ_API_KEY bo'lsa)
       const aiMsg = await generateCoachMessage(userId, "morning").catch(() => null);
       bot.telegram.sendMessage(telegramId,
         `🌅 *Good morning, ${name}!*\n\nYou have *${total} habit${total>1?'s':''}* today.\n${aiMsg ? `\n💬 _${aiMsg}_\n` : ''}Let's start strong 💪`,
@@ -715,6 +716,7 @@ setInterval(async () => {
       ).catch(() => {});
     }
 
+    // 16:00 — kunduzi hech narsa qilinmagan bo'lsa
     if (hour === 16 && minute === 0 && done === 0) {
       const notifKey = `afternoon_${todayStr}_${telegramId}`;
       if (!sentStreaks.has(notifKey)) {
@@ -726,6 +728,7 @@ setInterval(async () => {
       }
     }
 
+    // 21:00 — kechqurun
     if (hour === 21 && minute === 0 && !sentEvening.has(telegramId)) {
       sentEvening.add(telegramId);
       const pct   = Math.round((done / total) * 100);
@@ -745,10 +748,11 @@ setInterval(async () => {
       }).catch(() => {});
     }
 
+    // 1 daqiqa oldin eslatma
     const oneMinLater = new Date(now.getTime() + 60000);
     const targetTime  = `${String(oneMinLater.getHours()).padStart(2,'0')}:${String(oneMinLater.getMinutes()).padStart(2,'0')}`;
     for (const habit of userHabits) {
-      if (!habit.time || habit.history[todayStr] || habit.time !== targetTime) continue;
+      if (!habit.time || habit?.history?.[todayStr] || habit.time !== targetTime) continue;
       const notifKey = `${todayStr}_${telegramId}_${habit.id}`;
       if (sentStreaks.has(notifKey)) continue;
       sentStreaks.add(notifKey);
@@ -761,6 +765,7 @@ setInterval(async () => {
       ).catch(() => {});
     }
 
+    // 20:00 — streak milestone
     if (hour === 20 && minute === 0) {
       for (const habit of userHabits) {
         const streak = getStreak(habit);
